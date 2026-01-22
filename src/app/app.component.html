@@ -1,5 +1,5 @@
 <div class="info-table-container">
-  <table id="players_table" class="info-table">
+  <table id="players_table" class="info-table" [ngClass]="'size-' + tableSize">
     <thead>
       <tr>
         <th>Players</th>
@@ -16,7 +16,7 @@
     </tbody>
   </table>
 
-  <table id="spread_table" class="info-table">
+  <table id="spread_table" class="info-table" [ngClass]="'size-' + tableSize">
     <thead>
       <tr>
         <th class="good">Townsfolk</th>
@@ -49,20 +49,20 @@
         <tr>
           <td>
             <div class="btn-cell">
-              <button class="player-btn">+</button>
-              <button class="player-btn">-</button>
+              <button id="player_count_up" class="player-btn">+</button>
+              <button id="player_count_down" class="player-btn">-</button>
             </div>
           </td>
           <td>
             <div class="btn-cell">
-              <button class="player-btn">+</button>
-              <button class="player-btn">-</button>
+              <button id="player_size_up" class="player-btn">+</button>
+              <button id="player_size_down" class="player-btn">-</button>
             </div>
           </td>
           <td>
             <div class="btn-cell">
-              <button class="player-btn">+</button>
-              <button class="player-btn">-</button>
+              <button id="table_size_up" class="player-btn" (click)="tableSizeUp()" [disabled]="tableSize === 'large'">+</button>
+              <button id="table_size_down" class="player-btn" (click)="tableSizeDown()" [disabled]="tableSize === 'small'">-</button>
             </div>
           </td>
           <td>

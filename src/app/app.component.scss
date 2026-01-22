@@ -34,6 +34,43 @@
     font-size: 18px;
   }
 
+  // Size variants
+  &.size-small {
+    th, td {
+      padding: 8px 16px;
+    }
+    th {
+      font-size: 12px;
+    }
+    td {
+      font-size: 18px;
+    }
+  }
+
+  &.size-medium {
+    th, td {
+      padding: 12px 24px;
+    }
+    th {
+      font-size: 14px;
+    }
+    td {
+      font-size: 24px;
+    }
+  }
+
+  &.size-large {
+    th, td {
+      padding: 16px 32px;
+    }
+    th {
+      font-size: 16px;
+    }
+    td {
+      font-size: 32px;
+    }
+  }
+
   .good {
     color: #6a9bd1;
   }
@@ -54,8 +91,13 @@
     cursor: pointer;
     transition: background-color 0.2s;
 
-    &:hover {
+    &:hover:not(:disabled) {
       background-color: rgba(255, 255, 255, 0.3);
+    }
+
+    &:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
     }
   }
 
