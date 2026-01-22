@@ -1,0 +1,82 @@
+.info-table-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.info-table {
+  border-collapse: collapse;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: white;
+  font-family: sans-serif;
+
+  th, td {
+    padding: 8px 16px;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+  }
+
+  th {
+    background-color: rgba(255, 255, 255, 0.1);
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 12px;
+    letter-spacing: 1px;
+  }
+
+  td {
+    font-size: 18px;
+  }
+
+  .good {
+    color: #6a9bd1;
+  }
+
+  .evil {
+    color: #d16a6a;
+  }
+
+  .player-btn {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 4px;
+    width: 28px;
+    height: 28px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s;
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.3);
+    }
+  }
+
+  .btn-cell {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+  }
+}
+
+.show-settings-btn {
+  background-color: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+  padding: 8px 16px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+  }
+}

@@ -1,1 +1,79 @@
+<div class="info-table-container">
+  <table id="players_table" class="info-table">
+    <thead>
+      <tr>
+        <th>Players</th>
+        <th>Alive</th>
+        <th>Ghost Votes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>{{ playerCount }}</td>
+        <td>{{ alive }}</td>
+        <td>{{ ghostVotes }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <table id="spread_table" class="info-table">
+    <thead>
+      <tr>
+        <th class="good">Townsfolk</th>
+        <th class="good">Outsiders</th>
+        <th class="evil">Minions</th>
+        <th class="evil">Demons</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="good">{{ townsfolk }}</td>
+        <td class="good">{{ outsiders }}</td>
+        <td class="evil">{{ minions }}</td>
+        <td class="evil">{{ demons }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  @if (showSettings) {
+    <table id="settings_table" class="info-table">
+      <thead>
+        <tr>
+          <th>Player Count</th>
+          <th>Player Size</th>
+          <th>Table Size</th>
+          <th>Hide</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <div class="btn-cell">
+              <button class="player-btn">+</button>
+              <button class="player-btn">-</button>
+            </div>
+          </td>
+          <td>
+            <div class="btn-cell">
+              <button class="player-btn">+</button>
+              <button class="player-btn">-</button>
+            </div>
+          </td>
+          <td>
+            <div class="btn-cell">
+              <button class="player-btn">+</button>
+              <button class="player-btn">-</button>
+            </div>
+          </td>
+          <td>
+            <button id="hide_button" class="player-btn" (click)="hideSettings()"></button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  } @else {
+    <button id="show_settings" class="show-settings-btn" (click)="displaySettings()">Show Settings</button>
+  }
+</div>
+
 <app-player></app-player>
