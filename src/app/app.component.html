@@ -49,14 +49,14 @@
         <tr>
           <td>
             <div class="btn-cell">
-              <button id="player_count_up" class="player-btn">+</button>
-              <button id="player_count_down" class="player-btn">-</button>
+              <button id="player_count_up" class="player-btn" (click)="addPlayer()">+</button>
+              <button id="player_count_down" class="player-btn" (click)="removePlayer()" [disabled]="players.length <= 1">-</button>
             </div>
           </td>
           <td>
             <div class="btn-cell">
-              <button id="player_size_up" class="player-btn">+</button>
-              <button id="player_size_down" class="player-btn">-</button>
+              <button id="player_size_up" class="player-btn" (click)="playerSizeUp()" [disabled]="playerSize === 'large'">+</button>
+              <button id="player_size_down" class="player-btn" (click)="playerSizeDown()" [disabled]="playerSize === 'small'">-</button>
             </div>
           </td>
           <td>
@@ -76,4 +76,6 @@
   }
 </div>
 
-<app-player></app-player>
+@for (player of players; track player.number) {
+  <app-player [size]="playerSize" [number]="player.number" [initialX]="player.initialX" [initialY]="player.initialY"></app-player>
+}
