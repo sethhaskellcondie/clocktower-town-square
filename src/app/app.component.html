@@ -40,6 +40,7 @@
       <thead>
         <tr>
           <th>Player Count</th>
+          <th>Landmarks</th>
           <th>Player Size</th>
           <th>Table Size</th>
           <th>Hide</th>
@@ -51,6 +52,12 @@
             <div class="btn-cell">
               <button id="player_count_up" class="player-btn" (click)="addPlayer()">+</button>
               <button id="player_count_down" class="player-btn" (click)="removePlayer()" [disabled]="players.length <= 1">-</button>
+            </div>
+          </td>
+          <td>
+            <div class="btn-cell">
+              <button id="landmark_count_up" class="player-btn" (click)="addLandmark()">+</button>
+              <button id="landmark_count_down" class="player-btn" (click)="removeLandmark()" [disabled]="landmarks.length <= 1">-</button>
             </div>
           </td>
           <td>
@@ -78,4 +85,8 @@
 
 @for (player of players; track player.number) {
   <app-player [size]="playerSize" [number]="player.number" [initialX]="player.initialX" [initialY]="player.initialY" (stateChange)="onPlayerStateChange()"></app-player>
+}
+
+@for (landmark of landmarks; track landmark.number) {
+  <app-landmark [size]="playerSize" [number]="landmark.number" [initialX]="landmark.initialX" [initialY]="landmark.initialY"></app-landmark>
 }

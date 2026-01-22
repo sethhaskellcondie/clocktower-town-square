@@ -1,0 +1,22 @@
+<div
+  class="landmark-square"
+  [class.size-small]="size === 'small'"
+  [class.size-medium]="size === 'medium'"
+  [class.size-large]="size === 'large'"
+  [style.left.px]="positionX"
+  [style.top.px]="positionY"
+  (mousedown)="onMouseDown($event)"
+  (contextmenu)="onRightClick($event)"
+>
+  @if (isEditing) {
+    <textarea
+      #nameInput
+      class="name-input"
+      [(ngModel)]="name"
+      (blur)="stopEditing()"
+      (keydown)="onNameKeydown($event)"
+    ></textarea>
+  } @else {
+    <span class="name-display">{{ name }}</span>
+  }
+</div>

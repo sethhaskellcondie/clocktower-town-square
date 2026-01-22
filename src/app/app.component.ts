@@ -1,6 +1,7 @@
 import { Component, QueryList, ViewChildren } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PlayerComponent } from './player/player.component';
+import { LandmarkComponent } from './landmark/landmark.component';
 
 interface PlayerData {
   number: number;
@@ -8,16 +9,24 @@ interface PlayerData {
   initialY: number;
 }
 
+interface LandmarkData {
+  number: number;
+  initialX: number;
+  initialY: number;
+}
+
 @Component({
   selector: 'app-root',
-  imports: [CommonModule, PlayerComponent],
+  imports: [CommonModule, PlayerComponent, LandmarkComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
   title = 'clocktower-town-square';
   players: PlayerData[] = [{ number: 1, initialX: 100, initialY: 100 }];
+  landmarks: LandmarkData[] = [{ number: 1, initialX: 300, initialY: 100 }];
   @ViewChildren(PlayerComponent) playerComponents!: QueryList<PlayerComponent>;
+  @ViewChildren(LandmarkComponent) landmarkComponents!: QueryList<LandmarkComponent>;
 
   get alive(): number {
     if (!this.playerComponents) return this.players.length;
@@ -38,6 +47,10 @@ export class AppComponent {
 
   get playerCount(): number {
     return this.players.length;
+  }
+
+  get landmarkCount(): number {
+    return this.landmarks.length;
   }
 
   hideSettings(): void {
@@ -103,5 +116,26 @@ export class AppComponent {
 
   onPlayerStateChange(): void {
     // This triggers change detection to update alive and ghostVotes counts
+  }
+
+  addLandmark(): void {
+    const highestNumber = Math.max(...this.landmarks.map(l => l.number));
+
+    // Get the last landmark component's current position
+    const landmarkArray = this.landmarkComponents.toArray();
+    const lastLandmark = landmarkArray[landmarkArray.length - 1];
+
+    const newX = lastLandmark ? lastLandmark.positionX + 50 : 300;
+    const newY = lastLandmark ? lastLandmark.positionY + 50 : 100;
+
+    this.landmarks.push({ number: highestNumber + 1, initialX: newX, initialY: newY });
+  }
+
+  removeLandmark(): void {
+    if (this.landmarks.length > 1) {
+      const highestNumber = Math.max(...this.landmarks.map(l => l.number));
+      const index = this.landmarks.findIndex(l => l.number === highestNumber);
+      this.landmarks.splice(index, 1);
+    }
   }
 }
