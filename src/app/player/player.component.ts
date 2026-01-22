@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostListener, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -19,6 +19,7 @@ export class PlayerComponent implements OnInit {
   name = '';
   state: PlayerState = 'alive';
   @Input() size: 'small' | 'medium' | 'large' = 'small';
+  @Output() stateChange = new EventEmitter<PlayerState>();
 
   // Dragging position
   positionX = 0;
@@ -91,6 +92,7 @@ export class PlayerComponent implements OnInit {
     } else if (this.state === 'dead without vote') {
       this.state = 'alive';
     }
+    this.stateChange.emit(this.state);
   }
 
   onRightClick(event: MouseEvent): void {

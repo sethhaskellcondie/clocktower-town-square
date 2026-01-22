@@ -18,8 +18,16 @@ export class AppComponent {
   title = 'clocktower-town-square';
   players: PlayerData[] = [{ number: 1, initialX: 100, initialY: 100 }];
   @ViewChildren(PlayerComponent) playerComponents!: QueryList<PlayerComponent>;
-  alive = 1;
-  ghostVotes = 1;
+
+  get alive(): number {
+    if (!this.playerComponents) return this.players.length;
+    return this.playerComponents.filter(p => p.state === 'alive').length;
+  }
+
+  get ghostVotes(): number {
+    if (!this.playerComponents) return 0;
+    return this.playerComponents.filter(p => p.state === 'dead with vote').length;
+  }
   townsfolk = 1;
   outsiders = 1;
   minions = 1;
@@ -91,5 +99,9 @@ export class AppComponent {
       const index = this.players.findIndex(p => p.number === highestNumber);
       this.players.splice(index, 1);
     }
+  }
+
+  onPlayerStateChange(): void {
+    // This triggers change detection to update alive and ghostVotes counts
   }
 }
