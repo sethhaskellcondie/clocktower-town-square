@@ -37,10 +37,48 @@ export class AppComponent {
     if (!this.playerComponents) return 0;
     return this.playerComponents.filter(p => p.state === 'dead with vote').length;
   }
-  townsfolk = 1;
-  outsiders = 1;
-  minions = 1;
-  demons = 1;
+
+  // Player spread based on player count
+  private readonly playerSpread: { [key: number]: { townsfolk: number; outsiders: number; minions: number; demons: number } } = {
+    5:  { townsfolk: 3, outsiders: 0, minions: 1, demons: 1 },
+    6:  { townsfolk: 3, outsiders: 1, minions: 1, demons: 1 },
+    7:  { townsfolk: 5, outsiders: 0, minions: 1, demons: 1 },
+    8:  { townsfolk: 5, outsiders: 1, minions: 1, demons: 1 },
+    9:  { townsfolk: 5, outsiders: 2, minions: 1, demons: 1 },
+    10: { townsfolk: 7, outsiders: 0, minions: 2, demons: 1 },
+    11: { townsfolk: 7, outsiders: 1, minions: 2, demons: 1 },
+    12: { townsfolk: 7, outsiders: 2, minions: 2, demons: 1 },
+    13: { townsfolk: 9, outsiders: 0, minions: 3, demons: 1 },
+    14: { townsfolk: 9, outsiders: 1, minions: 3, demons: 1 },
+    15: { townsfolk: 9, outsiders: 2, minions: 3, demons: 1 },
+  };
+
+  private getSpread(): { townsfolk: number; outsiders: number; minions: number; demons: number } {
+    const count = this.playerCount;
+    if (count < 5) {
+      return { townsfolk: count - 1, outsiders: 0, minions: 0, demons: 1 };
+    }
+    if (count >= 15) {
+      return this.playerSpread[15];
+    }
+    return this.playerSpread[count];
+  }
+
+  get townsfolk(): number {
+    return this.getSpread().townsfolk;
+  }
+
+  get outsiders(): number {
+    return this.getSpread().outsiders;
+  }
+
+  get minions(): number {
+    return this.getSpread().minions;
+  }
+
+  get demons(): number {
+    return this.getSpread().demons;
+  }
   showSettings = true;
   tableSize: 'small' | 'medium' | 'large' = 'small';
   playerSize: 'small' | 'medium' | 'large' = 'small';
