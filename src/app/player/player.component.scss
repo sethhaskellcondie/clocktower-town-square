@@ -1,0 +1,14 @@
+.player-circle {
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  background-color: white;
+  border-radius: 50%;
+  cursor: grab;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  user-select: none;
+
+  &:active {
+    cursor: grabbing;
+  }
+}
