@@ -2,7 +2,7 @@ import { Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Outpu
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
-export type PlayerState = 'alive' | 'dead with vote' | 'dead without vote';
+export type PlayerState = 'alive' | 'marked for death' | 'dead with vote' | 'dead without vote';
 
 @Component({
   selector: 'app-player',
@@ -86,6 +86,8 @@ export class PlayerComponent implements OnInit {
 
   cycleState(): void {
     if (this.state === 'alive') {
+      this.state = 'marked for death';
+    } else if (this.state === 'marked for death') {
       this.state = 'dead with vote';
     } else if (this.state === 'dead with vote') {
       this.state = 'dead without vote';

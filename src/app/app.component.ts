@@ -30,7 +30,7 @@ export class AppComponent {
 
   get alive(): number {
     if (!this.playerComponents) return this.players.length;
-    return this.playerComponents.filter(p => p.state === 'alive').length;
+    return this.playerComponents.filter(p => p.state === 'alive' || p.state === 'marked for death').length;
   }
 
   get ghostVotes(): number {

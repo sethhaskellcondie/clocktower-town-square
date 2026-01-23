@@ -1,6 +1,7 @@
 <div
   class="player-circle"
   [class.alive]="state === 'alive'"
+  [class.marked-for-death]="state === 'marked for death'"
   [class.dead-with-vote]="state === 'dead with vote'"
   [class.dead-without-vote]="state === 'dead without vote'"
   [class.size-small]="size === 'small'"

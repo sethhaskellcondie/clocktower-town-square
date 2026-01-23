@@ -24,6 +24,20 @@
     }
   }
 
+  &.marked-for-death {
+    background-color: #ffb3b3;
+
+    .name-display {
+      color: #333;
+    }
+
+    .name-input {
+      background-color: #ffcccc;
+      color: #333;
+      border-color: #ff9999;
+    }
+  }
+
   &.dead-with-vote {
     background-color: black;
     border: 4px solid white;
