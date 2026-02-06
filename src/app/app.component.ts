@@ -1,9 +1,16 @@
 import { Component, QueryList, ViewChildren } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PlayerComponent } from './player/player.component';
+import { TravelerComponent } from './traveler/traveler.component';
 import { LandmarkComponent } from './landmark/landmark.component';
 
 interface PlayerData {
+  number: number;
+  initialX: number;
+  initialY: number;
+}
+
+interface TravelerData {
   number: number;
   initialX: number;
   initialY: number;
@@ -17,15 +24,17 @@ interface LandmarkData {
 
 @Component({
   selector: 'app-root',
-  imports: [CommonModule, PlayerComponent, LandmarkComponent],
+  imports: [CommonModule, PlayerComponent, TravelerComponent, LandmarkComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
   title = 'clocktower-town-square';
   players: PlayerData[] = [{ number: 1, initialX: 100, initialY: 100 }];
+  travelers: TravelerData[] = [{ number: 1, initialX: 200, initialY: 100 }];
   landmarks: LandmarkData[] = [{ number: 1, initialX: 300, initialY: 100 }];
   @ViewChildren(PlayerComponent) playerComponents!: QueryList<PlayerComponent>;
+  @ViewChildren(TravelerComponent) travelerComponents!: QueryList<TravelerComponent>;
   @ViewChildren(LandmarkComponent) landmarkComponents!: QueryList<LandmarkComponent>;
 
   get alive(): number {
@@ -34,8 +43,18 @@ export class AppComponent {
   }
 
   get ghostVotes(): number {
-    if (!this.playerComponents) return 0;
-    return this.playerComponents.filter(p => p.state === 'dead with vote').length;
+    let votes = 0;
+    if (this.playerComponents) {
+      votes += this.playerComponents.filter(p => p.state === 'dead with vote').length;
+    }
+    if (this.travelerComponents) {
+      votes += this.travelerComponents.filter(t => t.state === 'dead with vote').length;
+    }
+    return votes;
+  }
+
+  get activeTravelers(): number {
+    return this.travelerCount;
   }
 
   // Player spread based on player count
@@ -85,6 +104,10 @@ export class AppComponent {
 
   get playerCount(): number {
     return this.players.length;
+  }
+
+  get travelerCount(): number {
+    return this.travelers.length;
   }
 
   get landmarkCount(): number {
@@ -153,6 +176,31 @@ export class AppComponent {
   }
 
   onPlayerStateChange(): void {
+    // This triggers change detection to update alive and ghostVotes counts
+  }
+
+  addTraveler(): void {
+    const highestNumber = Math.max(...this.travelers.map(t => t.number));
+
+    // Get the last traveler component's current position
+    const travelerArray = this.travelerComponents.toArray();
+    const lastTraveler = travelerArray[travelerArray.length - 1];
+
+    const newX = lastTraveler ? lastTraveler.positionX + 50 : 200;
+    const newY = lastTraveler ? lastTraveler.positionY + 50 : 100;
+
+    this.travelers.push({ number: highestNumber + 1, initialX: newX, initialY: newY });
+  }
+
+  removeTraveler(): void {
+    if (this.travelers.length > 1) {
+      const highestNumber = Math.max(...this.travelers.map(t => t.number));
+      const index = this.travelers.findIndex(t => t.number === highestNumber);
+      this.travelers.splice(index, 1);
+    }
+  }
+
+  onTravelerStateChange(): void {
     // This triggers change detection to update alive and ghostVotes counts
   }
 
