@@ -19,6 +19,7 @@ export class PlayerComponent implements OnInit {
   name = '';
   state: PlayerState = 'alive';
   @Input() size: 'small' | 'medium' | 'large' = 'small';
+  @Input() texture = 1;
   @Output() stateChange = new EventEmitter<PlayerState>();
 
   // Dragging position

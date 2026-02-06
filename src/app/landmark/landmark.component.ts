@@ -16,6 +16,7 @@ export class LandmarkComponent implements OnInit {
   @Input() initialY = 100;
   name = '';
   @Input() size: 'small' | 'medium' | 'large' = 'small';
+  @Input() texture = 1;
 
   // Dragging position
   positionX = 0;

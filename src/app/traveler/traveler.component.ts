@@ -19,6 +19,7 @@ export class TravelerComponent implements OnInit {
   name = '';
   state: TravelerState = 'alive';
   @Input() size: 'small' | 'medium' | 'large' = 'small';
+  @Input() texture = 1;
   @Output() stateChange = new EventEmitter<TravelerState>();
 
   // Dragging position

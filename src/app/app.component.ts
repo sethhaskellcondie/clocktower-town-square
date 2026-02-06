@@ -8,18 +8,21 @@ interface PlayerData {
   number: number;
   initialX: number;
   initialY: number;
+  texture: number;
 }
 
 interface TravelerData {
   number: number;
   initialX: number;
   initialY: number;
+  texture: number;
 }
 
 interface LandmarkData {
   number: number;
   initialX: number;
   initialY: number;
+  texture: number;
 }
 
 @Component({
@@ -30,7 +33,7 @@ interface LandmarkData {
 })
 export class AppComponent {
   title = 'clocktower-town-square';
-  players: PlayerData[] = [{ number: 1, initialX: 100, initialY: 100 }];
+  players: PlayerData[] = [{ number: 1, initialX: 100, initialY: 100, texture: 1 }];
   travelers: TravelerData[] = [];
   landmarks: LandmarkData[] = [];
   @ViewChildren(PlayerComponent) playerComponents!: QueryList<PlayerComponent>;
@@ -164,7 +167,8 @@ export class AppComponent {
     const newX = lastPlayer ? lastPlayer.positionX + 50 : 100;
     const newY = lastPlayer ? lastPlayer.positionY + 50 : 100;
 
-    this.players.push({ number: highestNumber + 1, initialX: newX, initialY: newY });
+    const newNumber = highestNumber + 1;
+    this.players.push({ number: newNumber, initialX: newX, initialY: newY, texture: (newNumber - 1) % 4 + 1 });
   }
 
   removePlayer(): void {
@@ -198,7 +202,8 @@ export class AppComponent {
       newY = lastPlayer ? lastPlayer.positionY + 50 : 100;
     }
 
-    this.travelers.push({ number: highestNumber + 1, initialX: newX, initialY: newY });
+    const newNumber = highestNumber + 1;
+    this.travelers.push({ number: newNumber, initialX: newX, initialY: newY, texture: (newNumber - 1) % 4 + 1 });
   }
 
   removeTraveler(): void {
@@ -232,7 +237,8 @@ export class AppComponent {
       newY = lastPlayer ? lastPlayer.positionY + 50 : 100;
     }
 
-    this.landmarks.push({ number: highestNumber + 1, initialX: newX, initialY: newY });
+    const newNumber = highestNumber + 1;
+    this.landmarks.push({ number: newNumber, initialX: newX, initialY: newY, texture: (newNumber - 1) % 4 + 1 });
   }
 
   removeLandmark(): void {

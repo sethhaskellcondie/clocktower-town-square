@@ -88,18 +88,18 @@
       </tbody>
     </table>
   } @else {
-    <button id="show_settings" class="show-settings-btn" (click)="displaySettings()">Show Settings</button>
+    <button id="show_settings" class="show-settings-btn" (click)="displaySettings()">Settings</button>
   }
 </div>
 
 @for (player of players; track player.number) {
-  <app-player [size]="playerSize" [number]="player.number" [initialX]="player.initialX" [initialY]="player.initialY" (stateChange)="onPlayerStateChange()"></app-player>
+  <app-player [size]="playerSize" [number]="player.number" [initialX]="player.initialX" [initialY]="player.initialY" [texture]="player.texture" (stateChange)="onPlayerStateChange()"></app-player>
 }
 
 @for (traveler of travelers; track traveler.number) {
-  <app-traveler [size]="playerSize" [number]="traveler.number" [initialX]="traveler.initialX" [initialY]="traveler.initialY" (stateChange)="onTravelerStateChange()"></app-traveler>
+  <app-traveler [size]="playerSize" [number]="traveler.number" [initialX]="traveler.initialX" [initialY]="traveler.initialY" [texture]="traveler.texture" (stateChange)="onTravelerStateChange()"></app-traveler>
 }
 
 @for (landmark of landmarks; track landmark.number) {
-  <app-landmark [size]="playerSize" [number]="landmark.number" [initialX]="landmark.initialX" [initialY]="landmark.initialY"></app-landmark>
+  <app-landmark [size]="playerSize" [number]="landmark.number" [initialX]="landmark.initialX" [initialY]="landmark.initialY" [texture]="landmark.texture"></app-landmark>
 }
