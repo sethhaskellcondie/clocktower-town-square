@@ -31,8 +31,8 @@ interface LandmarkData {
 export class AppComponent {
   title = 'clocktower-town-square';
   players: PlayerData[] = [{ number: 1, initialX: 100, initialY: 100 }];
-  travelers: TravelerData[] = [{ number: 1, initialX: 200, initialY: 100 }];
-  landmarks: LandmarkData[] = [{ number: 1, initialX: 300, initialY: 100 }];
+  travelers: TravelerData[] = [];
+  landmarks: LandmarkData[] = [];
   @ViewChildren(PlayerComponent) playerComponents!: QueryList<PlayerComponent>;
   @ViewChildren(TravelerComponent) travelerComponents!: QueryList<TravelerComponent>;
   @ViewChildren(LandmarkComponent) landmarkComponents!: QueryList<LandmarkComponent>;
@@ -180,20 +180,29 @@ export class AppComponent {
   }
 
   addTraveler(): void {
-    const highestNumber = Math.max(...this.travelers.map(t => t.number));
+    const highestNumber = this.travelers.length > 0 ? Math.max(...this.travelers.map(t => t.number)) : 0;
 
-    // Get the last traveler component's current position
+    // Get the last traveler component's current position, fall back to last player position
     const travelerArray = this.travelerComponents.toArray();
     const lastTraveler = travelerArray[travelerArray.length - 1];
 
-    const newX = lastTraveler ? lastTraveler.positionX + 50 : 200;
-    const newY = lastTraveler ? lastTraveler.positionY + 50 : 100;
+    let newX: number;
+    let newY: number;
+    if (lastTraveler) {
+      newX = lastTraveler.positionX + 50;
+      newY = lastTraveler.positionY + 50;
+    } else {
+      const playerArray = this.playerComponents.toArray();
+      const lastPlayer = playerArray[playerArray.length - 1];
+      newX = lastPlayer ? lastPlayer.positionX + 50 : 200;
+      newY = lastPlayer ? lastPlayer.positionY + 50 : 100;
+    }
 
     this.travelers.push({ number: highestNumber + 1, initialX: newX, initialY: newY });
   }
 
   removeTraveler(): void {
-    if (this.travelers.length > 1) {
+    if (this.travelers.length > 0) {
       const highestNumber = Math.max(...this.travelers.map(t => t.number));
       const index = this.travelers.findIndex(t => t.number === highestNumber);
       this.travelers.splice(index, 1);
@@ -205,20 +214,29 @@ export class AppComponent {
   }
 
   addLandmark(): void {
-    const highestNumber = Math.max(...this.landmarks.map(l => l.number));
+    const highestNumber = this.landmarks.length > 0 ? Math.max(...this.landmarks.map(l => l.number)) : 0;
 
-    // Get the last landmark component's current position
+    // Get the last landmark component's current position, fall back to last player position
     const landmarkArray = this.landmarkComponents.toArray();
     const lastLandmark = landmarkArray[landmarkArray.length - 1];
 
-    const newX = lastLandmark ? lastLandmark.positionX + 50 : 300;
-    const newY = lastLandmark ? lastLandmark.positionY + 50 : 100;
+    let newX: number;
+    let newY: number;
+    if (lastLandmark) {
+      newX = lastLandmark.positionX + 50;
+      newY = lastLandmark.positionY + 50;
+    } else {
+      const playerArray = this.playerComponents.toArray();
+      const lastPlayer = playerArray[playerArray.length - 1];
+      newX = lastPlayer ? lastPlayer.positionX + 50 : 300;
+      newY = lastPlayer ? lastPlayer.positionY + 50 : 100;
+    }
 
     this.landmarks.push({ number: highestNumber + 1, initialX: newX, initialY: newY });
   }
 
   removeLandmark(): void {
-    if (this.landmarks.length > 1) {
+    if (this.landmarks.length > 0) {
       const highestNumber = Math.max(...this.landmarks.map(l => l.number));
       const index = this.landmarks.findIndex(l => l.number === highestNumber);
       this.landmarks.splice(index, 1);

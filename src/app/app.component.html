@@ -60,13 +60,13 @@
           <td>
             <div class="btn-cell">
               <button id="landmark_count_up" class="player-btn" (click)="addLandmark()">+</button>
-              <button id="landmark_count_down" class="player-btn" (click)="removeLandmark()" [disabled]="landmarks.length <= 1">-</button>
+              <button id="landmark_count_down" class="player-btn" (click)="removeLandmark()" [disabled]="landmarks.length <= 0">-</button>
             </div>
           </td>
           <td>
             <div class="btn-cell">
               <button id="traveler_count_up" class="player-btn" (click)="addTraveler()">+</button>
-              <button id="traveler_count_down" class="player-btn" (click)="removeTraveler()" [disabled]="travelers.length <= 1">-</button>
+              <button id="traveler_count_down" class="player-btn" (click)="removeTraveler()" [disabled]="travelers.length <= 0">-</button>
             </div>
           </td>
           <td>
