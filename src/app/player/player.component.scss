@@ -2,13 +2,30 @@
   position: absolute;
   width: 120px;
   height: 120px;
-  background-color: white;
+  background-color: #e9e0cc; // aged ivory, like the board's life tokens
   border-radius: 50%;
   cursor: grab;
+  // Engraved concentric ring grooves + soft sheen, drawn over whichever
+  // background-color the current state sets
+  background-image:
+    radial-gradient(circle at 32% 28%, rgba(255, 255, 255, 0.35) 0%, transparent 48%),
+    radial-gradient(
+      circle closest-side,
+      transparent 0 56%,
+      rgba(0, 0, 0, 0.22) 57% 58.5%,
+      rgba(255, 255, 255, 0.3) 59.5% 61%,
+      transparent 62% 66%,
+      rgba(0, 0, 0, 0.26) 67% 69%,
+      rgba(255, 255, 255, 0.25) 70% 71.5%,
+      transparent 72.5% 90%,
+      rgba(0, 0, 0, 0.3) 91% 100%
+    );
   box-shadow:
-    0 4px 16px rgba(0, 0, 0, 0.3),
-    inset 0 2px 4px rgba(255, 255, 255, 0.3),
-    inset 0 -2px 6px rgba(0, 0, 0, 0.15);
+    0 6px 18px rgba(0, 0, 0, 0.55),
+    0 2px 6px rgba(0, 0, 0, 0.4),
+    inset 0 2px 3px rgba(255, 255, 255, 0.45),
+    inset 0 -3px 8px rgba(0, 0, 0, 0.35),
+    inset 0 0 0 2px rgba(0, 0, 0, 0.25);
   user-select: none;
   display: flex;
   align-items: center;
@@ -28,11 +45,18 @@
     pointer-events: none;
   }
 
-  // Shared edge wear for all textures
+  // Shared edge wear for all textures, plus the ornate notched rim:
+  // conic tick marks masked to a ring band just inside the edge
   &::after {
     box-shadow:
       inset 0 0 8px 2px rgba(0, 0, 0, 0.12),
       inset 0 0 20px 4px rgba(0, 0, 0, 0.06);
+    background: repeating-conic-gradient(
+      rgba(0, 0, 0, 0.22) 0deg 2.5deg,
+      transparent 2.5deg 7.5deg
+    );
+    -webkit-mask: radial-gradient(circle closest-side, transparent 0 76%, black 79% 88%, transparent 91%);
+    mask: radial-gradient(circle closest-side, transparent 0 76%, black 79% 88%, transparent 91%);
   }
 
   // Texture 1: Fine cracks and grain
@@ -137,15 +161,15 @@
   }
 
   &.alive {
-    background-color: white;
+    background-color: #e9e0cc; // aged ivory
 
     .name-display {
-      color: #333;
+      color: #3b3247;
     }
   }
 
   &.marked-for-death {
-    background-color: #ffb3b3;
+    background-color: #d49a8d; // dusty blood-rose
 
     .name-display {
       color: #333;
@@ -173,12 +197,12 @@
   }
 
   &.dead-with-vote {
-    background-color: black;
-    border: 4px solid white;
+    background-color: #15121c; // near-black plum
+    border: 4px solid #d8d2c2; // weathered bone
     box-sizing: border-box;
 
     .name-display {
-      color: white;
+      color: #e9e0cc;
     }
 
     .name-input {
@@ -189,10 +213,10 @@
   }
 
   &.dead-without-vote {
-    background-color: black;
+    background-color: #15121c; // near-black plum
 
     .name-display {
-      color: white;
+      color: #e9e0cc;
     }
 
     .name-input {
@@ -205,7 +229,10 @@
   &.highlighted {
     box-shadow:
       0 0 0 5px #ffd54a,
-      0 0 28px 10px rgba(255, 213, 74, 0.75);
+      0 0 28px 10px rgba(255, 213, 74, 0.75),
+      inset 0 2px 3px rgba(255, 255, 255, 0.45),
+      inset 0 -3px 8px rgba(0, 0, 0, 0.35),
+      inset 0 0 0 2px rgba(0, 0, 0, 0.25);
     z-index: 3;
   }
 
@@ -267,20 +294,30 @@
   0%, 100% {
     box-shadow:
       0 0 0 5px #ffd54a,
-      0 0 28px 10px rgba(255, 213, 74, 0.75);
+      0 0 28px 10px rgba(255, 213, 74, 0.75),
+      inset 0 2px 3px rgba(255, 255, 255, 0.45),
+      inset 0 -3px 8px rgba(0, 0, 0, 0.35),
+      inset 0 0 0 2px rgba(0, 0, 0, 0.25);
   }
   50% {
     box-shadow:
       0 0 0 10px #ff5252,
-      0 0 44px 18px rgba(255, 82, 82, 0.9);
+      0 0 44px 18px rgba(255, 82, 82, 0.9),
+      inset 0 2px 3px rgba(255, 255, 255, 0.45),
+      inset 0 -3px 8px rgba(0, 0, 0, 0.35),
+      inset 0 0 0 2px rgba(0, 0, 0, 0.25);
   }
 }
 
 .name-display {
   font-size: 20px;
   font-weight: bold;
-  color: #333;
+  font-family: Georgia, 'Times New Roman', serif;
+  color: #3b3247;
   text-align: center;
+  text-shadow:
+    0 1px 1px rgba(255, 255, 255, 0.35),
+    0 -1px 1px rgba(0, 0, 0, 0.3);
   word-break: break-word;
   max-width: 100px;
   white-space: pre-wrap;
