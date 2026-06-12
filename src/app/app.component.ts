@@ -114,6 +114,8 @@ export class AppComponent implements OnDestroy {
   revealAvailable = false;
   isSpinning = false;
   private spinTimer: ReturnType<typeof setTimeout> | null = null;
+  private suspenseSound = new Audio('assets/sound_effects/reveal_suspense.mp3');
+  private boomSound = new Audio('assets/sound_effects/reveal_boom.mp3');
 
   ngOnDestroy(): void {
     if (this.spinTimer) {
@@ -206,6 +208,8 @@ export class AppComponent implements OnDestroy {
     const easeOut = (x: number) => 1 - Math.pow(1 - x, 3);
 
     this.isSpinning = true;
+    this.suspenseSound.currentTime = 0;
+    this.suspenseSound.play().catch(() => {});
     let k = 0;
     let prev: PlayerComponent | TravelerComponent | null = null;
     const tick = () => {
@@ -226,6 +230,10 @@ export class AppComponent implements OnDestroy {
   }
 
   private finishReveal(landed: PlayerComponent | TravelerComponent): void {
+    this.suspenseSound.pause();
+    this.suspenseSound.currentTime = 0;
+    this.boomSound.currentTime = 0;
+    this.boomSound.play().catch(() => {});
     // Pulse everyone about to die, not just the token the spin landed on.
     // Zero-death night: no pulse, just a short beat before the highlight clears.
     const victims = this.pendingDeaths
