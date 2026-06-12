@@ -242,7 +242,7 @@ export class AppComponent implements OnDestroy {
     for (const v of victims) {
       v.isWinner = true;
     }
-    const delay = victims.length > 0 ? 1300 : 600;
+    const delay = victims.length > 0 ? 1500 : 600;
     this.spinTimer = setTimeout(() => {
       for (const v of victims) {
         v.isWinner = false;

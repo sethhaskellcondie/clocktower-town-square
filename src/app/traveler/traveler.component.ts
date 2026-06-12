@@ -92,7 +92,8 @@ export class TravelerComponent implements OnInit {
   cycleState(): void {
     switch (this.state) {
       case 'alive':
-        this.state = 'marked for death';
+        // 'marked for death' is only reachable during the day
+        this.state = this.isDay ? 'marked for death' : 'killed during the night';
         break;
       case 'marked for death':
         // 'killed during the night' is only reachable at night
