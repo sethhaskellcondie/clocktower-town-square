@@ -116,6 +116,11 @@
   }
 }
 
+.top-controls {
+  display: flex;
+  gap: 8px;
+}
+
 .day-night-btn {
   background-color: rgba(0, 0, 0, 0.7);
   color: white;
@@ -126,9 +131,19 @@
   cursor: pointer;
   transition: background-color 0.2s;
 
-  &:hover {
+  &:hover:not(:disabled) {
     background-color: rgba(0, 0, 0, 0.85);
   }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+}
+
+.reveal-btn {
+  border-color: #ffd54a;
+  color: #ffd54a;
 }
 
 .show-settings-btn {

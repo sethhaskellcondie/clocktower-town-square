@@ -1,5 +1,13 @@
 <div class="info-table-container">
-  <button id="day_night_toggle" class="day-night-btn" (click)="toggleDayNight()">{{ isDay ? 'Night' : 'Day' }}</button>
+  <div class="top-controls">
+    <button id="day_night_toggle" class="day-night-btn" (click)="toggleDayNight()" [disabled]="isSpinning">{{ isDay ? 'Night' : 'Day' }}</button>
+
+    @if (isDay && (revealAvailable || isSpinning)) {
+      <button id="reveal_button" class="day-night-btn reveal-btn" (click)="startReveal()" [disabled]="isSpinning">
+        {{ isSpinning ? 'Revealing…' : 'Reveal' }}
+      </button>
+    }
+  </div>
 
   <table id="players_table" class="info-table" [ngClass]="'size-' + tableSize">
     <thead>
@@ -95,11 +103,11 @@
 </div>
 
 @for (player of players; track player.number) {
-  <app-player [size]="playerSize" [number]="player.number" [initialX]="player.initialX" [initialY]="player.initialY" [texture]="player.texture" (stateChange)="onPlayerStateChange()"></app-player>
+  <app-player [size]="playerSize" [number]="player.number" [initialX]="player.initialX" [initialY]="player.initialY" [texture]="player.texture" [isDay]="isDay" [locked]="isSpinning" (stateChange)="onPlayerStateChange()"></app-player>
 }
 
 @for (traveler of travelers; track traveler.number) {
-  <app-traveler [size]="playerSize" [number]="traveler.number" [initialX]="traveler.initialX" [initialY]="traveler.initialY" [texture]="traveler.texture" (stateChange)="onTravelerStateChange()"></app-traveler>
+  <app-traveler [size]="playerSize" [number]="traveler.number" [initialX]="traveler.initialX" [initialY]="traveler.initialY" [texture]="traveler.texture" [isDay]="isDay" [locked]="isSpinning" (stateChange)="onTravelerStateChange()"></app-traveler>
 }
 
 @for (landmark of landmarks; track landmark.number) {

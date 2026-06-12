@@ -158,6 +158,20 @@
     }
   }
 
+  &.killed-during-night {
+    background-color: #4b3b8f; // deep indigo, distinct from marked-for-death
+
+    .name-display {
+      color: #e8e4ff;
+    }
+
+    .name-input {
+      background-color: #5a4aa0;
+      color: white;
+      border-color: #8a7ad0;
+    }
+  }
+
   &.dead-with-vote {
     background-color: black;
     border: 4px solid white;
@@ -186,6 +200,17 @@
       color: white;
       border-color: #666;
     }
+  }
+
+  &.highlighted {
+    box-shadow:
+      0 0 0 5px #ffd54a,
+      0 0 28px 10px rgba(255, 213, 74, 0.75);
+    z-index: 3;
+  }
+
+  &.winner {
+    animation: winner-pulse 0.4s ease-in-out 3;
   }
 
   // Size variants
@@ -235,6 +260,19 @@
       height: 100px;
       font-size: 26px;
     }
+  }
+}
+
+@keyframes winner-pulse {
+  0%, 100% {
+    box-shadow:
+      0 0 0 5px #ffd54a,
+      0 0 28px 10px rgba(255, 213, 74, 0.75);
+  }
+  50% {
+    box-shadow:
+      0 0 0 10px #ff5252,
+      0 0 44px 18px rgba(255, 82, 82, 0.9);
   }
 }
 

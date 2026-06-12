@@ -1,4 +1,4 @@
-import { Component, QueryList, ViewChildren } from '@angular/core';
+import { Component, OnDestroy, QueryList, ViewChildren } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PlayerComponent } from './player/player.component';
 import { TravelerComponent } from './traveler/traveler.component';
@@ -25,13 +25,18 @@ interface LandmarkData {
   texture: number;
 }
 
+interface DeathToken {
+  kind: 'player' | 'traveler';
+  number: number;
+}
+
 @Component({
   selector: 'app-root',
   imports: [CommonModule, PlayerComponent, TravelerComponent, LandmarkComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
-export class AppComponent {
+export class AppComponent implements OnDestroy {
   title = 'clocktower-town-square';
   players: PlayerData[] = [{ number: 1, initialX: 100, initialY: 100, texture: 1 }];
   travelers: TravelerData[] = [];
@@ -42,7 +47,7 @@ export class AppComponent {
 
   get alive(): number {
     if (!this.playerComponents) return this.players.length;
-    return this.playerComponents.filter(p => p.state === 'alive' || p.state === 'marked for death').length;
+    return this.playerComponents.filter(p => p.state === 'alive' || p.state === 'marked for death' || p.state === 'killed during the night').length;
   }
 
   get ghostVotes(): number {
@@ -105,10 +110,151 @@ export class AppComponent {
   tableSize: 'small' | 'medium' | 'large' = 'small';
   playerSize: 'small' | 'medium' | 'large' = 'small';
   isDay = false;
+  pendingDeaths: DeathToken[] = [];
+  revealAvailable = false;
+  isSpinning = false;
+  private spinTimer: ReturnType<typeof setTimeout> | null = null;
+
+  ngOnDestroy(): void {
+    if (this.spinTimer) {
+      clearTimeout(this.spinTimer);
+    }
+  }
 
   toggleDayNight(): void {
+    if (this.isSpinning) return;
     this.isDay = !this.isDay;
     document.body.classList.toggle('day', this.isDay);
+    if (this.isDay) {
+      // Night -> day: hide who died and arm the reveal (even with zero kills)
+      this.pendingDeaths = [];
+      for (const p of this.playerComponents) {
+        if (p.state === 'killed during the night') {
+          this.pendingDeaths.push({ kind: 'player', number: p.number });
+          p.state = 'alive';
+        }
+      }
+      for (const t of this.travelerComponents) {
+        if (t.state === 'killed during the night') {
+          this.pendingDeaths.push({ kind: 'traveler', number: t.number });
+          t.state = 'alive';
+        }
+      }
+      this.revealAvailable = true;
+    } else {
+      // Day -> night without revealing: restore the night-kill marks
+      for (const token of this.pendingDeaths) {
+        const c = this.findComponent(token);
+        if (c && c.state === 'alive') {
+          c.state = 'killed during the night';
+        }
+      }
+      this.pendingDeaths = [];
+      this.revealAvailable = false;
+    }
+  }
+
+  private findComponent(token: DeathToken): PlayerComponent | TravelerComponent | undefined {
+    return token.kind === 'player'
+      ? this.playerComponents?.find(p => p.number === token.number)
+      : this.travelerComponents?.find(t => t.number === token.number);
+  }
+
+  private getParticipants(): (PlayerComponent | TravelerComponent)[] {
+    const all: (PlayerComponent | TravelerComponent)[] = [
+      ...this.playerComponents.toArray(),
+      ...this.travelerComponents.toArray(),
+    ].filter(c => c.state === 'alive' || c.state === 'marked for death');
+    if (all.length === 0) return all;
+
+    // Order by angle around the centroid so the highlight sweeps around the table
+    const cx = all.reduce((sum, c) => sum + c.positionX, 0) / all.length;
+    const cy = all.reduce((sum, c) => sum + c.positionY, 0) / all.length;
+    return all
+      .map(c => ({ c, angle: Math.atan2(c.positionY - cy, c.positionX - cx) }))
+      .sort((a, b) => a.angle - b.angle)
+      .map(x => x.c);
+  }
+
+  startReveal(): void {
+    if (this.isSpinning || !this.revealAvailable) return;
+    this.revealAvailable = false;
+
+    const participants = this.getParticipants();
+    if (participants.length === 0) {
+      this.applyDeaths();
+      return;
+    }
+
+    const victims = this.pendingDeaths
+      .map(token => this.findComponent(token))
+      .filter((c): c is PlayerComponent | TravelerComponent => !!c);
+    const target = victims.length > 0
+      ? victims[Math.floor(Math.random() * victims.length)]
+      : participants[Math.floor(Math.random() * participants.length)];
+    let targetIndex = participants.indexOf(target);
+    if (targetIndex < 0) {
+      targetIndex = Math.floor(Math.random() * participants.length);
+    }
+
+    const n = participants.length;
+    const total = 5000 + Math.random() * 3000;
+    let steps = 3 * n + targetIndex;
+    while (steps < 25) {
+      steps += n;
+    }
+    const easeOut = (x: number) => 1 - Math.pow(1 - x, 3);
+
+    this.isSpinning = true;
+    let k = 0;
+    let prev: PlayerComponent | TravelerComponent | null = null;
+    const tick = () => {
+      k++;
+      if (prev) prev.isHighlighted = false;
+      const current = participants[k % n];
+      current.isHighlighted = true;
+      prev = current;
+      if (k >= steps) {
+        this.finishReveal(current);
+        return;
+      }
+      // Cumulative schedule follows ease-out, so gaps widen and the spin decelerates
+      const delay = total * (easeOut((k + 1) / steps) - easeOut(k / steps));
+      this.spinTimer = setTimeout(tick, delay);
+    };
+    tick();
+  }
+
+  private finishReveal(landed: PlayerComponent | TravelerComponent): void {
+    // Pulse everyone about to die, not just the token the spin landed on.
+    // Zero-death night: no pulse, just a short beat before the highlight clears.
+    const victims = this.pendingDeaths
+      .map(token => this.findComponent(token))
+      .filter((c): c is PlayerComponent | TravelerComponent => !!c);
+    for (const v of victims) {
+      v.isWinner = true;
+    }
+    const delay = victims.length > 0 ? 1300 : 600;
+    this.spinTimer = setTimeout(() => {
+      for (const v of victims) {
+        v.isWinner = false;
+        v.isHighlighted = false;
+      }
+      landed.isHighlighted = false;
+      this.applyDeaths();
+      this.isSpinning = false;
+    }, delay);
+  }
+
+  private applyDeaths(): void {
+    for (const token of this.pendingDeaths) {
+      const c = this.findComponent(token);
+      if (c) {
+        c.state = 'dead with vote';
+        c.stateChange.emit(c.state);
+      }
+    }
+    this.pendingDeaths = [];
   }
 
   get playerCount(): number {

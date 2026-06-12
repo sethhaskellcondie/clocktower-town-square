@@ -2,7 +2,7 @@ import { Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Outpu
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
-export type PlayerState = 'alive' | 'marked for death' | 'dead with vote' | 'dead without vote';
+export type PlayerState = 'alive' | 'marked for death' | 'killed during the night' | 'dead with vote' | 'dead without vote';
 
 @Component({
   selector: 'app-player',
@@ -20,6 +20,10 @@ export class PlayerComponent implements OnInit {
   state: PlayerState = 'alive';
   @Input() size: 'small' | 'medium' | 'large' = 'small';
   @Input() texture = 1;
+  @Input() isDay = false;
+  @Input() locked = false;
+  isHighlighted = false;
+  isWinner = false;
   @Output() stateChange = new EventEmitter<PlayerState>();
 
   // Dragging position
@@ -61,7 +65,7 @@ export class PlayerComponent implements OnInit {
 
   @HostListener('document:mouseup')
   onMouseUp(): void {
-    if (this.isDragging && !this.hasDragged) {
+    if (this.isDragging && !this.hasDragged && !this.locked) {
       this.cycleState();
     }
     this.isDragging = false;
@@ -86,14 +90,23 @@ export class PlayerComponent implements OnInit {
   }
 
   cycleState(): void {
-    if (this.state === 'alive') {
-      this.state = 'marked for death';
-    } else if (this.state === 'marked for death') {
-      this.state = 'dead with vote';
-    } else if (this.state === 'dead with vote') {
-      this.state = 'dead without vote';
-    } else if (this.state === 'dead without vote') {
-      this.state = 'alive';
+    switch (this.state) {
+      case 'alive':
+        this.state = 'marked for death';
+        break;
+      case 'marked for death':
+        // 'killed during the night' is only reachable at night
+        this.state = this.isDay ? 'dead with vote' : 'killed during the night';
+        break;
+      case 'killed during the night':
+        this.state = 'dead with vote';
+        break;
+      case 'dead with vote':
+        this.state = 'dead without vote';
+        break;
+      case 'dead without vote':
+        this.state = 'alive';
+        break;
     }
     this.stateChange.emit(this.state);
   }
