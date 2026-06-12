@@ -104,6 +104,12 @@ export class AppComponent {
   showSettings = true;
   tableSize: 'small' | 'medium' | 'large' = 'small';
   playerSize: 'small' | 'medium' | 'large' = 'small';
+  isDay = false;
+
+  toggleDayNight(): void {
+    this.isDay = !this.isDay;
+    document.body.classList.toggle('day', this.isDay);
+  }
 
   get playerCount(): number {
     return this.players.length;

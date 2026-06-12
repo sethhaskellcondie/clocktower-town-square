@@ -1,4 +1,6 @@
 <div class="info-table-container">
+  <button id="day_night_toggle" class="day-night-btn" (click)="toggleDayNight()">{{ isDay ? 'Night' : 'Day' }}</button>
+
   <table id="players_table" class="info-table" [ngClass]="'size-' + tableSize">
     <thead>
       <tr>
