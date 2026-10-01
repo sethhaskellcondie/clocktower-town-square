@@ -1,0 +1,47 @@
+<button id="player_aids_toggle" class="aids-toggle-btn" [class.active]="shelfOpen" (click)="toggleShelf()" [attr.aria-expanded]="shelfOpen">
+  Player Aids
+</button>
+
+<nav class="aids-shelf" [class.open]="shelfOpen" aria-label="Player aids">
+  @for (aid of aids; track aid.id) {
+    <button class="aid-item" [id]="'player_aid_' + aid.id" (click)="openAid(aid)">
+      <span class="aid-title">{{ aid.title }}</span>
+      @if (aid.summary) {
+        <span class="aid-summary">{{ aid.summary }}</span>
+      }
+    </button>
+  } @empty {
+    <div class="aid-empty">No player aids yet.</div>
+  }
+</nav>
+
+@if (activeAid) {
+  <div class="aid-backdrop" (click)="closeAid()">
+    <div class="aid-modal" role="dialog" aria-modal="true" [attr.aria-label]="activeAid.title" (click)="$event.stopPropagation()">
+      <header class="aid-modal-header">
+        <h2>{{ activeAid.title }}</h2>
+        <button id="player_aid_close" class="aid-close-btn" (click)="closeAid()" aria-label="Close">&times;</button>
+      </header>
+      <div class="aid-modal-body">
+        @for (block of activeAid.blocks; track $index) {
+          @switch (block.type) {
+            @case ('heading') {
+              <h3>{{ block.text }}</h3>
+            }
+            @case ('text') {
+              <p>{{ block.text }}</p>
+            }
+            @case ('image') {
+              <figure>
+                <img [src]="block.src" [alt]="block.alt">
+                @if (block.caption) {
+                  <figcaption>{{ block.caption }}</figcaption>
+                }
+              </figure>
+            }
+          }
+        }
+      </div>
+    </div>
+  </div>
+}

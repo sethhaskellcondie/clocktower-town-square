@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { PlayerComponent } from './player/player.component';
 import { TravelerComponent } from './traveler/traveler.component';
 import { LandmarkComponent } from './landmark/landmark.component';
+import { PlayerAidsComponent } from './player-aids/player-aids.component';
 
 interface PlayerData {
   number: number;
@@ -32,7 +33,7 @@ interface DeathToken {
 
 @Component({
   selector: 'app-root',
-  imports: [CommonModule, PlayerComponent, TravelerComponent, LandmarkComponent],
+  imports: [CommonModule, PlayerComponent, TravelerComponent, LandmarkComponent, PlayerAidsComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
