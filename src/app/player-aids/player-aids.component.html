@@ -29,7 +29,15 @@
               <h3>{{ block.text }}</h3>
             }
             @case ('text') {
-              <p>{{ block.text }}</p>
+              <p>
+                @for (part of textParts(block.text); track $index) {
+                  @if (part.icon) {
+                    <img class="inline-icon" [src]="part.icon" [alt]="part.alt ?? ''">
+                  } @else {
+                    <span>{{ part.text }}</span>
+                  }
+                }
+              </p>
             }
             @case ('image') {
               <figure>

@@ -168,6 +168,17 @@
     margin: 0 0 16px;
   }
 
+  // Character icons have generous transparent padding, so they're drawn
+  // larger than the text and pulled in with negative margins to keep the
+  // line height steady
+  img.inline-icon {
+    height: 2.4em;
+    max-height: none;
+    margin: -0.7em -0.2em;
+    vertical-align: middle;
+    border-radius: 0;
+  }
+
   figure {
     margin: 16px 0;
     text-align: center;

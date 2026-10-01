@@ -1,6 +1,6 @@
 import { Component, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { PLAYER_AIDS, PlayerAid } from './player-aids';
+import { PLAYER_AIDS, PlayerAid, PlayerAidTextPart } from './player-aids';
 
 @Component({
   selector: 'app-player-aids',
@@ -24,6 +24,13 @@ export class PlayerAidsComponent {
 
   closeAid(): void {
     this.activeAid = null;
+  }
+
+  // Flatten a paragraph into one shape the template can render without
+  // needing to narrow the string | icon union
+  textParts(text: string | PlayerAidTextPart[]): { text?: string; icon?: string; alt?: string }[] {
+    const parts = typeof text === 'string' ? [text] : text;
+    return parts.map(part => typeof part === 'string' ? { text: part } : part);
   }
 
   @HostListener('document:keydown.escape')

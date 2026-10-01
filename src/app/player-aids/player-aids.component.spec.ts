@@ -27,30 +27,37 @@ describe('PlayerAidsComponent', () => {
     expect(el.querySelector('.aids-shelf')?.classList).not.toContain('open');
   });
 
-  it('opens the Hello World aid in a modal with its text and picture', () => {
+  it('opens an aid in a modal with its text and picture', () => {
     click('#player_aids_toggle');
-    click('#player_aid_hello-world');
+    click('#player_aid_how-to-play-video');
     const modal = el.querySelector('.aid-modal');
-    expect(modal?.querySelector('h2')?.textContent).toContain('Hello World');
-    expect(modal?.textContent).toContain('Hello World! This is a test player aid.');
-    expect(modal?.querySelector('img')?.getAttribute('src')).toBe('assets/player_aids/hello_world.svg');
+    expect(modal?.querySelector('h2')?.textContent).toContain('How to Play');
+    expect(modal?.textContent).toContain('Scan this to watch a video on how to play Blood on the Clocktower.');
+    expect(modal?.querySelector('img')?.getAttribute('src')).toBe('assets/player_aids/qr_how_to_play_video.png');
+  });
+
+  it('renders inline icons inside paragraph text', () => {
+    click('#player_aid_spy-grimoire');
+    const paragraph = el.querySelector('.aid-modal-body p');
+    expect(paragraph?.textContent).toContain('The Spy');
+    expect(paragraph?.querySelector('img.inline-icon')?.getAttribute('src')).toBe('assets/player_aids/icon_spy.png');
   });
 
   it('closes the modal from the close button and the backdrop, but not from inside the modal', () => {
-    click('#player_aid_hello-world');
+    click('#player_aid_how-to-play-video');
     click('.aid-modal-body');
     expect(el.querySelector('.aid-modal')).not.toBeNull();
     click('#player_aid_close');
     expect(el.querySelector('.aid-modal')).toBeNull();
 
-    click('#player_aid_hello-world');
+    click('#player_aid_how-to-play-video');
     click('.aid-backdrop');
     expect(el.querySelector('.aid-modal')).toBeNull();
   });
 
   it('closes the modal, then the shelf, on Escape', () => {
     click('#player_aids_toggle');
-    click('#player_aid_hello-world');
+    click('#player_aid_how-to-play-video');
     document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }));
     fixture.detectChanges();
     expect(el.querySelector('.aid-modal')).toBeNull();
