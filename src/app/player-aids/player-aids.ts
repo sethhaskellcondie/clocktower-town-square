@@ -6,8 +6,12 @@ export type PlayerAidBlock =
   | { type: 'image'; src: string; alt: string; caption?: string };
 
 // A paragraph can mix plain text with small inline icons, e.g. a character
-// icon right after the character's name
-export type PlayerAidTextPart = string | { icon: string; alt: string };
+// icon right after the character's name, and with bold or struck-through
+// runs of text
+export type PlayerAidTextPart =
+  | string
+  | { icon: string; alt: string }
+  | { text: string; style: 'bold' | 'strike' };
 
 export interface PlayerAid {
   id: string;
@@ -76,6 +80,28 @@ export const PLAYER_AIDS: PlayerAid[] = [
       {
         type: 'text',
         text: "During a nomination, the Butler may only have their hand raised to vote if the Master has their hand raised to vote or if the Master's vote has already been counted. The Butler must keep track of their Master. If they vote illegally their vote will be counted like normal, but don't do that, it's not cool.",
+      },
+    ],
+  },
+  {
+    id: 'mayor-ability',
+    title: 'The Mayor',
+    summary: 'A correction to the Mayor ability text on the sheet.',
+    blocks: [
+      {
+        type: 'image',
+        src: 'assets/player_aids/icon_mayor.png',
+        alt: 'Mayor icon: a blue columned town hall',
+      },
+      {
+        type: 'text',
+        text: [
+          'The Mayor\'s text on the sheet says that "',
+          { text: 'a townsfolk', style: 'strike' },
+          ' may die instead" it should say "If only 3 players live & no execution occurs, your team wins. If you die at night, ',
+          { text: 'another player', style: 'bold' },
+          ' might die instead."',
+        ],
       },
     ],
   },

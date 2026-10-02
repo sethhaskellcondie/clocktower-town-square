@@ -33,6 +33,10 @@
                 @for (part of textParts(block.text); track $index) {
                   @if (part.icon) {
                     <img class="inline-icon" [src]="part.icon" [alt]="part.alt ?? ''">
+                  } @else if (part.style === 'bold') {
+                    <strong>{{ part.text }}</strong>
+                  } @else if (part.style === 'strike') {
+                    <s>{{ part.text }}</s>
                   } @else {
                     <span>{{ part.text }}</span>
                   }

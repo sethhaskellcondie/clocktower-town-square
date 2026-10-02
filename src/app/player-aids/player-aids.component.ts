@@ -27,8 +27,8 @@ export class PlayerAidsComponent {
   }
 
   // Flatten a paragraph into one shape the template can render without
-  // needing to narrow the string | icon union
-  textParts(text: string | PlayerAidTextPart[]): { text?: string; icon?: string; alt?: string }[] {
+  // needing to narrow the string | icon | styled text union
+  textParts(text: string | PlayerAidTextPart[]): { text?: string; icon?: string; alt?: string; style?: 'bold' | 'strike' }[] {
     const parts = typeof text === 'string' ? [text] : text;
     return parts.map(part => typeof part === 'string' ? { text: part } : part);
   }

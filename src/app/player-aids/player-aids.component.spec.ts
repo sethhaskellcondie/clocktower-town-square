@@ -43,6 +43,13 @@ describe('PlayerAidsComponent', () => {
     expect(paragraph?.querySelector('img.inline-icon')?.getAttribute('src')).toBe('assets/player_aids/icon_spy.png');
   });
 
+  it('renders bold and struck-through runs inside paragraph text', () => {
+    click('#player_aid_mayor-ability');
+    const paragraph = el.querySelector('.aid-modal-body p');
+    expect(paragraph?.querySelector('s')?.textContent).toBe('a townsfolk');
+    expect(paragraph?.querySelector('strong')?.textContent).toBe('another player');
+  });
+
   it('closes the modal from the close button and the backdrop, but not from inside the modal', () => {
     click('#player_aid_how-to-play-video');
     click('.aid-modal-body');
