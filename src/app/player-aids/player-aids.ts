@@ -26,7 +26,7 @@ export const PLAYER_AIDS: PlayerAid[] = [
     title: 'How to Play',
     summary: 'QR code for a how-to-play video.',
     blocks: [
-      { type: 'text', text: 'Scan this to watch a video on how to play Blood on the Clocktower.' },
+      { type: 'text', text: 'Scan this to watch a video on how to play Blood on the Clocktower. (10 minutes)' },
       {
         type: 'image',
         src: 'assets/player_aids/qr_how_to_play_video.png',
@@ -44,6 +44,58 @@ export const PLAYER_AIDS: PlayerAid[] = [
         type: 'image',
         src: 'assets/player_aids/qr_clocktower_wiki.png',
         alt: 'QR code linking to the Blood on the Clocktower Wiki',
+      },
+    ],
+  },
+  {
+    id: 'common-terms',
+    title: 'Common Terms',
+    summary: 'Character, Type, and Alignment explained.',
+    blocks: [
+      {
+        type: 'text',
+        text: [
+          'Each player will have a ',
+          { text: 'Character', style: 'bold' },
+          ', a ',
+          { text: 'Type', style: 'bold' },
+          ', and an ',
+          { text: 'Alignment', style: 'bold' },
+          ', this tells you how you should play.',
+        ],
+      },
+      {
+        type: 'text',
+        text: [
+          'Your ',
+          { text: 'Character', style: 'bold' },
+          ' is determined by what token you pull from the bag. Ex: Butler, Spy, Imp, or Chef.',
+        ],
+      },
+      {
+        type: 'image',
+        src: 'assets/player_aids/character_sheet_tb.jpg',
+        alt: 'The Trouble Brewing character sheet, with Townsfolk, Outsiders, Minions, and Demons labeled down the left side',
+      },
+      {
+        type: 'text',
+        text: [
+          'Each Character has a ',
+          { text: 'Type', style: 'bold' },
+          ' found on the left side of your character sheet. The Butler is an Outsider, the Spy is a Minion, the Imp is a Demon, and the Chef is a Townsfolk.',
+        ],
+      },
+      {
+        type: 'text',
+        text: [
+          'Each Character also has a starting ',
+          { text: 'Alignment', style: 'bold' },
+          ', blue is ',
+          { text: 'Good', style: 'bold' },
+          ' and red is ',
+          { text: 'Evil', style: 'bold' },
+          '. This dictates who is on your team and how you win the game. (In advanced games alignment can change during the game.)',
+        ],
       },
     ],
   },
@@ -102,6 +154,26 @@ export const PLAYER_AIDS: PlayerAid[] = [
           { text: 'another player', style: 'bold' },
           ' might die instead."',
         ],
+      },
+    ],
+  },
+  {
+    id: 'chef-pairs',
+    title: 'The Chef',
+    summary: 'How evil pairs are counted, with an example.',
+    blocks: [
+      {
+        type: 'text',
+        text: [
+          'The Chef',
+          { icon: 'assets/player_aids/icon_chef.png', alt: 'Chef icon' },
+          ' learns how many EVIL PAIRS there are on the first night. In a 13 player game there are 13 pairs, each player is included in one pair with each of their neighbors. In this example (disregard the colors) there is 1 evil pair, 2 good pairs, and 2 dead pairs.',
+        ],
+      },
+      {
+        type: 'image',
+        src: 'assets/player_aids/pairs_example.png',
+        alt: 'A 13 player town square with evil, good, and dead tokens seated around the circle',
       },
     ],
   },
