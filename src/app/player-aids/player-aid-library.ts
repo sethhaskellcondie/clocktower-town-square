@@ -350,3 +350,105 @@ export const CHEF_PAIRS = new PlayerAid({
     },
   ],
 });
+
+export const UNDERTAKER_EXECUTIONS = new PlayerAid({
+  id: 'undertaker-executions',
+  title: 'The Undertaker',
+  summary: 'Learns who was executed, not who died at night.',
+  blocks: [
+    {
+      type: 'image',
+      src: 'assets/player_aids/icon_undertaker.png',
+      alt: 'Undertaker icon: a blue shovel',
+    },
+    {
+      type: 'text',
+      text: 'The undertaker learns who was killed by execution, not players who die at night. Executions happen via public vote during the day, there is only one execution per day.',
+    },
+  ],
+});
+
+export const SCAPEGOAT_EXECUTION = new PlayerAid({
+  id: 'scapegoat-execution',
+  title: 'The Scapegoat',
+  summary: 'Might be executed in place of a teammate.',
+  blocks: [
+    {
+      type: 'image',
+      src: 'assets/player_aids/icon_scapegoat.png',
+      alt: 'Scapegoat icon: a horned goat head, half blue and half red',
+    },
+    {
+      type: 'text',
+      text: 'If a player of your alignment is executed, you might be executed instead.',
+    },
+  ],
+});
+
+export const GUNSLINGER_SHOT = new PlayerAid({
+  id: 'gunslinger-shot',
+  title: 'The Gunslinger',
+  summary: 'Can shoot a player who voted.',
+  blocks: [
+    {
+      type: 'image',
+      src: 'assets/player_aids/icon_gunslinger.png',
+      alt: 'Gunslinger icon: two crossed flintlock pistols, half blue and half red',
+    },
+    {
+      type: 'text',
+      text: 'Each day, after the 1st vote has been tallied, you may choose a player that voted: they die.',
+    },
+  ],
+});
+
+export const BEGGAR_VOTING = new PlayerAid({
+  id: 'beggar-voting',
+  title: 'The Beggar',
+  summary: 'Needs a ghost vote token from the dead to vote.',
+  blocks: [
+    {
+      type: 'image',
+      src: 'assets/player_aids/icon_beggar.png',
+      alt: 'Beggar icon: a wooden bowl, half blue and half red',
+    },
+    {
+      type: 'text',
+      text: 'You must use a ghost vote token to vote. Dead players may give you their ghost vote, if they do you learn their alignment. You are always sober and healthy.',
+    },
+  ],
+});
+
+export const BUREAUCRAT_VOTES = new PlayerAid({
+  id: 'bureaucrat-votes',
+  title: 'The Bureaucrat',
+  summary: "Makes another player's vote count three times.",
+  blocks: [
+    {
+      type: 'image',
+      src: 'assets/player_aids/icon_bureaucrat.png',
+      alt: 'Bureaucrat icon: a sealed stack of papers, half blue and half red',
+    },
+    {
+      type: 'text',
+      text: 'Each night, choose a player (not yourself): their vote counts as 3 votes tomorrow.',
+    },
+  ],
+});
+
+export const THIEF_VOTES = new PlayerAid({
+  id: 'thief-votes',
+  title: 'The Thief',
+  summary: "Makes another player's vote count against.",
+  blocks: [
+    {
+      type: 'image',
+      src: 'assets/player_aids/icon_thief.png',
+      alt: 'Thief icon: a sparkling gem, half blue and half red',
+    },
+    {
+      type: 'text',
+      text: 'Each night, choose a player (not yourself): their vote counts negatively (-1 instead of +1) tomorrow.',
+    },
+  ],
+});

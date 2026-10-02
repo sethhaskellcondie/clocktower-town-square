@@ -1,19 +1,25 @@
 import { PlayerAid } from './player-aid';
 import { PlayerAidSection } from './player-aid-section';
 import {
+  BEGGAR_VOTING,
+  BUREAUCRAT_VOTES,
   BUTLER_VOTING,
   CHARACTER_SHEET,
   CHEF_PAIRS,
   CLOCKTOWER_WIKI,
   DEMON_FIRST_NIGHT,
   GOOD_VS_EVIL,
+  GUNSLINGER_SHOT,
   HOW_TO_PLAY_VIDEO,
   MAYOR_ABILITY,
   MINIONS_FIRST_NIGHT,
   PLAYER_STATES,
   PLAYER_TRAITS,
+  SCAPEGOAT_EXECUTION,
   SPY_GRIMOIRE,
+  THIEF_VOTES,
   TOWN_SQUARE,
+  UNDERTAKER_EXECUTIONS,
 } from './player-aid-library';
 
 // Which aids appear in which section of the shelf. An aid from the library
@@ -37,11 +43,12 @@ const SHELF_SECTIONS: PlayerAidSection[] = [
   new PlayerAidSection({
     id: 'character-examples',
     title: 'Character Examples',
-    aids: [SPY_GRIMOIRE, BUTLER_VOTING, MAYOR_ABILITY, CHEF_PAIRS],
+    aids: [SPY_GRIMOIRE, BUTLER_VOTING, MAYOR_ABILITY, CHEF_PAIRS, UNDERTAKER_EXECUTIONS],
   }),
   new PlayerAidSection({
     id: 'traveler',
     title: 'Traveler',
+    aids: [SCAPEGOAT_EXECUTION, GUNSLINGER_SHOT, BEGGAR_VOTING, BUREAUCRAT_VOTES, THIEF_VOTES],
   }),
 ];
 
