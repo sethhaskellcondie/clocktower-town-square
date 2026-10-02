@@ -452,3 +452,105 @@ export const THIEF_VOTES = new PlayerAid({
     },
   ],
 });
+
+export const ANGEL_PROTECTION = new PlayerAid({
+  id: 'angel-protection',
+  title: 'The Angel',
+  summary: 'Protects new players from being targeted.',
+  blocks: [
+    {
+      type: 'image',
+      src: 'assets/player_aids/icon_angel.png',
+      alt: 'Angel icon: a golden halo',
+    },
+    {
+      type: 'text',
+      text: 'Something bad might happen to whoever is most responsible for the death of a new player.',
+    },
+  ],
+});
+
+export const BUDDHIST_SILENCE = new PlayerAid({
+  id: 'buddhist-silence',
+  title: 'The Buddhist',
+  summary: 'Veteran players stay quiet at the start of each day.',
+  blocks: [
+    {
+      type: 'image',
+      src: 'assets/player_aids/icon_buddhist.png',
+      alt: 'Buddhist icon: a golden lotus flower',
+    },
+    {
+      type: 'text',
+      text: 'For the first 2 minutes of each day, veteran players may not talk.',
+    },
+  ],
+});
+
+export const DOOMSAYER_SACRIFICE = new PlayerAid({
+  id: 'doomsayer-sacrifice',
+  title: 'The Doomsayer',
+  summary: 'Each player may once call for a death on their own team.',
+  blocks: [
+    {
+      type: 'image',
+      src: 'assets/player_aids/icon_doomsayer.png',
+      alt: 'Doomsayer icon: a golden lightning bolt',
+    },
+    {
+      type: 'text',
+      text: 'If 4 or more players live, each living player may publicly choose (once per game) that a player of their own alignment dies.',
+    },
+  ],
+});
+
+export const FIDDLER_CONTEST = new PlayerAid({
+  id: 'fiddler-contest',
+  title: 'The Fiddler',
+  summary: 'The Demon may challenge a player to a vote that decides the game.',
+  blocks: [
+    {
+      type: 'image',
+      src: 'assets/player_aids/icon_fiddler.png',
+      alt: 'Fiddler icon: a golden fiddle and bow',
+    },
+    {
+      type: 'text',
+      text: 'Once per game, the Demon secretly chooses an opposing player: all players choose which of these 2 players (and their team) wins.',
+    },
+  ],
+});
+
+export const HELLS_LIBRARIAN_SILENCE = new PlayerAid({
+  id: 'hells-librarian-silence',
+  title: "Hell's Librarian",
+  summary: 'Talking when silence is asked for may be punished.',
+  blocks: [
+    {
+      type: 'image',
+      src: 'assets/player_aids/icon_hells_librarian.png',
+      alt: "Hell's Librarian icon: a golden stack of books",
+    },
+    {
+      type: 'text',
+      text: 'Something bad might happen to whoever talks when the Storyteller has asked for silence.',
+    },
+  ],
+});
+
+export const REVOLUTIONARY_NEIGHBORS = new PlayerAid({
+  id: 'revolutionary-neighbors',
+  title: 'The Revolutionary',
+  summary: 'Two neighbors are known to share an alignment.',
+  blocks: [
+    {
+      type: 'image',
+      src: 'assets/player_aids/icon_revolutionary.png',
+      alt: 'Revolutionary icon: a golden raised fist',
+    },
+    {
+      type: 'text',
+      text: '2 neighboring players are known to be the same alignment. Once per game, 1 of them registers falsely.',
+    },
+  ],
+});

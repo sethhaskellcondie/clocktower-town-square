@@ -1,20 +1,26 @@
 import { PlayerAid } from './player-aid';
 import { PlayerAidSection } from './player-aid-section';
 import {
+  ANGEL_PROTECTION,
   BEGGAR_VOTING,
+  BUDDHIST_SILENCE,
   BUREAUCRAT_VOTES,
   BUTLER_VOTING,
   CHARACTER_SHEET,
   CHEF_PAIRS,
   CLOCKTOWER_WIKI,
   DEMON_FIRST_NIGHT,
+  DOOMSAYER_SACRIFICE,
+  FIDDLER_CONTEST,
   GOOD_VS_EVIL,
   GUNSLINGER_SHOT,
+  HELLS_LIBRARIAN_SILENCE,
   HOW_TO_PLAY_VIDEO,
   MAYOR_ABILITY,
   MINIONS_FIRST_NIGHT,
   PLAYER_STATES,
   PLAYER_TRAITS,
+  REVOLUTIONARY_NEIGHBORS,
   SCAPEGOAT_EXECUTION,
   SPY_GRIMOIRE,
   THIEF_VOTES,
@@ -49,6 +55,18 @@ const SHELF_SECTIONS: PlayerAidSection[] = [
     id: 'traveler',
     title: 'Traveler',
     aids: [SCAPEGOAT_EXECUTION, GUNSLINGER_SHOT, BEGGAR_VOTING, BUREAUCRAT_VOTES, THIEF_VOTES],
+  }),
+  new PlayerAidSection({
+    id: 'fabled',
+    title: 'Fabled',
+    aids: [
+      ANGEL_PROTECTION,
+      BUDDHIST_SILENCE,
+      DOOMSAYER_SACRIFICE,
+      FIDDLER_CONTEST,
+      HELLS_LIBRARIAN_SILENCE,
+      REVOLUTIONARY_NEIGHBORS,
+    ],
   }),
 ];
 
