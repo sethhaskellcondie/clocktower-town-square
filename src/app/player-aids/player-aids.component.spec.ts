@@ -1,5 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { PlayerAidsComponent } from './player-aids.component';
+import { PlayerAidSection } from './player-aid-section';
+import { PlayerAidShelf } from './player-aid-shelf';
+import { HOW_TO_PLAY_VIDEO } from './player-aid-library';
 
 describe('PlayerAidsComponent', () => {
   let fixture: ComponentFixture<PlayerAidsComponent>;
@@ -29,9 +32,9 @@ describe('PlayerAidsComponent', () => {
 
   it('groups aids on the shelf under their section titles', () => {
     const titles = Array.from(el.querySelectorAll('.aid-section-title')).map(t => t.textContent?.trim());
-    expect(titles).toEqual(['Tutorial', 'Character Examples', 'Traveler']);
+    expect(titles).toEqual(['Tutorial', 'Character FAQ', 'Tips', 'Traveler', 'Fabled']);
     expect(el.querySelector('#player_aid_section_tutorial #player_aid_tutorial_how-to-play-video')).not.toBeNull();
-    expect(el.querySelector('#player_aid_section_character-examples #player_aid_character-examples_spy-grimoire')).not.toBeNull();
+    expect(el.querySelector('#player_aid_section_character-faq #player_aid_character-faq_spy-grimoire')).not.toBeNull();
   });
 
   it('closes the shelf on a click outside it, but not on one inside it', () => {
@@ -57,7 +60,7 @@ describe('PlayerAidsComponent', () => {
     click('#player_aid_section_toggle_tutorial');
     expect(section()?.classList).toContain('expanded');
     expect(toggle()?.getAttribute('aria-expanded')).toBe('true');
-    expect(el.querySelector('#player_aid_section_character-examples')?.classList).not.toContain('expanded');
+    expect(el.querySelector('#player_aid_section_character-faq')?.classList).not.toContain('expanded');
 
     click('#player_aid_section_toggle_tutorial');
     expect(section()?.classList).not.toContain('expanded');
@@ -75,8 +78,13 @@ describe('PlayerAidsComponent', () => {
   });
 
   it('marks a section with no aids as empty', () => {
-    expect(el.querySelector('#player_aid_section_traveler .aid-empty')?.textContent).toContain('No player aids yet.');
-    expect(el.querySelector('#player_aid_section_tutorial .aid-empty')).toBeNull();
+    fixture.componentInstance.shelf = new PlayerAidShelf([
+      new PlayerAidSection({ id: 'filled', title: 'Filled', aids: [HOW_TO_PLAY_VIDEO] }),
+      new PlayerAidSection({ id: 'empty', title: 'Empty' }),
+    ]);
+    fixture.detectChanges();
+    expect(el.querySelector('#player_aid_section_empty .aid-empty')?.textContent).toContain('No player aids yet.');
+    expect(el.querySelector('#player_aid_section_filled .aid-empty')).toBeNull();
   });
 
   it('opens an aid in a modal with its text and picture', () => {
@@ -89,14 +97,14 @@ describe('PlayerAidsComponent', () => {
   });
 
   it('renders inline icons inside paragraph text', () => {
-    click('#player_aid_character-examples_spy-grimoire');
+    click('#player_aid_character-faq_spy-grimoire');
     const paragraph = el.querySelector('.aid-modal-body p');
     expect(paragraph?.textContent).toContain('The Spy');
     expect(paragraph?.querySelector('img.inline-icon')?.getAttribute('src')).toBe('assets/player_aids/icon_spy.png');
   });
 
   it('renders bold and struck-through runs inside paragraph text', () => {
-    click('#player_aid_character-examples_mayor-ability');
+    click('#player_aid_character-faq_mayor-ability');
     const paragraph = el.querySelector('.aid-modal-body p');
     expect(paragraph?.querySelector('s')?.textContent).toBe('a townsfolk');
     expect(paragraph?.querySelector('strong')?.textContent).toBe('another player');
@@ -109,7 +117,7 @@ describe('PlayerAidsComponent', () => {
     click('#player_aid_tutorial_how-to-play-video');
     expect(button('#player_aid_previous').disabled).toBeTrue();
     click('#player_aid_next');
-    expect(title()).toBe('Clocktower Wiki');
+    expect(title()).toBe('Good vs Evil');
     expect(el.querySelector('.aid-modal')).not.toBeNull();
 
     document.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight' }));
