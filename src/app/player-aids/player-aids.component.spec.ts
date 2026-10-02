@@ -27,6 +27,18 @@ describe('PlayerAidsComponent', () => {
     expect(el.querySelector('.aids-shelf')?.classList).not.toContain('open');
   });
 
+  it('groups aids on the shelf under their section titles', () => {
+    const titles = Array.from(el.querySelectorAll('.aid-section-title')).map(t => t.textContent?.trim());
+    expect(titles).toEqual(['Tutorial', 'Character Examples', 'Traveler']);
+    expect(el.querySelector('#player_aid_section_tutorial #player_aid_how-to-play-video')).not.toBeNull();
+    expect(el.querySelector('#player_aid_section_character-examples #player_aid_spy-grimoire')).not.toBeNull();
+  });
+
+  it('marks a section with no aids as empty', () => {
+    expect(el.querySelector('#player_aid_section_traveler .aid-empty')?.textContent).toContain('No player aids yet.');
+    expect(el.querySelector('#player_aid_section_tutorial .aid-empty')).toBeNull();
+  });
+
   it('opens an aid in a modal with its text and picture', () => {
     click('#player_aids_toggle');
     click('#player_aid_how-to-play-video');

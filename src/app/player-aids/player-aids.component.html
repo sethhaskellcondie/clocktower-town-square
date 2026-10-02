@@ -3,17 +3,31 @@
 </button>
 
 <nav class="aids-shelf" [class.open]="shelfOpen" aria-label="Player aids">
-  @for (aid of aids; track aid.id) {
-    <button class="aid-item" [id]="'player_aid_' + aid.id" (click)="openAid(aid)">
-      <span class="aid-title">{{ aid.title }}</span>
-      @if (aid.summary) {
-        <span class="aid-summary">{{ aid.summary }}</span>
-      }
-    </button>
-  } @empty {
-    <div class="aid-empty">No player aids yet.</div>
+  @for (section of sections; track section.id) {
+    <ng-container *ngTemplateOutlet="sectionTpl; context: { $implicit: section, depth: 0 }" />
   }
 </nav>
+
+<!-- Renders a section's aids, then recurses into its subsections -->
+<ng-template #sectionTpl let-section let-depth="depth">
+  <section class="aid-section" [class.subsection]="depth > 0" [id]="'player_aid_section_' + section.id">
+    <div class="aid-section-title" role="heading" [attr.aria-level]="depth + 2">{{ section.title }}</div>
+    @for (aid of section.aids; track aid.id) {
+      <button class="aid-item" [id]="'player_aid_' + aid.id" (click)="openAid(aid)">
+        <span class="aid-title">{{ aid.title }}</span>
+        @if (aid.summary) {
+          <span class="aid-summary">{{ aid.summary }}</span>
+        }
+      </button>
+    }
+    @for (sub of section.subsections ?? []; track sub.id) {
+      <ng-container *ngTemplateOutlet="sectionTpl; context: { $implicit: sub, depth: depth + 1 }" />
+    }
+    @if (isEmpty(section)) {
+      <div class="aid-empty">No player aids yet.</div>
+    }
+  </section>
+</ng-template>
 
 @if (activeAid) {
   <div class="aid-backdrop" (click)="closeAid()">

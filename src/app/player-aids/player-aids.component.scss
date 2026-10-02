@@ -51,6 +51,37 @@
   }
 }
 
+.aid-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  & + & {
+    margin-top: 8px;
+  }
+
+  // Subsections step in a little so the nesting reads at a glance
+  &.subsection {
+    padding-left: 10px;
+    border-left: 1px solid rgba(209, 181, 106, 0.4);
+  }
+}
+
+.aid-section-title {
+  padding-bottom: 4px;
+  font-size: 13px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.85);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+
+  .subsection > & {
+    font-size: 12px;
+    letter-spacing: 1px;
+    border-bottom: none;
+  }
+}
+
 .aid-item {
   display: flex;
   flex-direction: column;

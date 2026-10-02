@@ -1,6 +1,6 @@
 import { Component, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { PLAYER_AIDS, PlayerAid, PlayerAidTextPart } from './player-aids';
+import { PLAYER_AID_SECTIONS, PlayerAid, PlayerAidSection, PlayerAidTextPart } from './player-aids';
 
 @Component({
   selector: 'app-player-aids',
@@ -10,7 +10,7 @@ import { PLAYER_AIDS, PlayerAid, PlayerAidTextPart } from './player-aids';
   styleUrl: './player-aids.component.scss'
 })
 export class PlayerAidsComponent {
-  aids: PlayerAid[] = PLAYER_AIDS;
+  sections: PlayerAidSection[] = PLAYER_AID_SECTIONS;
   shelfOpen = false;
   activeAid: PlayerAid | null = null;
 
@@ -24,6 +24,12 @@ export class PlayerAidsComponent {
 
   closeAid(): void {
     this.activeAid = null;
+  }
+
+  // A section counts as empty only when neither it nor any of its
+  // subsections hold an aid
+  isEmpty(section: PlayerAidSection): boolean {
+    return section.aids.length === 0 && (section.subsections ?? []).every(sub => this.isEmpty(sub));
   }
 
   // Flatten a paragraph into one shape the template can render without
