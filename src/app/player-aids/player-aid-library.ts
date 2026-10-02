@@ -554,3 +554,39 @@ export const REVOLUTIONARY_NEIGHBORS = new PlayerAid({
     },
   ],
 });
+
+export const ATTRACT_MODE_HOTKEYS = new PlayerAid({
+  id: 'attract-mode-hotkeys',
+  title: 'Attract Mode Hotkeys',
+  summary: 'Keyboard shortcuts for the attract banner.',
+  blocks: [
+    {
+      type: 'text',
+      text: ['Click ', { text: 'A Seth Condie Project', style: 'bold' }, ' at the top of the screen to show the small banner.'],
+    },
+    { type: 'heading', text: 'Banner' },
+    {
+      type: 'text',
+      text: [{ text: 'A', style: 'bold' }, ': step the banner through off → small → large → small → off.'],
+    },
+    { type: 'heading', text: 'Open Seats' },
+    {
+      type: 'text',
+      text: [{ text: '↑', style: 'bold' }, ': one more seat. ', { text: '↓', style: 'bold' }, ': one less seat.'],
+    },
+    { type: 'heading', text: 'Countdown' },
+    {
+      type: 'text',
+      text: [{ text: ']', style: 'bold' }, ': add 1 minute. ', { text: '[', style: 'bold' }, ': remove 1 minute.'],
+    },
+    {
+      type: 'text',
+      text: [{ text: 'Shift + ]', style: 'bold' }, ' / ', { text: 'Shift + [', style: 'bold' }, ': add or remove 5 minutes.'],
+    },
+    {
+      type: 'text',
+      text: [{ text: 'R', style: 'bold' }, ': reset the countdown to 0.'],
+    },
+    { type: 'text', text: "Hotkeys don't work while a player aid is open or while typing in a field." },
+  ],
+});

@@ -2,6 +2,7 @@ import { PlayerAid } from './player-aid';
 import { PlayerAidSection } from './player-aid-section';
 import {
   ANGEL_PROTECTION,
+  ATTRACT_MODE_HOTKEYS,
   BEGGAR_VOTING,
   BUDDHIST_SILENCE,
   BUREAUCRAT_VOTES,
@@ -69,6 +70,12 @@ const SHELF_SECTIONS: PlayerAidSection[] = [
       HELLS_LIBRARIAN_SILENCE,
       REVOLUTIONARY_NEIGHBORS,
     ],
+  }),
+  // Last, since it's for the storyteller rather than the players
+  new PlayerAidSection({
+    id: 'storyteller-tips',
+    title: 'Storyteller Tips',
+    aids: [ATTRACT_MODE_HOTKEYS],
   }),
 ];
 

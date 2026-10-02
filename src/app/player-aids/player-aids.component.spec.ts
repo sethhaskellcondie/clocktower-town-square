@@ -32,9 +32,10 @@ describe('PlayerAidsComponent', () => {
 
   it('groups aids on the shelf under their section titles', () => {
     const titles = Array.from(el.querySelectorAll('.aid-section-title')).map(t => t.textContent?.trim());
-    expect(titles).toEqual(['Tutorial', 'Character FAQ', 'Tips', 'Traveler', 'Fabled']);
+    expect(titles).toEqual(['Tutorial', 'Character FAQ', 'Tips', 'Traveler', 'Fabled', 'Storyteller Tips']);
     expect(el.querySelector('#player_aid_section_tutorial #player_aid_tutorial_how-to-play-video')).not.toBeNull();
     expect(el.querySelector('#player_aid_section_character-faq #player_aid_character-faq_spy-grimoire')).not.toBeNull();
+    expect(el.querySelector('#player_aid_section_storyteller-tips #player_aid_storyteller-tips_attract-mode-hotkeys')).not.toBeNull();
   });
 
   it('closes the shelf on a click outside it, but not on one inside it', () => {

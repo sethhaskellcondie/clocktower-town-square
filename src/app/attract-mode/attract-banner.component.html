@@ -1,0 +1,47 @@
+<div class="attract-banner" [class]="'mode-' + attract.mode()" [attr.aria-hidden]="attract.mode() === 'off'">
+  <div class="small-content">
+    <img class="small-logo" src="assets/attract_mode/blood_on_the_clocktower_text.png" alt="Blood on the Clocktower">
+    <div class="small-stats">
+      <span class="flag" aria-hidden="true">⚑</span>
+      <button id="attract_slots_down" class="adjust-btn" (click)="attract.removeSlot()" [disabled]="attract.slotsLeft() <= 0" aria-label="One less seat">-</button>
+      <span class="small-slots">{{ attract.slotsText() }}</span>
+      <button id="attract_slots_up" class="adjust-btn" (click)="attract.addSlot()" aria-label="One more seat">+</button>
+      <span class="separator" aria-hidden="true">·</span>
+      <button id="attract_time_down" class="adjust-btn" (click)="attract.nudgeMinutes(-1)" [disabled]="attract.remainingMs() === 0" aria-label="Remove 1 minute">-</button>
+      <span class="small-countdown">{{ attract.countdownText() }}</span>
+      <button id="attract_time_up" class="adjust-btn" (click)="attract.nudgeMinutes(1)" aria-label="Add 1 minute">+</button>
+      <span class="flag" aria-hidden="true">⚑</span>
+    </div>
+  </div>
+
+  <div class="banner-actions">
+    <button id="attract_resize" class="action-btn" (click)="toggleSize()"
+      [attr.aria-label]="attract.mode() === 'large' ? 'Shrink the attract banner' : 'Expand the attract banner'">
+      <span class="chevron" aria-hidden="true"></span>
+    </button>
+    @if (attract.mode() !== 'large') {
+      <button id="attract_close" class="action-btn" (click)="attract.setMode('off')" aria-label="Hide the attract banner">&times;</button>
+    }
+  </div>
+
+  @if (attract.mode() === 'large') {
+    <div class="large-content">
+      <h1 class="large-title">
+        <img class="large-logo" src="assets/attract_mode/blood_on_the_clocktower_text.png" alt="Blood on the Clocktower">
+      </h1>
+      <div class="large-slots">{{ attract.slotsText() }}</div>
+      <div class="large-countdown">{{ attract.countdownText() }}</div>
+      <div class="reasons">
+        @for (reason of reasons; track $index) {
+          <p class="reason" [class.active]="$index === reasonIndex()" [attr.aria-hidden]="$index !== reasonIndex()">{{ reason }}</p>
+        }
+      </div>
+      <div class="reason-dots" aria-hidden="true">
+        @for (reason of reasons; track $index) {
+          <span class="dot" [class.active]="$index === reasonIndex()"></span>
+        }
+      </div>
+      <div class="large-footer">A Seth Condie Project</div>
+    </div>
+  }
+</div>

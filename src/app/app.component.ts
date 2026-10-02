@@ -1,9 +1,11 @@
-import { Component, OnDestroy, QueryList, ViewChildren } from '@angular/core';
+import { Component, HostListener, OnDestroy, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PlayerComponent } from './player/player.component';
 import { TravelerComponent } from './traveler/traveler.component';
 import { LandmarkComponent } from './landmark/landmark.component';
 import { PlayerAidsComponent } from './player-aids/player-aids.component';
+import { AttractBannerComponent } from './attract-mode/attract-banner.component';
+import { AttractModeService } from './attract-mode/attract-mode.service';
 
 interface PlayerData {
   number: number;
@@ -33,7 +35,7 @@ interface DeathToken {
 
 @Component({
   selector: 'app-root',
-  imports: [CommonModule, PlayerComponent, TravelerComponent, LandmarkComponent, PlayerAidsComponent],
+  imports: [CommonModule, PlayerComponent, TravelerComponent, LandmarkComponent, PlayerAidsComponent, AttractBannerComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
@@ -45,6 +47,23 @@ export class AppComponent implements OnDestroy {
   @ViewChildren(PlayerComponent) playerComponents!: QueryList<PlayerComponent>;
   @ViewChildren(TravelerComponent) travelerComponents!: QueryList<TravelerComponent>;
   @ViewChildren(LandmarkComponent) landmarkComponents!: QueryList<LandmarkComponent>;
+  @ViewChild(PlayerAidsComponent) playerAids?: PlayerAidsComponent;
+
+  constructor(readonly attract: AttractModeService) {}
+
+  activateAttract(): void {
+    this.attract.setMode('small');
+  }
+
+  // Attract hotkeys. While a player aid is open its own keys win: the arrows
+  // scroll and page through it.
+  @HostListener('document:keydown', ['$event'])
+  onKeydown(event: KeyboardEvent): void {
+    if (this.playerAids?.shelf.activeAid) return;
+    if (this.attract.handleKey(event)) {
+      event.preventDefault();
+    }
+  }
 
   get alive(): number {
     if (!this.playerComponents) return this.players.length;

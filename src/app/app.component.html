@@ -1,4 +1,8 @@
-<div class="project-banner">A Seth Condie Project</div>
+@if (attract.mode() === 'off') {
+  <div class="project-banner" (click)="activateAttract()">A Seth Condie Project</div>
+}
+
+<app-attract-banner></app-attract-banner>
 
 <app-player-aids></app-player-aids>
 

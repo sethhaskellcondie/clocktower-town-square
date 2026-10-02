@@ -1,0 +1,291 @@
+$grow: 400ms;
+$small-height: 128px;
+$button-purple: #6e6388; // same dusty violet as the project banner text
+
+// One element that slides down as a thin header (small), then stretches to
+// cover the screen (large). Plain CSS transitions between the mode classes.
+.attract-banner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: $small-height;
+  box-sizing: border-box;
+  overflow: hidden;
+  // Above the tokens (1-3) and info table (10), below the Player Aids
+  // toggle and shelf (20), so that button stays clickable
+  z-index: 15;
+  background-color: rgba(0, 0, 0, 0.7);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+  color: white;
+  // Tokens under the small header can still be grabbed and dragged; only
+  // its buttons take clicks
+  pointer-events: none;
+  user-select: none;
+  // Shrinking back to small: drop beneath the Player Aids button only once
+  // the banner is done shrinking
+  transition:
+    transform $grow ease,
+    height $grow ease,
+    background-color $grow ease,
+    z-index 0s linear $grow,
+    visibility 0s linear 0s;
+
+  &.mode-off {
+    transform: translateY(-100%);
+    visibility: hidden;
+    // Stay visible until the slide up finishes
+    transition:
+      transform $grow ease,
+      height $grow ease,
+      background-color $grow ease,
+      z-index 0s linear $grow,
+      visibility 0s linear $grow;
+  }
+
+  &.mode-large {
+    height: 100vh;
+    // Covers the Player Aids button, but stays below the aid modal (100)
+    z-index: 50;
+    pointer-events: auto;
+    // Solid, so the board behind never shows through the text
+    background-color: #060510;
+    transition:
+      transform $grow ease,
+      height $grow ease,
+      background-color $grow ease,
+      z-index 0s linear 0s,
+      visibility 0s linear 0s;
+  }
+}
+
+.small-content {
+  height: $small-height;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  // Keeps the stats clear of the Player Aids button on the left and the
+  // banner's own buttons on the right
+  padding: 0 140px;
+  box-sizing: border-box;
+  transition: opacity 200ms ease $grow * 0.6, visibility 0s linear $grow * 0.6;
+
+  // Hidden, not just faded, so its buttons can't be clicked under Large
+  .mode-large & {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 150ms ease, visibility 0s linear 150ms;
+  }
+}
+
+// The image is cropped to the lettering, so its height is the text's height
+.small-logo {
+  display: block;
+  height: 68px;
+  max-width: 100%;
+  object-fit: contain;
+}
+
+.small-stats {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 26px;
+  letter-spacing: 2px;
+  white-space: nowrap;
+}
+
+.flag,
+.small-countdown {
+  color: #d1b56a;
+}
+
+.separator {
+  margin: 0 6px;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+// Kept quiet so they don't pull focus from the banner on the TV: no fill or
+// outline until hovered, and characters in the project banner's violet
+.adjust-btn,
+.action-btn {
+  pointer-events: auto;
+  background-color: transparent;
+  color: $button-purple;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  font-style: normal;
+  font-weight: bold;
+  line-height: 1;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+
+  &:hover:not(:disabled) {
+    background-color: rgba(255, 255, 255, 0.08);
+    color: #a59cbd; // a lighter shade of the same violet
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+}
+
+.adjust-btn {
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  font-size: 16px;
+}
+
+// Top right, level with the Player Aids button on the left. It stays put
+// while the banner grows, so the chevron is in the same spot in Large.
+.banner-actions {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  // Above the full-screen .large-content, which would otherwise take its clicks
+  z-index: 1;
+  display: flex;
+  gap: 8px;
+}
+
+.action-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  font-size: 24px;
+}
+
+// Points down to grow to Large, then flips up to shrink back to Small
+.chevron {
+  width: 9px;
+  height: 9px;
+  margin-top: -5px;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: rotate(45deg);
+  transition: transform $grow ease, margin-top $grow ease;
+
+  .mode-large & {
+    margin-top: 5px;
+    transform: rotate(-135deg);
+  }
+}
+
+.large-content {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  padding: 48px 24px 96px;
+  box-sizing: border-box;
+  text-align: center;
+  // Fades in only once the banner has finished growing
+  animation: attract-fade-in 500ms ease $grow both;
+}
+
+.large-title {
+  margin: 0 0 16px;
+  line-height: 0;
+}
+
+.large-logo {
+  width: min(80vw, 1100px);
+  height: auto;
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.6));
+}
+
+.large-slots {
+  font-size: clamp(32px, 5vw, 72px);
+  letter-spacing: 3px;
+}
+
+.large-countdown {
+  font-size: clamp(28px, 4vw, 56px);
+  letter-spacing: 3px;
+  color: #d1b56a;
+}
+
+// Every reason sits in the same grid cell, so they crossfade in place
+.reasons {
+  display: grid;
+  max-width: 900px;
+  margin-top: 24px;
+}
+
+.reason {
+  grid-area: 1 / 1;
+  margin: 0;
+  font-size: clamp(20px, 2.6vw, 34px);
+  line-height: 1.4;
+  color: rgba(255, 255, 255, 0.85);
+  opacity: 0;
+  transition: opacity 800ms ease;
+
+  &.active {
+    opacity: 1;
+  }
+}
+
+.reason-dots {
+  display: flex;
+  gap: 10px;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.25);
+  transition: background-color 800ms ease;
+
+  &.active {
+    background-color: #d1b56a;
+  }
+}
+
+.large-footer {
+  position: absolute;
+  bottom: 24px;
+  left: 0;
+  right: 0;
+  font-size: 22px;
+  letter-spacing: 3px;
+  color: #6e6388;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+@keyframes attract-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .attract-banner,
+  .attract-banner.mode-off,
+  .attract-banner.mode-large,
+  .small-content,
+  .chevron,
+  .reason,
+  .dot {
+    transition-duration: 0s;
+    transition-delay: 0s;
+  }
+
+  .large-content {
+    animation: none;
+  }
+}
