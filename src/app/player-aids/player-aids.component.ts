@@ -1,6 +1,7 @@
-import { Component, HostListener } from '@angular/core';
+import { Component, ElementRef, HostListener, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { PLAYER_AID_SECTIONS, PlayerAid, PlayerAidSection, PlayerAidTextPart } from './player-aids';
+import { PlayerAidTextPart } from './player-aid';
+import { PlayerAidShelf } from './player-aid-shelf';
 
 @Component({
   selector: 'app-player-aids',
@@ -10,26 +11,27 @@ import { PLAYER_AID_SECTIONS, PlayerAid, PlayerAidSection, PlayerAidTextPart } f
   styleUrl: './player-aids.component.scss'
 })
 export class PlayerAidsComponent {
-  sections: PlayerAidSection[] = PLAYER_AID_SECTIONS;
-  shelfOpen = false;
-  activeAid: PlayerAid | null = null;
+  shelf = new PlayerAidShelf();
 
-  toggleShelf(): void {
-    this.shelfOpen = !this.shelfOpen;
+  @ViewChild('modalBody') modalBody?: ElementRef<HTMLElement>;
+
+  constructor(private host: ElementRef<HTMLElement>) {}
+
+  showPrevious(): void {
+    this.shelf.showPrevious();
+    this.scrollToTop();
   }
 
-  openAid(aid: PlayerAid): void {
-    this.activeAid = aid;
+  showNext(): void {
+    this.shelf.showNext();
+    this.scrollToTop();
   }
 
-  closeAid(): void {
-    this.activeAid = null;
-  }
-
-  // A section counts as empty only when neither it nor any of its
-  // subsections hold an aid
-  isEmpty(section: PlayerAidSection): boolean {
-    return section.aids.length === 0 && (section.subsections ?? []).every(sub => this.isEmpty(sub));
+  // The modal stays put while its aid changes, so start each aid at the top
+  private scrollToTop(): void {
+    if (this.modalBody) {
+      this.modalBody.nativeElement.scrollTop = 0;
+    }
   }
 
   // Flatten a paragraph into one shape the template can render without
@@ -39,13 +41,33 @@ export class PlayerAidsComponent {
     return parts.map(part => typeof part === 'string' ? { text: part } : part);
   }
 
+  // Clicking anywhere outside the shelf closes it. The toggle button and the
+  // aid modal live inside this component too, so clicks there are left alone.
+  // composedPath is read rather than contains(), because the click may have
+  // already removed its target (e.g. closing the modal from the backdrop).
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent): void {
+    if (this.shelf.open && !event.composedPath().includes(this.host.nativeElement)) {
+      this.shelf.open = false;
+    }
+  }
+
   @HostListener('document:keydown.escape')
   onEscape(): void {
-    // Peel back one layer at a time: modal first, then the shelf
-    if (this.activeAid) {
-      this.closeAid();
-    } else if (this.shelfOpen) {
-      this.shelfOpen = false;
+    this.shelf.back();
+  }
+
+  @HostListener('document:keydown.arrowleft')
+  onArrowLeft(): void {
+    if (this.shelf.activeAid) {
+      this.showPrevious();
+    }
+  }
+
+  @HostListener('document:keydown.arrowright')
+  onArrowRight(): void {
+    if (this.shelf.activeAid) {
+      this.showNext();
     }
   }
 }

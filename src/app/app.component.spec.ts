@@ -20,10 +20,11 @@ describe('AppComponent', () => {
     expect(app.title).toEqual('clocktower-town-square');
   });
 
-  it('should render title', () => {
+  it('should render the banner and the players table', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, clocktower-town-square');
+    expect(compiled.querySelector('.project-banner')?.textContent).toContain('A Seth Condie Project');
+    expect(compiled.querySelector('#players_table')).not.toBeNull();
   });
 });

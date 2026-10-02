@@ -1,42 +1,63 @@
-<button id="player_aids_toggle" class="aids-toggle-btn" [class.active]="shelfOpen" (click)="toggleShelf()" [attr.aria-expanded]="shelfOpen">
+<button id="player_aids_toggle" class="aids-toggle-btn" [class.active]="shelf.open" (click)="shelf.toggle()" [attr.aria-expanded]="shelf.open">
   Player Aids
 </button>
 
-<nav class="aids-shelf" [class.open]="shelfOpen" aria-label="Player aids">
-  @for (section of sections; track section.id) {
+<nav class="aids-shelf" [class.open]="shelf.open" aria-label="Player aids">
+  <div class="aid-shelf-actions">
+    <button id="player_aids_show_all" class="aid-shelf-action" (click)="shelf.showAll()">Show all</button>
+    <button id="player_aids_hide_all" class="aid-shelf-action" (click)="shelf.hideAll()">Hide all</button>
+  </div>
+  @for (section of shelf.sections; track section.id) {
     <ng-container *ngTemplateOutlet="sectionTpl; context: { $implicit: section, depth: 0 }" />
   }
 </nav>
 
-<!-- Renders a section's aids, then recurses into its subsections -->
+<!-- Renders a section as an accordion: a header that expands to show the
+     section's aids, then recurses into its subsections -->
 <ng-template #sectionTpl let-section let-depth="depth">
-  <section class="aid-section" [class.subsection]="depth > 0" [id]="'player_aid_section_' + section.id">
-    <div class="aid-section-title" role="heading" [attr.aria-level]="depth + 2">{{ section.title }}</div>
-    @for (aid of section.aids; track aid.id) {
-      <button class="aid-item" [id]="'player_aid_' + aid.id" (click)="openAid(aid)">
-        <span class="aid-title">{{ aid.title }}</span>
-        @if (aid.summary) {
-          <span class="aid-summary">{{ aid.summary }}</span>
-        }
+  <section class="aid-section" [class.subsection]="depth > 0" [class.expanded]="shelf.isExpanded(section)" [id]="'player_aid_section_' + section.id">
+    <div role="heading" [attr.aria-level]="depth + 2">
+      <button class="aid-section-toggle" [id]="'player_aid_section_toggle_' + section.id" (click)="shelf.toggleSection(section)"
+        [attr.aria-expanded]="shelf.isExpanded(section)" [attr.aria-controls]="'player_aid_section_body_' + section.id">
+        <span class="aid-section-title">{{ section.title }}</span>
+        <span class="aid-section-chevron" aria-hidden="true"></span>
       </button>
-    }
-    @for (sub of section.subsections ?? []; track sub.id) {
-      <ng-container *ngTemplateOutlet="sectionTpl; context: { $implicit: sub, depth: depth + 1 }" />
-    }
-    @if (isEmpty(section)) {
-      <div class="aid-empty">No player aids yet.</div>
-    }
+    </div>
+    <div class="aid-section-body" [id]="'player_aid_section_body_' + section.id">
+      <div class="aid-section-content">
+        @for (aid of section.aids; track aid.id) {
+          <button class="aid-item" [id]="'player_aid_' + section.id + '_' + aid.id" (click)="shelf.openAid(aid, section)">
+            <span class="aid-title">{{ aid.title }}</span>
+            @if (aid.summary) {
+              <span class="aid-summary">{{ aid.summary }}</span>
+            }
+          </button>
+        }
+        @for (sub of section.subsections; track sub.id) {
+          <ng-container *ngTemplateOutlet="sectionTpl; context: { $implicit: sub, depth: depth + 1 }" />
+        }
+        @if (section.isEmpty()) {
+          <div class="aid-empty">No player aids yet.</div>
+        }
+      </div>
+    </div>
   </section>
 </ng-template>
 
-@if (activeAid) {
-  <div class="aid-backdrop" (click)="closeAid()">
+@if (shelf.activeAid; as activeAid) {
+  <div class="aid-backdrop" (click)="shelf.closeAid()">
+    @if (shelf.canBrowse) {
+      <button id="player_aid_previous" class="aid-nav-btn" [disabled]="!shelf.hasPrevious"
+        (click)="$event.stopPropagation(); showPrevious()" aria-label="Previous player aid">
+        <span class="aid-nav-arrow previous" aria-hidden="true"></span>
+      </button>
+    }
     <div class="aid-modal" role="dialog" aria-modal="true" [attr.aria-label]="activeAid.title" (click)="$event.stopPropagation()">
       <header class="aid-modal-header">
         <h2>{{ activeAid.title }}</h2>
-        <button id="player_aid_close" class="aid-close-btn" (click)="closeAid()" aria-label="Close">&times;</button>
+        <button id="player_aid_close" class="aid-close-btn" (click)="shelf.closeAid()" aria-label="Close">&times;</button>
       </header>
-      <div class="aid-modal-body">
+      <div class="aid-modal-body" #modalBody>
         @for (block of activeAid.blocks; track $index) {
           @switch (block.type) {
             @case ('heading') {
@@ -69,5 +90,11 @@
         }
       </div>
     </div>
+    @if (shelf.canBrowse) {
+      <button id="player_aid_next" class="aid-nav-btn" [disabled]="!shelf.hasNext"
+        (click)="$event.stopPropagation(); showNext()" aria-label="Next player aid">
+        <span class="aid-nav-arrow next" aria-hidden="true"></span>
+      </button>
+    }
   </div>
 }

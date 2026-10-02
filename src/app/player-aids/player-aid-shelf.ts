@@ -1,0 +1,131 @@
+import { PlayerAid } from './player-aid';
+import { PlayerAidSection } from './player-aid-section';
+import {
+  BUTLER_VOTING,
+  CHARACTER_SHEET,
+  CHEF_PAIRS,
+  CLOCKTOWER_WIKI,
+  DEMON_FIRST_NIGHT,
+  GOOD_VS_EVIL,
+  HOW_TO_PLAY_VIDEO,
+  MAYOR_ABILITY,
+  MINIONS_FIRST_NIGHT,
+  PLAYER_STATES,
+  PLAYER_TRAITS,
+  SPY_GRIMOIRE,
+  TOWN_SQUARE,
+} from './player-aid-library';
+
+// Which aids appear in which section of the shelf. An aid from the library
+// can be listed in as many sections as it's useful in.
+const SHELF_SECTIONS: PlayerAidSection[] = [
+  new PlayerAidSection({
+    id: 'tutorial',
+    title: 'Tutorial',
+    aids: [
+      HOW_TO_PLAY_VIDEO,
+      CLOCKTOWER_WIKI,
+      PLAYER_TRAITS,
+      TOWN_SQUARE,
+      PLAYER_STATES,
+      CHARACTER_SHEET,
+      GOOD_VS_EVIL,
+      DEMON_FIRST_NIGHT,
+      MINIONS_FIRST_NIGHT,
+    ],
+  }),
+  new PlayerAidSection({
+    id: 'character-examples',
+    title: 'Character Examples',
+    aids: [SPY_GRIMOIRE, BUTLER_VOTING, MAYOR_ABILITY, CHEF_PAIRS],
+  }),
+  new PlayerAidSection({
+    id: 'traveler',
+    title: 'Traveler',
+  }),
+];
+
+// Holds the shelf's sections and everything about its state: whether it's
+// open, which sections are expanded, and which aid is being viewed
+export class PlayerAidShelf {
+  open = false;
+  activeAid: PlayerAid | null = null;
+  // The section the active aid was opened from, since an aid can be in several
+  activeSection: PlayerAidSection | null = null;
+  // Sections start collapsed; ids of the ones the user has opened
+  private expandedSections = new Set<string>();
+
+  constructor(readonly sections: readonly PlayerAidSection[] = SHELF_SECTIONS) {}
+
+  toggle(): void {
+    this.open = !this.open;
+  }
+
+  isExpanded(section: PlayerAidSection): boolean {
+    return this.expandedSections.has(section.id);
+  }
+
+  toggleSection(section: PlayerAidSection): void {
+    if (!this.expandedSections.delete(section.id)) {
+      this.expandedSections.add(section.id);
+    }
+  }
+
+  showAll(): void {
+    this.expandedSections = new Set(this.sections.flatMap(section => section.withDescendants()).map(section => section.id));
+  }
+
+  hideAll(): void {
+    this.expandedSections.clear();
+  }
+
+  openAid(aid: PlayerAid, section: PlayerAidSection): void {
+    this.activeAid = aid;
+    this.activeSection = section;
+  }
+
+  // Position of the active aid within the section it was opened from
+  private get activeIndex(): number {
+    return this.activeAid && this.activeSection ? this.activeSection.aids.indexOf(this.activeAid) : -1;
+  }
+
+  // The arrows only show when the section has other aids to step to
+  get canBrowse(): boolean {
+    return (this.activeSection?.aids.length ?? 0) > 1;
+  }
+
+  get hasPrevious(): boolean {
+    return this.activeIndex > 0;
+  }
+
+  get hasNext(): boolean {
+    const index = this.activeIndex;
+    return index >= 0 && index < this.activeSection!.aids.length - 1;
+  }
+
+  showPrevious(): void {
+    if (this.hasPrevious) {
+      this.activeAid = this.activeSection!.aids[this.activeIndex - 1];
+    }
+  }
+
+  showNext(): void {
+    if (this.hasNext) {
+      this.activeAid = this.activeSection!.aids[this.activeIndex + 1];
+    }
+  }
+
+  closeAid(): void {
+    this.activeAid = null;
+    this.activeSection = null;
+  }
+
+  // Peel back one layer at a time: the open aid first, then the shelf
+  back(): void {
+    if (this.activeAid) {
+      this.closeAid();
+    } else if (this.open) {
+      this.open = false;
+    }
+  }
+}

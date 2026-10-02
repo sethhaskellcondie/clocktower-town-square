@@ -51,14 +51,34 @@
   }
 }
 
+.aid-shelf-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.aid-shelf-action {
+  flex: 1;
+  padding: 6px 8px;
+  font-size: 12px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  background-color: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s, border-color 0.2s, color 0.2s;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.16);
+    border-color: #d1b56a;
+    color: #d1b56a;
+  }
+}
+
 .aid-section {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-
-  & + & {
-    margin-top: 8px;
-  }
 
   // Subsections step in a little so the nesting reads at a glance
   &.subsection {
@@ -67,18 +87,84 @@
   }
 }
 
+.aid-section-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  width: 100%;
+  padding: 6px 2px;
+  text-align: left;
+  background: none;
+  color: rgba(255, 255, 255, 0.85);
+  border: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  cursor: pointer;
+  transition: color 0.2s;
+
+  &:hover,
+  .expanded > div > & {
+    color: #d1b56a;
+  }
+
+  .subsection > div > & {
+    border-bottom: none;
+  }
+}
+
 .aid-section-title {
-  padding-bottom: 4px;
   font-size: 13px;
   letter-spacing: 2px;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.85);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 
-  .subsection > & {
+  .subsection & {
     font-size: 12px;
     letter-spacing: 1px;
-    border-bottom: none;
+  }
+}
+
+// A small caret drawn with borders, pointing right when collapsed and
+// down when expanded
+.aid-section-chevron {
+  flex-shrink: 0;
+  width: 6px;
+  height: 6px;
+  margin-right: 4px;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: rotate(-45deg);
+  transition: transform 0.2s ease;
+
+  .expanded > div > .aid-section-toggle > & {
+    transform: rotate(45deg);
+  }
+}
+
+// Animating grid rows from 0fr to 1fr lets the body slide open to its
+// natural height; visibility keeps collapsed aids out of the tab order
+.aid-section-body {
+  display: grid;
+  grid-template-rows: 0fr;
+  visibility: hidden;
+  transition: grid-template-rows 0.25s ease, visibility 0s linear 0.25s;
+
+  .expanded > & {
+    grid-template-rows: 1fr;
+    visibility: visible;
+    transition: grid-template-rows 0.25s ease, visibility 0s;
+  }
+}
+
+.aid-section-content {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 0;
+  overflow: hidden;
+  transition: padding-top 0.25s ease;
+
+  .expanded > .aid-section-body > & {
+    padding-top: 8px;
   }
 }
 
@@ -127,6 +213,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 16px;
   background-color: rgba(4, 3, 10, 0.45);
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
@@ -136,7 +223,8 @@
 .aid-modal {
   display: flex;
   flex-direction: column;
-  width: min(900px, 90vw);
+  // Leaves room either side for the previous and next arrows
+  width: min(900px, calc(100vw - 144px));
   max-height: 85vh;
   background-color: rgba(12, 10, 24, 0.95);
   color: white;
@@ -144,6 +232,49 @@
   border-radius: 6px;
   box-shadow: 0 12px 48px rgba(0, 0, 0, 0.6);
   animation: aid-pop-in 0.2s ease;
+}
+
+.aid-nav-btn {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  background-color: rgba(12, 10, 24, 0.9);
+  color: #d1b56a;
+  border: 1px solid rgba(209, 181, 106, 0.6);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color 0.2s, opacity 0.2s;
+
+  &:hover:not(:disabled) {
+    background-color: rgba(209, 181, 106, 0.2);
+  }
+
+  // Kept in place at the ends of a section so the modal doesn't shift
+  &:disabled {
+    opacity: 0.3;
+    cursor: default;
+  }
+}
+
+// A caret drawn with borders, matching the section toggles
+.aid-nav-arrow {
+  width: 12px;
+  height: 12px;
+  border-right: 3px solid currentColor;
+  border-bottom: 3px solid currentColor;
+
+  &.previous {
+    margin-left: 6px;
+    transform: rotate(135deg);
+  }
+
+  &.next {
+    margin-right: 6px;
+    transform: rotate(-45deg);
+  }
 }
 
 .aid-modal-header {

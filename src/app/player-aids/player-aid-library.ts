@@ -1,0 +1,352 @@
+import { PlayerAid } from './player-aid';
+
+// Every player aid, each created once. The shelf decides which sections
+// they appear in.
+
+export const HOW_TO_PLAY_VIDEO = new PlayerAid({
+  id: 'how-to-play-video',
+  title: 'How to Play',
+  summary: 'QR code for a how-to-play video.',
+  blocks: [
+    { type: 'text', text: 'Scan this to watch a video on how to play Blood on the Clocktower. (10 minutes)' },
+    {
+      type: 'image',
+      src: 'assets/player_aids/qr_how_to_play_video.png',
+      alt: 'QR code linking to a how-to-play video',
+    },
+  ],
+});
+
+export const CLOCKTOWER_WIKI = new PlayerAid({
+  id: 'clocktower-wiki',
+  title: 'Clocktower Wiki',
+  summary: 'QR code for the Blood on the Clocktower Wiki.',
+  blocks: [
+    { type: 'text', text: 'Scan this code to visit the Blood on the Clocktower Wiki for more information on the game.' },
+    {
+      type: 'image',
+      src: 'assets/player_aids/qr_clocktower_wiki.png',
+      alt: 'QR code linking to the Blood on the Clocktower Wiki',
+    },
+  ],
+});
+
+export const PLAYER_TRAITS = new PlayerAid({
+  id: 'player-traits',
+  title: 'Player Traits',
+  summary: 'Character, Type, and Alignment explained.',
+  blocks: [
+    {
+      type: 'text',
+      text: [
+        'Each player will have a ',
+        { text: 'Character', style: 'bold' },
+        ', a ',
+        { text: 'Type', style: 'bold' },
+        ', and an ',
+        { text: 'Alignment', style: 'bold' },
+        ', this tells you how you should play.',
+      ],
+    },
+    {
+      type: 'text',
+      text: [
+        'Your ',
+        { text: 'Character', style: 'bold' },
+        ' is determined by what token you pull from the bag. Ex: Butler, Spy, Imp, or Chef.',
+      ],
+    },
+    {
+      type: 'image',
+      src: 'assets/player_aids/character_sheet_tb.jpg',
+      alt: 'The Trouble Brewing character sheet, with Townsfolk, Outsiders, Minions, and Demons labeled down the left side',
+    },
+    {
+      type: 'text',
+      text: [
+        'Each Character has a ',
+        { text: 'Type', style: 'bold' },
+        ' found on the left side of your character sheet. The Butler is an Outsider, the Spy is a Minion, the Imp is a Demon, and the Chef is a Townsfolk.',
+      ],
+    },
+    {
+      type: 'text',
+      text: [
+        'Each Character also has a starting ',
+        { text: 'Alignment', style: 'bold' },
+        ', blue is ',
+        { text: 'Good', style: 'bold' },
+        ' and red is ',
+        { text: 'Evil', style: 'bold' },
+        '. This dictates who is on your team and how you win the game. (In advanced games alignment can change during the game.)',
+      ],
+    },
+  ],
+});
+
+export const TOWN_SQUARE = new PlayerAid({
+  id: 'town-square',
+  title: 'Reading the Town Square',
+  summary: 'What the tokens and the table in the middle tell you.',
+  blocks: [
+    {
+      type: 'text',
+      text: 'We are midway through a 10 player game. For a 10 player game the player spread (Townsfolk, Outsiders, Minions, Demons) can be found on the table in the middle.',
+    },
+    {
+      type: 'image',
+      src: 'assets/player_aids/town_square_example.png',
+      alt: 'A 12 seat town square: five alive players, five dead players in black, and two Travelers in orange, around a table showing 10 players, 5 alive, 4 ghost votes, 2 Travelers, and 7 Townsfolk, 0 Outsiders, 2 Minions, 1 Demon',
+    },
+    {
+      type: 'text',
+      text: [
+        'There are 5 players still alive and 5 players that are dead, but 4 of those dead players can still vote (',
+        { text: 'Ghost Votes, B, C, F, and H', style: 'bold' },
+        ').',
+      ],
+    },
+    {
+      type: 'text',
+      text: [
+        '2 additional players came late, they enter the game as ',
+        { text: 'Travelers', style: 'bold' },
+        ', but this is still considered a 10 player game.',
+      ],
+    },
+    {
+      type: 'text',
+      text: [
+        'We are in the middle of a vote and player D has gotten 3 votes, they are ',
+        { text: '"marked for death"', style: 'bold' },
+        '.',
+      ],
+    },
+  ],
+});
+
+export const CHARACTER_SHEET = new PlayerAid({
+  id: 'character-sheet',
+  title: 'Your Character Sheet',
+  summary: 'Keep it for reference, and point at it to talk silently.',
+  blocks: [
+    {
+      type: 'text',
+      text: 'Keep your character sheet with you for reference, you can also communicate with others silently by pointing at it, to make sure you are not overheard by those around you.',
+    },
+    {
+      type: 'image',
+      src: 'assets/player_aids/character_sheet_tb.jpg',
+      alt: 'The Trouble Brewing character sheet, listing every Townsfolk, Outsider, Minion, and Demon with their abilities',
+    },
+  ],
+});
+
+export const GOOD_VS_EVIL = new PlayerAid({
+  id: 'good-vs-evil',
+  title: 'Good vs Evil',
+  summary: 'How each team wins.',
+  blocks: [
+    {
+      type: 'image',
+      src: 'assets/player_aids/good_vs_evil.png',
+      alt: 'The Good team, the Butler and the Chef in blue, versus the Evil team, the Spy and the Imp in red',
+    },
+    {
+      type: 'text',
+      text: [
+        'This is a team game, the ',
+        { text: 'Good', style: 'bold' },
+        ' team needs to find and execute the demon(s), the ',
+        { text: 'Evil', style: 'bold' },
+        ' team needs to kill everyone, to the point where they outnumber the good team.',
+      ],
+    },
+  ],
+});
+
+export const PLAYER_STATES = new PlayerAid({
+  id: 'player-states',
+  title: 'Player States',
+  summary: 'Alive or dead, drunk or sober, poisoned or healthy.',
+  blocks: [
+    { type: 'text', text: 'Players have different states.' },
+    {
+      type: 'image',
+      src: 'assets/player_aids/player_state.png',
+      alt: 'A 6 player town square: A, E, and F alive, B alive and marked for death in red, C dead with a ghost vote, and D dead without one',
+    },
+    {
+      type: 'text',
+      text: ['Player A is ', { text: '"Alive"', style: 'bold' }, '.'],
+    },
+    {
+      type: 'text',
+      text: [
+        'Player B is also alive, but has enough votes to be executed so they are ',
+        { text: '"marked for death"', style: 'bold' },
+        '.',
+      ],
+    },
+    {
+      type: 'text',
+      text: [
+        'Player C is ',
+        { text: 'dead', style: 'bold' },
+        ' but still has their ghost vote. Player D is ',
+        { text: 'dead', style: 'bold' },
+        ' and has used their ghost vote.',
+      ],
+    },
+    {
+      type: 'text',
+      text: [
+        'Player E is ',
+        { text: 'drunk', style: 'bold' },
+        ", they don't know it but any information they receive may be false information, all of the other players are ",
+        { text: 'sober', style: 'bold' },
+        '.',
+      ],
+    },
+    {
+      type: 'text',
+      text: [
+        'Player F is ',
+        { text: 'poisoned', style: 'bold' },
+        ', being poisoned works just like being drunk, all of the other players are ',
+        { text: 'healthy', style: 'bold' },
+        '.',
+      ],
+    },
+    {
+      type: 'text',
+      text: [
+        "So player A's state is ",
+        { text: 'Alive, Sober, and Healthy', style: 'bold' },
+        ", while player E's state is ",
+        { text: 'Alive, Drunk, and Healthy', style: 'bold' },
+        '.',
+      ],
+    },
+  ],
+});
+
+export const SPY_GRIMOIRE = new PlayerAid({
+  id: 'spy-grimoire',
+  title: 'The Spy & the Grimoire',
+  summary: 'An example Grimoire setup, as the Spy would see it.',
+  blocks: [
+    {
+      type: 'text',
+      text: [
+        'The Spy',
+        { icon: 'assets/player_aids/icon_spy.png', alt: 'Spy icon' },
+        ' can see inside the Grimoire, this is an example setup of the Grimoire.',
+      ],
+    },
+    {
+      type: 'image',
+      src: 'assets/player_aids/spy_grimoire.jpg',
+      alt: 'An open Grimoire with character tokens, reminder tokens, and the first night sheet laid out',
+    },
+    {
+      type: 'text',
+      text: 'Remember that the spy can appear as "Good", "Townsfolk" or an "Outsider" even if they are dead.',
+    },
+  ],
+});
+
+export const BUTLER_VOTING = new PlayerAid({
+  id: 'butler-voting',
+  title: 'The Butler',
+  summary: 'When the Butler may raise their hand to vote.',
+  blocks: [
+    {
+      type: 'image',
+      src: 'assets/player_aids/icon_butler.png',
+      alt: 'Butler icon: a hand holding a covered serving tray',
+    },
+    {
+      type: 'text',
+      text: "During a nomination, the Butler may only have their hand raised to vote if the Master has their hand raised to vote or if the Master's vote has already been counted. The Butler must keep track of their Master. If they vote illegally their vote will be counted like normal, but don't do that, it's not cool.",
+    },
+  ],
+});
+
+export const MAYOR_ABILITY = new PlayerAid({
+  id: 'mayor-ability',
+  title: 'The Mayor',
+  summary: 'A correction to the Mayor ability text on the sheet.',
+  blocks: [
+    {
+      type: 'image',
+      src: 'assets/player_aids/icon_mayor.png',
+      alt: 'Mayor icon: a blue columned town hall',
+    },
+    {
+      type: 'text',
+      text: [
+        'The Mayor\'s text on the sheet says that "',
+        { text: 'a townsfolk', style: 'strike' },
+        ' may die instead" it should say "If only 3 players live & no execution occurs, your team wins. If you die at night, ',
+        { text: 'another player', style: 'bold' },
+        ' might die instead."',
+      ],
+    },
+  ],
+});
+
+export const DEMON_FIRST_NIGHT = new PlayerAid({
+  id: 'demon-first-night',
+  title: 'The Demon, Night One',
+  summary: 'Meeting the minions, and the three bluffs.',
+  blocks: [
+    {
+      type: 'image',
+      src: 'assets/player_aids/icon_imp.png',
+      alt: 'Imp icon: a red trident',
+    },
+    {
+      type: 'text',
+      text: 'On the first night the demon wakes, the storyteller will point out all of the minions, and then the demon is shown three characters that are not in play, these can be used as bluffs for the demon and their minions.',
+    },
+  ],
+});
+
+export const MINIONS_FIRST_NIGHT = new PlayerAid({
+  id: 'minions-first-night',
+  title: 'The Minions, Night One',
+  summary: 'Meeting each other, and learning the demon.',
+  blocks: [
+    {
+      type: 'image',
+      src: 'assets/player_aids/minions.png',
+      alt: 'The Trouble Brewing Minions: the Poisoner, the Spy, the Scarlet Woman, and the Baron',
+    },
+    {
+      type: 'text',
+      text: 'The Minions all awake at the same time, they can see one another, then they all learn who the demon is, then they fall back asleep.',
+    },
+  ],
+});
+
+export const CHEF_PAIRS = new PlayerAid({
+  id: 'chef-pairs',
+  title: 'The Chef',
+  summary: 'How evil pairs are counted, with an example.',
+  blocks: [
+    {
+      type: 'text',
+      text: [
+        'The Chef',
+        { icon: 'assets/player_aids/icon_chef.png', alt: 'Chef icon' },
+        ' learns how many EVIL PAIRS there are on the first night. In a 13 player game there are 13 pairs, each player is included in one pair with each of their neighbors. In this example (disregard the colors) there is 1 evil pair, 2 good pairs, and 2 dead pairs.',
+      ],
+    },
+    {
+      type: 'image',
+      src: 'assets/player_aids/pairs_example.png',
+      alt: 'A 13 player town square with evil, good, and dead tokens seated around the circle',
+    },
+  ],
+});
