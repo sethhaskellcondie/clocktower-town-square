@@ -227,6 +227,7 @@ $button-purple: #6e6388; // same dusty violet as the project banner text
   margin: 0;
   font-size: clamp(20px, 2.6vw, 34px);
   line-height: 1.4;
+  white-space: pre-line;
   color: rgba(255, 255, 255, 0.85);
   opacity: 0;
   transition: opacity 800ms ease;

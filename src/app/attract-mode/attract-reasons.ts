@@ -1,5 +1,7 @@
 // Rotated through on the large attract banner, one at a time
 export const ATTRACT_REASONS: readonly string[] = [
-  'No experience needed. The Storyteller will teach you everything in 5 minutes.',
-  'Bluff, deduce, and betray. Even dead players keep playing until the very end.',
+  'No experience or materials needed. The Storyteller will teach you everything in 10 minutes.',
+  'A game of Good vs. Evil! \nOn the Good team? \nListen to the story, read the clues, find and kill the demon!',
+  'A game of Good vs. Evil! \nOn the Evil team? \nBluff to gain the trust of the village, plant false leads, and kill everyone!',
+  'This game is for people who enjoy solving a mystery, putting together clues, and trying to determine who is bluffing!',
 ];
