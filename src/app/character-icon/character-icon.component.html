@@ -1,0 +1,64 @@
+<!-- Sits just right of the token, outside it since tokens clip their contents.
+     Buttons that act while editing keep the token's name input focused on
+     mousedown, so its blur doesn't end editing before their click lands. -->
+@if (character || isEditing) {
+  <div
+    class="character-aside"
+    [class.size-small]="size === 'small'"
+    [class.size-medium]="size === 'medium'"
+    [class.size-large]="size === 'large'"
+    [class.picking]="isPicking"
+    [style.left.px]="tokenX + tokenWidth"
+    [style.top.px]="tokenY + tokenWidth / 2"
+  >
+    @if (character) {
+      <div class="character">
+        <button
+          class="character-icon"
+          [id]="idPrefix + '_character'"
+          [class.editing]="isEditing"
+          (click)="onIconClick()"
+          [attr.aria-label]="'Open the ' + character.name + ' player aid'"
+          [title]="character.name"
+        >
+          <img [src]="character.icon" [alt]="character.name" draggable="false">
+        </button>
+        @if (isEditing) {
+          <button
+            class="character-remove"
+            [id]="idPrefix + '_character_remove'"
+            (mousedown)="$event.preventDefault()"
+            (click)="remove()"
+            [attr.aria-label]="'Remove the ' + character.name + ' icon'"
+          >&times;</button>
+        }
+      </div>
+    } @else {
+      <button
+        class="character-add"
+        [id]="idPrefix + '_character_add'"
+        [class.active]="isPicking"
+        (mousedown)="$event.preventDefault()"
+        (click)="togglePicker()"
+        [attr.aria-expanded]="isPicking"
+        aria-label="Add a character icon"
+      >+</button>
+      @if (isPicking) {
+        <div class="character-picker" role="menu">
+          @for (option of options; track option.id) {
+            <button
+              class="character-option"
+              role="menuitem"
+              [id]="idPrefix + '_character_' + option.id"
+              (mousedown)="$event.preventDefault()"
+              (click)="choose(option)"
+              [title]="option.name"
+            >
+              <img [src]="option.icon" [alt]="option.name" draggable="false">
+            </button>
+          }
+        </div>
+      }
+    }
+  </div>
+}

@@ -31,3 +31,6 @@
     <span class="name-display">{{ name }}</span>
   }
 </div>
+
+<app-character-icon [options]="characters" [idPrefix]="'player_' + number" [isEditing]="isEditing" [size]="size"
+  [tokenX]="positionX" [tokenY]="positionY" (openAid)="openAid.emit($event)"></app-character-icon>

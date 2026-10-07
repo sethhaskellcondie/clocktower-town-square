@@ -1,7 +1,7 @@
-// Holds the traveler's character icon, or the + to pick one, vertically
-// centred on the circle's right edge. The icon art has generous transparent
-// padding, so it's sized close to the circle to read at the same weight.
-.traveler-aside {
+// Holds the character icon, or the + to pick one, vertically centred on the
+// token's right edge. The icon art has generous transparent padding, so it's
+// sized close to the token to read at the same weight.
+.character-aside {
   position: absolute;
   transform: translateY(-50%);
   display: flex;

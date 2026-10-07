@@ -1,11 +1,14 @@
-import { Component, ElementRef, HostListener, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { PlayerAid } from '../player-aids/player-aid';
+import { CharacterIconComponent } from '../character-icon/character-icon.component';
+import { LANDMARK_FABLED } from '../character-icon/character-options';
 
 @Component({
   selector: 'app-landmark',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, CharacterIconComponent],
   templateUrl: './landmark.component.html',
   styleUrl: './landmark.component.scss'
 })
@@ -17,6 +20,8 @@ export class LandmarkComponent implements OnInit {
   name = '';
   @Input() size: 'small' | 'medium' | 'large' = 'small';
   @Input() texture = 1;
+  @Output() openAid = new EventEmitter<PlayerAid>();
+  readonly characters = LANDMARK_FABLED;
 
   // Dragging position
   positionX = 0;

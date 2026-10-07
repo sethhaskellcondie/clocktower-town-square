@@ -111,7 +111,7 @@
 </div>
 
 @for (player of players; track player.number) {
-  <app-player [size]="playerSize" [number]="player.number" [initialX]="player.initialX" [initialY]="player.initialY" [texture]="player.texture" [isDay]="isDay" [locked]="isSpinning" (stateChange)="onPlayerStateChange()"></app-player>
+  <app-player [size]="playerSize" [number]="player.number" [initialX]="player.initialX" [initialY]="player.initialY" [texture]="player.texture" [isDay]="isDay" [locked]="isSpinning" (stateChange)="onPlayerStateChange()" (openAid)="playerAids?.show($event)"></app-player>
 }
 
 @for (traveler of travelers; track traveler.number) {
@@ -119,5 +119,5 @@
 }
 
 @for (landmark of landmarks; track landmark.number) {
-  <app-landmark [size]="playerSize" [number]="landmark.number" [initialX]="landmark.initialX" [initialY]="landmark.initialY" [texture]="landmark.texture"></app-landmark>
+  <app-landmark [size]="playerSize" [number]="landmark.number" [initialX]="landmark.initialX" [initialY]="landmark.initialY" [texture]="landmark.texture" (openAid)="playerAids?.show($event)"></app-landmark>
 }

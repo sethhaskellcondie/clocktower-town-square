@@ -1,13 +1,16 @@
 import { Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { PlayerAid } from '../player-aids/player-aid';
+import { CharacterIconComponent } from '../character-icon/character-icon.component';
+import { PLAYER_FABLED } from '../character-icon/character-options';
 
 export type PlayerState = 'alive' | 'marked for death' | 'killed during the night' | 'dead with vote' | 'dead without vote';
 
 @Component({
   selector: 'app-player',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, CharacterIconComponent],
   templateUrl: './player.component.html',
   styleUrl: './player.component.scss'
 })
@@ -25,6 +28,8 @@ export class PlayerComponent implements OnInit {
   isHighlighted = false;
   isWinner = false;
   @Output() stateChange = new EventEmitter<PlayerState>();
+  @Output() openAid = new EventEmitter<PlayerAid>();
+  readonly characters = PLAYER_FABLED;
 
   // Dragging position
   positionX = 0;
