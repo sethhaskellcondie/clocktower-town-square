@@ -64,7 +64,7 @@ describe('AttractBannerComponent', () => {
     const large = el.querySelector('.large-content');
     expect(large?.querySelector('.large-title img')?.getAttribute('alt')).toBe('Blood on the Clocktower');
     expect(large?.querySelector('.large-slots')?.textContent).toContain('Game full — join the waitlist!');
-    expect(large?.querySelector('.large-countdown')?.textContent).toContain('Starting now!');
+    expect(large?.querySelector('.large-countdown')?.textContent).toContain("It's not too late, join mid game!");
     expect(large?.querySelector('.large-footer')?.textContent).toContain('A Seth Condie Project');
   });
 

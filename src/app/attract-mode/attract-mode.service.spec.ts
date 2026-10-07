@@ -25,7 +25,7 @@ describe('AttractModeService', () => {
     expect(service.slotsLeft()).toBe(0);
     expect(service.remainingMs()).toBe(0);
     expect(service.slotsText()).toBe('Game full — join the waitlist!');
-    expect(service.countdownText()).toBe('Starting now!');
+    expect(service.countdownText()).toBe("It's not too late, join mid game!");
   });
 
   it('never drops the seats below 0, and says seat for just 1', () => {
@@ -59,14 +59,14 @@ describe('AttractModeService', () => {
     expect(service.clockText()).toBe('0:59');
     jasmine.clock().tick(59_000);
     expect(service.remainingMs()).toBe(0);
-    expect(service.countdownText()).toBe('Starting now!');
+    expect(service.countdownText()).toBe("It's not too late, join mid game!");
   });
 
   it('resets the countdown to 0', () => {
     service.setMinutes(10);
     service.resetCountdown();
     expect(service.endsAt()).toBe(0);
-    expect(service.countdownText()).toBe('Starting now!');
+    expect(service.countdownText()).toBe("It's not too late, join mid game!");
   });
 
   it('cycles off -> small -> large -> small -> off, then starts over', () => {

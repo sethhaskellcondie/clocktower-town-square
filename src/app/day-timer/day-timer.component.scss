@@ -1,0 +1,91 @@
+$button-purple: #6e6388; // same dusty violet as the project banner text
+$pulse: 2500ms;
+
+// Hangs just above the Day/Night button rather than taking a row in the info
+// table stack, so switching to day doesn't shift the button out from under
+// the cursor
+:host {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-bottom: 12px;
+}
+
+.day-timer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  color: #d1b56a;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
+  user-select: none;
+}
+
+.display {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 160px;
+  height: 72px;
+  white-space: nowrap;
+}
+
+.clock {
+  font-size: 64px;
+  letter-spacing: 3px;
+  font-variant-numeric: tabular-nums;
+}
+
+// Four slow pulses that fill the ten seconds the bell tolls, ending faded
+// out so the text is already gone when it's removed
+.times-up {
+  font-size: 40px;
+  letter-spacing: 2px;
+  animation: times-up-pulse $pulse ease-in-out 4 both;
+}
+
+@keyframes times-up-pulse {
+  0%, 100% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+// Kept quiet like the attract banner's buttons, so they don't pull focus on
+// the TV: no fill or outline until hovered
+.adjust-btn {
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  background-color: transparent;
+  color: $button-purple;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: bold;
+  line-height: 1;
+  text-shadow: none;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+
+  &:hover:not(:disabled) {
+    background-color: rgba(255, 255, 255, 0.08);
+    color: #a59cbd; // a lighter shade of the same violet
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+}
+
+// Still readable without the pulse, just held steady
+@media (prefers-reduced-motion: reduce) {
+  .times-up {
+    animation: none;
+  }
+}

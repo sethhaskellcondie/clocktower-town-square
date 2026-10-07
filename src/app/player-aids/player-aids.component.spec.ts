@@ -37,6 +37,7 @@ describe('PlayerAidsComponent', () => {
     expect(el.querySelector('#player_aid_section_tutorial #player_aid_tutorial_how-to-play-video')).not.toBeNull();
     expect(el.querySelector('#player_aid_section_character-faq #player_aid_character-faq_spy-grimoire')).not.toBeNull();
     expect(el.querySelector('#player_aid_section_storyteller-tips #player_aid_storyteller-tips_attract-mode-hotkeys')).not.toBeNull();
+    expect(el.querySelector('#player_aid_section_storyteller-tips #player_aid_storyteller-tips_day-timer-hotkeys')).not.toBeNull();
   });
 
   it('closes the shelf on a click outside it, but not on one inside it', () => {

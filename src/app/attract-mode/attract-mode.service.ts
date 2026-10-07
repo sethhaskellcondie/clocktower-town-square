@@ -41,7 +41,7 @@ export class AttractModeService implements OnDestroy {
     return hours > 0 ? `${hours}:${String(minutes).padStart(2, '0')}:${seconds}` : `${minutes}:${seconds}`;
   });
 
-  readonly countdownText = computed(() => this.remainingMs() === 0 ? 'Starting now!' : `NEXT GAME IN ${this.clockText()}`);
+  readonly countdownText = computed(() => this.remainingMs() === 0 ? "It's not too late, join mid game!" : `NEXT GAME IN ${this.clockText()}`);
 
   readonly slotsText = computed(() => {
     const slots = this.slotsLeft();
@@ -191,7 +191,7 @@ export class AttractModeService implements OnDestroy {
   }
 }
 
-function isEditable(target: EventTarget | null): boolean {
+export function isEditable(target: EventTarget | null): boolean {
   if (!(target instanceof HTMLElement)) return false;
   return target.isContentEditable || ['INPUT', 'TEXTAREA', 'SELECT'].includes(target.tagName);
 }

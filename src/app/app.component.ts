@@ -6,6 +6,8 @@ import { LandmarkComponent } from './landmark/landmark.component';
 import { PlayerAidsComponent } from './player-aids/player-aids.component';
 import { AttractBannerComponent } from './attract-mode/attract-banner.component';
 import { AttractModeService } from './attract-mode/attract-mode.service';
+import { DayTimerComponent } from './day-timer/day-timer.component';
+import { DayTimerService } from './day-timer/day-timer.service';
 import { NO_DEATHS } from './player-aids/player-aid-library';
 
 interface PlayerData {
@@ -36,7 +38,7 @@ interface DeathToken {
 
 @Component({
   selector: 'app-root',
-  imports: [CommonModule, PlayerComponent, TravelerComponent, LandmarkComponent, PlayerAidsComponent, AttractBannerComponent],
+  imports: [CommonModule, PlayerComponent, TravelerComponent, LandmarkComponent, PlayerAidsComponent, AttractBannerComponent, DayTimerComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
@@ -50,18 +52,18 @@ export class AppComponent implements OnDestroy {
   @ViewChildren(LandmarkComponent) landmarkComponents!: QueryList<LandmarkComponent>;
   @ViewChild(PlayerAidsComponent) playerAids?: PlayerAidsComponent;
 
-  constructor(readonly attract: AttractModeService) {}
+  constructor(readonly attract: AttractModeService, private dayTimer: DayTimerService) {}
 
   activateAttract(): void {
     this.attract.setMode('small');
   }
 
-  // Attract hotkeys. While a player aid is open its own keys win: the arrows
-  // scroll and page through it.
+  // Attract hotkeys, plus the day timer's during the day. While a player aid
+  // is open its own keys win: the arrows scroll and page through it.
   @HostListener('document:keydown', ['$event'])
   onKeydown(event: KeyboardEvent): void {
     if (this.playerAids?.shelf.activeAid) return;
-    if (this.attract.handleKey(event)) {
+    if (this.attract.handleKey(event) || (this.isDay && this.dayTimer.handleKey(event))) {
       event.preventDefault();
     }
   }
@@ -165,6 +167,8 @@ export class AppComponent implements OnDestroy {
       }
       this.revealAvailable = true;
     } else {
+      // The day is over, so its timer (and any bell still tolling) stops
+      this.dayTimer.reset();
       // Day -> night without revealing: restore the night-kill marks
       for (const token of this.pendingDeaths) {
         const c = this.findComponent(token);

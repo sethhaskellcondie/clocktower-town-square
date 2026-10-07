@@ -1,0 +1,11 @@
+<div class="day-timer">
+  <button id="day_timer_down" class="adjust-btn" (click)="timer.nudgeSeconds(-30)" [disabled]="timer.remainingMs() === 0" aria-label="Remove 30 seconds from the day">-</button>
+  <div class="display" aria-live="polite">
+    @if (timer.timesUp()) {
+      <span class="times-up">Time's up, return to your seats.</span>
+    } @else if (timer.remainingMs() > 0) {
+      <span class="clock">{{ timer.clockText() }}</span>
+    }
+  </div>
+  <button id="day_timer_up" class="adjust-btn" (click)="timer.nudgeSeconds(30)" aria-label="Add 30 seconds to the day">+</button>
+</div>

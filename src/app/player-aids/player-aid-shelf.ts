@@ -10,6 +10,7 @@ import {
   CHARACTER_SHEET,
   CHEF_PAIRS,
   CLOCKTOWER_WIKI,
+  DAY_TIMER_HOTKEYS,
   DEMON_FIRST_NIGHT,
   DOOMSAYER_SACRIFICE,
   FIDDLER_CONTEST,
@@ -74,7 +75,7 @@ const SHELF_SECTIONS: PlayerAidSection[] = [
   new PlayerAidSection({
     id: 'storyteller-tips',
     title: 'Storyteller Tips',
-    aids: [ATTRACT_MODE_HOTKEYS],
+    aids: [ATTRACT_MODE_HOTKEYS, DAY_TIMER_HOTKEYS],
   }),
 ];
 

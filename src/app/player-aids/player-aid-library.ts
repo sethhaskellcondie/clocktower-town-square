@@ -568,6 +568,32 @@ export const ATTRACT_MODE_HOTKEYS = new PlayerAid({
   ],
 });
 
+export const DAY_TIMER_HOTKEYS = new PlayerAid({
+  id: 'day-timer-hotkeys',
+  title: 'Day Timer Hotkeys',
+  summary: "Keyboard shortcuts for the day's countdown.",
+  blocks: [
+    {
+      type: 'text',
+      text: ['The timer sits above the ', { text: 'Night', style: 'bold' }, " button during the day. When it runs out, \"Time's up\" shows and the bell tolls."],
+    },
+    { type: 'heading', text: 'Countdown' },
+    {
+      type: 'text',
+      text: [{ text: '=', style: 'bold' }, ': add 30 seconds. ', { text: '-', style: 'bold' }, ': remove 30 seconds.'],
+    },
+    {
+      type: 'text',
+      text: [{ text: 'Shift + =', style: 'bold' }, ' / ', { text: 'Shift + -', style: 'bold' }, ': add or remove 5 minutes.'],
+    },
+    {
+      type: 'text',
+      text: [{ text: '0', style: 'bold' }, ": reset the timer, and stop a \"Time's up\" that's showing."],
+    },
+    { type: 'text', text: "Hotkeys only work during the day, and not while a player aid is open or while typing in a field." },
+  ],
+});
+
 // Not listed on the shelf: only shown by the day's reveal when the night
 // had no deaths
 export const NO_DEATHS = new PlayerAid({

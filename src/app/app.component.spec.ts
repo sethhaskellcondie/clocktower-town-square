@@ -1,6 +1,7 @@
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { AppComponent } from './app.component';
 import { AttractModeService } from './attract-mode/attract-mode.service';
+import { DayTimerService } from './day-timer/day-timer.service';
 import { HOW_TO_PLAY_VIDEO, NO_DEATHS } from './player-aids/player-aid-library';
 
 describe('AppComponent', () => {
@@ -60,6 +61,31 @@ describe('AppComponent', () => {
     shelf.closeAid();
     pressA();
     expect(attract.mode()).toBe('large');
+  });
+
+  it('only takes day timer hotkeys during the day, and clears the timer at night', () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    fixture.detectChanges();
+    const app = fixture.componentInstance;
+    const timer = TestBed.inject(DayTimerService);
+    const compiled = fixture.nativeElement as HTMLElement;
+    const pressPlus = () => document.dispatchEvent(new KeyboardEvent('keydown', { code: 'Equal', key: '=' }));
+
+    pressPlus();
+    expect(timer.endsAt()).toBe(0);
+    expect(compiled.querySelector('app-day-timer')).toBeNull();
+
+    app.toggleDayNight();
+    fixture.detectChanges();
+    expect(compiled.querySelector('app-day-timer')).not.toBeNull();
+    pressPlus();
+    expect(timer.clockText()).toBe('0:30');
+
+    app.toggleDayNight();
+    fixture.detectChanges();
+    expect(timer.endsAt()).toBe(0);
+    expect(compiled.querySelector('app-day-timer')).toBeNull();
+    document.body.classList.remove('day');
   });
 
   it('shows the no-deaths aid when the reveal finds no one died in the night', fakeAsync(() => {
