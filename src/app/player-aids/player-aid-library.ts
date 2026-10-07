@@ -273,29 +273,6 @@ export const BUTLER_VOTING = new PlayerAid({
   ],
 });
 
-export const MAYOR_ABILITY = new PlayerAid({
-  id: 'mayor-ability',
-  title: 'The Mayor',
-  summary: 'A correction to the Mayor ability text on the sheet.',
-  blocks: [
-    {
-      type: 'image',
-      src: 'assets/player_aids/icon_mayor.png',
-      alt: 'Mayor icon: a blue columned town hall',
-    },
-    {
-      type: 'text',
-      text: [
-        'The Mayor\'s text on the sheet says that "',
-        { text: 'a townsfolk', style: 'strike' },
-        ' may die instead" it should say "If only 3 players live & no execution occurs, your team wins. If you die at night, ',
-        { text: 'another player', style: 'bold' },
-        ' might die instead."',
-      ],
-    },
-  ],
-});
-
 export const DEMON_FIRST_NIGHT = new PlayerAid({
   id: 'demon-first-night',
   title: 'The Demon, Night One',

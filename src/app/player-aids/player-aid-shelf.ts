@@ -17,7 +17,6 @@ import {
   GUNSLINGER_SHOT,
   HELLS_LIBRARIAN_SILENCE,
   HOW_TO_PLAY_VIDEO,
-  MAYOR_ABILITY,
   MINIONS_FIRST_NIGHT,
   PLAYER_STATES,
   PLAYER_TRAITS,
@@ -47,7 +46,7 @@ const SHELF_SECTIONS: PlayerAidSection[] = [
   new PlayerAidSection({
     id: 'character-faq',
     title: 'Character FAQ',
-    aids: [UNDERTAKER_EXECUTIONS, CHEF_PAIRS, MAYOR_ABILITY, BUTLER_VOTING, SPY_GRIMOIRE],
+    aids: [UNDERTAKER_EXECUTIONS, CHEF_PAIRS, BUTLER_VOTING, SPY_GRIMOIRE],
   }),
   new PlayerAidSection({
     id: 'tips',

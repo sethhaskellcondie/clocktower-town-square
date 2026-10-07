@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { PlayerAidsComponent } from './player-aids.component';
 import { PlayerAidSection } from './player-aid-section';
 import { PlayerAidShelf } from './player-aid-shelf';
+import { PlayerAid } from './player-aid';
 import { HOW_TO_PLAY_VIDEO } from './player-aid-library';
 
 describe('PlayerAidsComponent', () => {
@@ -105,7 +106,15 @@ describe('PlayerAidsComponent', () => {
   });
 
   it('renders bold and struck-through runs inside paragraph text', () => {
-    click('#player_aid_character-faq_mayor-ability');
+    fixture.componentInstance.shelf.show(new PlayerAid({
+      id: 'styled-text',
+      title: 'Styled Text',
+      blocks: [{
+        type: 'text',
+        text: ['Plain, ', { text: 'a townsfolk', style: 'strike' }, ', ', { text: 'another player', style: 'bold' }],
+      }],
+    }));
+    fixture.detectChanges();
     const paragraph = el.querySelector('.aid-modal-body p');
     expect(paragraph?.querySelector('s')?.textContent).toBe('a townsfolk');
     expect(paragraph?.querySelector('strong')?.textContent).toBe('another player');
