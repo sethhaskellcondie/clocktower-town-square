@@ -115,7 +115,7 @@
 }
 
 @for (traveler of travelers; track traveler.number) {
-  <app-traveler [size]="playerSize" [number]="traveler.number" [initialX]="traveler.initialX" [initialY]="traveler.initialY" [texture]="traveler.texture" [isDay]="isDay" [locked]="isSpinning" (stateChange)="onTravelerStateChange()"></app-traveler>
+  <app-traveler [size]="playerSize" [number]="traveler.number" [initialX]="traveler.initialX" [initialY]="traveler.initialY" [texture]="traveler.texture" [isDay]="isDay" [locked]="isSpinning" (stateChange)="onTravelerStateChange()" (openAid)="playerAids?.show($event)"></app-traveler>
 }
 
 @for (landmark of landmarks; track landmark.number) {

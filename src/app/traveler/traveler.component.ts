@@ -1,6 +1,8 @@
 import { Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { PlayerAid } from '../player-aids/player-aid';
+import { TRAVELER_CHARACTERS, TravelerCharacter } from './traveler-characters';
 
 export type TravelerState = 'alive' | 'marked for death' | 'killed during the night' | 'dead with vote' | 'dead without vote';
 
@@ -9,7 +11,7 @@ export type TravelerState = 'alive' | 'marked for death' | 'killed during the ni
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './traveler.component.html',
-  styleUrl: './traveler.component.scss'
+  styleUrls: ['./traveler.component.scss', './traveler-character.scss']
 })
 export class TravelerComponent implements OnInit {
   // Traveler attributes
@@ -25,6 +27,12 @@ export class TravelerComponent implements OnInit {
   isHighlighted = false;
   isWinner = false;
   @Output() stateChange = new EventEmitter<TravelerState>();
+  @Output() openAid = new EventEmitter<PlayerAid>();
+
+  // The traveler character whose icon sits to the right of the circle
+  character: TravelerCharacter | null = null;
+  readonly characters = TRAVELER_CHARACTERS;
+  isPickingCharacter = false;
 
   // Dragging position
   positionX = 0;
@@ -80,6 +88,33 @@ export class TravelerComponent implements OnInit {
 
   stopEditing(): void {
     this.isEditing = false;
+    this.isPickingCharacter = false;
+  }
+
+  // Circle width for each size, so the character icon can sit beside it
+  get diameter(): number {
+    return { small: 120, medium: 160, large: 200 }[this.size];
+  }
+
+  togglePicker(): void {
+    this.isPickingCharacter = !this.isPickingCharacter;
+  }
+
+  chooseCharacter(character: TravelerCharacter): void {
+    this.character = character;
+    this.isPickingCharacter = false;
+  }
+
+  removeCharacter(): void {
+    this.character = null;
+  }
+
+  // The icon is a shortcut to the character's player aid, except while
+  // editing, when it's covered by the remove button instead
+  onCharacterClick(): void {
+    if (this.character && !this.isEditing) {
+      this.openAid.emit(this.character.aid);
+    }
   }
 
   onNameKeydown(event: KeyboardEvent): void {

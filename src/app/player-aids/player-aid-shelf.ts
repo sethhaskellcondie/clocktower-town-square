@@ -118,6 +118,16 @@ export class PlayerAidShelf {
     this.activeSection = section;
   }
 
+  // Open an aid from outside the shelf (e.g. a traveler icon on the board),
+  // browsing within the first section that lists it
+  show(aid: PlayerAid): void {
+    const section = this.sections
+      .flatMap(s => s.withDescendants())
+      .find(s => s.aids.includes(aid));
+    this.activeAid = aid;
+    this.activeSection = section ?? null;
+  }
+
   // Position of the active aid within the section it was opened from
   private get activeIndex(): number {
     return this.activeAid && this.activeSection ? this.activeSection.aids.indexOf(this.activeAid) : -1;

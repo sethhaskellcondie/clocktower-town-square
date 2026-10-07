@@ -1,0 +1,138 @@
+// Holds the traveler's character icon, or the + to pick one, vertically
+// centred on the circle's right edge. The icon art has generous transparent
+// padding, so it's sized close to the circle to read at the same weight.
+.traveler-aside {
+  position: absolute;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  z-index: 2;
+  user-select: none;
+
+  --icon-size: 124px;
+
+  &.size-medium {
+    --icon-size: 166px;
+  }
+
+  &.size-large {
+    --icon-size: 206px;
+  }
+
+  // The open picker rises above the info tables (z-index 10) so none of
+  // its options end up hidden behind them
+  &.picking {
+    z-index: 11;
+  }
+}
+
+.character {
+  position: relative;
+  width: var(--icon-size);
+  height: var(--icon-size);
+}
+
+.character-icon {
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: none;
+  cursor: pointer;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.55));
+  transition: transform 0.15s;
+
+  img {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  &:hover:not(.editing) {
+    transform: scale(1.08);
+  }
+
+  &.editing {
+    cursor: default;
+  }
+}
+
+// Covers the whole icon while editing, so any click on it removes it
+.character-remove {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 2px solid rgba(255, 255, 255, 0.6);
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  font-size: calc(var(--icon-size) * 0.45);
+  line-height: 1;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: rgba(160, 30, 30, 0.7);
+  }
+}
+
+.character-add {
+  margin-left: 10px;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 2px solid #cfa95d;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.45);
+  color: #cfa95d;
+  font-size: 24px;
+  font-weight: bold;
+  line-height: 1;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+
+  &:hover,
+  &.active {
+    background-color: #cfa95d;
+    color: #2a2218;
+  }
+}
+
+.character-picker {
+  display: flex;
+  gap: 6px;
+  padding: 6px;
+  background-color: rgba(20, 16, 12, 0.92);
+  border: 1px solid #cfa95d;
+  border-radius: 10px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.55);
+}
+
+.character-option {
+  width: 76px;
+  height: 76px;
+  padding: 2px;
+  border: 1px solid transparent;
+  border-radius: 50%;
+  background: none;
+  cursor: pointer;
+  transition: background-color 0.15s, border-color 0.15s;
+
+  img {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  &:hover {
+    background-color: rgba(207, 169, 93, 0.25);
+    border-color: #cfa95d;
+  }
+}

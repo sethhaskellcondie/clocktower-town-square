@@ -1,6 +1,6 @@
 import { Component, ElementRef, HostListener, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { PlayerAidTextPart } from './player-aid';
+import { PlayerAid, PlayerAidTextPart } from './player-aid';
 import { PlayerAidShelf } from './player-aid-shelf';
 
 @Component({
@@ -16,6 +16,11 @@ export class PlayerAidsComponent {
   @ViewChild('modalBody') modalBody?: ElementRef<HTMLElement>;
 
   constructor(private host: ElementRef<HTMLElement>) {}
+
+  show(aid: PlayerAid): void {
+    this.shelf.show(aid);
+    this.scrollToTop();
+  }
 
   showPrevious(): void {
     this.shelf.showPrevious();

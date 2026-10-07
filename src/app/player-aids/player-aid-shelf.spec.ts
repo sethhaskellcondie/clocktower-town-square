@@ -59,6 +59,19 @@ describe('PlayerAidShelf', () => {
     expect(shelf.canBrowse).toBeFalse();
   });
 
+  it('shows an aid from outside the shelf within the first section that lists it', () => {
+    const onlyNested = new PlayerAid({ id: 'only-nested', title: 'Only nested', blocks: [] });
+    const deep = new PlayerAidSection({ id: 'deep', title: 'Deep', aids: [onlyNested] });
+    shelf = new PlayerAidShelf([new PlayerAidSection({ id: 'outer', title: 'Outer', subsections: [deep] }), second]);
+
+    shelf.show(onlyNested);
+    expect(shelf.activeAid).toBe(onlyNested);
+    expect(shelf.activeSection).toBe(deep);
+
+    shelf.show(shared);
+    expect(shelf.activeSection).toBe(second);
+  });
+
   it('steps back from the open aid, then the shelf', () => {
     shelf.toggle();
     shelf.openAid(shared, first);
