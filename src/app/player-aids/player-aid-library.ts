@@ -567,3 +567,11 @@ export const ATTRACT_MODE_HOTKEYS = new PlayerAid({
     { type: 'text', text: "Hotkeys don't work while a player aid is open or while typing in a field." },
   ],
 });
+
+// Not listed on the shelf: only shown by the day's reveal when the night
+// had no deaths
+export const NO_DEATHS = new PlayerAid({
+  id: 'no-deaths',
+  title: 'No Deaths',
+  blocks: [{ type: 'text', text: 'No one died last night.' }],
+});

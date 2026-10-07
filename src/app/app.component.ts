@@ -6,6 +6,7 @@ import { LandmarkComponent } from './landmark/landmark.component';
 import { PlayerAidsComponent } from './player-aids/player-aids.component';
 import { AttractBannerComponent } from './attract-mode/attract-banner.component';
 import { AttractModeService } from './attract-mode/attract-mode.service';
+import { NO_DEATHS } from './player-aids/player-aid-library';
 
 interface PlayerData {
   number: number;
@@ -255,14 +256,16 @@ export class AppComponent implements OnDestroy {
     this.boomSound.currentTime = 0;
     this.boomSound.play().catch(() => {});
     // Pulse everyone about to die, not just the token the spin landed on.
-    // Zero-death night: no pulse, just a short beat before the highlight clears.
+    // Zero-death night: no pulse, the highlight just holds until the
+    // no-deaths aid appears.
     const victims = this.pendingDeaths
       .map(token => this.findComponent(token))
       .filter((c): c is PlayerComponent | TravelerComponent => !!c);
     for (const v of victims) {
       v.isWinner = true;
     }
-    const delay = victims.length > 0 ? 1500 : 600;
+    // The boom's hit lands about 1.5s into the clip, so the deaths (or the
+    // no-deaths aid) apply on it
     this.spinTimer = setTimeout(() => {
       for (const v of victims) {
         v.isWinner = false;
@@ -271,10 +274,16 @@ export class AppComponent implements OnDestroy {
       landed.isHighlighted = false;
       this.applyDeaths();
       this.isSpinning = false;
-    }, delay);
+    }, 1500);
   }
 
+  // A night with no deaths has nobody to mark dead, so the reveal lands on
+  // the no-deaths aid instead, at the moment the deaths would have applied
   private applyDeaths(): void {
+    if (this.pendingDeaths.length === 0) {
+      this.playerAids?.show(NO_DEATHS);
+      return;
+    }
     for (const token of this.pendingDeaths) {
       const c = this.findComponent(token);
       if (c) {

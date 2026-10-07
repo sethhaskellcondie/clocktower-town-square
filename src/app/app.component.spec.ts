@@ -1,7 +1,7 @@
-import { TestBed } from '@angular/core/testing';
+import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { AppComponent } from './app.component';
 import { AttractModeService } from './attract-mode/attract-mode.service';
-import { HOW_TO_PLAY_VIDEO } from './player-aids/player-aid-library';
+import { HOW_TO_PLAY_VIDEO, NO_DEATHS } from './player-aids/player-aid-library';
 
 describe('AppComponent', () => {
   beforeEach(async () => {
@@ -60,5 +60,46 @@ describe('AppComponent', () => {
     shelf.closeAid();
     pressA();
     expect(attract.mode()).toBe('large');
+  });
+
+  it('shows the no-deaths aid when the reveal finds no one died in the night', fakeAsync(() => {
+    const fixture = TestBed.createComponent(AppComponent);
+    fixture.detectChanges();
+    const app = fixture.componentInstance;
+    const shelf = app.playerAids!.shelf;
+
+    app.toggleDayNight();
+    app.startReveal();
+    expect(shelf.activeAid).toBeNull();
+    tick(10000);
+    expect(shelf.activeAid).toBe(NO_DEATHS);
+    expect(app.playerComponents.first.state).toBe('alive');
+
+    app.toggleDayNight();
+    document.body.classList.remove('day');
+  }));
+
+  it('marks the night\'s deaths dead instead of showing the no-deaths aid', fakeAsync(() => {
+    const fixture = TestBed.createComponent(AppComponent);
+    fixture.detectChanges();
+    const app = fixture.componentInstance;
+    app.playerComponents.first.state = 'killed during the night';
+
+    app.toggleDayNight();
+    app.startReveal();
+    tick(10000);
+    expect(app.playerAids!.shelf.activeAid).toBeNull();
+    expect(app.playerComponents.first.state).toBe('dead with vote');
+
+    app.toggleDayNight();
+    document.body.classList.remove('day');
+  }));
+
+  it('keeps the no-deaths aid off the player aids shelf', () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    fixture.detectChanges();
+    const shelf = fixture.componentInstance.playerAids!.shelf;
+    const listed = shelf.sections.flatMap(s => s.withDescendants()).flatMap(s => s.aids);
+    expect(listed).not.toContain(NO_DEATHS);
   });
 });
