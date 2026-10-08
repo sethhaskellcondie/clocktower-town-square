@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1320 560" width="1320" height="560">
+  <defs>
+    <!-- A sheet ghost with one arm raised for its ghost vote, centred on x=0 with its head at y=0. -->
+    <g id="ghost">
+      <path d="M-85,95 A85,85 0 0 1 85,95 L98,262 Q82,292 62,266 Q42,240 21,270 Q0,300 -21,268 Q-42,238 -62,266 Q-82,292 -100,262Z"/>
+      <g fill="none" stroke="#000" stroke-linecap="round">
+        <line x1="62" y1="150" x2="122" y2="52" stroke-width="34"/>
+        <line x1="-66" y1="160" x2="-122" y2="206" stroke-width="30"/>
+      </g>
+      <circle cx="128" cy="40" r="22"/>
+    </g>
+    <g id="ghost-detail" fill="none" stroke="#efe6d6" stroke-linecap="round" stroke-width="3">
+      <path d="M-46,185 Q-52,220 -44,252"/>
+      <path d="M38,195 Q46,225 40,256"/>
+      <path d="M-4,220 Q0,245 -2,270"/>
+    </g>
+
+    <!-- Cream outline with a soft glow, like the character icons. -->
+    <filter id="outline" x="-20%" y="-20%" width="140%" height="140%">
+      <feMorphology in="SourceAlpha" operator="dilate" radius="4" result="grown"/>
+      <feFlood flood-color="#efe6d6"/>
+      <feComposite in2="grown" operator="in" result="edge"/>
+      <feGaussianBlur in="grown" stdDeviation="9" result="blur"/>
+      <feFlood flood-color="#efe6d6" flood-opacity="0.3"/>
+      <feComposite in2="blur" operator="in" result="glow"/>
+      <feMerge><feMergeNode in="glow"/><feMergeNode in="edge"/></feMerge>
+    </filter>
+
+    <!-- Mottled lavender paint, clipped to the ghost. -->
+    <filter id="paint" x="-10%" y="-10%" width="120%" height="120%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="4" seed="11"/>
+      <feColorMatrix type="matrix" values="2.6 0 0 0 -0.8  2.6 0 0 0 -0.8  2.6 0 0 0 -0.8  0 0 0 0 1"/>
+      <feComponentTransfer>
+        <feFuncR type="table" tableValues="0.30 0.44 0.62 0.74 0.84"/>
+        <feFuncG type="table" tableValues="0.24 0.37 0.56 0.69 0.80"/>
+        <feFuncB type="table" tableValues="0.46 0.60 0.76 0.85 0.92"/>
+      </feComponentTransfer>
+      <feComposite in2="SourceAlpha" operator="in"/>
+    </filter>
+  </defs>
+
+  <rect width="1320" height="560" fill="#261f45"/>
+  <rect x="41.5" y="41.5" width="1237" height="477" rx="26" fill="#14101e" stroke="#a59cbd" stroke-width="3"/>
+  <text x="660" y="125" text-anchor="middle" font-family="Georgia, serif" font-style="italic" font-weight="bold" font-size="58" fill="#a59cbd">DEATH IS NOT THE END</text>
+
+  <ellipse cx="660" cy="488" rx="78" ry="9" fill="#a59cbd" opacity="0.18"/>
+  <g transform="translate(660 172) rotate(-4)">
+    <use xlink:href="#ghost" filter="url(#outline)"/>
+    <use xlink:href="#ghost" filter="url(#paint)"/>
+    <use xlink:href="#ghost-detail"/>
+    <ellipse cx="-30" cy="92" rx="13" ry="19" fill="#14101e"/>
+    <ellipse cx="26" cy="92" rx="13" ry="19" fill="#14101e"/>
+    <ellipse cx="-2" cy="146" rx="11" ry="15" fill="#14101e"/>
+  </g>
+</svg>

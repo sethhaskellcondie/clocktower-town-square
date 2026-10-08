@@ -33,7 +33,7 @@ describe('PlayerAidsComponent', () => {
 
   it('groups aids on the shelf under their section titles', () => {
     const titles = Array.from(el.querySelectorAll('.aid-section-title')).map(t => t.textContent?.trim());
-    expect(titles).toEqual(['Introduction', 'The First Night', 'Character FAQ', 'Tips', 'Traveler', 'Fabled', 'Storyteller Tips']);
+    expect(titles).toEqual(['Introduction', 'The First Night', 'The First Day', 'Character FAQ', 'Tips', 'Traveler', 'Fabled', 'Storyteller Tips']);
     expect(el.querySelector('#player_aid_section_tips #player_aid_tips_how-to-play-video')).not.toBeNull();
     expect(el.querySelector('#player_aid_section_character-faq #player_aid_character-faq_spy-grimoire')).not.toBeNull();
     expect(el.querySelector('#player_aid_section_storyteller-tips #player_aid_storyteller-tips_attract-mode-hotkeys')).not.toBeNull();
@@ -162,7 +162,7 @@ describe('PlayerAidsComponent', () => {
     click('#player_aid_previous');
     expect(title()).toBe('Social Deduction');
 
-    click('#player_aid_first-night_minions-first-night');
+    click('#player_aid_first-night_good-team-first-night');
     expect(button('#player_aid_next').disabled).toBeTrue();
   });
 

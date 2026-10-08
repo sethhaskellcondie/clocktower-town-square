@@ -76,10 +76,6 @@ export const TOWN_SQUARE = new PlayerAid({
   summary: 'What the tokens and the table in the middle tell you.',
   blocks: [
     {
-      type: 'text',
-      text: 'We are midway through a 10 player game. For a 10 player game the player spread (Townsfolk, Outsiders, Minions, Demons) can be found on the table in the middle.',
-    },
-    {
       type: 'image',
       src: 'assets/player_aids/town_square_example.png',
       alt: 'A 12 seat town square: five alive players, five dead players in black, and two Travelers in orange, around a table showing 10 players, 5 alive, 4 ghost votes, 2 Travelers, and 7 Townsfolk, 0 Outsiders, 2 Minions, 1 Demon',
@@ -89,7 +85,7 @@ export const TOWN_SQUARE = new PlayerAid({
       text: [
         'There are 5 players still alive and 5 players that are dead, but 4 of those dead players can still vote (',
         { text: 'Ghost Votes, B, C, F, and H', style: 'bold' },
-        ').',
+        '). Player I has used their ghost vote.',
       ],
     },
     {
@@ -98,14 +94,6 @@ export const TOWN_SQUARE = new PlayerAid({
         '2 additional players came late, they enter the game as ',
         { text: 'Travelers', style: 'bold' },
         ', but this is still considered a 10 player game.',
-      ],
-    },
-    {
-      type: 'text',
-      text: [
-        'We are in the middle of a vote and player D has gotten 3 votes, they are ',
-        { text: '"marked for death"', style: 'bold' },
-        '.',
       ],
     },
   ],
@@ -293,72 +281,6 @@ export const THE_FOUR_RULES = new PlayerAid({
   ],
 });
 
-export const PLAYER_STATES = new PlayerAid({
-  id: 'player-states',
-  title: 'Player States',
-  summary: 'Alive or dead, drunk or sober, poisoned or healthy.',
-  blocks: [
-    { type: 'text', text: 'Players have different states.' },
-    {
-      type: 'image',
-      src: 'assets/player_aids/player_state.png',
-      alt: 'A 6 player town square: A, E, and F alive, B alive and marked for death in red, C dead with a ghost vote, and D dead without one',
-    },
-    {
-      type: 'text',
-      text: ['Player A is ', { text: '"Alive"', style: 'bold' }, '.'],
-    },
-    {
-      type: 'text',
-      text: [
-        'Player B is also alive, but has enough votes to be executed so they are ',
-        { text: '"marked for death"', style: 'bold' },
-        '.',
-      ],
-    },
-    {
-      type: 'text',
-      text: [
-        'Player C is ',
-        { text: 'dead', style: 'bold' },
-        ' but still has their ghost vote. Player D is ',
-        { text: 'dead', style: 'bold' },
-        ' and has used their ghost vote.',
-      ],
-    },
-    {
-      type: 'text',
-      text: [
-        'Player E is ',
-        { text: 'drunk', style: 'bold' },
-        ", they don't know it but any information they receive may be false information, all of the other players are ",
-        { text: 'sober', style: 'bold' },
-        '.',
-      ],
-    },
-    {
-      type: 'text',
-      text: [
-        'Player F is ',
-        { text: 'poisoned', style: 'bold' },
-        ', being poisoned works just like being drunk, all of the other players are ',
-        { text: 'healthy', style: 'bold' },
-        '.',
-      ],
-    },
-    {
-      type: 'text',
-      text: [
-        "So player A's state is ",
-        { text: 'Alive, Sober, and Healthy', style: 'bold' },
-        ", while player E's state is ",
-        { text: 'Alive, Drunk, and Healthy', style: 'bold' },
-        '.',
-      ],
-    },
-  ],
-});
-
 export const SPY_GRIMOIRE = new PlayerAid({
   id: 'spy-grimoire',
   title: 'The Spy & the Grimoire',
@@ -431,6 +353,78 @@ export const MINIONS_FIRST_NIGHT = new PlayerAid({
     {
       type: 'text',
       text: 'The Minions all awake at the same time, they can see one another, then they all learn who the demon is, then they fall back asleep.',
+    },
+  ],
+});
+
+export const GOOD_TEAM_FIRST_NIGHT = new PlayerAid({
+  id: 'good-team-first-night',
+  title: 'The Good Team',
+  summary: 'Who wakes on the first night, and who does not.',
+  blocks: [
+    {
+      type: 'image',
+      src: 'assets/player_aids/good_team.png',
+      alt: 'Some Trouble Brewing Townsfolk and Outsiders: the Mayor, the Undertaker, the Butler, and the Drunk',
+    },
+    {
+      type: 'text',
+      text: 'Some good players wake to learn information or use their ability, others do not. Does everyone know what to expect for the first night?',
+    },
+  ],
+});
+
+export const GETTING_STARTED = new PlayerAid({
+  id: 'getting-started',
+  title: 'Getting Started',
+  summary: 'Sharing information, and how many of each player type are in play.',
+  blocks: [
+    {
+      type: 'image',
+      src: 'assets/player_aids/character_sheet_tb.jpg',
+      alt: 'The Trouble Brewing character sheet, with Townsfolk, Outsiders, Minions, and Demons labeled down the left side',
+    },
+    {
+      type: 'text',
+      text: 'Now is the time to discuss what people are willing to share, and what leads the town has on finding the demon. I encourage you to keep your character sheet with you so that you can use it to communicate. Also note the character types on the left side of the sheet (Townsfolk, Outsider, Minion, Demon). Reference the table in the center of the town square to know the spread of these types for this game’s player count.',
+    },
+  ],
+});
+
+export const NOMINATIONS = new PlayerAid({
+  id: 'nominations',
+  title: 'Nominations And Voting',
+  summary: 'Getting to the one execution per day.',
+  blocks: [
+    {
+      type: 'image',
+      src: 'assets/player_aids/nominations.svg',
+      alt: 'Four hands raised to vote',
+    },
+    {
+      type: 'text',
+      text: 'I am about to call for nominations. To nominate a player say the line “I nominate [player].” When a player is nominated, everyone votes on whether or not to execute them. I will start at the nominated player and spin clockwise. If your hand is up when I pass in front of you, that counts as a vote.',
+    },
+    {
+      type: 'text',
+      text: 'Each day, you may vote for as few or as many players as you wish, and whoever has the most votes is executed. This player needs a vote tally of at least 50% of the living players or no execution occurs. On a tie, neither player is executed.',
+    },
+  ],
+});
+
+export const DEATH_IS_NOT_THE_END = new PlayerAid({
+  id: 'death-is-not-the-end',
+  title: 'Death Is Not The End',
+  summary: 'Dead players keep playing, and keep one ghost vote.',
+  blocks: [
+    {
+      type: 'image',
+      src: 'assets/player_aids/ghost.svg',
+      alt: 'A ghost raising its hand to use its ghost vote',
+    },
+    {
+      type: 'text',
+      text: 'If you die (nearly all of you will), you are still playing! The storyteller will not reveal your character, so continue to solve the mystery or bluff! You still talk, you still close your eyes at night, and you still win or lose with your team. Dead players cannot use their ability, they cannot nominate, and they get one ghost vote for the rest of the game. The game is usually decided by ghost votes, and how they are used.',
     },
   ],
 });
