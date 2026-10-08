@@ -34,7 +34,7 @@ describe('PlayerAidsComponent', () => {
   it('groups aids on the shelf under their section titles', () => {
     const titles = Array.from(el.querySelectorAll('.aid-section-title')).map(t => t.textContent?.trim());
     expect(titles).toEqual(['Tutorial', 'Character FAQ', 'Tips', 'Traveler', 'Fabled', 'Storyteller Tips']);
-    expect(el.querySelector('#player_aid_section_tutorial #player_aid_tutorial_how-to-play-video')).not.toBeNull();
+    expect(el.querySelector('#player_aid_section_tips #player_aid_tips_how-to-play-video')).not.toBeNull();
     expect(el.querySelector('#player_aid_section_character-faq #player_aid_character-faq_spy-grimoire')).not.toBeNull();
     expect(el.querySelector('#player_aid_section_storyteller-tips #player_aid_storyteller-tips_attract-mode-hotkeys')).not.toBeNull();
     expect(el.querySelector('#player_aid_section_storyteller-tips #player_aid_storyteller-tips_day-timer-hotkeys')).not.toBeNull();
@@ -42,10 +42,10 @@ describe('PlayerAidsComponent', () => {
 
   it('closes the shelf on a click outside it, but not on one inside it', () => {
     click('#player_aids_toggle');
-    click('#player_aid_section_toggle_tutorial');
+    click('#player_aid_section_toggle_tips');
     expect(el.querySelector('.aids-shelf')?.classList).toContain('open');
 
-    click('#player_aid_tutorial_how-to-play-video');
+    click('#player_aid_tips_how-to-play-video');
     click('.aid-backdrop');
     expect(el.querySelector('.aids-shelf')?.classList).toContain('open');
 
@@ -92,7 +92,7 @@ describe('PlayerAidsComponent', () => {
 
   it('opens an aid in a modal with its text and picture', () => {
     click('#player_aids_toggle');
-    click('#player_aid_tutorial_how-to-play-video');
+    click('#player_aid_tips_how-to-play-video');
     const modal = el.querySelector('.aid-modal');
     expect(modal?.querySelector('h2')?.textContent).toContain('How to Play');
     expect(modal?.textContent).toContain('Scan this to watch a video on how to play Blood on the Clocktower.');
@@ -125,10 +125,10 @@ describe('PlayerAidsComponent', () => {
     const title = () => el.querySelector('.aid-modal h2')?.textContent?.trim();
     const button = (id: string) => el.querySelector(id) as HTMLButtonElement;
 
-    click('#player_aid_tutorial_how-to-play-video');
+    click('#player_aid_tutorial_social-deduction');
     expect(button('#player_aid_previous').disabled).toBeTrue();
     click('#player_aid_next');
-    expect(title()).toBe('Good vs Evil');
+    expect(title()).toBe('The Setting');
     expect(el.querySelector('.aid-modal')).not.toBeNull();
 
     document.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight' }));
@@ -138,27 +138,27 @@ describe('PlayerAidsComponent', () => {
     document.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowLeft' }));
     fixture.detectChanges();
     click('#player_aid_previous');
-    expect(title()).toBe('How to Play');
+    expect(title()).toBe('Social Deduction');
 
     click('#player_aid_tutorial_minions-first-night');
     expect(button('#player_aid_next').disabled).toBeTrue();
   });
 
   it('closes the modal from the close button and the backdrop, but not from inside the modal', () => {
-    click('#player_aid_tutorial_how-to-play-video');
+    click('#player_aid_tips_how-to-play-video');
     click('.aid-modal-body');
     expect(el.querySelector('.aid-modal')).not.toBeNull();
     click('#player_aid_close');
     expect(el.querySelector('.aid-modal')).toBeNull();
 
-    click('#player_aid_tutorial_how-to-play-video');
+    click('#player_aid_tips_how-to-play-video');
     click('.aid-backdrop');
     expect(el.querySelector('.aid-modal')).toBeNull();
   });
 
   it('closes the modal, then the shelf, on Escape', () => {
     click('#player_aids_toggle');
-    click('#player_aid_tutorial_how-to-play-video');
+    click('#player_aid_tips_how-to-play-video');
     document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }));
     fixture.detectChanges();
     expect(el.querySelector('.aid-modal')).toBeNull();

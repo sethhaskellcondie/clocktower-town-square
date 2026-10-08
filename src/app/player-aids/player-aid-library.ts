@@ -39,21 +39,13 @@ export const PLAYER_TRAITS = new PlayerAid({
     {
       type: 'text',
       text: [
-        'Each player will have a ',
-        { text: 'Character', style: 'bold' },
-        ', a ',
-        { text: 'Type', style: 'bold' },
-        ', and an ',
-        { text: 'Alignment', style: 'bold' },
-        ', this tells you how you should play.',
-      ],
-    },
-    {
-      type: 'text',
-      text: [
-        'Your ',
-        { text: 'Character', style: 'bold' },
-        ' is determined by what token you pull from the bag. Ex: Butler, Spy, Imp, or Chef.',
+        'You are about to receive a random character token from the character sheet, this will give you a ',
+        { text: 'character', style: 'bold' },
+        ', ',
+        { text: 'type', style: 'bold' },
+        ', and ',
+        { text: 'alignment', style: 'bold' },
+        '.',
       ],
     },
     {
@@ -63,22 +55,16 @@ export const PLAYER_TRAITS = new PlayerAid({
     },
     {
       type: 'text',
-      text: [
-        'Each Character has a ',
-        { text: 'Type', style: 'bold' },
-        ' found on the left side of your character sheet. The Butler is an Outsider, the Spy is a Minion, the Imp is a Demon, and the Chef is a Townsfolk.',
-      ],
+      text: 'Your character will be the token you draw, like Washerwoman, or Monk, different characters have different abilities, you will need to use these abilities to help your team.',
     },
     {
       type: 'text',
       text: [
-        'Each Character also has a starting ',
-        { text: 'Alignment', style: 'bold' },
-        ', blue is ',
-        { text: 'Good', style: 'bold' },
-        ' and red is ',
-        { text: 'Evil', style: 'bold' },
-        '. This dictates who is on your team and how you win the game. (In advanced games alignment can change during the game.)',
+        'Teams are assigned by color, blue is ',
+        { text: 'good', style: 'bold' },
+        ', and red is ',
+        { text: 'evil', style: 'bold' },
+        '.',
       ],
     },
   ],
@@ -142,6 +128,40 @@ export const CHARACTER_SHEET = new PlayerAid({
   ],
 });
 
+export const SOCIAL_DEDUCTION = new PlayerAid({
+  id: 'social-deduction',
+  title: 'Social Deduction',
+  summary: 'Games like this one.',
+  blocks: [
+    {
+      type: 'image',
+      src: 'assets/player_aids/icon_botc.png',
+      alt: 'Blood on the Clocktower icon: a horned demon face door knocker in purple',
+    },
+    {
+      type: 'text',
+      text: 'Blood on the Clocktower is a social deduction game, if you have played games like Werewolf, Mafia, Among Us, or Secret Hitler this game is similar to those.',
+    },
+  ],
+});
+
+export const THE_SETTING = new PlayerAid({
+  id: 'the-setting',
+  title: 'The Setting',
+  summary: 'Ravenswood Bluff, and a murdered storyteller.',
+  blocks: [
+    {
+      type: 'image',
+      src: 'assets/player_aids/icon_clocktower.svg',
+      alt: 'Clocktower icon: a red silhouette of a tall clocktower',
+    },
+    {
+      type: 'text',
+      text: 'This is not a role playing game but there is a setting and a theme. This game takes place in the town of Ravenswood Bluff and starts with a scream. All of the citizens rush to the town square to find their storyteller has been murdered! Impaled on the hour hand of the clocktower blood dripping on the cobblestones below. The town determines that this is the work of a Demon who will kill at night and take on a human form by day.',
+    },
+  ],
+});
+
 export const GOOD_VS_EVIL = new PlayerAid({
   id: 'good-vs-evil',
   title: 'Good vs Evil',
@@ -155,12 +175,16 @@ export const GOOD_VS_EVIL = new PlayerAid({
     {
       type: 'text',
       text: [
-        'This is a team game, the ',
+        'Your alignment (Good/Evil) tells you how to win, the ',
         { text: 'Good', style: 'bold' },
-        ' team needs to find and execute the demon(s), the ',
+        ' team is trying to find and execute the Demon, before the ',
         { text: 'Evil', style: 'bold' },
-        ' team needs to kill everyone, to the point where they outnumber the good team.',
+        ' team kills everyone.',
       ],
+    },
+    {
+      type: 'text',
+      text: 'If at any point there are only two players left alive, then the Evil team wins.',
     },
   ],
 });

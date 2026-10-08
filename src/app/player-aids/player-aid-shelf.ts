@@ -23,7 +23,9 @@ import {
   PLAYER_TRAITS,
   REVOLUTIONARY_NEIGHBORS,
   SCAPEGOAT_EXECUTION,
+  SOCIAL_DEDUCTION,
   SPY_GRIMOIRE,
+  THE_SETTING,
   THIEF_VOTES,
   TOWN_SQUARE,
   UNDERTAKER_EXECUTIONS,
@@ -36,9 +38,10 @@ const SHELF_SECTIONS: PlayerAidSection[] = [
     id: 'tutorial',
     title: 'Tutorial',
     aids: [
-      HOW_TO_PLAY_VIDEO,
-      GOOD_VS_EVIL,
+      SOCIAL_DEDUCTION,
+      THE_SETTING,
       PLAYER_TRAITS,
+      GOOD_VS_EVIL,
       PLAYER_STATES,
       DEMON_FIRST_NIGHT,
       MINIONS_FIRST_NIGHT,
@@ -52,7 +55,7 @@ const SHELF_SECTIONS: PlayerAidSection[] = [
   new PlayerAidSection({
     id: 'tips',
     title: 'Tips',
-    aids: [CLOCKTOWER_WIKI, CHARACTER_SHEET, TOWN_SQUARE],
+    aids: [HOW_TO_PLAY_VIDEO, CLOCKTOWER_WIKI, CHARACTER_SHEET, TOWN_SQUARE],
   }),
   new PlayerAidSection({
     id: 'traveler',
