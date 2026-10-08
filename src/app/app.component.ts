@@ -52,7 +52,7 @@ export class AppComponent implements OnDestroy {
   @ViewChildren(LandmarkComponent) landmarkComponents!: QueryList<LandmarkComponent>;
   @ViewChild(PlayerAidsComponent) playerAids?: PlayerAidsComponent;
 
-  constructor(readonly attract: AttractModeService, private dayTimer: DayTimerService) {}
+  constructor(readonly attract: AttractModeService, readonly dayTimer: DayTimerService) {}
 
   activateAttract(): void {
     this.attract.setMode('small');

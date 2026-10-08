@@ -19,6 +19,10 @@
         {{ isSpinning ? 'Revealing…' : 'Reveal' }}
       </button>
     }
+
+    @if (isDay) {
+      <button id="bell_button" class="day-night-btn" (click)="dayTimer.tollBell()">Bell</button>
+    }
   </div>
 
   <table id="players_table" class="info-table" [ngClass]="'size-' + tableSize">

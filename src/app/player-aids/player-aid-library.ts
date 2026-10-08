@@ -119,7 +119,7 @@ export const CHARACTER_SHEET = new PlayerAid({
 export const SOCIAL_DEDUCTION = new PlayerAid({
   id: 'social-deduction',
   title: 'Social Deduction',
-  summary: 'Games like this one.',
+  summary: 'Games similar this one.',
   blocks: [
     {
       type: 'image',
@@ -128,7 +128,7 @@ export const SOCIAL_DEDUCTION = new PlayerAid({
     },
     {
       type: 'text',
-      text: 'Blood on the Clocktower is a social deduction game, if you have played games like Werewolf, Mafia, Among Us, or Secret Hitler this game is similar to those.',
+      text: 'Blood on the Clocktower is a social deduction game, if you have played games like Werewolf, Mafia, Among Us, or Secret Hitler (or watched The Traitors) this game is similar to those.',
     },
   ],
 });

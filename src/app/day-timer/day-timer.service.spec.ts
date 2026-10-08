@@ -85,6 +85,31 @@ describe('DayTimerService', () => {
     expect(service.endsAt()).toBe(0);
   });
 
+  it('tolls the bell on demand for 10 seconds, then fades it out', () => {
+    service.setMinutes(2);
+    service.tollBell();
+    expect(play).toHaveBeenCalledTimes(1);
+    expect(service.timesUp()).toBeFalse();
+    expect(service.clockText()).toBe('2:00');
+
+    pause.calls.reset();
+    jasmine.clock().tick(10_000 + 1500);
+    expect(service.bell.volume).toBeLessThan(1);
+    expect(pause).not.toHaveBeenCalled();
+
+    jasmine.clock().tick(1500);
+    expect(pause).toHaveBeenCalled();
+    expect(service.bell.volume).toBe(1);
+  });
+
+  it('fades a toll out early on reset', () => {
+    service.tollBell();
+    service.reset();
+    jasmine.clock().tick(3000);
+    expect(pause).toHaveBeenCalled();
+    expect(service.bell.volume).toBe(1);
+  });
+
   it('starts a new countdown over a tolling bell when time is added', () => {
     service.setMinutes(1);
     jasmine.clock().tick(60_000);

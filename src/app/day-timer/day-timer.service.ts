@@ -32,11 +32,13 @@ export class DayTimerService implements OnDestroy {
 
   private tickTimer = setInterval(() => this.refreshNow(), 1000);
   private timesUpTimer: ReturnType<typeof setTimeout> | null = null;
+  private tollTimer: ReturnType<typeof setTimeout> | null = null;
   private fadeTimer: ReturnType<typeof setInterval> | null = null;
 
   ngOnDestroy(): void {
     clearInterval(this.tickTimer);
     this.clearTimesUpTimer();
+    this.clearTollTimer();
     this.stopBell();
   }
 
@@ -56,10 +58,21 @@ export class DayTimerService implements OnDestroy {
     this.endsAt.set(minutes > 0 ? now + minutes * 60 * SECOND_MS : 0);
   }
 
-  // Stops the countdown, and cuts a ringing "Time's up" short
+  // Stops the countdown, and cuts a ringing "Time's up" or toll short
   reset(): void {
     this.endsAt.set(0);
     this.endTimesUp();
+    this.endToll();
+  }
+
+  // Tolls the bell on demand, for as long as "Time's up" would, without
+  // touching the countdown. Pressing it again restarts the toll.
+  tollBell(): void {
+    this.clearTollTimer();
+    this.stopBell();
+    this.bell.currentTime = 0;
+    this.bell.play().catch(() => {});
+    this.tollTimer = setTimeout(() => this.endToll(), TIMES_UP_MS);
   }
 
   // Returns true when the key was a day timer hotkey, so the caller can
@@ -97,6 +110,7 @@ export class DayTimerService implements OnDestroy {
 
   private startTimesUp(): void {
     this.clearTimesUpTimer();
+    this.clearTollTimer();
     this.stopBell();
     this.timesUp.set(true);
     this.bell.currentTime = 0;
@@ -109,6 +123,12 @@ export class DayTimerService implements OnDestroy {
     if (!this.timesUp()) return;
     this.clearTimesUpTimer();
     this.timesUp.set(false);
+    this.fadeOutBell();
+  }
+
+  private endToll(): void {
+    if (!this.tollTimer) return;
+    this.clearTollTimer();
     this.fadeOutBell();
   }
 
@@ -137,6 +157,13 @@ export class DayTimerService implements OnDestroy {
     if (this.timesUpTimer) {
       clearTimeout(this.timesUpTimer);
       this.timesUpTimer = null;
+    }
+  }
+
+  private clearTollTimer(): void {
+    if (this.tollTimer) {
+      clearTimeout(this.tollTimer);
+      this.tollTimer = null;
     }
   }
 }
