@@ -28,11 +28,23 @@ describe('PlayerAidShelf', () => {
     expect(shelf.activeSection).toBeNull();
   });
 
-  it('expands every section, nested ones included, on show all', () => {
-    shelf.showAll();
-    expect([first, nested, second].every(section => shelf.isExpanded(section))).toBeTrue();
-    shelf.hideAll();
-    expect([first, nested, second].some(section => shelf.isExpanded(section))).toBeFalse();
+  it('keeps only one section open at a time, along with the sections it is nested in', () => {
+    shelf.toggleSection(first);
+    shelf.toggleSection(nested);
+    expect(shelf.isExpanded(first)).toBeTrue();
+    expect(shelf.isExpanded(nested)).toBeTrue();
+
+    shelf.toggleSection(second);
+    expect(shelf.isExpanded(second)).toBeTrue();
+    expect(shelf.isExpanded(first)).toBeFalse();
+    expect(shelf.isExpanded(nested)).toBeFalse();
+
+    // Closing a section closes what's nested in it, so it reopens collapsed
+    shelf.toggleSection(nested);
+    shelf.toggleSection(first);
+    expect(shelf.isExpanded(nested)).toBeFalse();
+    shelf.toggleSection(first);
+    expect(shelf.isExpanded(nested)).toBeFalse();
   });
 
   it('steps through the aids of the section the aid was opened from', () => {

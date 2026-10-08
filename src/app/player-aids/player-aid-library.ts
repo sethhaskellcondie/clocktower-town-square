@@ -157,7 +157,7 @@ export const THE_SETTING = new PlayerAid({
     },
     {
       type: 'text',
-      text: 'This is not a role playing game but there is a setting and a theme. This game takes place in the town of Ravenswood Bluff and starts with a scream. All of the citizens rush to the town square to find their storyteller has been murdered! Impaled on the hour hand of the clocktower blood dripping on the cobblestones below. The town determines that this is the work of a Demon who will kill at night and take on a human form by day.',
+      text: 'This is not a role playing game but there is a setting and a theme. This game takes place in the town of Ravenswood Bluff and starts with a scream. All of the citizens rush to the town square to find their storyteller has been murdered! Impaled on the hour hand of the clocktower blood dripping on the cobblestones below. The town correctly determines that this is the work of a Demon who will kill at night and take on a human form by day.',
     },
   ],
 });
@@ -185,6 +185,110 @@ export const GOOD_VS_EVIL = new PlayerAid({
     {
       type: 'text',
       text: 'If at any point there are only two players left alive, then the Evil team wins.',
+    },
+  ],
+});
+
+export const DAY_AND_NIGHT = new PlayerAid({
+  id: 'day-and-night',
+  title: 'Day and Night',
+  summary: 'The two phases of the game.',
+  blocks: [
+    {
+      type: 'image',
+      src: 'assets/player_aids/day_and_night.svg',
+      alt: 'A gold sun for the day beside a violet crescent moon and stars for the night',
+    },
+    {
+      type: 'text',
+      text: [
+        'The game is split up into two phases, ',
+        { text: 'Day', style: 'bold' },
+        ' and ',
+        { text: 'Night', style: 'bold' },
+        '.',
+      ],
+    },
+    {
+      type: 'text',
+      text: 'During the day the town will discuss their options, share information, nominate, and publicly execute different players.',
+    },
+    {
+      type: 'text',
+      text: 'At night everyone will close their eyes. I will wake up different players so they can use their ability or gain information. At night you may still talk but I will be silent and will communicate using hand signals.',
+    },
+  ],
+});
+
+export const HAND_SIGNALS = new PlayerAid({
+  id: 'hand-signals',
+  title: 'Hand Signals',
+  summary: 'How the storyteller communicates at night.',
+  blocks: [
+    {
+      type: 'list',
+      items: ['Eyes Open = Two taps', 'Eyes Closed', 'Yes/No', 'Good/Evil', 'Numbers (0, 1, 2, 3)', 'Choose a player', 'Are you sure?'],
+    },
+  ],
+});
+
+export const DRUNK_AND_POISONED = new PlayerAid({
+  id: 'drunk-and-poisoned',
+  title: 'Drunk and Poisoned',
+  summary: 'Why some of your information may be false.',
+  blocks: [
+    {
+      type: 'image',
+      src: 'assets/player_aids/drunk_and_poisoned.png',
+      alt: 'The Drunk, a blue tankard, or the Poisoner, a red vial of poison',
+    },
+    {
+      type: 'text',
+      text: 'This is a game about using the information provided to find the Demon, but not all of that information is true, the evil players should be lying about their characters and their information. Some of the misinformation comes from me.',
+    },
+    {
+      type: 'text',
+      text: [
+        'If your character is ',
+        { text: 'drunk', style: 'bold' },
+        ' or ',
+        { text: 'poisoned', style: 'bold' },
+        " then you don't have an ability but I will pretend that you do. Any information that I give to a drunk or poisoned player may be false.",
+      ],
+    },
+  ],
+});
+
+export const THE_FOUR_RULES = new PlayerAid({
+  id: 'the-four-rules',
+  title: 'The Four Rules',
+  summary: 'All you really need to remember.',
+  blocks: [
+    {
+      type: 'text',
+      text: 'This can be a lot of information to take in at once, so to keep things simple, there are only four things you need to remember:',
+    },
+    {
+      type: 'list',
+      ordered: true,
+      items: [
+        [
+          { text: 'You may say whatever you want at any time.', style: 'bold' },
+          ' - This is a talking game. You can talk publicly with the group or have private conversations, it is up to you.',
+        ],
+        [
+          { text: 'No peeking.', style: 'bold' },
+          " - Please keep your character token a secret, and never look into the Grimoire.",
+        ],
+        [
+          { text: 'Ask me any questions you need to.', style: 'bold' },
+          " - If you get confused, or don't understand something ask me. Let me know when you have a question, and we can talk in private so that nobody knows what question you asked.",
+        ],
+        [
+          { text: 'Play nice. (Magic Circle)', style: 'bold' },
+          ' - This is a game about deception and trickery, so please treat others with respect and consideration. Kill with grace, and die with dignity.',
+        ],
+      ],
     },
   ],
 });
@@ -615,6 +719,26 @@ export const DAY_TIMER_HOTKEYS = new PlayerAid({
       text: [{ text: '0', style: 'bold' }, ": reset the timer, and stop a \"Time's up\" that's showing."],
     },
     { type: 'text', text: "Hotkeys only work during the day, and not while a player aid is open or while typing in a field." },
+  ],
+});
+
+export const PLAYER_AID_HOTKEYS = new PlayerAid({
+  id: 'player-aid-hotkeys',
+  title: 'Player Aid Hotkeys',
+  summary: 'Keyboard shortcuts for browsing player aids.',
+  blocks: [
+    { type: 'heading', text: 'Browsing' },
+    {
+      type: 'text',
+      text: [{ text: '←', style: 'bold' }, ': the previous aid. ', { text: '→', style: 'bold' }, ': the next aid.'],
+    },
+    { type: 'text', text: 'Arrows step through the section the aid was opened from.' },
+    { type: 'heading', text: 'Closing' },
+    {
+      type: 'text',
+      text: [{ text: 'Esc', style: 'bold' }, ': close the open aid, then the shelf.'],
+    },
+    { type: 'text', text: 'The arrows only work while a player aid is open.' },
   ],
 });
 

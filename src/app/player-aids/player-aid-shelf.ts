@@ -10,21 +10,26 @@ import {
   CHARACTER_SHEET,
   CHEF_PAIRS,
   CLOCKTOWER_WIKI,
+  DAY_AND_NIGHT,
   DAY_TIMER_HOTKEYS,
   DEMON_FIRST_NIGHT,
   DOOMSAYER_SACRIFICE,
+  DRUNK_AND_POISONED,
   FIDDLER_CONTEST,
   GOOD_VS_EVIL,
   GUNSLINGER_SHOT,
+  HAND_SIGNALS,
   HELLS_LIBRARIAN_SILENCE,
   HOW_TO_PLAY_VIDEO,
   MINIONS_FIRST_NIGHT,
+  PLAYER_AID_HOTKEYS,
   PLAYER_STATES,
   PLAYER_TRAITS,
   REVOLUTIONARY_NEIGHBORS,
   SCAPEGOAT_EXECUTION,
   SOCIAL_DEDUCTION,
   SPY_GRIMOIRE,
+  THE_FOUR_RULES,
   THE_SETTING,
   THIEF_VOTES,
   TOWN_SQUARE,
@@ -35,17 +40,23 @@ import {
 // can be listed in as many sections as it's useful in.
 const SHELF_SECTIONS: PlayerAidSection[] = [
   new PlayerAidSection({
-    id: 'tutorial',
-    title: 'Tutorial',
+    id: 'introduction',
+    title: 'Introduction',
     aids: [
       SOCIAL_DEDUCTION,
       THE_SETTING,
       PLAYER_TRAITS,
       GOOD_VS_EVIL,
-      PLAYER_STATES,
-      DEMON_FIRST_NIGHT,
-      MINIONS_FIRST_NIGHT,
+      DAY_AND_NIGHT,
+      HAND_SIGNALS,
+      DRUNK_AND_POISONED,
+      THE_FOUR_RULES,
     ],
+  }),
+  new PlayerAidSection({
+    id: 'first-night',
+    title: 'The First Night',
+    aids: [PLAYER_STATES, DEMON_FIRST_NIGHT, MINIONS_FIRST_NIGHT],
   }),
   new PlayerAidSection({
     id: 'character-faq',
@@ -78,7 +89,7 @@ const SHELF_SECTIONS: PlayerAidSection[] = [
   new PlayerAidSection({
     id: 'storyteller-tips',
     title: 'Storyteller Tips',
-    aids: [ATTRACT_MODE_HOTKEYS, DAY_TIMER_HOTKEYS],
+    aids: [ATTRACT_MODE_HOTKEYS, DAY_TIMER_HOTKEYS, PLAYER_AID_HOTKEYS],
   }),
 ];
 
@@ -89,7 +100,8 @@ export class PlayerAidShelf {
   activeAid: PlayerAid | null = null;
   // The section the active aid was opened from, since an aid can be in several
   activeSection: PlayerAidSection | null = null;
-  // Sections start collapsed; ids of the ones the user has opened
+  // Sections start collapsed. Only one is open at a time, so this holds the
+  // ids of the open section and the sections it's nested in.
   private expandedSections = new Set<string>();
 
   constructor(readonly sections: readonly PlayerAidSection[] = SHELF_SECTIONS) {}
@@ -102,18 +114,28 @@ export class PlayerAidShelf {
     return this.expandedSections.has(section.id);
   }
 
+  // Opening a section closes every other one, apart from the sections it's
+  // nested in; closing a section closes the sections nested in it too
   toggleSection(section: PlayerAidSection): void {
-    if (!this.expandedSections.delete(section.id)) {
-      this.expandedSections.add(section.id);
+    if (this.isExpanded(section)) {
+      section.withDescendants().forEach(s => this.expandedSections.delete(s.id));
+    } else {
+      this.expandedSections = new Set(this.pathTo(section, this.sections).map(s => s.id));
     }
   }
 
-  showAll(): void {
-    this.expandedSections = new Set(this.sections.flatMap(section => section.withDescendants()).map(section => section.id));
-  }
-
-  hideAll(): void {
-    this.expandedSections.clear();
+  // The chain of sections from the top of the shelf down to the given one
+  private pathTo(target: PlayerAidSection, sections: readonly PlayerAidSection[]): PlayerAidSection[] {
+    for (const section of sections) {
+      if (section === target) {
+        return [section];
+      }
+      const path = this.pathTo(target, section.subsections);
+      if (path.length) {
+        return [section, ...path];
+      }
+    }
+    return [];
   }
 
   openAid(aid: PlayerAid, section: PlayerAidSection): void {

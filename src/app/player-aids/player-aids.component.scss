@@ -51,31 +51,6 @@
   }
 }
 
-.aid-shelf-actions {
-  display: flex;
-  gap: 8px;
-}
-
-.aid-shelf-action {
-  flex: 1;
-  padding: 6px 8px;
-  font-size: 12px;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  background-color: rgba(255, 255, 255, 0.08);
-  color: rgba(255, 255, 255, 0.85);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.2s, border-color 0.2s, color 0.2s;
-
-  &:hover {
-    background-color: rgba(255, 255, 255, 0.16);
-    border-color: #d1b56a;
-    color: #d1b56a;
-  }
-}
-
 .aid-section {
   display: flex;
   flex-direction: column;
@@ -328,6 +303,16 @@
 
   p {
     margin: 0 0 16px;
+  }
+
+  ul, ol {
+    margin: 0 0 16px;
+    padding-left: 1.5em;
+  }
+
+  // Numbered items tend to run to several lines, so give them room
+  ol > li + li {
+    margin-top: 12px;
   }
 
   // Character icons have generous transparent padding, so they're drawn

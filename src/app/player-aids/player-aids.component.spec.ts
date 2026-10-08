@@ -33,7 +33,7 @@ describe('PlayerAidsComponent', () => {
 
   it('groups aids on the shelf under their section titles', () => {
     const titles = Array.from(el.querySelectorAll('.aid-section-title')).map(t => t.textContent?.trim());
-    expect(titles).toEqual(['Tutorial', 'Character FAQ', 'Tips', 'Traveler', 'Fabled', 'Storyteller Tips']);
+    expect(titles).toEqual(['Introduction', 'The First Night', 'Character FAQ', 'Tips', 'Traveler', 'Fabled', 'Storyteller Tips']);
     expect(el.querySelector('#player_aid_section_tips #player_aid_tips_how-to-play-video')).not.toBeNull();
     expect(el.querySelector('#player_aid_section_character-faq #player_aid_character-faq_spy-grimoire')).not.toBeNull();
     expect(el.querySelector('#player_aid_section_storyteller-tips #player_aid_storyteller-tips_attract-mode-hotkeys')).not.toBeNull();
@@ -55,29 +55,26 @@ describe('PlayerAidsComponent', () => {
   });
 
   it('collapses each section until its header is clicked', () => {
-    const section = () => el.querySelector('#player_aid_section_tutorial');
-    const toggle = () => el.querySelector('#player_aid_section_toggle_tutorial');
+    const section = () => el.querySelector('#player_aid_section_introduction');
+    const toggle = () => el.querySelector('#player_aid_section_toggle_introduction');
     expect(section()?.classList).not.toContain('expanded');
     expect(toggle()?.getAttribute('aria-expanded')).toBe('false');
 
-    click('#player_aid_section_toggle_tutorial');
+    click('#player_aid_section_toggle_introduction');
     expect(section()?.classList).toContain('expanded');
     expect(toggle()?.getAttribute('aria-expanded')).toBe('true');
     expect(el.querySelector('#player_aid_section_character-faq')?.classList).not.toContain('expanded');
 
-    click('#player_aid_section_toggle_tutorial');
+    click('#player_aid_section_toggle_introduction');
     expect(section()?.classList).not.toContain('expanded');
   });
 
-  it('expands and collapses every section from the show all and hide all buttons', () => {
-    const expanded = () => el.querySelectorAll('.aid-section.expanded').length;
-    const total = el.querySelectorAll('.aid-section').length;
-
-    click('#player_aids_show_all');
-    expect(expanded()).toBe(total);
-
-    click('#player_aids_hide_all');
-    expect(expanded()).toBe(0);
+  it('closes the open section when another one is opened', () => {
+    click('#player_aid_section_toggle_introduction');
+    click('#player_aid_section_toggle_character-faq');
+    expect(el.querySelector('#player_aid_section_character-faq')?.classList).toContain('expanded');
+    expect(el.querySelector('#player_aid_section_introduction')?.classList).not.toContain('expanded');
+    expect(el.querySelectorAll('.aid-section.expanded').length).toBe(1);
   });
 
   it('marks a section with no aids as empty', () => {
@@ -121,11 +118,36 @@ describe('PlayerAidsComponent', () => {
     expect(paragraph?.querySelector('strong')?.textContent).toBe('another player');
   });
 
+  it('renders a list block as a bulleted list', () => {
+    fixture.componentInstance.shelf.show(new PlayerAid({
+      id: 'listed',
+      title: 'Listed',
+      blocks: [{ type: 'list', items: ['Eyes Open', 'Eyes Closed'] }],
+    }));
+    fixture.detectChanges();
+    const items = Array.from(el.querySelectorAll('.aid-modal-body ul li')).map(li => li.textContent);
+    expect(items).toEqual(['Eyes Open', 'Eyes Closed']);
+  });
+
+  it('renders an ordered list block as a numbered list with styled text', () => {
+    fixture.componentInstance.shelf.show(new PlayerAid({
+      id: 'numbered',
+      title: 'Numbered',
+      blocks: [{ type: 'list', ordered: true, items: [[{ text: 'No peeking.', style: 'bold' }, ' Keep it secret.'], 'Play nice.'] }],
+    }));
+    fixture.detectChanges();
+    const items = el.querySelectorAll('.aid-modal-body ol li');
+    expect(el.querySelector('.aid-modal-body ul')).toBeNull();
+    expect(items.length).toBe(2);
+    expect(items[0].querySelector('strong')?.textContent).toBe('No peeking.');
+    expect(items[1].textContent).toBe('Play nice.');
+  });
+
   it('moves between the aids of a section with the arrow buttons and keys', () => {
     const title = () => el.querySelector('.aid-modal h2')?.textContent?.trim();
     const button = (id: string) => el.querySelector(id) as HTMLButtonElement;
 
-    click('#player_aid_tutorial_social-deduction');
+    click('#player_aid_introduction_social-deduction');
     expect(button('#player_aid_previous').disabled).toBeTrue();
     click('#player_aid_next');
     expect(title()).toBe('The Setting');
@@ -140,7 +162,7 @@ describe('PlayerAidsComponent', () => {
     click('#player_aid_previous');
     expect(title()).toBe('Social Deduction');
 
-    click('#player_aid_tutorial_minions-first-night');
+    click('#player_aid_first-night_minions-first-night');
     expect(button('#player_aid_next').disabled).toBeTrue();
   });
 

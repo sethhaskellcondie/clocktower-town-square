@@ -3,10 +3,6 @@
 </button>
 
 <nav class="aids-shelf" [class.open]="shelf.open" aria-label="Player aids">
-  <div class="aid-shelf-actions">
-    <button id="player_aids_show_all" class="aid-shelf-action" (click)="shelf.showAll()">Show all</button>
-    <button id="player_aids_hide_all" class="aid-shelf-action" (click)="shelf.hideAll()">Hide all</button>
-  </div>
   @for (section of shelf.sections; track section.id) {
     <ng-container *ngTemplateOutlet="sectionTpl; context: { $implicit: section, depth: 0 }" />
   }
@@ -44,6 +40,22 @@
   </section>
 </ng-template>
 
+<!-- Renders a run of text: plain, with inline icons, or with bold and
+     struck-through parts. Shared by paragraphs and list items. -->
+<ng-template #textTpl let-text>
+  @for (part of textParts(text); track $index) {
+    @if (part.icon) {
+      <img class="inline-icon" [src]="part.icon" [alt]="part.alt ?? ''">
+    } @else if (part.style === 'bold') {
+      <strong>{{ part.text }}</strong>
+    } @else if (part.style === 'strike') {
+      <s>{{ part.text }}</s>
+    } @else {
+      <span>{{ part.text }}</span>
+    }
+  }
+</ng-template>
+
 @if (shelf.activeAid; as activeAid) {
   <div class="aid-backdrop" (click)="shelf.closeAid()">
     @if (shelf.canBrowse) {
@@ -64,19 +76,22 @@
               <h3>{{ block.text }}</h3>
             }
             @case ('text') {
-              <p>
-                @for (part of textParts(block.text); track $index) {
-                  @if (part.icon) {
-                    <img class="inline-icon" [src]="part.icon" [alt]="part.alt ?? ''">
-                  } @else if (part.style === 'bold') {
-                    <strong>{{ part.text }}</strong>
-                  } @else if (part.style === 'strike') {
-                    <s>{{ part.text }}</s>
-                  } @else {
-                    <span>{{ part.text }}</span>
+              <p><ng-container *ngTemplateOutlet="textTpl; context: { $implicit: block.text }" /></p>
+            }
+            @case ('list') {
+              @if (block.ordered) {
+                <ol>
+                  @for (item of block.items; track $index) {
+                    <li><ng-container *ngTemplateOutlet="textTpl; context: { $implicit: item }" /></li>
                   }
-                }
-              </p>
+                </ol>
+              } @else {
+                <ul>
+                  @for (item of block.items; track $index) {
+                    <li><ng-container *ngTemplateOutlet="textTpl; context: { $implicit: item }" /></li>
+                  }
+                </ul>
+              }
             }
             @case ('image') {
               <figure>

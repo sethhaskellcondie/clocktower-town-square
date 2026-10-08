@@ -3,6 +3,7 @@
 export type PlayerAidBlock =
   | { type: 'heading'; text: string }
   | { type: 'text'; text: string | PlayerAidTextPart[] }
+  | { type: 'list'; items: (string | PlayerAidTextPart[])[]; ordered?: boolean }
   | { type: 'image'; src: string; alt: string; caption?: string };
 
 // A paragraph can mix plain text with small inline icons, e.g. a character
