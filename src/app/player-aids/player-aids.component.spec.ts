@@ -34,28 +34,59 @@ describe('PlayerAidsComponent', () => {
 
   it('groups aids on the shelf under their section titles', () => {
     const titles = Array.from(el.querySelectorAll('.aid-section-title')).map(t => t.textContent?.trim());
-    expect(titles).toEqual(['Introduction', 'The First Night', 'The First Day', 'Character FAQ', 'Tips', 'Traveler', 'Fabled', 'Storyteller Tips']);
+    expect(titles).toEqual(['Introduction', 'The First Night', 'The First Day', 'Tips', 'Character FAQ (TB)', 'Character FAQ (BMR)', 'Travelers (TB)', 'Travelers (BMR)', 'Fabled', 'Storyteller Tips']);
     expect(el.querySelector('#player_aid_section_tips #player_aid_tips_how-to-play-video')).not.toBeNull();
     expect(el.querySelector('#player_aid_section_character-faq #player_aid_character-faq_spy-grimoire')).not.toBeNull();
     expect(el.querySelector('#player_aid_section_storyteller-tips #player_aid_storyteller-tips_attract-mode-hotkeys')).not.toBeNull();
     expect(el.querySelector('#player_aid_section_storyteller-tips #player_aid_storyteller-tips_day-timer-hotkeys')).not.toBeNull();
   });
 
-  it('switches the shelf between scripts, starting on All', () => {
+  it('picks the script from a dropdown under the script header, starting on All', () => {
     const titles = () => Array.from(el.querySelectorAll('.aid-section-title')).map(t => t.textContent?.trim());
-    const scripts = Array.from(el.querySelectorAll('.aid-script-btn')).map(b => b.textContent?.trim());
-    expect(scripts).toEqual(['All', 'Trouble Brewing']);
-    expect(el.querySelector('#player_aid_script_all')?.getAttribute('aria-pressed')).toBe('true');
+    const header = () => el.querySelector('#player_aid_script_toggle');
+    expect(header()?.textContent).toContain('Script: All');
+    expect(header()?.getAttribute('aria-expanded')).toBe('false');
+    expect(el.querySelector('.aid-script-menu')).toBeNull();
 
+    click('#player_aid_script_toggle');
+    const options = Array.from(el.querySelectorAll('.aid-script-option')).map(o => o.textContent?.trim());
+    expect(options).toEqual(['All', 'Trouble Brewing', 'Bad Moon Rising']);
+    expect(el.querySelector('#player_aid_script_all')?.getAttribute('aria-selected')).toBe('true');
+
+    // Switching scripts starts the sections collapsed
+    click('#player_aid_section_toggle_tips');
+    click('#player_aid_script_toggle');
     click('#player_aid_script_trouble-brewing');
-    expect(el.querySelector('#player_aid_script_trouble-brewing')?.classList).toContain('active');
-    expect(el.querySelector('#player_aid_script_all')?.classList).not.toContain('active');
-    expect(titles()).toEqual([]);
-    expect(el.querySelector('.aids-shelf > .aid-empty')?.textContent).toContain('No sections yet.');
+    expect(el.querySelector('.aid-script-menu')).toBeNull();
+    expect(header()?.textContent).toContain('Script: Trouble Brewing');
+    expect(titles()).toContain('Character FAQ (TB)');
+    expect(el.querySelector('#player_aid_section_tips')?.classList).not.toContain('expanded');
 
+    click('#player_aid_script_toggle');
+    expect(el.querySelector('#player_aid_script_trouble-brewing')?.classList).toContain('selected');
+    expect(el.querySelector('#player_aid_script_all')?.classList).not.toContain('selected');
     click('#player_aid_script_all');
-    expect(titles()[0]).toBe('Introduction');
-    expect(el.querySelector('.aids-shelf > .aid-empty')).toBeNull();
+    expect(header()?.textContent).toContain('Script: All');
+  });
+
+  it('marks a script with no sections as empty', () => {
+    fixture.componentInstance.shelf = new PlayerAidShelf([new PlayerAidScript({ id: 'bare', title: 'Bare' })]);
+    fixture.detectChanges();
+    expect(el.querySelector('.aids-shelf-sections > .aid-empty')?.textContent).toContain('No sections yet.');
+  });
+
+  it('closes the script dropdown on a click elsewhere, then on Escape before the shelf', () => {
+    click('#player_aids_toggle');
+    click('#player_aid_script_toggle');
+    click('#player_aid_section_toggle_tips');
+    expect(el.querySelector('.aid-script-menu')).toBeNull();
+    expect(el.querySelector('.aids-shelf')?.classList).toContain('open');
+
+    click('#player_aid_script_toggle');
+    document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }));
+    fixture.detectChanges();
+    expect(el.querySelector('.aid-script-menu')).toBeNull();
+    expect(el.querySelector('.aids-shelf')?.classList).toContain('open');
   });
 
   it('closes the shelf on a click outside it, but not on one inside it', () => {

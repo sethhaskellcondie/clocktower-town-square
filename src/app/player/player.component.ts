@@ -29,7 +29,7 @@ export class PlayerComponent implements OnInit {
   isWinner = false;
   @Output() stateChange = new EventEmitter<PlayerState>();
   @Output() openAid = new EventEmitter<PlayerAid>();
-  readonly characters = PLAYER_FABLED;
+  readonly characterRows = [PLAYER_FABLED];
 
   // Dragging position
   positionX = 0;

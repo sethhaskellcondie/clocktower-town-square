@@ -14,6 +14,7 @@ export class PlayerAidsComponent {
   shelf = new PlayerAidShelf();
 
   @ViewChild('modalBody') modalBody?: ElementRef<HTMLElement>;
+  @ViewChild('scriptPicker') scriptPicker?: ElementRef<HTMLElement>;
 
   constructor(private host: ElementRef<HTMLElement>) {}
 
@@ -50,10 +51,14 @@ export class PlayerAidsComponent {
   // aid modal live inside this component too, so clicks there are left alone.
   // composedPath is read rather than contains(), because the click may have
   // already removed its target (e.g. closing the modal from the backdrop).
+  // The script dropdown likewise closes on any click outside of it.
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent): void {
-    if (this.shelf.open && !event.composedPath().includes(this.host.nativeElement)) {
-      this.shelf.open = false;
+    const path = event.composedPath();
+    if (this.shelf.open && !path.includes(this.host.nativeElement)) {
+      this.shelf.close();
+    } else if (this.shelf.scriptMenuOpen && this.scriptPicker && !path.includes(this.scriptPicker.nativeElement)) {
+      this.shelf.scriptMenuOpen = false;
     }
   }
 

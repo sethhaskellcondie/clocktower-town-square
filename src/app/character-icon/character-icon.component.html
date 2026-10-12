@@ -45,17 +45,21 @@
       >+</button>
       @if (isPicking) {
         <div class="character-picker" role="menu">
-          @for (option of options; track option.id) {
-            <button
-              class="character-option"
-              role="menuitem"
-              [id]="idPrefix + '_character_' + option.id"
-              (mousedown)="$event.preventDefault()"
-              (click)="choose(option)"
-              [title]="option.name"
-            >
-              <img [src]="option.icon" [alt]="option.name" draggable="false">
-            </button>
+          @for (row of optionRows; track $index) {
+            <div class="character-row">
+              @for (option of row; track option.id) {
+                <button
+                  class="character-option"
+                  role="menuitem"
+                  [id]="idPrefix + '_character_' + option.id"
+                  (mousedown)="$event.preventDefault()"
+                  (click)="choose(option)"
+                  [title]="option.name"
+                >
+                  <img [src]="option.icon" [alt]="option.name" draggable="false">
+                </button>
+              }
+            </div>
           }
         </div>
       }

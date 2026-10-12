@@ -3,6 +3,8 @@ import { AppComponent } from './app.component';
 import { AttractModeService } from './attract-mode/attract-mode.service';
 import { DayTimerService } from './day-timer/day-timer.service';
 import { HOW_TO_PLAY_VIDEO, NO_DEATHS } from './player-aids/player-aid-library';
+import { BAD_MOON_RISING } from './player-aids/player-aid-shelf';
+import { travelerRows } from './character-icon/character-options';
 
 describe('AppComponent', () => {
   beforeEach(async () => {
@@ -42,6 +44,19 @@ describe('AppComponent', () => {
     expect(TestBed.inject(AttractModeService).mode()).toBe('small');
     expect(compiled.querySelector('.attract-banner')?.classList).toContain('mode-small');
     expect(compiled.querySelector('.project-banner')).toBeNull();
+  });
+
+  it("offers travelers from the script picked on the player aid shelf", () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    const app = fixture.componentInstance;
+    fixture.detectChanges();
+    app.addTraveler();
+    fixture.detectChanges();
+    const traveler = app.travelerComponents.first;
+
+    app.playerAids!.shelf.selectScript(BAD_MOON_RISING);
+    fixture.detectChanges();
+    expect(traveler.characterRows).toEqual(travelerRows(BAD_MOON_RISING));
   });
 
   it('steps the attract mode on A, but not while a player aid is open', () => {

@@ -2,34 +2,43 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Type } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { CharacterIconComponent } from './character-icon.component';
-import { LANDMARK_FABLED, PLAYER_FABLED, TRAVELER_CHARACTERS } from './character-options';
+import { LANDMARK_FABLED, PLAYER_FABLED, TRAVELER_CHARACTERS, travelerRows } from './character-options';
 import { PlayerAid } from '../player-aids/player-aid';
-import { PlayerAidShelf } from '../player-aids/player-aid-shelf';
+import { ALL_SCRIPT, BAD_MOON_RISING, PlayerAidShelf, TROUBLE_BREWING } from '../player-aids/player-aid-shelf';
 import { PlayerComponent } from '../player/player.component';
 import { TravelerComponent } from '../traveler/traveler.component';
 import { LandmarkComponent } from '../landmark/landmark.component';
 
-// Each token on the board offers its own set of character icons
-const TOKENS: { kind: string; component: Type<PlayerComponent | TravelerComponent | LandmarkComponent>; tokenClass: string; names: string[] }[] = [
+const TB_TRAVELERS = ['Scapegoat', 'Gunslinger', 'Beggar', 'Bureaucrat', 'Thief'];
+const BMR_TRAVELERS = ['Apprentice', 'Matron', 'Voudon', 'Judge', 'Bishop'];
+
+// Each token on the board offers its own set of character icons, a row at a
+// time. Travelers start on the "All" script, with a row for each script.
+const TOKENS: { kind: string; component: Type<PlayerComponent | TravelerComponent | LandmarkComponent>; tokenClass: string; rows: string[][] }[] = [
   {
     kind: 'traveler',
     component: TravelerComponent,
     tokenClass: '.traveler-circle',
-    names: ['Scapegoat', 'Gunslinger', 'Beggar', 'Bureaucrat', 'Thief'],
+    rows: [TB_TRAVELERS, BMR_TRAVELERS],
   },
   {
     kind: 'player',
     component: PlayerComponent,
     tokenClass: '.player-circle',
-    names: ['Angel', 'Buddhist', 'Doomsayer', 'Revolutionary'],
+    rows: [['Angel', 'Buddhist', 'Doomsayer', 'Revolutionary']],
   },
   {
     kind: 'landmark',
     component: LandmarkComponent,
     tokenClass: '.landmark-square',
-    names: ['Fiddler', "Hell's Librarian"],
+    rows: [['Fiddler', "Hell's Librarian"]],
   },
 ];
+
+function pickerRows(el: HTMLElement): (string | null)[][] {
+  return Array.from(el.querySelectorAll('.character-row')).map(row =>
+    Array.from(row.querySelectorAll('.character-option')).map(o => o.getAttribute('title')));
+}
 
 for (const token of TOKENS) {
   describe(`Character icon on a ${token.kind}`, () => {
@@ -74,10 +83,10 @@ for (const token of TOKENS) {
     it(`picks from the ${token.kind}'s own characters`, () => {
       toggleEditing();
       click(id('_add'));
-      const options = Array.from(el.querySelectorAll('.character-option')).map(o => o.getAttribute('title'));
-      expect(options).toEqual(token.names);
+      expect(pickerRows(el)).toEqual(token.rows);
 
-      const last = icon.options[icon.options.length - 1];
+      const options = icon.optionRows.flat();
+      const last = options[options.length - 1];
       click(id('_' + last.id));
       expect(icon.character).toBe(last);
       expect(query('.character-picker')).toBeNull();
@@ -100,7 +109,7 @@ for (const token of TOKENS) {
     });
 
     it('removes the icon with the X shown over it while editing', () => {
-      icon.choose(icon.options[0]);
+      icon.choose(icon.optionRows[0][0]);
       fixture.detectChanges();
       expect(query(id(''))).not.toBeNull();
       expect(query(id('_remove'))).toBeNull();
@@ -115,11 +124,12 @@ for (const token of TOKENS) {
     it("opens the character's player aid when the icon is clicked outside of editing", () => {
       const opened: PlayerAid[] = [];
       fixture.componentInstance.openAid.subscribe(aid => opened.push(aid));
-      icon.choose(icon.options[0]);
+      const first = icon.optionRows[0][0];
+      icon.choose(first);
       fixture.detectChanges();
 
       click(id(''));
-      expect(opened).toEqual([icon.options[0].aid]);
+      expect(opened).toEqual([first.aid]);
 
       toggleEditing();
       icon.onIconClick();
@@ -128,11 +138,46 @@ for (const token of TOKENS) {
   });
 }
 
+describe('Traveler options', () => {
+  let fixture: ComponentFixture<TravelerComponent>;
+  let el: HTMLElement;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({ imports: [TravelerComponent] }).compileComponents();
+    fixture = TestBed.createComponent(TravelerComponent);
+    el = fixture.nativeElement;
+    fixture.detectChanges();
+    el.querySelector('.traveler-circle')!.dispatchEvent(new MouseEvent('contextmenu', { cancelable: true }));
+    fixture.detectChanges();
+    (el.querySelector('#traveler_1_character_add') as HTMLElement).click();
+    fixture.detectChanges();
+  });
+
+  it("offers only the picked script's travelers", () => {
+    fixture.componentRef.setInput('script', TROUBLE_BREWING);
+    fixture.detectChanges();
+    expect(pickerRows(el)).toEqual([TB_TRAVELERS]);
+
+    fixture.componentRef.setInput('script', BAD_MOON_RISING);
+    fixture.detectChanges();
+    expect(pickerRows(el)).toEqual([BMR_TRAVELERS]);
+  });
+
+  it('offers a row for each script when "All" is picked', () => {
+    fixture.componentRef.setInput('script', BAD_MOON_RISING);
+    fixture.detectChanges();
+    fixture.componentRef.setInput('script', ALL_SCRIPT);
+    fixture.detectChanges();
+    expect(pickerRows(el)).toEqual([TB_TRAVELERS, BMR_TRAVELERS]);
+  });
+});
+
 describe('Character options', () => {
   it('opens each character in the shelf section it belongs to', () => {
     const shelf = new PlayerAidShelf();
     const expected: [readonly { aid: PlayerAid }[], string][] = [
-      [TRAVELER_CHARACTERS, 'traveler'],
+      [travelerRows(TROUBLE_BREWING)[0], 'traveler'],
+      [travelerRows(BAD_MOON_RISING)[0], 'traveler-bmr'],
       [PLAYER_FABLED, 'fabled'],
       [LANDMARK_FABLED, 'fabled'],
     ];
@@ -142,5 +187,18 @@ describe('Character options', () => {
         expect(shelf.activeSection?.id).toBe(section);
       }
     }
+  });
+
+  it('gives every traveler a script', () => {
+    for (const traveler of TRAVELER_CHARACTERS) {
+      expect(traveler.scripts?.length).withContext(traveler.name).toBeGreaterThan(0);
+    }
+  });
+
+  it('lists a traveler in a row for each of its scripts when "All" is picked', () => {
+    const rows = travelerRows(ALL_SCRIPT);
+    const appearances = rows.flat().length;
+    const memberships = TRAVELER_CHARACTERS.reduce((sum, t) => sum + (t.scripts?.length ?? 0), 0);
+    expect(appearances).toBe(memberships);
   });
 });

@@ -29,7 +29,6 @@
   z-index: 20;
   width: 280px;
   max-height: calc(100vh - 76px);
-  overflow-y: auto;
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -51,35 +50,102 @@
   }
 }
 
-// One button per script, wrapping onto more rows as scripts are added
-.aid-script-picker {
+// The sections scroll beneath the script header, which stays put at the top
+// and leaves the shelf unclipped so the script dropdown can hang over them
+.aids-shelf-sections {
   display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  padding-bottom: 8px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  flex-direction: column;
+  gap: 8px;
+  min-height: 0;
+  overflow-y: auto;
 }
 
-.aid-script-btn {
-  flex: 1 1 auto;
-  padding: 6px 10px;
-  font-size: 12px;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  background-color: rgba(255, 255, 255, 0.08);
+.aid-script-picker {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.aid-script-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  width: 100%;
+  padding: 8px 10px;
+  text-align: left;
+  background-color: rgba(209, 181, 106, 0.12);
   color: rgba(255, 255, 255, 0.85);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(209, 181, 106, 0.6);
   border-radius: 4px;
   cursor: pointer;
-  transition: background-color 0.2s, border-color 0.2s, color 0.2s;
+  transition: background-color 0.2s;
 
-  &:hover {
-    background-color: rgba(255, 255, 255, 0.16);
+  &:hover,
+  .expanded > & {
+    background-color: rgba(209, 181, 106, 0.22);
+  }
+}
+
+.aid-script-label {
+  font-size: 13px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.aid-script-name {
+  color: #d1b56a;
+}
+
+// The chevron borrowed from the section headers turns down while open
+.expanded > .aid-script-toggle > .aid-section-chevron {
+  transform: rotate(45deg);
+}
+
+// Floats over the sections below rather than pushing them down
+.aid-script-menu {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  z-index: 1;
+  margin: 0;
+  padding: 4px;
+  list-style: none;
+  background-color: rgba(12, 10, 24, 0.97);
+  border: 1px solid rgba(209, 181, 106, 0.6);
+  border-radius: 4px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+  animation: aid-fade-in 0.15s ease;
+}
+
+.aid-script-option {
+  padding: 8px 10px;
+  font-size: 14px;
+  color: white;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+
+  &:hover,
+  &:focus-visible {
+    background-color: rgba(255, 255, 255, 0.12);
+    outline: none;
   }
 
-  &.active {
-    border-color: #d1b56a;
+  // A check mark drawn with borders marks the picked script
+  &.selected {
     color: #d1b56a;
+
+    &::after {
+      content: '';
+      float: right;
+      width: 5px;
+      height: 10px;
+      margin: 2px 4px 0 0;
+      border-right: 2px solid currentColor;
+      border-bottom: 2px solid currentColor;
+      transform: rotate(45deg);
+    }
   }
 }
 

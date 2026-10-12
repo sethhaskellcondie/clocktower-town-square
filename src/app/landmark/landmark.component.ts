@@ -21,7 +21,7 @@ export class LandmarkComponent implements OnInit {
   @Input() size: 'small' | 'medium' | 'large' = 'small';
   @Input() texture = 1;
   @Output() openAid = new EventEmitter<PlayerAid>();
-  readonly characters = LANDMARK_FABLED;
+  readonly characterRows = [LANDMARK_FABLED];
 
   // Dragging position
   positionX = 0;

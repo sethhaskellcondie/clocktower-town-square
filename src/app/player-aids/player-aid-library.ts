@@ -467,6 +467,23 @@ export const UNDERTAKER_EXECUTIONS = new PlayerAid({
   ],
 });
 
+export const MOONCHILD_DEATH = new PlayerAid({
+  id: 'moonchild-death',
+  title: 'The Moonchild',
+  summary: 'Must publicly choose a player upon dying.',
+  blocks: [
+    {
+      type: 'image',
+      src: 'assets/player_aids/icon_moonchild.png',
+      alt: 'Moonchild icon: a blue crescent moon pendant',
+    },
+    {
+      type: 'text',
+      text: 'If you are the Moonchild (or bluffing as the Moonchild) then when I announce that you have died, you must claim the Moonchild publicly and choose an alive player. You may ask for advice from the town while you make your choice, but you must make it.',
+    },
+  ],
+});
+
 export const SCAPEGOAT_EXECUTION = new PlayerAid({
   id: 'scapegoat-execution',
   title: 'The Scapegoat',
@@ -548,6 +565,91 @@ export const THIEF_VOTES = new PlayerAid({
     {
       type: 'text',
       text: 'Each night, choose a player (not yourself): their vote counts negatively (-1 instead of +1) tomorrow.',
+    },
+  ],
+});
+
+export const APPRENTICE_ABILITY = new PlayerAid({
+  id: 'apprentice-ability',
+  title: 'The Apprentice',
+  summary: 'Gains a Townsfolk or Minion ability.',
+  blocks: [
+    {
+      type: 'image',
+      src: 'assets/player_aids/icon_apprentice.png',
+      alt: 'Apprentice icon: a hammer and a chisel, half blue and half red',
+    },
+    {
+      type: 'text',
+      text: 'On your 1st night, you gain a Townsfolk ability (if good) or a Minion ability (if evil).',
+    },
+  ],
+});
+
+export const MATRON_SEATING = new PlayerAid({
+  id: 'matron-seating',
+  title: 'The Matron',
+  summary: 'Swaps players between seats.',
+  blocks: [
+    {
+      type: 'image',
+      src: 'assets/player_aids/icon_matron.png',
+      alt: 'Matron icon: a pair of lorgnette spectacles on a long handle, half blue and half red',
+    },
+    {
+      type: 'text',
+      text: 'Each day, you may choose up to 3 sets of 2 players to swap seats. Players may not leave their seats to talk in private.',
+    },
+  ],
+});
+
+export const VOUDON_VOTING = new PlayerAid({
+  id: 'voudon-voting',
+  title: 'The Voudon',
+  summary: 'Only the Voudon and the dead can vote.',
+  blocks: [
+    {
+      type: 'image',
+      src: 'assets/player_aids/icon_voudon.png',
+      alt: 'Voudon icon: a decorated sugar skull, half blue and half red',
+    },
+    {
+      type: 'text',
+      text: "Only you & the dead can vote. They don't need a vote token to do so. A 50% majority isn't required.",
+    },
+  ],
+});
+
+export const JUDGE_RULING = new PlayerAid({
+  id: 'judge-ruling',
+  title: 'The Judge',
+  summary: 'Can force an execution to pass or fail.',
+  blocks: [
+    {
+      type: 'image',
+      src: 'assets/player_aids/icon_judge.png',
+      alt: 'Judge icon: a gavel above its sound block, half blue and half red',
+    },
+    {
+      type: 'text',
+      text: 'Once per game, if another player nominated, you may choose to force the current execution to pass or fail.',
+    },
+  ],
+});
+
+export const BISHOP_NOMINATIONS = new PlayerAid({
+  id: 'bishop-nominations',
+  title: 'The Bishop',
+  summary: 'Only the Storyteller can nominate.',
+  blocks: [
+    {
+      type: 'image',
+      src: 'assets/player_aids/icon_bishop.png',
+      alt: "Bishop icon: a bishop's mitre with a cross, half blue and half red",
+    },
+    {
+      type: 'text',
+      text: 'Only the Storyteller can nominate. At least 1 opposing player must be nominated each day.',
     },
   ],
 });

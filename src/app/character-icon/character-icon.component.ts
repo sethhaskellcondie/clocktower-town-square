@@ -12,7 +12,8 @@ import { CharacterOption } from './character-options';
   styleUrl: './character-icon.component.scss'
 })
 export class CharacterIconComponent implements OnChanges {
-  @Input({ required: true }) options!: readonly CharacterOption[];
+  // The picker shows each row of options on a line of its own
+  @Input({ required: true }) optionRows!: readonly (readonly CharacterOption[])[];
   @Input() idPrefix = '';
   @Input() isEditing = false;
   @Input() size: 'small' | 'medium' | 'large' = 'small';

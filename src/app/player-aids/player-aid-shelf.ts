@@ -3,8 +3,10 @@ import { PlayerAidScript } from './player-aid-script';
 import { PlayerAidSection } from './player-aid-section';
 import {
   ANGEL_PROTECTION,
+  APPRENTICE_ABILITY,
   ATTRACT_MODE_HOTKEYS,
   BEGGAR_VOTING,
+  BISHOP_NOMINATIONS,
   BUDDHIST_SILENCE,
   BUREAUCRAT_VOTES,
   BUTLER_VOTING,
@@ -25,7 +27,10 @@ import {
   HAND_SIGNALS,
   HELLS_LIBRARIAN_SILENCE,
   HOW_TO_PLAY_VIDEO,
+  JUDGE_RULING,
+  MATRON_SEATING,
   MINIONS_FIRST_NIGHT,
+  MOONCHILD_DEATH,
   NOMINATIONS,
   PLAYER_AID_HOTKEYS,
   PLAYER_TRAITS,
@@ -38,6 +43,7 @@ import {
   THIEF_VOTES,
   TOWN_SQUARE,
   UNDERTAKER_EXECUTIONS,
+  VOUDON_VOTING,
 } from './player-aid-library';
 
 // Which aids appear in which section of the shelf. An aid from the library
@@ -71,7 +77,7 @@ const FIRST_DAY = new PlayerAidSection({
 
 const CHARACTER_FAQ = new PlayerAidSection({
   id: 'character-faq',
-  title: 'Character FAQ',
+  title: 'Character FAQ (TB)',
   aids: [UNDERTAKER_EXECUTIONS, CHEF_PAIRS, BUTLER_VOTING, SPY_GRIMOIRE],
 });
 
@@ -83,8 +89,20 @@ const TIPS = new PlayerAidSection({
 
 const TRAVELER = new PlayerAidSection({
   id: 'traveler',
-  title: 'Traveler',
+  title: 'Travelers (TB)',
   aids: [SCAPEGOAT_EXECUTION, GUNSLINGER_SHOT, BEGGAR_VOTING, BUREAUCRAT_VOTES, THIEF_VOTES],
+});
+
+const CHARACTER_FAQ_BMR = new PlayerAidSection({
+  id: 'character-faq-bmr',
+  title: 'Character FAQ (BMR)',
+  aids: [MOONCHILD_DEATH],
+});
+
+const TRAVELER_BMR = new PlayerAidSection({
+  id: 'traveler-bmr',
+  title: 'Travelers (BMR)',
+  aids: [APPRENTICE_ABILITY, MATRON_SEATING, VOUDON_VOTING, JUDGE_RULING, BISHOP_NOMINATIONS],
 });
 
 const FABLED = new PlayerAidSection({
@@ -107,28 +125,57 @@ const STORYTELLER_TIPS = new PlayerAidSection({
 });
 
 // Which sections appear in which script. A section can be listed in as many
-// scripts as it's useful in. The first script is the one the shelf opens on.
-const SHELF_SCRIPTS: PlayerAidScript[] = [
-  new PlayerAidScript({
-    id: 'all',
-    title: 'All',
-    sections: [
-      INTRODUCTION,
-      FIRST_NIGHT,
-      FIRST_DAY,
-      CHARACTER_FAQ,
-      TIPS,
-      TRAVELER,
-      FABLED,
-      // Last, since it's for the storyteller rather than the players
-      STORYTELLER_TIPS,
-    ],
-  }),
-  new PlayerAidScript({
-    id: 'trouble-brewing',
-    title: 'Trouble Brewing',
-  }),
-];
+// scripts as it's useful in. Scripts are exported so travelers can say which
+// scripts they're in.
+export const ALL_SCRIPT = new PlayerAidScript({
+  id: 'all',
+  title: 'All',
+  sections: [
+    INTRODUCTION,
+    FIRST_NIGHT,
+    FIRST_DAY,
+    TIPS,
+    CHARACTER_FAQ,
+    CHARACTER_FAQ_BMR,
+    TRAVELER,
+    TRAVELER_BMR,
+    FABLED,
+    // Last, since it's for the storyteller rather than the players
+    STORYTELLER_TIPS,
+  ],
+});
+
+export const TROUBLE_BREWING = new PlayerAidScript({
+  id: 'trouble-brewing',
+  title: 'Trouble Brewing',
+  sections: [
+    INTRODUCTION,
+    FIRST_NIGHT,
+    FIRST_DAY,
+    TIPS,
+    CHARACTER_FAQ,
+    TRAVELER,
+    FABLED,
+    // Last, since it's for the storyteller rather than the players
+    STORYTELLER_TIPS,
+  ],
+});
+
+export const BAD_MOON_RISING = new PlayerAidScript({
+  id: 'bad-moon-rising',
+  title: 'Bad Moon Rising',
+  sections: [
+    TIPS,
+    CHARACTER_FAQ_BMR,
+    TRAVELER_BMR,
+    FABLED,
+    // Last, since it's for the storyteller rather than the players
+    STORYTELLER_TIPS,
+  ],
+});
+
+// The first script is the one the shelf opens on
+const SHELF_SCRIPTS: PlayerAidScript[] = [ALL_SCRIPT, TROUBLE_BREWING, BAD_MOON_RISING];
 
 // Holds the shelf's scripts and everything about its state: whether it's
 // open, which script is picked, which sections are expanded, and which aid
@@ -137,6 +184,8 @@ export class PlayerAidShelf {
   open = false;
   // The script whose sections the shelf is showing
   activeScript: PlayerAidScript;
+  // Whether the dropdown for picking a script is showing
+  scriptMenuOpen = false;
   activeAid: PlayerAid | null = null;
   // The section the active aid was opened from, since an aid can be in several
   activeSection: PlayerAidSection | null = null;
@@ -153,15 +202,32 @@ export class PlayerAidShelf {
   }
 
   toggle(): void {
-    this.open = !this.open;
+    if (this.open) {
+      this.close();
+    } else {
+      this.open = true;
+    }
+  }
+
+  // Closing the shelf closes the script dropdown with it, so the shelf
+  // reopens with only the script header showing
+  close(): void {
+    this.open = false;
+    this.scriptMenuOpen = false;
+  }
+
+  toggleScriptMenu(): void {
+    this.scriptMenuOpen = !this.scriptMenuOpen;
   }
 
   isActiveScript(script: PlayerAidScript): boolean {
     return this.activeScript === script;
   }
 
-  // Switching scripts starts its sections collapsed
+  // Picking a script closes the dropdown. Switching scripts starts its
+  // sections collapsed.
   selectScript(script: PlayerAidScript): void {
+    this.scriptMenuOpen = false;
     if (!this.isActiveScript(script)) {
       this.activeScript = script;
       this.expandedSections.clear();
@@ -249,12 +315,15 @@ export class PlayerAidShelf {
     this.activeSection = null;
   }
 
-  // Peel back one layer at a time: the open aid first, then the shelf
+  // Peel back one layer at a time: the open aid first, then the script
+  // dropdown, then the shelf
   back(): void {
     if (this.activeAid) {
       this.closeAid();
+    } else if (this.scriptMenuOpen) {
+      this.scriptMenuOpen = false;
     } else if (this.open) {
-      this.open = false;
+      this.close();
     }
   }
 }

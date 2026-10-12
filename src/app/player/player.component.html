@@ -32,5 +32,5 @@
   }
 </div>
 
-<app-character-icon [options]="characters" [idPrefix]="'player_' + number" [isEditing]="isEditing" [size]="size"
+<app-character-icon [optionRows]="characterRows" [idPrefix]="'player_' + number" [isEditing]="isEditing" [size]="size"
   [tokenX]="positionX" [tokenY]="positionY" (openAid)="openAid.emit($event)"></app-character-icon>

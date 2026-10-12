@@ -3,19 +3,34 @@
 </button>
 
 <nav class="aids-shelf" [class.open]="shelf.open" aria-label="Player aids">
-  <div class="aid-script-picker" role="group" aria-label="Script">
-    @for (script of shelf.scripts; track script.id) {
-      <button class="aid-script-btn" [id]="'player_aid_script_' + script.id" [class.active]="shelf.isActiveScript(script)"
-        [attr.aria-pressed]="shelf.isActiveScript(script)" (click)="shelf.selectScript(script)">
-        {{ script.title }}
-      </button>
+  <!-- The script header opens a dropdown over the sections, rather than an
+       accordion, to set it apart from the section headers below it -->
+  <div class="aid-script-picker" [class.expanded]="shelf.scriptMenuOpen" #scriptPicker>
+    <button id="player_aid_script_toggle" class="aid-script-toggle" (click)="shelf.toggleScriptMenu()"
+      aria-haspopup="listbox" [attr.aria-expanded]="shelf.scriptMenuOpen" aria-controls="player_aid_script_menu">
+      <span class="aid-script-label">Script: <span class="aid-script-name">{{ shelf.activeScript.title }}</span></span>
+      <span class="aid-section-chevron" aria-hidden="true"></span>
+    </button>
+    @if (shelf.scriptMenuOpen) {
+      <ul id="player_aid_script_menu" class="aid-script-menu" role="listbox" aria-label="Script">
+        @for (script of shelf.scripts; track script.id) {
+          <li role="option" class="aid-script-option" [id]="'player_aid_script_' + script.id"
+            [class.selected]="shelf.isActiveScript(script)" [attr.aria-selected]="shelf.isActiveScript(script)"
+            tabindex="0" (click)="shelf.selectScript(script)" (keydown.enter)="shelf.selectScript(script)"
+            (keydown.space)="$event.preventDefault(); shelf.selectScript(script)">
+            {{ script.title }}
+          </li>
+        }
+      </ul>
     }
   </div>
-  @for (section of shelf.sections; track section.id) {
-    <ng-container *ngTemplateOutlet="sectionTpl; context: { $implicit: section, depth: 0 }" />
-  } @empty {
-    <div class="aid-empty">No sections yet.</div>
-  }
+  <div class="aids-shelf-sections">
+    @for (section of shelf.sections; track section.id) {
+      <ng-container *ngTemplateOutlet="sectionTpl; context: { $implicit: section, depth: 0 }" />
+    } @empty {
+      <div class="aid-empty">No sections yet.</div>
+    }
+  </div>
 </nav>
 
 <!-- Renders a section as an accordion: a header that expands to show the
