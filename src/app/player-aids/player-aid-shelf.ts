@@ -1,4 +1,5 @@
 import { PlayerAid } from './player-aid';
+import { PlayerAidScript } from './player-aid-script';
 import { PlayerAidSection } from './player-aid-section';
 import {
   ANGEL_PROTECTION,
@@ -41,70 +42,101 @@ import {
 
 // Which aids appear in which section of the shelf. An aid from the library
 // can be listed in as many sections as it's useful in.
-const SHELF_SECTIONS: PlayerAidSection[] = [
-  new PlayerAidSection({
-    id: 'introduction',
-    title: 'Introduction',
-    aids: [
-      SOCIAL_DEDUCTION,
-      THE_SETTING,
-      PLAYER_TRAITS,
-      GOOD_VS_EVIL,
-      DAY_AND_NIGHT,
-      HAND_SIGNALS,
-      DRUNK_AND_POISONED,
-      THE_FOUR_RULES,
+const INTRODUCTION = new PlayerAidSection({
+  id: 'introduction',
+  title: 'Introduction',
+  aids: [
+    SOCIAL_DEDUCTION,
+    THE_SETTING,
+    PLAYER_TRAITS,
+    GOOD_VS_EVIL,
+    DAY_AND_NIGHT,
+    HAND_SIGNALS,
+    DRUNK_AND_POISONED,
+    THE_FOUR_RULES,
+  ],
+});
+
+const FIRST_NIGHT = new PlayerAidSection({
+  id: 'first-night',
+  title: 'The First Night',
+  aids: [MINIONS_FIRST_NIGHT, DEMON_FIRST_NIGHT, GOOD_TEAM_FIRST_NIGHT],
+});
+
+const FIRST_DAY = new PlayerAidSection({
+  id: 'first-day',
+  title: 'The First Day',
+  aids: [GETTING_STARTED, NOMINATIONS, DEATH_IS_NOT_THE_END, TOWN_SQUARE],
+});
+
+const CHARACTER_FAQ = new PlayerAidSection({
+  id: 'character-faq',
+  title: 'Character FAQ',
+  aids: [UNDERTAKER_EXECUTIONS, CHEF_PAIRS, BUTLER_VOTING, SPY_GRIMOIRE],
+});
+
+const TIPS = new PlayerAidSection({
+  id: 'tips',
+  title: 'Tips',
+  aids: [HOW_TO_PLAY_VIDEO, CLOCKTOWER_WIKI, CHARACTER_SHEET],
+});
+
+const TRAVELER = new PlayerAidSection({
+  id: 'traveler',
+  title: 'Traveler',
+  aids: [SCAPEGOAT_EXECUTION, GUNSLINGER_SHOT, BEGGAR_VOTING, BUREAUCRAT_VOTES, THIEF_VOTES],
+});
+
+const FABLED = new PlayerAidSection({
+  id: 'fabled',
+  title: 'Fabled',
+  aids: [
+    ANGEL_PROTECTION,
+    BUDDHIST_SILENCE,
+    DOOMSAYER_SACRIFICE,
+    FIDDLER_CONTEST,
+    HELLS_LIBRARIAN_SILENCE,
+    REVOLUTIONARY_NEIGHBORS,
+  ],
+});
+
+const STORYTELLER_TIPS = new PlayerAidSection({
+  id: 'storyteller-tips',
+  title: 'Storyteller Tips',
+  aids: [ATTRACT_MODE_HOTKEYS, DAY_TIMER_HOTKEYS, PLAYER_AID_HOTKEYS],
+});
+
+// Which sections appear in which script. A section can be listed in as many
+// scripts as it's useful in. The first script is the one the shelf opens on.
+const SHELF_SCRIPTS: PlayerAidScript[] = [
+  new PlayerAidScript({
+    id: 'all',
+    title: 'All',
+    sections: [
+      INTRODUCTION,
+      FIRST_NIGHT,
+      FIRST_DAY,
+      CHARACTER_FAQ,
+      TIPS,
+      TRAVELER,
+      FABLED,
+      // Last, since it's for the storyteller rather than the players
+      STORYTELLER_TIPS,
     ],
   }),
-  new PlayerAidSection({
-    id: 'first-night',
-    title: 'The First Night',
-    aids: [MINIONS_FIRST_NIGHT, DEMON_FIRST_NIGHT, GOOD_TEAM_FIRST_NIGHT],
-  }),
-  new PlayerAidSection({
-    id: 'first-day',
-    title: 'The First Day',
-    aids: [GETTING_STARTED, NOMINATIONS, DEATH_IS_NOT_THE_END, TOWN_SQUARE],
-  }),
-  new PlayerAidSection({
-    id: 'character-faq',
-    title: 'Character FAQ',
-    aids: [UNDERTAKER_EXECUTIONS, CHEF_PAIRS, BUTLER_VOTING, SPY_GRIMOIRE],
-  }),
-  new PlayerAidSection({
-    id: 'tips',
-    title: 'Tips',
-    aids: [HOW_TO_PLAY_VIDEO, CLOCKTOWER_WIKI, CHARACTER_SHEET],
-  }),
-  new PlayerAidSection({
-    id: 'traveler',
-    title: 'Traveler',
-    aids: [SCAPEGOAT_EXECUTION, GUNSLINGER_SHOT, BEGGAR_VOTING, BUREAUCRAT_VOTES, THIEF_VOTES],
-  }),
-  new PlayerAidSection({
-    id: 'fabled',
-    title: 'Fabled',
-    aids: [
-      ANGEL_PROTECTION,
-      BUDDHIST_SILENCE,
-      DOOMSAYER_SACRIFICE,
-      FIDDLER_CONTEST,
-      HELLS_LIBRARIAN_SILENCE,
-      REVOLUTIONARY_NEIGHBORS,
-    ],
-  }),
-  // Last, since it's for the storyteller rather than the players
-  new PlayerAidSection({
-    id: 'storyteller-tips',
-    title: 'Storyteller Tips',
-    aids: [ATTRACT_MODE_HOTKEYS, DAY_TIMER_HOTKEYS, PLAYER_AID_HOTKEYS],
+  new PlayerAidScript({
+    id: 'trouble-brewing',
+    title: 'Trouble Brewing',
   }),
 ];
 
-// Holds the shelf's sections and everything about its state: whether it's
-// open, which sections are expanded, and which aid is being viewed
+// Holds the shelf's scripts and everything about its state: whether it's
+// open, which script is picked, which sections are expanded, and which aid
+// is being viewed
 export class PlayerAidShelf {
   open = false;
+  // The script whose sections the shelf is showing
+  activeScript: PlayerAidScript;
   activeAid: PlayerAid | null = null;
   // The section the active aid was opened from, since an aid can be in several
   activeSection: PlayerAidSection | null = null;
@@ -112,10 +144,28 @@ export class PlayerAidShelf {
   // ids of the open section and the sections it's nested in.
   private expandedSections = new Set<string>();
 
-  constructor(readonly sections: readonly PlayerAidSection[] = SHELF_SECTIONS) {}
+  constructor(readonly scripts: readonly PlayerAidScript[] = SHELF_SCRIPTS) {
+    this.activeScript = scripts[0];
+  }
+
+  get sections(): readonly PlayerAidSection[] {
+    return this.activeScript.sections;
+  }
 
   toggle(): void {
     this.open = !this.open;
+  }
+
+  isActiveScript(script: PlayerAidScript): boolean {
+    return this.activeScript === script;
+  }
+
+  // Switching scripts starts its sections collapsed
+  selectScript(script: PlayerAidScript): void {
+    if (!this.isActiveScript(script)) {
+      this.activeScript = script;
+      this.expandedSections.clear();
+    }
   }
 
   isExpanded(section: PlayerAidSection): boolean {
@@ -152,10 +202,12 @@ export class PlayerAidShelf {
   }
 
   // Open an aid from outside the shelf (e.g. a traveler icon on the board),
-  // browsing within the first section that lists it
+  // browsing within the first section that lists it. The picked script is
+  // searched first, then the others, so the aid opens even when the picked
+  // script leaves it out.
   show(aid: PlayerAid): void {
-    const section = this.sections
-      .flatMap(s => s.withDescendants())
+    const section = [this.activeScript, ...this.scripts]
+      .flatMap(script => script.allSections())
       .find(s => s.aids.includes(aid));
     this.activeAid = aid;
     this.activeSection = section ?? null;

@@ -1,4 +1,5 @@
 import { PlayerAid } from './player-aid';
+import { PlayerAidScript } from './player-aid-script';
 import { PlayerAidSection } from './player-aid-section';
 import { PlayerAidShelf } from './player-aid-shelf';
 
@@ -9,8 +10,12 @@ describe('PlayerAidShelf', () => {
   const second = new PlayerAidSection({ id: 'second', title: 'Second', aids: [shared] });
   let shelf: PlayerAidShelf;
 
+  // A shelf with a single script holding the given sections
+  const shelfOf = (...sections: PlayerAidSection[]) =>
+    new PlayerAidShelf([new PlayerAidScript({ id: 'script', title: 'Script', sections })]);
+
   beforeEach(() => {
-    shelf = new PlayerAidShelf([first, second]);
+    shelf = shelfOf(first, second);
   });
 
   it('lets the same aid sit in several sections', () => {
@@ -51,7 +56,7 @@ describe('PlayerAidShelf', () => {
     const before = new PlayerAid({ id: 'before', title: 'Before', blocks: [] });
     const after = new PlayerAid({ id: 'after', title: 'After', blocks: [] });
     const browsable = new PlayerAidSection({ id: 'browsable', title: 'Browsable', aids: [before, shared, after] });
-    shelf = new PlayerAidShelf([browsable, second]);
+    shelf = shelfOf(browsable, second);
 
     shelf.openAid(shared, browsable);
     expect(shelf.canBrowse).toBeTrue();
@@ -74,7 +79,7 @@ describe('PlayerAidShelf', () => {
   it('shows an aid from outside the shelf within the first section that lists it', () => {
     const onlyNested = new PlayerAid({ id: 'only-nested', title: 'Only nested', blocks: [] });
     const deep = new PlayerAidSection({ id: 'deep', title: 'Deep', aids: [onlyNested] });
-    shelf = new PlayerAidShelf([new PlayerAidSection({ id: 'outer', title: 'Outer', subsections: [deep] }), second]);
+    shelf = shelfOf(new PlayerAidSection({ id: 'outer', title: 'Outer', subsections: [deep] }), second);
 
     shelf.show(onlyNested);
     expect(shelf.activeAid).toBe(onlyNested);
@@ -82,6 +87,37 @@ describe('PlayerAidShelf', () => {
 
     shelf.show(shared);
     expect(shelf.activeSection).toBe(second);
+  });
+
+  it('shows the sections of the picked script, starting on the first script', () => {
+    const everything = new PlayerAidScript({ id: 'everything', title: 'Everything', sections: [first, second] });
+    const partial = new PlayerAidScript({ id: 'partial', title: 'Partial', sections: [second] });
+    shelf = new PlayerAidShelf([everything, partial]);
+    expect(shelf.activeScript).toBe(everything);
+    expect(shelf.sections).toEqual([first, second]);
+
+    // A section can sit in several scripts, and switching starts it collapsed
+    shelf.toggleSection(second);
+    shelf.selectScript(partial);
+    expect(shelf.isActiveScript(partial)).toBeTrue();
+    expect(shelf.sections).toEqual([second]);
+    expect(shelf.isExpanded(second)).toBeFalse();
+  });
+
+  it('shows an aid from outside the shelf from another script when the picked one leaves it out', () => {
+    const elsewhere = new PlayerAid({ id: 'elsewhere', title: 'Elsewhere', blocks: [] });
+    const other = new PlayerAidSection({ id: 'other', title: 'Other', aids: [elsewhere, shared] });
+    const picked = new PlayerAidScript({ id: 'picked', title: 'Picked', sections: [second] });
+    shelf = new PlayerAidShelf([new PlayerAidScript({ id: 'first-script', title: 'First', sections: [other] }), picked]);
+    shelf.selectScript(picked);
+
+    shelf.show(shared);
+    expect(shelf.activeSection).toBe(second);
+
+    shelf.show(elsewhere);
+    expect(shelf.activeAid).toBe(elsewhere);
+    expect(shelf.activeSection).toBe(other);
+    expect(shelf.activeScript).toBe(picked);
   });
 
   it('steps back from the open aid, then the shelf', () => {

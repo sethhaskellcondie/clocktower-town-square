@@ -51,6 +51,38 @@
   }
 }
 
+// One button per script, wrapping onto more rows as scripts are added
+.aid-script-picker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.aid-script-btn {
+  flex: 1 1 auto;
+  padding: 6px 10px;
+  font-size: 12px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  background-color: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s, border-color 0.2s, color 0.2s;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.16);
+  }
+
+  &.active {
+    border-color: #d1b56a;
+    color: #d1b56a;
+  }
+}
+
 .aid-section {
   display: flex;
   flex-direction: column;

@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { PlayerAidsComponent } from './player-aids.component';
+import { PlayerAidScript } from './player-aid-script';
 import { PlayerAidSection } from './player-aid-section';
 import { PlayerAidShelf } from './player-aid-shelf';
 import { PlayerAid } from './player-aid';
@@ -40,6 +41,23 @@ describe('PlayerAidsComponent', () => {
     expect(el.querySelector('#player_aid_section_storyteller-tips #player_aid_storyteller-tips_day-timer-hotkeys')).not.toBeNull();
   });
 
+  it('switches the shelf between scripts, starting on All', () => {
+    const titles = () => Array.from(el.querySelectorAll('.aid-section-title')).map(t => t.textContent?.trim());
+    const scripts = Array.from(el.querySelectorAll('.aid-script-btn')).map(b => b.textContent?.trim());
+    expect(scripts).toEqual(['All', 'Trouble Brewing']);
+    expect(el.querySelector('#player_aid_script_all')?.getAttribute('aria-pressed')).toBe('true');
+
+    click('#player_aid_script_trouble-brewing');
+    expect(el.querySelector('#player_aid_script_trouble-brewing')?.classList).toContain('active');
+    expect(el.querySelector('#player_aid_script_all')?.classList).not.toContain('active');
+    expect(titles()).toEqual([]);
+    expect(el.querySelector('.aids-shelf > .aid-empty')?.textContent).toContain('No sections yet.');
+
+    click('#player_aid_script_all');
+    expect(titles()[0]).toBe('Introduction');
+    expect(el.querySelector('.aids-shelf > .aid-empty')).toBeNull();
+  });
+
   it('closes the shelf on a click outside it, but not on one inside it', () => {
     click('#player_aids_toggle');
     click('#player_aid_section_toggle_tips');
@@ -78,10 +96,14 @@ describe('PlayerAidsComponent', () => {
   });
 
   it('marks a section with no aids as empty', () => {
-    fixture.componentInstance.shelf = new PlayerAidShelf([
-      new PlayerAidSection({ id: 'filled', title: 'Filled', aids: [HOW_TO_PLAY_VIDEO] }),
-      new PlayerAidSection({ id: 'empty', title: 'Empty' }),
-    ]);
+    fixture.componentInstance.shelf = new PlayerAidShelf([new PlayerAidScript({
+      id: 'script',
+      title: 'Script',
+      sections: [
+        new PlayerAidSection({ id: 'filled', title: 'Filled', aids: [HOW_TO_PLAY_VIDEO] }),
+        new PlayerAidSection({ id: 'empty', title: 'Empty' }),
+      ],
+    })]);
     fixture.detectChanges();
     expect(el.querySelector('#player_aid_section_empty .aid-empty')?.textContent).toContain('No player aids yet.');
     expect(el.querySelector('#player_aid_section_filled .aid-empty')).toBeNull();

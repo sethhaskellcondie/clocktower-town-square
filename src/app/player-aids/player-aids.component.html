@@ -3,8 +3,18 @@
 </button>
 
 <nav class="aids-shelf" [class.open]="shelf.open" aria-label="Player aids">
+  <div class="aid-script-picker" role="group" aria-label="Script">
+    @for (script of shelf.scripts; track script.id) {
+      <button class="aid-script-btn" [id]="'player_aid_script_' + script.id" [class.active]="shelf.isActiveScript(script)"
+        [attr.aria-pressed]="shelf.isActiveScript(script)" (click)="shelf.selectScript(script)">
+        {{ script.title }}
+      </button>
+    }
+  </div>
   @for (section of shelf.sections; track section.id) {
     <ng-container *ngTemplateOutlet="sectionTpl; context: { $implicit: section, depth: 0 }" />
+  } @empty {
+    <div class="aid-empty">No sections yet.</div>
   }
 </nav>
 
