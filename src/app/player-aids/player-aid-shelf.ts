@@ -6,6 +6,8 @@ import {
   APPRENTICE_ABILITY,
   ATTRACT_MODE_HOTKEYS,
   BEGGAR_VOTING,
+  BIG_WIG_NOMINEES,
+  BOOTLEGGER_HOMEBREW,
   BISHOP_NOMINATIONS,
   BUDDHIST_SILENCE,
   BUREAUCRAT_VOTES,
@@ -20,30 +22,39 @@ import {
   DOOMSAYER_SACRIFICE,
   DRUNK_AND_POISONED,
   FIDDLER_CONTEST,
+  GARDENER_SEATING,
   GETTING_STARTED,
   GOOD_TEAM_FIRST_NIGHT,
+  GOD_OF_UG_HAT,
   GOOD_VS_EVIL,
   GUNSLINGER_SHOT,
   HAND_SIGNALS,
   HELLS_LIBRARIAN_SILENCE,
+  HINDU_REINCARNATION,
   HOW_TO_PLAY_VIDEO,
   JUDGE_RULING,
+  KNAVES_STORYTELLERS,
   MATRON_SEATING,
   MINIONS_FIRST_NIGHT,
   MOONCHILD_DEATH,
   NOMINATIONS,
   PLAYER_AID_HOTKEYS,
   PLAYER_TRAITS,
+  POPE_DUPLICATES,
   REVOLUTIONARY_NEIGHBORS,
   SCAPEGOAT_EXECUTION,
   SOCIAL_DEDUCTION,
   SPY_GRIMOIRE,
+  STORM_CATCHER_PROTECTION,
   THE_FOUR_RULES,
   THE_SETTING,
   THIEF_VOTES,
+  TOR_HIDDEN_CHARACTERS,
   TOWN_SQUARE,
   UNDERTAKER_EXECUTIONS,
+  VENTRILOQUIST_NOMINATIONS,
   VOUDON_VOTING,
+  ZENOMANCER_GOALS,
 } from './player-aid-library';
 
 // Which aids appear in which section of the shelf. An aid from the library
@@ -118,6 +129,24 @@ const FABLED = new PlayerAidSection({
   ],
 });
 
+const LORIC = new PlayerAidSection({
+  id: 'loric',
+  title: 'Loric',
+  aids: [
+    BIG_WIG_NOMINEES,
+    BOOTLEGGER_HOMEBREW,
+    GARDENER_SEATING,
+    GOD_OF_UG_HAT,
+    HINDU_REINCARNATION,
+    KNAVES_STORYTELLERS,
+    POPE_DUPLICATES,
+    STORM_CATCHER_PROTECTION,
+    TOR_HIDDEN_CHARACTERS,
+    VENTRILOQUIST_NOMINATIONS,
+    ZENOMANCER_GOALS,
+  ],
+});
+
 const STORYTELLER_TIPS = new PlayerAidSection({
   id: 'storyteller-tips',
   title: 'Storyteller Tips',
@@ -140,6 +169,7 @@ export const ALL_SCRIPT = new PlayerAidScript({
     TRAVELER,
     TRAVELER_BMR,
     FABLED,
+    LORIC,
     // Last, since it's for the storyteller rather than the players
     STORYTELLER_TIPS,
   ],
@@ -156,6 +186,7 @@ export const TROUBLE_BREWING = new PlayerAidScript({
     CHARACTER_FAQ,
     TRAVELER,
     FABLED,
+    LORIC,
     // Last, since it's for the storyteller rather than the players
     STORYTELLER_TIPS,
   ],
@@ -169,6 +200,7 @@ export const BAD_MOON_RISING = new PlayerAidScript({
     CHARACTER_FAQ_BMR,
     TRAVELER_BMR,
     FABLED,
+    LORIC,
     // Last, since it's for the storyteller rather than the players
     STORYTELLER_TIPS,
   ],

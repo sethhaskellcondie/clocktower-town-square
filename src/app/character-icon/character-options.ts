@@ -5,19 +5,30 @@ import {
   ANGEL_PROTECTION,
   APPRENTICE_ABILITY,
   BEGGAR_VOTING,
+  BIG_WIG_NOMINEES,
   BISHOP_NOMINATIONS,
+  BOOTLEGGER_HOMEBREW,
   BUDDHIST_SILENCE,
   BUREAUCRAT_VOTES,
   DOOMSAYER_SACRIFICE,
   FIDDLER_CONTEST,
+  GARDENER_SEATING,
+  GOD_OF_UG_HAT,
   GUNSLINGER_SHOT,
   HELLS_LIBRARIAN_SILENCE,
+  HINDU_REINCARNATION,
   JUDGE_RULING,
+  KNAVES_STORYTELLERS,
   MATRON_SEATING,
+  POPE_DUPLICATES,
   REVOLUTIONARY_NEIGHBORS,
   SCAPEGOAT_EXECUTION,
+  STORM_CATCHER_PROTECTION,
   THIEF_VOTES,
+  TOR_HIDDEN_CHARACTERS,
+  VENTRILOQUIST_NOMINATIONS,
   VOUDON_VOTING,
+  ZENOMANCER_GOALS,
 } from '../player-aids/player-aid-library';
 
 // A character that can be pinned beside a token on the board: its icon is
@@ -70,4 +81,20 @@ export const PLAYER_FABLED: readonly CharacterOption[] = [
 export const LANDMARK_FABLED: readonly CharacterOption[] = [
   { id: 'fiddler', name: 'Fiddler', icon: 'assets/player_aids/icon_fiddler.png', aid: FIDDLER_CONTEST },
   { id: 'hells-librarian', name: "Hell's Librarian", icon: 'assets/player_aids/icon_hells_librarian.png', aid: HELLS_LIBRARIAN_SILENCE },
+];
+
+// Loric are about the game as a whole, so they're all offered on landmarks,
+// in the same order as the shelf's Loric section
+export const LANDMARK_LORIC: readonly CharacterOption[] = [
+  { id: 'big-wig', name: 'Big Wig', icon: 'assets/player_aids/icon_big_wig.png', aid: BIG_WIG_NOMINEES },
+  { id: 'bootlegger', name: 'Bootlegger', icon: 'assets/player_aids/icon_bootlegger.png', aid: BOOTLEGGER_HOMEBREW },
+  { id: 'gardener', name: 'Gardener', icon: 'assets/player_aids/icon_gardener.png', aid: GARDENER_SEATING },
+  { id: 'god-of-ug', name: 'God of Ug', icon: 'assets/player_aids/icon_god_of_ug.png', aid: GOD_OF_UG_HAT },
+  { id: 'hindu', name: 'Hindu', icon: 'assets/player_aids/icon_hindu.png', aid: HINDU_REINCARNATION },
+  { id: 'knaves', name: 'Knaves', icon: 'assets/player_aids/icon_knaves.png', aid: KNAVES_STORYTELLERS },
+  { id: 'pope', name: 'Pope', icon: 'assets/player_aids/icon_pope.png', aid: POPE_DUPLICATES },
+  { id: 'storm-catcher', name: 'Storm Catcher', icon: 'assets/player_aids/icon_storm_catcher.png', aid: STORM_CATCHER_PROTECTION },
+  { id: 'tor', name: 'Tor', icon: 'assets/player_aids/icon_tor.png', aid: TOR_HIDDEN_CHARACTERS },
+  { id: 'ventriloquist', name: 'Ventriloquist', icon: 'assets/player_aids/icon_ventriloquist.png', aid: VENTRILOQUIST_NOMINATIONS },
+  { id: 'zenomancer', name: 'Zenomancer', icon: 'assets/player_aids/icon_zenomancer.png', aid: ZENOMANCER_GOALS },
 ];

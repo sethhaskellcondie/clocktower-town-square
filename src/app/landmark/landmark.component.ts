@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { PlayerAid } from '../player-aids/player-aid';
 import { CharacterIconComponent } from '../character-icon/character-icon.component';
-import { LANDMARK_FABLED } from '../character-icon/character-options';
+import { LANDMARK_FABLED, LANDMARK_LORIC } from '../character-icon/character-options';
 
 @Component({
   selector: 'app-landmark',
@@ -21,7 +21,7 @@ export class LandmarkComponent implements OnInit {
   @Input() size: 'small' | 'medium' | 'large' = 'small';
   @Input() texture = 1;
   @Output() openAid = new EventEmitter<PlayerAid>();
-  readonly characterRows = [LANDMARK_FABLED];
+  readonly characterRows = [LANDMARK_FABLED, LANDMARK_LORIC];
 
   // Dragging position
   positionX = 0;

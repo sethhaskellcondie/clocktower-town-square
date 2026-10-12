@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Type } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { CharacterIconComponent } from './character-icon.component';
-import { LANDMARK_FABLED, PLAYER_FABLED, TRAVELER_CHARACTERS, travelerRows } from './character-options';
+import { LANDMARK_FABLED, LANDMARK_LORIC, PLAYER_FABLED, TRAVELER_CHARACTERS, travelerRows } from './character-options';
 import { PlayerAid } from '../player-aids/player-aid';
 import { ALL_SCRIPT, BAD_MOON_RISING, PlayerAidShelf, TROUBLE_BREWING } from '../player-aids/player-aid-shelf';
 import { PlayerComponent } from '../player/player.component';
@@ -31,7 +31,10 @@ const TOKENS: { kind: string; component: Type<PlayerComponent | TravelerComponen
     kind: 'landmark',
     component: LandmarkComponent,
     tokenClass: '.landmark-square',
-    rows: [['Fiddler', "Hell's Librarian"]],
+    rows: [
+      ['Fiddler', "Hell's Librarian"],
+      ['Big Wig', 'Bootlegger', 'Gardener', 'God of Ug', 'Hindu', 'Knaves', 'Pope', 'Storm Catcher', 'Tor', 'Ventriloquist', 'Zenomancer'],
+    ],
   },
 ];
 
@@ -180,6 +183,7 @@ describe('Character options', () => {
       [travelerRows(BAD_MOON_RISING)[0], 'traveler-bmr'],
       [PLAYER_FABLED, 'fabled'],
       [LANDMARK_FABLED, 'fabled'],
+      [LANDMARK_LORIC, 'loric'],
     ];
     for (const [options, section] of expected) {
       for (const option of options) {

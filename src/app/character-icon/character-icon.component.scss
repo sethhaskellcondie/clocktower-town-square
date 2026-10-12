@@ -118,7 +118,10 @@
 
 .character-row {
   display: flex;
+  flex-wrap: wrap;
   gap: 6px;
+  // Long rows wrap after 6 options, so the picker doesn't stretch across the board
+  max-width: calc(6 * 76px + 5 * 6px);
 }
 
 .character-option {

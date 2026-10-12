@@ -756,6 +756,193 @@ export const REVOLUTIONARY_NEIGHBORS = new PlayerAid({
   ],
 });
 
+export const BIG_WIG_NOMINEES = new PlayerAid({
+  id: 'big-wig-nominees',
+  title: 'The Big Wig',
+  summary: 'Each nominee picks a single speaker for their defense.',
+  blocks: [
+    {
+      type: 'image',
+      src: 'assets/player_aids/icon_big_wig.png',
+      alt: "Big Wig icon: a green powdered judge's wig",
+    },
+    {
+      type: 'text',
+      text: 'Each nominee chooses a player: until voting, only they may speak & they are mad the nominee is good or they might die.',
+    },
+  ],
+});
+
+export const BOOTLEGGER_HOMEBREW = new PlayerAid({
+  id: 'bootlegger-homebrew',
+  title: 'The Bootlegger',
+  summary: 'The script has homebrew characters or rules.',
+  blocks: [
+    {
+      type: 'image',
+      src: 'assets/player_aids/icon_bootlegger.png',
+      alt: 'Bootlegger icon: a green wooden crate on wheels marked with a skull and crossbones',
+    },
+    {
+      type: 'text',
+      text: 'This script has homebrew characters or rules. The Storyteller will make the new additions clear before the game starts.',
+    },
+  ],
+});
+
+export const GARDENER_SEATING = new PlayerAid({
+  id: 'gardener-seating',
+  title: 'The Gardener',
+  summary: 'The Storyteller assigns every character by seat.',
+  blocks: [
+    {
+      type: 'image',
+      src: 'assets/player_aids/icon_gardener.png',
+      alt: 'Gardener icon: a green sprout curling up from a mound of soil',
+    },
+    {
+      type: 'text',
+      text: "The Storyteller assigns all players' characters. This is implemented by assigning characters to specific seats not people.",
+    },
+  ],
+});
+
+export const GOD_OF_UG_HAT = new PlayerAid({
+  id: 'god-of-ug-hat',
+  title: 'The God of Ug',
+  summary: 'Whoever wears the Ug hat speaks in single sounds but votes twice.',
+  blocks: [
+    {
+      type: 'image',
+      src: 'assets/player_aids/icon_god_of_ug.png',
+      alt: 'God of Ug icon: a green shaggy fur hat with two curved horns',
+    },
+    {
+      type: 'text',
+      text: 'One Ug hat. When wear Ug hat, must speak one sound at a time but vote twice. If fail, pass Ug hat.',
+    },
+  ],
+});
+
+export const HINDU_REINCARNATION = new PlayerAid({
+  id: 'hindu-reincarnation',
+  title: 'The Hindu',
+  summary: 'The first 4 players to die come back as Travelers.',
+  blocks: [
+    {
+      type: 'image',
+      src: 'assets/player_aids/icon_hindu.png',
+      alt: 'Hindu icon: a green brushstroke Om symbol',
+    },
+    {
+      type: 'text',
+      text: 'The first 4 players to die are immediately reincarnated as Travellers of the same alignment.',
+    },
+  ],
+});
+
+export const KNAVES_STORYTELLERS = new PlayerAid({
+  id: 'knaves-storytellers',
+  title: 'The Knaves',
+  summary: 'Two Storytellers: one lies and one tells the truth.',
+  blocks: [
+    {
+      type: 'image',
+      src: 'assets/player_aids/icon_knaves.png',
+      alt: 'Knaves icon: two green jesters back to back, crossing spears behind a diamond shield',
+    },
+    {
+      type: 'text',
+      text: 'There are 2 Storytellers: one lies & one tells the truth. Once per game, at dusk, they might switch.',
+    },
+  ],
+});
+
+export const POPE_DUPLICATES = new PlayerAid({
+  id: 'pope-duplicates',
+  title: 'The Pope',
+  summary: 'Good characters can be in play more than once.',
+  blocks: [
+    {
+      type: 'image',
+      src: 'assets/player_aids/icon_pope.png',
+      alt: 'Pope icon: a green apple with a bite taken out of it',
+    },
+    {
+      type: 'text',
+      text: 'There are duplicate good characters in play. They might also be bluffs.',
+    },
+  ],
+});
+
+export const STORM_CATCHER_PROTECTION = new PlayerAid({
+  id: 'storm-catcher-protection',
+  title: 'The Storm Catcher',
+  summary: 'A named good character can only die by execution.',
+  blocks: [
+    {
+      type: 'image',
+      src: 'assets/player_aids/icon_storm_catcher.png',
+      alt: 'Storm Catcher icon: a pair of green brass goggles with adjustable lenses',
+    },
+    {
+      type: 'text',
+      text: 'The Storyteller will name a good character. If in play, they can only die by execution, but evil players learn which player it is.',
+    },
+  ],
+});
+
+export const TOR_HIDDEN_CHARACTERS = new PlayerAid({
+  id: 'tor-hidden-characters',
+  title: 'The Tor',
+  summary: 'Players learn their character and alignment only when they die.',
+  blocks: [
+    {
+      type: 'image',
+      src: 'assets/player_aids/icon_tor.png',
+      alt: 'Tor icon: a green tunnel of archways receding into the distance',
+    },
+    {
+      type: 'text',
+      text: "Players don't know their character or alignment. They learn them when they die.",
+    },
+  ],
+});
+
+export const VENTRILOQUIST_NOMINATIONS = new PlayerAid({
+  id: 'ventriloquist-nominations',
+  title: 'The Ventriloquist',
+  summary: 'Nominees who play a fresh character might survive execution.',
+  blocks: [
+    {
+      type: 'image',
+      src: 'assets/player_aids/icon_ventriloquist.png',
+      alt: 'Ventriloquist icon: a green sock puppet with googly eyes and a shaggy mop of hair',
+    },
+    {
+      type: 'text',
+      text: 'If a player is mad as a fresh character during their nomination, they might not die if executed today.',
+    },
+  ],
+});
+
+export const ZENOMANCER_GOALS = new PlayerAid({
+  id: 'zenomancer-goals',
+  title: 'The Zenomancer',
+  summary: 'Players with a secret goal learn true info by achieving it.',
+  blocks: [
+    {
+      type: 'image',
+      src: 'assets/player_aids/icon_zenomancer.png',
+      alt: 'Zenomancer icon: a green spiral of curling tendrils',
+    },
+    {
+      type: 'text',
+      text: 'One or more players each have a secret goal. When achieved, that player learns a piece of true info.',
+    },
+  ],
+});
+
 export const ATTRACT_MODE_HOTKEYS = new PlayerAid({
   id: 'attract-mode-hotkeys',
   title: 'Attract Mode Hotkeys',
