@@ -290,7 +290,7 @@ export const SPY_GRIMOIRE = new PlayerAid({
       type: 'text',
       text: [
         'The Spy',
-        { icon: 'assets/player_aids/icons/trouble_brewing/spy.png', alt: 'Spy icon' },
+        { icon: 'assets/player_aids/icons/trouble_brewing/minions/spy.png', alt: 'Spy icon' },
         ' can see inside the Grimoire, this is an example setup of the Grimoire.',
       ],
     },
@@ -313,7 +313,7 @@ export const BUTLER_VOTING = new PlayerAid({
   blocks: [
     {
       type: 'image',
-      src: 'assets/player_aids/icons/trouble_brewing/butler.png',
+      src: 'assets/player_aids/icons/trouble_brewing/outsiders/butler.png',
       alt: 'Butler icon: a hand holding a covered serving tray',
     },
     {
@@ -330,7 +330,7 @@ export const DEMON_FIRST_NIGHT = new PlayerAid({
   blocks: [
     {
       type: 'image',
-      src: 'assets/player_aids/icons/trouble_brewing/imp.png',
+      src: 'assets/player_aids/icons/trouble_brewing/demons/imp.png',
       alt: 'Imp icon: a red trident',
     },
     {
@@ -438,7 +438,7 @@ export const CHEF_PAIRS = new PlayerAid({
       type: 'text',
       text: [
         'The Chef',
-        { icon: 'assets/player_aids/icons/trouble_brewing/chef.png', alt: 'Chef icon' },
+        { icon: 'assets/player_aids/icons/trouble_brewing/townsfolk/chef.png', alt: 'Chef icon' },
         ' learns how many EVIL PAIRS there are on the first night. In a 13 player game there are 13 pairs, each player is included in one pair with each of their neighbors. In this example (disregard the colors) there is 1 evil pair, 2 good pairs, and 2 dead pairs.',
       ],
     },
@@ -457,7 +457,7 @@ export const UNDERTAKER_EXECUTIONS = new PlayerAid({
   blocks: [
     {
       type: 'image',
-      src: 'assets/player_aids/icons/trouble_brewing/undertaker.png',
+      src: 'assets/player_aids/icons/trouble_brewing/townsfolk/undertaker.png',
       alt: 'Undertaker icon: a blue shovel',
     },
     {
@@ -474,7 +474,7 @@ export const MOONCHILD_DEATH = new PlayerAid({
   blocks: [
     {
       type: 'image',
-      src: 'assets/player_aids/icons/bad_moon_rising/moonchild.png',
+      src: 'assets/player_aids/icons/bad_moon_rising/outsiders/moonchild.png',
       alt: 'Moonchild icon: a blue crescent moon pendant',
     },
     {
