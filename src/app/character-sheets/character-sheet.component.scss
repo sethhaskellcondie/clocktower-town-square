@@ -57,7 +57,8 @@
   top: 60px;
   right: 16px;
   z-index: 20;
-  width: 320px;
+  // Never wider than the screen leaves room for
+  width: min(var(--sheet-width), calc(100vw - 32px));
   max-height: calc(100vh - 76px);
   display: flex;
   flex-direction: column;
@@ -72,6 +73,26 @@
   transform: translateX(calc(100% + 16px));
   visibility: hidden;
   transition: transform 0.25s ease, visibility 0s linear 0.25s;
+
+  // Size variants, stepped by the buttons beside the first heading
+  --sheet-width: 320px;
+  --sheet-icon-size: 44px;
+  --sheet-name-size: 14px;
+  --sheet-title-size: 13px;
+
+  &.size-medium {
+    --sheet-width: 420px;
+    --sheet-icon-size: 56px;
+    --sheet-name-size: 17px;
+    --sheet-title-size: 15px;
+  }
+
+  &.size-large {
+    --sheet-width: 520px;
+    --sheet-icon-size: 68px;
+    --sheet-name-size: 20px;
+    --sheet-title-size: 17px;
+  }
 
   &.open {
     transform: translateX(0);
@@ -189,15 +210,23 @@
   @include sheet-scrollbar;
 }
 
-// Blue for the good types and red for the evil ones, as in the spread table
-.sheet-group-title {
+.sheet-group-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
   margin: 0 0 6px;
   padding: 6px 2px;
-  font-size: 13px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+// Blue for the good types and red for the evil ones, as in the spread table
+.sheet-group-title {
+  margin: 0;
+  font-size: var(--sheet-title-size);
   font-weight: normal;
   letter-spacing: 2px;
   text-transform: uppercase;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 
   &.good {
     color: #6a9bd1;
@@ -205,6 +234,37 @@
 
   &.evil {
     color: #d16a6a;
+  }
+}
+
+// Styled after the settings table's +/- buttons, shrunk to sit in a heading
+.sheet-size-controls {
+  display: flex;
+  flex-shrink: 0;
+  gap: 6px;
+}
+
+.sheet-size-btn {
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  background-color: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+  font-size: 15px;
+  font-weight: bold;
+  line-height: 1;
+  cursor: pointer;
+  transition: background-color 0.2s;
+
+  &:hover:not(:disabled) {
+    background-color: rgba(255, 255, 255, 0.3);
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
   }
 }
 
@@ -222,7 +282,7 @@
   align-items: center;
   gap: 6px;
   min-width: 0;
-  font-size: 14px;
+  font-size: var(--sheet-name-size);
   color: white;
 }
 
@@ -230,8 +290,8 @@
 // they look
 .sheet-character-icon {
   flex-shrink: 0;
-  width: 44px;
-  height: 44px;
+  width: var(--sheet-icon-size);
+  height: var(--sheet-icon-size);
 }
 
 .sheet-empty {

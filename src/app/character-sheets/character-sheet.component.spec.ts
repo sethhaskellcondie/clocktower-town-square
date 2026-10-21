@@ -55,6 +55,33 @@ describe('CharacterSheetComponent', () => {
     expect(el.querySelector('#character_sheet_group_minions h2')?.classList).toContain('evil');
   });
 
+  it('steps through three sizes with the buttons beside the Townsfolk heading', () => {
+    const shelf = () => el.querySelector('.sheet-shelf')!.classList;
+    const up = () => el.querySelector('#character_sheet_size_up') as HTMLButtonElement;
+    const down = () => el.querySelector('#character_sheet_size_down') as HTMLButtonElement;
+    expect(el.querySelector('#character_sheet_group_townsfolk #character_sheet_size_up')).not.toBeNull();
+    expect(el.querySelectorAll('.sheet-size-controls').length).toBe(1);
+
+    expect(shelf()).toContain('size-small');
+    expect(down().disabled).toBeTrue();
+    click('#character_sheet_size_up');
+    expect(shelf()).toContain('size-medium');
+    click('#character_sheet_size_up');
+    expect(shelf()).toContain('size-large');
+    expect(up().disabled).toBeTrue();
+
+    click('#character_sheet_size_down');
+    click('#character_sheet_size_down');
+    expect(shelf()).toContain('size-small');
+    expect(shelf()).not.toContain('size-large');
+  });
+
+  it('keeps the size buttons on the first heading when a script has no Townsfolk', () => {
+    fixture.componentInstance.selectScript(new Script({ id: 'evil', name: 'Evil', base: false, characters: [IMP] }));
+    fixture.detectChanges();
+    expect(el.querySelector('#character_sheet_group_demons #character_sheet_size_up')).not.toBeNull();
+  });
+
   it('picks the script from a dropdown, starting on All', () => {
     const header = () => el.querySelector('#character_sheet_script_toggle');
     expect(header()?.textContent).toContain('Script: All');

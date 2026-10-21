@@ -2,7 +2,8 @@
   Character Sheet
 </button>
 
-<nav class="sheet-shelf" [class.open]="open" aria-label="Character sheet">
+<nav class="sheet-shelf" [class.open]="open" [class.size-small]="size === 'small'" [class.size-medium]="size === 'medium'"
+  [class.size-large]="size === 'large'" aria-label="Character sheet">
   <div class="sheet-script-picker" [class.expanded]="scriptMenuOpen" #scriptPicker>
     <button id="character_sheet_script_toggle" class="sheet-script-toggle" (click)="toggleScriptMenu()"
       aria-haspopup="listbox" [attr.aria-expanded]="scriptMenuOpen" aria-controls="character_sheet_script_menu">
@@ -25,7 +26,16 @@
   <div class="sheet-groups">
     @for (group of groups; track group.id) {
       <section class="sheet-group" [id]="'character_sheet_group_' + group.id">
-        <h2 class="sheet-group-title" [class.good]="group.team === 'good'" [class.evil]="group.team === 'evil'">{{ group.title }}</h2>
+        <div class="sheet-group-header">
+          <h2 class="sheet-group-title" [class.good]="group.team === 'good'" [class.evil]="group.team === 'evil'">{{ group.title }}</h2>
+          <!-- The size buttons sit on the first heading, which is Townsfolk on any real script -->
+          @if ($first) {
+            <div class="sheet-size-controls">
+              <button id="character_sheet_size_up" class="sheet-size-btn" (click)="sizeUp()" [disabled]="size === 'large'" aria-label="Larger character sheet">+</button>
+              <button id="character_sheet_size_down" class="sheet-size-btn" (click)="sizeDown()" [disabled]="size === 'small'" aria-label="Smaller character sheet">-</button>
+            </div>
+          }
+        </div>
         <ul class="sheet-characters">
           @for (character of group.characters; track character.id) {
             <!-- The name sits beside the icon, so the icon needs no alt text of its own -->

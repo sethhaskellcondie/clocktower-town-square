@@ -37,6 +37,9 @@ export class CharacterSheetComponent {
   open = false;
   // Whether the dropdown for picking a script is showing
   scriptMenuOpen = false;
+  // Scales the shelf, its icons and its text, stepped by the buttons beside
+  // the first heading
+  size: 'small' | 'medium' | 'large' = 'small';
 
   @ViewChild('scriptPicker') scriptPicker?: ElementRef<HTMLElement>;
 
@@ -71,6 +74,22 @@ export class CharacterSheetComponent {
   selectScript(script: Script): void {
     this.scriptMenuOpen = false;
     this.activeScript = script;
+  }
+
+  sizeUp(): void {
+    if (this.size === 'small') {
+      this.size = 'medium';
+    } else if (this.size === 'medium') {
+      this.size = 'large';
+    }
+  }
+
+  sizeDown(): void {
+    if (this.size === 'large') {
+      this.size = 'medium';
+    } else if (this.size === 'medium') {
+      this.size = 'small';
+    }
   }
 
   // Clicking anywhere outside the shelf closes it, and the script dropdown
