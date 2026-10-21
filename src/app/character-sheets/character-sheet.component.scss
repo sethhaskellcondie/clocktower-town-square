@@ -347,9 +347,8 @@
 // A dim number before the name, right-aligned in a column as wide as the
 // sheet's longest number so the names line up beneath one another
 .sheet-character-number {
-  flex-shrink: 0;
   min-width: calc(var(--sheet-number-digits, 2) * 1ch);
-  font-size: 0.85em;
+  font-size: 0.95em;
   font-variant-numeric: tabular-nums;
   text-align: right;
   color: rgba(255, 255, 255, 0.5);
@@ -361,7 +360,7 @@
   display: grid;
   grid-template-columns: auto 1fr;
   align-items: baseline;
-  gap: 2px 5px;
+  gap: 2px 9px;
   min-width: 0;
 }
 

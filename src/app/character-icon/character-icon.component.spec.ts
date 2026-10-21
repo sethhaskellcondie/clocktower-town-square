@@ -5,7 +5,7 @@ import { CharacterIconComponent } from './character-icon.component';
 import { LANDMARK_FABLED, LANDMARK_LORIC, PLAYER_FABLED, TRAVELER_CHARACTERS, travelerRows } from './character-options';
 import { PlayerAid } from '../player-aids/player-aid';
 import { PlayerAidShelf } from '../player-aids/player-aid-shelf';
-import { ALL_SCRIPT, BAD_MOON_RISING, SECTS_AND_VIOLETS, TROUBLE_BREWING } from '../scripts/script-library';
+import { ALL_SCRIPT, BAD_MOON_RISING, EXPERIMENTAL, SECTS_AND_VIOLETS, TROUBLE_BREWING } from '../scripts/script-library';
 import { PlayerComponent } from '../player/player.component';
 import { TravelerComponent } from '../traveler/traveler.component';
 import { LandmarkComponent } from '../landmark/landmark.component';
@@ -171,6 +171,10 @@ describe('Traveler options', () => {
     fixture.componentRef.setInput('script', SECTS_AND_VIOLETS);
     fixture.detectChanges();
     expect(pickerRows(el)).toEqual([SNV_TRAVELERS]);
+
+    fixture.componentRef.setInput('script', EXPERIMENTAL);
+    fixture.detectChanges();
+    expect(pickerRows(el)).toEqual([EXPERIMENTAL_TRAVELERS]);
   });
 
   it('offers a row for each script when "All" is picked', () => {
@@ -189,7 +193,7 @@ describe('Character options', () => {
       [travelerRows(TROUBLE_BREWING)[0], 'traveler'],
       [travelerRows(BAD_MOON_RISING)[0], 'traveler-bmr'],
       [travelerRows(SECTS_AND_VIOLETS)[0], 'traveler-snv'],
-      [travelerRows(ALL_SCRIPT)[3], 'traveler-experimental'],
+      [travelerRows(EXPERIMENTAL)[0], 'traveler-experimental'],
       [PLAYER_FABLED, 'fabled'],
       [LANDMARK_FABLED, 'fabled'],
       [LANDMARK_LORIC, 'loric'],

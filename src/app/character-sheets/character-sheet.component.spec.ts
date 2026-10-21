@@ -2,8 +2,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CharacterSheetComponent } from './character-sheet.component';
 import { PlayerAid } from '../player-aids/player-aid';
 import { Script } from '../scripts/script';
-import { ALL_SCRIPT, BAD_MOON_RISING, SECTS_AND_VIOLETS, TROUBLE_BREWING } from '../scripts/script-library';
-import { DEVIANT, GRANDMOTHER, IMP, SCAPEGOAT, VOUDON, WASHERWOMAN } from './character-library';
+import { ALL_SCRIPT, BAD_MOON_RISING, EXPERIMENTAL, SECTS_AND_VIOLETS, TROUBLE_BREWING } from '../scripts/script-library';
+import { ACROBAT, DEVIANT, GRANDMOTHER, IMP, SCAPEGOAT, VOUDON, WASHERWOMAN } from './character-library';
 
 describe('CharacterSheetComponent', () => {
   let fixture: ComponentFixture<CharacterSheetComponent>;
@@ -73,6 +73,9 @@ describe('CharacterSheetComponent', () => {
 
   it('gives every number the width of the longest, so the icons line up', () => {
     const digits = () => (el.querySelector('.sheet-groups') as HTMLElement).style.getPropertyValue('--sheet-number-digits');
+    expect(digits()).toBe('3');
+    fixture.componentInstance.selectScript(TROUBLE_BREWING);
+    fixture.detectChanges();
     expect(digits()).toBe('2');
     fixture.componentInstance.selectScript(new Script({ id: 'small', name: 'Small', base: false, characters: [WASHERWOMAN, IMP] }));
     fixture.detectChanges();
@@ -212,7 +215,7 @@ describe('CharacterSheetComponent', () => {
 
     click('#character_sheet_script_toggle');
     const options = Array.from(el.querySelectorAll('.sheet-script-option')).map(o => o.textContent?.trim());
-    expect(options).toEqual(['All', 'Trouble Brewing', 'Bad Moon Rising', 'Sects & Violets']);
+    expect(options).toEqual(['All', 'Trouble Brewing', 'Bad Moon Rising', 'Sects & Violets', 'Experimental']);
     expect(el.querySelector('#character_sheet_script_all')?.getAttribute('aria-selected')).toBe('true');
 
     click('#character_sheet_script_trouble-brewing');
@@ -235,6 +238,14 @@ describe('CharacterSheetComponent', () => {
     expect(names('demons')).toEqual(['Fang Gu', 'Vigormortis', 'No Dashii', 'Vortox']);
     expect(names('travelers').at(-1)).toBe(DEVIANT.name);
     expect(el.querySelector(`#character_sheet_character_${GRANDMOTHER.id}`)).toBeNull();
+  });
+
+  it("lists the experimental characters, without marking their abilities as experimental", () => {
+    fixture.componentInstance.selectScript(EXPERIMENTAL);
+    click('#character_sheet_show_abilities');
+    expect(names('townsfolk')[0]).toBe(ACROBAT.name);
+    expect(names('travelers')).toEqual(['Cacklejack', 'Gangster', 'Gnome']);
+    expect(el.querySelector(`#character_sheet_character_${ACROBAT.id} .sheet-character-ability`)?.textContent).toBe(ACROBAT.ability);
   });
 
   it("shows only the picked script's characters, and only the types it has", () => {

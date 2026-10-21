@@ -4,6 +4,7 @@ import { PlayerAidSection } from './player-aid-section';
 import { PlayerAidShelf } from './player-aid-shelf';
 import { PlayerAid } from './player-aid';
 import { HOW_TO_PLAY_VIDEO } from './player-aid-library';
+import { ACROBAT } from '../character-sheets/character-library';
 import { Script } from '../scripts/script';
 import { Character } from '../character-sheets/character';
 
@@ -51,7 +52,7 @@ describe('PlayerAidsComponent', () => {
 
     click('#player_aid_script_toggle');
     const options = Array.from(el.querySelectorAll('.aid-script-option')).map(o => o.textContent?.trim());
-    expect(options).toEqual(['All', 'Trouble Brewing', 'Bad Moon Rising', 'Sects & Violets']);
+    expect(options).toEqual(['All', 'Trouble Brewing', 'Bad Moon Rising', 'Sects & Violets', 'Experimental']);
     expect(el.querySelector('#player_aid_script_all')?.getAttribute('aria-selected')).toBe('true');
 
     // Switching scripts starts the sections collapsed
@@ -172,6 +173,12 @@ describe('PlayerAidsComponent', () => {
     expect(row.querySelector('img.aid-character-icon')?.getAttribute('src')).toBe('assets/player_aids/icons/trouble_brewing/outsiders/butler.png');
     expect(row.querySelector('.aid-character-ability')?.textContent).toBe('Each night, choose a player (not yourself): tomorrow, you may only vote if they are voting too.');
     expect(row.nextElementSibling?.textContent).toContain('the Butler may only have their hand raised to vote');
+  });
+
+  it("starts an experimental character's ability with (Experimental)", () => {
+    fixture.componentInstance.shelf.show(new PlayerAid({ character: ACROBAT }));
+    fixture.detectChanges();
+    expect(el.querySelector('.aid-character-ability')?.textContent).toBe(`(Experimental) ${ACROBAT.ability}`);
   });
 
   it('leaves out the notes of a character aid when the character has none', () => {

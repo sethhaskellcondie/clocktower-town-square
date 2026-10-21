@@ -1,17 +1,19 @@
-import { ALL_SCRIPT, BAD_MOON_RISING, SECTS_AND_VIOLETS, TROUBLE_BREWING } from './script-library';
+import { ALL_SCRIPT, BAD_MOON_RISING, EXPERIMENTAL, SECTS_AND_VIOLETS, TROUBLE_BREWING } from './script-library';
 
 describe('Script library', () => {
   const baseScripts = [TROUBLE_BREWING, BAD_MOON_RISING, SECTS_AND_VIOLETS];
+  const otherScripts = [...baseScripts, EXPERIMENTAL];
 
-  it('marks the official scripts as base and "All" as custom', () => {
+  it('marks the official scripts as base, and "All" and Experimental as custom', () => {
     for (const script of baseScripts) {
       expect(script.base).withContext(script.name).toBeTrue();
     }
     expect(ALL_SCRIPT.base).toBeFalse();
+    expect(EXPERIMENTAL.base).toBeFalse();
   });
 
   it('lists every section from the other scripts in "All"', () => {
-    for (const script of baseScripts) {
+    for (const script of otherScripts) {
       for (const section of script.sections) {
         expect(ALL_SCRIPT.sections).withContext(`${script.name}: ${section.title}`).toContain(section);
       }
@@ -19,7 +21,7 @@ describe('Script library', () => {
   });
 
   it('lists every character from the other scripts in "All"', () => {
-    for (const script of baseScripts) {
+    for (const script of otherScripts) {
       for (const character of script.characters) {
         expect(ALL_SCRIPT.characters).withContext(`${script.name}: ${character.name}`).toContain(character);
       }
@@ -29,7 +31,7 @@ describe('Script library', () => {
   it('lists every character in "All" once', () => {
     const ids = ALL_SCRIPT.characters.map(character => character.id);
     expect(new Set(ids).size).toBe(ids.length);
-    expect(ids.length).toBe(87);
+    expect(ids.length).toBe(156);
   });
 
   it('lists every Trouble Brewing character once: 13 Townsfolk, 4 Outsiders, 4 Minions, a Demon, and 5 Travelers', () => {
@@ -55,4 +57,26 @@ describe('Script library', () => {
       expect(new Set(script.characters.map(character => character.id)).size).toBe(30);
     });
   }
+
+  it('lists every experimental character once: 30 Townsfolk, 11 Outsiders, 15 Minions, 10 Demons, and 3 Travelers', () => {
+    const count = (type: string) => EXPERIMENTAL.characters.filter(character => character.type === type).length;
+    expect(count('Townsfolk')).toBe(30);
+    expect(count('Outsider')).toBe(11);
+    expect(count('Minion')).toBe(15);
+    expect(count('Demon')).toBe(10);
+    expect(count('Traveler')).toBe(3);
+    expect(EXPERIMENTAL.characters.length).toBe(69);
+    expect(new Set(EXPERIMENTAL.characters.map(character => character.id)).size).toBe(69);
+  });
+
+  it('marks the experimental characters as experimental, and no others', () => {
+    for (const character of EXPERIMENTAL.characters) {
+      expect(character.experimental).withContext(character.name).toBeTrue();
+    }
+    for (const script of baseScripts) {
+      for (const character of script.characters) {
+        expect(character.experimental).withContext(character.name).toBeFalse();
+      }
+    }
+  });
 });

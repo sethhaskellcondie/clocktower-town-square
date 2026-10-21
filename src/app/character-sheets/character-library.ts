@@ -520,7 +520,7 @@ export const APPRENTICE = new Character({
   name: 'Apprentice',
   icon: 'assets/player_aids/icons/bad_moon_rising/travelers/apprentice.png',
   type: 'Traveler',
-  ability: 'On your 1st night, you gain a Townsfolk ability (if good) or a Minion ability (if evil).',
+  ability: 'On your 1st night, you gain a Townsfolk ability (if good), or a Minion ability (if evil).',
   link: 'https://wiki.bloodontheclocktower.com/Apprentice',
 });
 
@@ -903,4 +903,773 @@ export const SECTS_AND_VIOLETS_CHARACTERS: readonly Character[] = [
   BUTCHER,
   BONE_COLLECTOR,
   DEVIANT,
+];
+
+// Experimental: Townsfolk
+export const ACROBAT = new Character({
+  id: 'acrobat',
+  name: 'Acrobat',
+  icon: 'assets/player_aids/icons/experimental/townsfolk/acrobat.png',
+  type: 'Townsfolk',
+  ability: 'Each night*, choose a player: if they are or become drunk or poisoned tonight, you die.',
+  link: 'https://wiki.bloodontheclocktower.com/Acrobat',
+  experimental: true,
+});
+
+export const ALCHEMIST = new Character({
+  id: 'alchemist',
+  name: 'Alchemist',
+  icon: 'assets/player_aids/icons/experimental/townsfolk/alchemist.png',
+  type: 'Townsfolk',
+  ability: 'You have a Minion ability. When using this, the Storyteller may prompt you to choose differently.',
+  link: 'https://wiki.bloodontheclocktower.com/Alchemist',
+  experimental: true,
+});
+
+export const ALSAAHIR = new Character({
+  id: 'alsaahir',
+  name: 'Alsaahir',
+  icon: 'assets/player_aids/icons/experimental/townsfolk/alsaahir.png',
+  type: 'Townsfolk',
+  ability: 'Each day, if you publicly guess which players are Minion(s) and which are Demon(s), good wins.',
+  link: 'https://wiki.bloodontheclocktower.com/Alsaahir',
+  experimental: true,
+});
+
+export const AMNESIAC = new Character({
+  id: 'amnesiac',
+  name: 'Amnesiac',
+  icon: 'assets/player_aids/icons/experimental/townsfolk/amnesiac.png',
+  type: 'Townsfolk',
+  ability: 'You do not know what your ability is. Each day, privately guess what it is: you learn how accurate you are.',
+  link: 'https://wiki.bloodontheclocktower.com/Amnesiac',
+  experimental: true,
+});
+
+export const ATHEIST = new Character({
+  id: 'atheist',
+  name: 'Atheist',
+  icon: 'assets/player_aids/icons/experimental/townsfolk/atheist.png',
+  type: 'Townsfolk',
+  ability: 'The Storyteller can break the game rules, and if executed, good wins, even if you are dead. [No evil characters]',
+  link: 'https://wiki.bloodontheclocktower.com/Atheist',
+  experimental: true,
+});
+
+export const BALLOONIST = new Character({
+  id: 'balloonist',
+  name: 'Balloonist',
+  icon: 'assets/player_aids/icons/experimental/townsfolk/balloonist.png',
+  type: 'Townsfolk',
+  ability: 'Each night, you learn a player of a different character type than last night. [+0 or +1 Outsider]',
+  link: 'https://wiki.bloodontheclocktower.com/Balloonist',
+  experimental: true,
+});
+
+export const BANSHEE = new Character({
+  id: 'banshee',
+  name: 'Banshee',
+  icon: 'assets/player_aids/icons/experimental/townsfolk/banshee.png',
+  type: 'Townsfolk',
+  ability: 'If the Demon kills you, all players learn this. From now on, you may nominate twice per day and vote twice per nomination.',
+  link: 'https://wiki.bloodontheclocktower.com/Banshee',
+  experimental: true,
+});
+
+export const BOUNTY_HUNTER = new Character({
+  id: 'bounty-hunter',
+  name: 'Bounty Hunter',
+  icon: 'assets/player_aids/icons/experimental/townsfolk/bounty_hunter.png',
+  type: 'Townsfolk',
+  ability: 'You start knowing 1 evil player. If the player you know dies, you learn another evil player tonight. [1 Townsfolk is evil]',
+  link: 'https://wiki.bloodontheclocktower.com/Bounty_Hunter',
+  experimental: true,
+});
+
+export const CANNIBAL = new Character({
+  id: 'cannibal',
+  name: 'Cannibal',
+  icon: 'assets/player_aids/icons/experimental/townsfolk/cannibal.png',
+  type: 'Townsfolk',
+  ability: 'You have the ability of the recently killed executee. If they are evil, you are poisoned until a good player dies by execution.',
+  link: 'https://wiki.bloodontheclocktower.com/Cannibal',
+  experimental: true,
+});
+
+export const CHOIRBOY = new Character({
+  id: 'choirboy',
+  name: 'Choirboy',
+  icon: 'assets/player_aids/icons/experimental/townsfolk/choirboy.png',
+  type: 'Townsfolk',
+  ability: 'If the Demon kills the King, you learn which player is the Demon. [+the King]',
+  link: 'https://wiki.bloodontheclocktower.com/Choirboy',
+  experimental: true,
+});
+
+export const CULT_LEADER = new Character({
+  id: 'cult-leader',
+  name: 'Cult Leader',
+  icon: 'assets/player_aids/icons/experimental/townsfolk/cult_leader.png',
+  type: 'Townsfolk',
+  ability: 'Each night, you become the alignment of an alive neighbor. If all good players choose to join your cult, your team wins.',
+  link: 'https://wiki.bloodontheclocktower.com/Cult_Leader',
+  experimental: true,
+});
+
+export const ENGINEER = new Character({
+  id: 'engineer',
+  name: 'Engineer',
+  icon: 'assets/player_aids/icons/experimental/townsfolk/engineer.png',
+  type: 'Townsfolk',
+  ability: 'Once per game, at night, choose which Minions or which Demon is in play.',
+  link: 'https://wiki.bloodontheclocktower.com/Engineer',
+  experimental: true,
+});
+
+export const FARMER = new Character({
+  id: 'farmer',
+  name: 'Farmer',
+  icon: 'assets/player_aids/icons/experimental/townsfolk/farmer.png',
+  type: 'Townsfolk',
+  ability: 'When you die at night, an alive good player becomes a Farmer.',
+  link: 'https://wiki.bloodontheclocktower.com/Farmer',
+  experimental: true,
+});
+
+export const FISHERMAN = new Character({
+  id: 'fisherman',
+  name: 'Fisherman',
+  icon: 'assets/player_aids/icons/experimental/townsfolk/fisherman.png',
+  type: 'Townsfolk',
+  ability: 'Once per game, during the day, visit the Storyteller for some advice to help your team win.',
+  link: 'https://wiki.bloodontheclocktower.com/Fisherman',
+  experimental: true,
+});
+
+export const GENERAL = new Character({
+  id: 'general',
+  name: 'General',
+  icon: 'assets/player_aids/icons/experimental/townsfolk/general.png',
+  type: 'Townsfolk',
+  ability: 'Each night, you learn which alignment the Storyteller believes is winning: good, evil, or neither.',
+  link: 'https://wiki.bloodontheclocktower.com/General',
+  experimental: true,
+});
+
+export const HIGH_PRIESTESS = new Character({
+  id: 'high-priestess',
+  name: 'High Priestess',
+  icon: 'assets/player_aids/icons/experimental/townsfolk/high_priestess.png',
+  type: 'Townsfolk',
+  ability: 'Each night, learn which player the Storyteller believes you should talk to most.',
+  link: 'https://wiki.bloodontheclocktower.com/High_Priestess',
+  experimental: true,
+});
+
+export const HUNTSMAN = new Character({
+  id: 'huntsman',
+  name: 'Huntsman',
+  icon: 'assets/player_aids/icons/experimental/townsfolk/huntsman.png',
+  type: 'Townsfolk',
+  ability: 'Once per game, at night, choose a living player: the Damsel, if chosen, becomes a not-in-play Townsfolk. [+the Damsel]',
+  link: 'https://wiki.bloodontheclocktower.com/Huntsman',
+  experimental: true,
+});
+
+export const KING = new Character({
+  id: 'king',
+  name: 'King',
+  icon: 'assets/player_aids/icons/experimental/townsfolk/king.png',
+  type: 'Townsfolk',
+  ability: 'Each night, if the dead equal or outnumber the living, you learn 1 alive character. The Demon knows you are the King.',
+  link: 'https://wiki.bloodontheclocktower.com/King',
+  experimental: true,
+});
+
+export const KNIGHT = new Character({
+  id: 'knight',
+  name: 'Knight',
+  icon: 'assets/player_aids/icons/experimental/townsfolk/knight.png',
+  type: 'Townsfolk',
+  ability: 'You start knowing 2 players that are not the Demon.',
+  link: 'https://wiki.bloodontheclocktower.com/Knight',
+  experimental: true,
+});
+
+export const LYCANTHROPE = new Character({
+  id: 'lycanthrope',
+  name: 'Lycanthrope',
+  icon: 'assets/player_aids/icons/experimental/townsfolk/lycanthrope.png',
+  type: 'Townsfolk',
+  ability: "Each night*, choose an alive player. If good, they die & the Demon doesn't kill tonight. One good player registers as evil.",
+  link: 'https://wiki.bloodontheclocktower.com/Lycanthrope',
+  experimental: true,
+});
+
+export const MAGICIAN = new Character({
+  id: 'magician',
+  name: 'Magician',
+  icon: 'assets/player_aids/icons/experimental/townsfolk/magician.png',
+  type: 'Townsfolk',
+  ability: 'The Demon thinks you are a Minion. Minions think you are a Demon.',
+  link: 'https://wiki.bloodontheclocktower.com/Magician',
+  experimental: true,
+});
+
+export const NIGHTWATCHMAN = new Character({
+  id: 'nightwatchman',
+  name: 'Nightwatchman',
+  icon: 'assets/player_aids/icons/experimental/townsfolk/nightwatchman.png',
+  type: 'Townsfolk',
+  ability: 'Once per game, at night, choose a player: they learn you are the Nightwatchman.',
+  link: 'https://wiki.bloodontheclocktower.com/Nightwatchman',
+  experimental: true,
+});
+
+export const NOBLE = new Character({
+  id: 'noble',
+  name: 'Noble',
+  icon: 'assets/player_aids/icons/experimental/townsfolk/noble.png',
+  type: 'Townsfolk',
+  ability: 'You start knowing 3 players, 1 and only 1 of which is evil.',
+  link: 'https://wiki.bloodontheclocktower.com/Noble',
+  experimental: true,
+});
+
+export const PIXIE = new Character({
+  id: 'pixie',
+  name: 'Pixie',
+  icon: 'assets/player_aids/icons/experimental/townsfolk/pixie.png',
+  type: 'Townsfolk',
+  ability: 'You start knowing 1 in-play Townsfolk. If you were mad that you were this character, you gain their ability when they die.',
+  link: 'https://wiki.bloodontheclocktower.com/Pixie',
+  experimental: true,
+});
+
+export const POPPY_GROWER = new Character({
+  id: 'poppy-grower',
+  name: 'Poppy Grower',
+  icon: 'assets/player_aids/icons/experimental/townsfolk/poppy_grower.png',
+  type: 'Townsfolk',
+  ability: 'Minions & Demons do not know each other. If you die, they learn who each other are that night.',
+  link: 'https://wiki.bloodontheclocktower.com/Poppy_Grower',
+  experimental: true,
+});
+
+export const PREACHER = new Character({
+  id: 'preacher',
+  name: 'Preacher',
+  icon: 'assets/player_aids/icons/experimental/townsfolk/preacher.png',
+  type: 'Townsfolk',
+  ability: 'Each night, choose a player: a Minion, if chosen, learns this. All chosen Minions have no ability.',
+  link: 'https://wiki.bloodontheclocktower.com/Preacher',
+  experimental: true,
+});
+
+export const PRINCESS = new Character({
+  id: 'princess',
+  name: 'Princess',
+  icon: 'assets/player_aids/icons/experimental/townsfolk/princess.png',
+  type: 'Townsfolk',
+  ability: "On your 1st day, if you nominated & executed a player, the Demon doesn't kill tonight.",
+  link: 'https://wiki.bloodontheclocktower.com/Princess',
+  experimental: true,
+});
+
+export const SHUGENJA = new Character({
+  id: 'shugenja',
+  name: 'Shugenja',
+  icon: 'assets/player_aids/icons/experimental/townsfolk/shugenja.png',
+  type: 'Townsfolk',
+  ability: 'You start knowing if your closest evil player is clockwise or anti-clockwise. If equidistant, this info is arbitrary.',
+  link: 'https://wiki.bloodontheclocktower.com/Shugenja',
+  experimental: true,
+});
+
+export const STEWARD = new Character({
+  id: 'steward',
+  name: 'Steward',
+  icon: 'assets/player_aids/icons/experimental/townsfolk/steward.png',
+  type: 'Townsfolk',
+  ability: 'You start knowing 1 good player.',
+  link: 'https://wiki.bloodontheclocktower.com/Steward',
+  experimental: true,
+});
+
+export const VILLAGE_IDIOT = new Character({
+  id: 'village-idiot',
+  name: 'Village Idiot',
+  icon: 'assets/player_aids/icons/experimental/townsfolk/village_idiot.png',
+  type: 'Townsfolk',
+  ability: 'Each night, choose a player: you learn their alignment. [+0 to +2 Village Idiots. 1 of the extras is drunk]',
+  link: 'https://wiki.bloodontheclocktower.com/Village_Idiot',
+  experimental: true,
+});
+
+// Experimental: Outsiders
+export const DAMSEL = new Character({
+  id: 'damsel',
+  name: 'Damsel',
+  icon: 'assets/player_aids/icons/experimental/outsiders/damsel.png',
+  type: 'Outsider',
+  ability: 'All Minions know a Damsel is in play. If a Minion publicly guesses you (once), your team loses.',
+  link: 'https://wiki.bloodontheclocktower.com/Damsel',
+  experimental: true,
+});
+
+export const GOLEM = new Character({
+  id: 'golem',
+  name: 'Golem',
+  icon: 'assets/player_aids/icons/experimental/outsiders/golem.png',
+  type: 'Outsider',
+  ability: 'You may only nominate once per game. When you do, if the nominee is not the Demon, they die.',
+  link: 'https://wiki.bloodontheclocktower.com/Golem',
+  experimental: true,
+});
+
+export const HATTER = new Character({
+  id: 'hatter',
+  name: 'Hatter',
+  icon: 'assets/player_aids/icons/experimental/outsiders/hatter.png',
+  type: 'Outsider',
+  ability: 'If you died today or tonight, the Minion & Demon players may choose new Minion & Demon characters to be.',
+  link: 'https://wiki.bloodontheclocktower.com/Hatter',
+  experimental: true,
+});
+
+export const HERETIC = new Character({
+  id: 'heretic',
+  name: 'Heretic',
+  icon: 'assets/player_aids/icons/experimental/outsiders/heretic.png',
+  type: 'Outsider',
+  ability: 'Whoever wins, loses & whoever loses, wins, even if you are dead.',
+  link: 'https://wiki.bloodontheclocktower.com/Heretic',
+  experimental: true,
+});
+
+export const HERMIT = new Character({
+  id: 'hermit',
+  name: 'Hermit',
+  icon: 'assets/player_aids/icons/experimental/outsiders/hermit.png',
+  type: 'Outsider',
+  ability: 'You have all Outsider abilities. [-0 or -1 Outsider]',
+  link: 'https://wiki.bloodontheclocktower.com/Hermit',
+  experimental: true,
+});
+
+export const OGRE = new Character({
+  id: 'ogre',
+  name: 'Ogre',
+  icon: 'assets/player_aids/icons/experimental/outsiders/ogre.png',
+  type: 'Outsider',
+  ability: "On your 1st night, choose a player (not yourself): you become their alignment (you don't know which) even if drunk or poisoned.",
+  link: 'https://wiki.bloodontheclocktower.com/Ogre',
+  experimental: true,
+});
+
+export const PLAGUE_DOCTOR = new Character({
+  id: 'plague-doctor',
+  name: 'Plague Doctor',
+  icon: 'assets/player_aids/icons/experimental/outsiders/plague_doctor.png',
+  type: 'Outsider',
+  ability: 'When you die, the Storyteller gains a Minion ability.',
+  link: 'https://wiki.bloodontheclocktower.com/Plague_Doctor',
+  experimental: true,
+});
+
+export const POLITICIAN = new Character({
+  id: 'politician',
+  name: 'Politician',
+  icon: 'assets/player_aids/icons/experimental/outsiders/politician.png',
+  type: 'Outsider',
+  ability: 'If you were the player most responsible for your team losing, you change alignment & win, even if dead.',
+  link: 'https://wiki.bloodontheclocktower.com/Politician',
+  experimental: true,
+});
+
+export const PUZZLEMASTER = new Character({
+  id: 'puzzlemaster',
+  name: 'Puzzlemaster',
+  icon: 'assets/player_aids/icons/experimental/outsiders/puzzlemaster.png',
+  type: 'Outsider',
+  ability: '1 player is drunk, even if you die. If you guess (once) who it is, learn the Demon player, but guess wrong & get false info.',
+  link: 'https://wiki.bloodontheclocktower.com/Puzzlemaster',
+  experimental: true,
+});
+
+export const SNITCH = new Character({
+  id: 'snitch',
+  name: 'Snitch',
+  icon: 'assets/player_aids/icons/experimental/outsiders/snitch.png',
+  type: 'Outsider',
+  ability: 'Each Minion gets 3 bluffs.',
+  link: 'https://wiki.bloodontheclocktower.com/Snitch',
+  experimental: true,
+});
+
+export const ZEALOT = new Character({
+  id: 'zealot',
+  name: 'Zealot',
+  icon: 'assets/player_aids/icons/experimental/outsiders/zealot.png',
+  type: 'Outsider',
+  ability: 'If there are 5 or more players alive, you must vote for every nomination.',
+  link: 'https://wiki.bloodontheclocktower.com/Zealot',
+  experimental: true,
+});
+
+// Experimental: Minions
+export const BOFFIN = new Character({
+  id: 'boffin',
+  name: 'Boffin',
+  icon: 'assets/player_aids/icons/experimental/minions/boffin.png',
+  type: 'Minion',
+  ability: "The Demon (even if drunk or poisoned) has a not-in-play good character's ability. You both know which.",
+  link: 'https://wiki.bloodontheclocktower.com/Boffin',
+  experimental: true,
+});
+
+export const BOOMDANDY = new Character({
+  id: 'boomdandy',
+  name: 'Boomdandy',
+  icon: 'assets/player_aids/icons/experimental/minions/boomdandy.png',
+  type: 'Minion',
+  ability: 'If you are executed, all but 3 players die. After a 10 to 1 countdown, the player with the most players pointing at them, dies.',
+  link: 'https://wiki.bloodontheclocktower.com/Boomdandy',
+  experimental: true,
+});
+
+export const FEARMONGER = new Character({
+  id: 'fearmonger',
+  name: 'Fearmonger',
+  icon: 'assets/player_aids/icons/experimental/minions/fearmonger.png',
+  type: 'Minion',
+  ability: 'Each night, choose a player: if you nominate & execute them, their team loses. All players know if you choose a new player.',
+  link: 'https://wiki.bloodontheclocktower.com/Fearmonger',
+  experimental: true,
+});
+
+export const GOBLIN = new Character({
+  id: 'goblin',
+  name: 'Goblin',
+  icon: 'assets/player_aids/icons/experimental/minions/goblin.png',
+  type: 'Minion',
+  ability: 'If you publicly claim to be the Goblin when nominated & are executed that day, your team wins.',
+  link: 'https://wiki.bloodontheclocktower.com/Goblin',
+  experimental: true,
+});
+
+export const HARPY = new Character({
+  id: 'harpy',
+  name: 'Harpy',
+  icon: 'assets/player_aids/icons/experimental/minions/harpy.png',
+  type: 'Minion',
+  ability: 'Each night, choose 2 players: tomorrow, the 1st player is mad that the 2nd is evil, or one or both might die.',
+  link: 'https://wiki.bloodontheclocktower.com/Harpy',
+  experimental: true,
+});
+
+export const MARIONETTE = new Character({
+  id: 'marionette',
+  name: 'Marionette',
+  icon: 'assets/player_aids/icons/experimental/minions/marionette.png',
+  type: 'Minion',
+  ability: 'You think you are a good character, but you are not. The Demon knows who you are. [You neighbor the Demon]',
+  link: 'https://wiki.bloodontheclocktower.com/Marionette',
+  experimental: true,
+});
+
+export const MEZEPHELES = new Character({
+  id: 'mezepheles',
+  name: 'Mezepheles',
+  icon: 'assets/player_aids/icons/experimental/minions/mezepheles.png',
+  type: 'Minion',
+  ability: 'You start knowing a secret word. The 1st good player to say this word becomes evil that night.',
+  link: 'https://wiki.bloodontheclocktower.com/Mezepheles',
+  experimental: true,
+});
+
+export const ORGAN_GRINDER = new Character({
+  id: 'organ-grinder',
+  name: 'Organ Grinder',
+  icon: 'assets/player_aids/icons/experimental/minions/organ_grinder.png',
+  type: 'Minion',
+  ability: 'All players keep their eyes closed when voting and the vote tally is secret. Each night, choose if you are drunk until dusk.',
+  link: 'https://wiki.bloodontheclocktower.com/Organ_Grinder',
+  experimental: true,
+});
+
+export const PSYCHOPATH = new Character({
+  id: 'psychopath',
+  name: 'Psychopath',
+  icon: 'assets/player_aids/icons/experimental/minions/psychopath.png',
+  type: 'Minion',
+  ability: 'Each day, before nominations, you may publicly choose a player: they die. If executed, you only die if you lose roshambo.',
+  link: 'https://wiki.bloodontheclocktower.com/Psychopath',
+  experimental: true,
+});
+
+export const SUMMONER = new Character({
+  id: 'summoner',
+  name: 'Summoner',
+  icon: 'assets/player_aids/icons/experimental/minions/summoner.png',
+  type: 'Minion',
+  ability: 'You get 3 bluffs. On the 3rd night, choose a player: they become an evil Demon of your choice. [No Demon]',
+  link: 'https://wiki.bloodontheclocktower.com/Summoner',
+  experimental: true,
+});
+
+export const VIZIER = new Character({
+  id: 'vizier',
+  name: 'Vizier',
+  icon: 'assets/player_aids/icons/experimental/minions/vizier.png',
+  type: 'Minion',
+  ability: 'All players know you are the Vizier. You cannot die during the day. If good voted, you may choose to execute immediately.',
+  link: 'https://wiki.bloodontheclocktower.com/Vizier',
+  experimental: true,
+});
+
+export const WIDOW = new Character({
+  id: 'widow',
+  name: 'Widow',
+  icon: 'assets/player_aids/icons/experimental/minions/widow.png',
+  type: 'Minion',
+  ability: 'On your 1st night, look at the Grimoire & choose a player: they are poisoned. 1 good player knows a Widow is in play.',
+  link: 'https://wiki.bloodontheclocktower.com/Widow',
+  experimental: true,
+});
+
+export const WIZARD = new Character({
+  id: 'wizard',
+  name: 'Wizard',
+  icon: 'assets/player_aids/icons/experimental/minions/wizard.png',
+  type: 'Minion',
+  ability: 'Once per game, choose to make a wish. If granted, it might have a price & leave a clue as to its nature.',
+  link: 'https://wiki.bloodontheclocktower.com/Wizard',
+  experimental: true,
+});
+
+export const WRAITH = new Character({
+  id: 'wraith',
+  name: 'Wraith',
+  icon: 'assets/player_aids/icons/experimental/minions/wraith.png',
+  type: 'Minion',
+  ability: 'You may choose to open your eyes at night. You wake when other evil players do.',
+  link: 'https://wiki.bloodontheclocktower.com/Wraith',
+  experimental: true,
+});
+
+export const XAAN = new Character({
+  id: 'xaan',
+  name: 'Xaan',
+  icon: 'assets/player_aids/icons/experimental/minions/xaan.png',
+  type: 'Minion',
+  ability: 'On night X, all Townsfolk are poisoned until dusk. [X Outsiders]',
+  link: 'https://wiki.bloodontheclocktower.com/Xaan',
+  experimental: true,
+});
+
+// Experimental: Demons
+export const AL_HADIKHIA = new Character({
+  id: 'al-hadikhia',
+  name: 'Al-Hadikhia',
+  icon: 'assets/player_aids/icons/experimental/demons/al_hadikhia.png',
+  type: 'Demon',
+  ability: 'Each night*, you may choose 3 players (all players learn who): each silently chooses to live or die, but if all live, all die.',
+  link: 'https://wiki.bloodontheclocktower.com/Al-Hadikhia',
+  experimental: true,
+});
+
+export const KAZALI = new Character({
+  id: 'kazali',
+  name: 'Kazali',
+  icon: 'assets/player_aids/icons/experimental/demons/kazali.png',
+  type: 'Demon',
+  ability: 'Each night*, choose a player: they die. [You choose which players are which Minions. -? to +? Outsiders]',
+  link: 'https://wiki.bloodontheclocktower.com/Kazali',
+  experimental: true,
+});
+
+export const LEGION = new Character({
+  id: 'legion',
+  name: 'Legion',
+  icon: 'assets/player_aids/icons/experimental/demons/legion.png',
+  type: 'Demon',
+  ability: 'Each night*, a player might die. Executions fail if only evil voted. You register as a Minion too. [Most players are Legion]',
+  link: 'https://wiki.bloodontheclocktower.com/Legion',
+  experimental: true,
+});
+
+export const LEVIATHAN = new Character({
+  id: 'leviathan',
+  name: 'Leviathan',
+  icon: 'assets/player_aids/icons/experimental/demons/leviathan.png',
+  type: 'Demon',
+  ability: 'If more than 1 good player is executed, evil wins. All players know you are in play. After day 5, evil wins.',
+  link: 'https://wiki.bloodontheclocktower.com/Leviathan',
+  experimental: true,
+});
+
+export const LIL_MONSTA = new Character({
+  id: 'lil-monsta',
+  name: "Lil' Monsta",
+  icon: 'assets/player_aids/icons/experimental/demons/lil_monsta.png',
+  type: 'Demon',
+  ability: 'Each night, Minions choose who babysits Lil\' Monsta & "is the Demon". Each night*, a player might die. [+1 Minion]',
+  link: "https://wiki.bloodontheclocktower.com/Lil'_Monsta",
+  experimental: true,
+});
+
+export const LLEECH = new Character({
+  id: 'lleech',
+  name: 'Lleech',
+  icon: 'assets/player_aids/icons/experimental/demons/lleech.png',
+  type: 'Demon',
+  ability: 'Each night*, choose a player: they die. You start by choosing a player: they are poisoned. You die if & only if they are dead.',
+  link: 'https://wiki.bloodontheclocktower.com/Lleech',
+  experimental: true,
+});
+
+export const LORD_OF_TYPHON = new Character({
+  id: 'lord-of-typhon',
+  name: 'Lord of Typhon',
+  icon: 'assets/player_aids/icons/experimental/demons/lord_of_typhon.png',
+  type: 'Demon',
+  ability: 'Each night*, choose a player: they die. [Evil characters are in a line. You are in the middle. +1 Minion. -? to +? Outsiders]',
+  link: 'https://wiki.bloodontheclocktower.com/Lord_of_Typhon',
+  experimental: true,
+});
+
+export const OJO = new Character({
+  id: 'ojo',
+  name: 'Ojo',
+  icon: 'assets/player_aids/icons/experimental/demons/ojo.png',
+  type: 'Demon',
+  ability: 'Each night*, choose a character: they die. If they are not in play, the Storyteller chooses who dies.',
+  link: 'https://wiki.bloodontheclocktower.com/Ojo',
+  experimental: true,
+});
+
+export const RIOT = new Character({
+  id: 'riot',
+  name: 'Riot',
+  icon: 'assets/player_aids/icons/experimental/demons/riot.png',
+  type: 'Demon',
+  ability: 'On day 3, Minions become Riot & nominees die but nominate an alive player immediately. This must happen.',
+  link: 'https://wiki.bloodontheclocktower.com/Riot',
+  experimental: true,
+});
+
+export const YAGGABABBLE = new Character({
+  id: 'yaggababble',
+  name: 'Yaggababble',
+  icon: 'assets/player_aids/icons/experimental/demons/yaggababble.png',
+  type: 'Demon',
+  ability: 'You start knowing a secret phrase. For each time you said it publicly today, a player might die.',
+  link: 'https://wiki.bloodontheclocktower.com/Yaggababble',
+  experimental: true,
+});
+
+// Experimental: Travelers
+export const CACKLEJACK = new Character({
+  id: 'cacklejack',
+  name: 'Cacklejack',
+  icon: 'assets/player_aids/icons/experimental/travelers/cacklejack.png',
+  type: 'Traveler',
+  ability: 'Each day, choose a player: a different player changes character tonight.',
+  link: 'https://wiki.bloodontheclocktower.com/Cacklejack',
+  experimental: true,
+});
+
+export const GANGSTER = new Character({
+  id: 'gangster',
+  name: 'Gangster',
+  icon: 'assets/player_aids/icons/experimental/travelers/gangster.png',
+  type: 'Traveler',
+  ability: 'Once per day, you may choose to kill an alive neighbor, if your other alive neighbor agrees.',
+  link: 'https://wiki.bloodontheclocktower.com/Gangster',
+  experimental: true,
+});
+
+export const GNOME = new Character({
+  id: 'gnome',
+  name: 'Gnome',
+  icon: 'assets/player_aids/icons/experimental/travelers/gnome.png',
+  type: 'Traveler',
+  ability: 'All players start knowing a player of your alignment. You may choose to kill anyone who nominates them.',
+  link: 'https://wiki.bloodontheclocktower.com/Gnome',
+  experimental: true,
+});
+
+// Every experimental character. They have no character sheet of their own,
+// so each type is in alphabetical order, with the travelers after.
+export const EXPERIMENTAL_CHARACTERS: readonly Character[] = [
+  ACROBAT,
+  ALCHEMIST,
+  ALSAAHIR,
+  AMNESIAC,
+  ATHEIST,
+  BALLOONIST,
+  BANSHEE,
+  BOUNTY_HUNTER,
+  CANNIBAL,
+  CHOIRBOY,
+  CULT_LEADER,
+  ENGINEER,
+  FARMER,
+  FISHERMAN,
+  GENERAL,
+  HIGH_PRIESTESS,
+  HUNTSMAN,
+  KING,
+  KNIGHT,
+  LYCANTHROPE,
+  MAGICIAN,
+  NIGHTWATCHMAN,
+  NOBLE,
+  PIXIE,
+  POPPY_GROWER,
+  PREACHER,
+  PRINCESS,
+  SHUGENJA,
+  STEWARD,
+  VILLAGE_IDIOT,
+  DAMSEL,
+  GOLEM,
+  HATTER,
+  HERETIC,
+  HERMIT,
+  OGRE,
+  PLAGUE_DOCTOR,
+  POLITICIAN,
+  PUZZLEMASTER,
+  SNITCH,
+  ZEALOT,
+  BOFFIN,
+  BOOMDANDY,
+  FEARMONGER,
+  GOBLIN,
+  HARPY,
+  MARIONETTE,
+  MEZEPHELES,
+  ORGAN_GRINDER,
+  PSYCHOPATH,
+  SUMMONER,
+  VIZIER,
+  WIDOW,
+  WIZARD,
+  WRAITH,
+  XAAN,
+  AL_HADIKHIA,
+  KAZALI,
+  LEGION,
+  LEVIATHAN,
+  LIL_MONSTA,
+  LLEECH,
+  LORD_OF_TYPHON,
+  OJO,
+  RIOT,
+  YAGGABABBLE,
+  CACKLEJACK,
+  GANGSTER,
+  GNOME,
 ];

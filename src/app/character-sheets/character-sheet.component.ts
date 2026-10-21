@@ -2,7 +2,7 @@ import { Component, ElementRef, EventEmitter, HostListener, Input, OnChanges, Ou
 import { Character } from './character';
 import { PlayerAid } from '../player-aids/player-aid';
 import { Script } from '../scripts/script';
-import { ALL_SCRIPT, BAD_MOON_RISING, SECTS_AND_VIOLETS, TROUBLE_BREWING } from '../scripts/script-library';
+import { ALL_SCRIPT, BAD_MOON_RISING, EXPERIMENTAL, SECTS_AND_VIOLETS, TROUBLE_BREWING } from '../scripts/script-library';
 
 // Travelers can be on either team, so they get a team of their own
 type SheetTeam = 'good' | 'evil' | 'traveler';
@@ -29,7 +29,7 @@ const SHEET_GROUPS: readonly { id: string; title: string; type: string; team: Sh
 ];
 
 // The first script is the one the sheet opens on
-const SHEET_SCRIPTS: Script[] = [ALL_SCRIPT, TROUBLE_BREWING, BAD_MOON_RISING, SECTS_AND_VIOLETS];
+const SHEET_SCRIPTS: Script[] = [ALL_SCRIPT, TROUBLE_BREWING, BAD_MOON_RISING, SECTS_AND_VIOLETS, EXPERIMENTAL];
 
 // A shelf on the right, mirroring the Player Aids shelf on the left, that
 // shows the characters of the picked script grouped by type

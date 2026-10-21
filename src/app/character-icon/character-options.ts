@@ -1,6 +1,6 @@
 import { PlayerAid } from '../player-aids/player-aid';
 import { Script } from '../scripts/script';
-import { ALL_SCRIPT, BAD_MOON_RISING, SECTS_AND_VIOLETS, TROUBLE_BREWING } from '../scripts/script-library';
+import { ALL_SCRIPT, BAD_MOON_RISING, EXPERIMENTAL, SECTS_AND_VIOLETS, TROUBLE_BREWING } from '../scripts/script-library';
 import {
   ANGEL_PROTECTION,
   APPRENTICE_ABILITY,
@@ -70,10 +70,9 @@ export const TRAVELER_CHARACTERS: readonly CharacterOption[] = [
   { id: 'butcher', name: 'Butcher', icon: 'assets/player_aids/icons/sects_and_violets/travelers/butcher.png', aid: BUTCHER_NOMINATION, scripts: [SECTS_AND_VIOLETS] },
   { id: 'bone-collector', name: 'Bone Collector', icon: 'assets/player_aids/icons/sects_and_violets/travelers/bone_collector.png', aid: BONE_COLLECTOR_REVIVAL, scripts: [SECTS_AND_VIOLETS] },
   { id: 'deviant', name: 'Deviant', icon: 'assets/player_aids/icons/sects_and_violets/travelers/deviant.png', aid: DEVIANT_EXILE, scripts: [SECTS_AND_VIOLETS] },
-  // Experimental travelers aren't in any one script, so they're only offered with "All" picked
-  { id: 'gangster', name: 'Gangster', icon: 'assets/player_aids/icons/experimental/travelers/gangster.png', aid: GANGSTER_KILL, scripts: [ALL_SCRIPT] },
-  { id: 'gnome', name: 'Gnome', icon: 'assets/player_aids/icons/experimental/travelers/gnome.png', aid: GNOME_PROTECTION, scripts: [ALL_SCRIPT] },
-  { id: 'cacklejack', name: 'Cacklejack', icon: 'assets/player_aids/icons/experimental/travelers/cacklejack.png', aid: CACKLEJACK_CHANGE, scripts: [ALL_SCRIPT] },
+  { id: 'gangster', name: 'Gangster', icon: 'assets/player_aids/icons/experimental/travelers/gangster.png', aid: GANGSTER_KILL, scripts: [EXPERIMENTAL] },
+  { id: 'gnome', name: 'Gnome', icon: 'assets/player_aids/icons/experimental/travelers/gnome.png', aid: GNOME_PROTECTION, scripts: [EXPERIMENTAL] },
+  { id: 'cacklejack', name: 'Cacklejack', icon: 'assets/player_aids/icons/experimental/travelers/cacklejack.png', aid: CACKLEJACK_CHANGE, scripts: [EXPERIMENTAL] },
 ];
 
 // The rows of travelers to offer while a script is picked on the shelf: one

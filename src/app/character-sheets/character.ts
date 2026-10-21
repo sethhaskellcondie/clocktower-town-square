@@ -8,8 +8,9 @@ export class Character {
   readonly ability: string;
   readonly additionalText?: string; // extra notes shown beneath the ability
   readonly link: string; // where to read more, e.g. the character's wiki page
+  readonly experimental: boolean; // released as experimental rather than in a base script
 
-  constructor(config: { id: string; name: string; icon: string; type: string; ability: string; additionalText?: string; link: string }) {
+  constructor(config: { id: string; name: string; icon: string; type: string; ability: string; additionalText?: string; link: string; experimental?: boolean }) {
     this.id = config.id;
     this.name = config.name;
     this.icon = config.icon;
@@ -17,5 +18,6 @@ export class Character {
     this.ability = config.ability;
     this.additionalText = config.additionalText;
     this.link = config.link;
+    this.experimental = config.experimental ?? false;
   }
 }

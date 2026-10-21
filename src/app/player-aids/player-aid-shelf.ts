@@ -1,10 +1,10 @@
 import { PlayerAid } from './player-aid';
 import { PlayerAidSection } from './player-aid-section';
 import { Script } from '../scripts/script';
-import { ALL_SCRIPT, BAD_MOON_RISING, SECTS_AND_VIOLETS, TROUBLE_BREWING } from '../scripts/script-library';
+import { ALL_SCRIPT, BAD_MOON_RISING, EXPERIMENTAL, SECTS_AND_VIOLETS, TROUBLE_BREWING } from '../scripts/script-library';
 
 // The first script is the one the shelf opens on
-const SHELF_SCRIPTS: Script[] = [ALL_SCRIPT, TROUBLE_BREWING, BAD_MOON_RISING, SECTS_AND_VIOLETS];
+const SHELF_SCRIPTS: Script[] = [ALL_SCRIPT, TROUBLE_BREWING, BAD_MOON_RISING, SECTS_AND_VIOLETS, EXPERIMENTAL];
 
 // Holds the shelf's scripts and everything about its state: whether it's
 // open, which script is picked, which sections are expanded, and which aid

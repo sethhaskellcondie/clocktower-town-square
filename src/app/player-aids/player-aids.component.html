@@ -104,11 +104,13 @@
       </header>
       <div class="aid-modal-body" #modalBody>
         <!-- A character's aid is always laid out the same way: its icon with
-             its ability beside it, then any notes beneath -->
+             its ability beside it, then any notes beneath. An experimental
+             character's ability is flagged as such, as the experimental
+             travelers' aids are. -->
         @if (activeAid.character; as character) {
           <div class="aid-character">
             <img class="aid-character-icon" [src]="character.icon" [alt]="character.name + ' icon'">
-            <p class="aid-character-ability">{{ character.ability }}</p>
+            <p class="aid-character-ability">{{ character.experimental ? '(Experimental) ' + character.ability : character.ability }}</p>
           </div>
           @if (character.additionalText) {
             <p>{{ character.additionalText }}</p>
