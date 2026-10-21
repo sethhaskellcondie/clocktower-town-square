@@ -3,7 +3,7 @@
 </button>
 
 <nav class="sheet-shelf" [class.open]="open" [class.size-small]="size === 'small'" [class.size-medium]="size === 'medium'"
-  [class.size-large]="size === 'large'" aria-label="Character sheet">
+  [class.size-large]="size === 'large'" [class.with-abilities]="showAbilities" aria-label="Character sheet">
   <div class="sheet-script-picker" [class.expanded]="scriptMenuOpen" #scriptPicker>
     <button id="character_sheet_script_toggle" class="sheet-script-toggle" (click)="toggleScriptMenu()"
       aria-haspopup="listbox" [attr.aria-expanded]="scriptMenuOpen" aria-controls="character_sheet_script_menu">
@@ -27,10 +27,13 @@
     @for (group of groups; track group.id) {
       <section class="sheet-group" [id]="'character_sheet_group_' + group.id">
         <div class="sheet-group-header">
-          <h2 class="sheet-group-title" [class.good]="group.team === 'good'" [class.evil]="group.team === 'evil'">{{ group.title }}</h2>
-          <!-- The size buttons sit on the first heading, which is Townsfolk on any real script -->
+          <h2 class="sheet-group-title" [class.good]="group.team === 'good'" [class.evil]="group.team === 'evil'"
+            [class.traveler]="group.team === 'traveler'">{{ group.title }}</h2>
+          <!-- The controls sit on the first heading, which is Townsfolk on any real script -->
           @if ($first) {
-            <div class="sheet-size-controls">
+            <div class="sheet-controls">
+              <input id="character_sheet_show_abilities" type="checkbox" class="sheet-ability-checkbox"
+                [checked]="showAbilities" (change)="toggleAbilities()" aria-label="Show abilities" title="Show abilities">
               <button id="character_sheet_size_up" class="sheet-size-btn" (click)="sizeUp()" [disabled]="size === 'large'" aria-label="Larger character sheet">+</button>
               <button id="character_sheet_size_down" class="sheet-size-btn" (click)="sizeDown()" [disabled]="size === 'small'" aria-label="Smaller character sheet">-</button>
             </div>
@@ -40,8 +43,16 @@
           @for (character of group.characters; track character.id) {
             <!-- The name sits beside the icon, so the icon needs no alt text of its own -->
             <li class="sheet-character" [id]="'character_sheet_character_' + character.id">
-              <img class="sheet-character-icon" [src]="character.icon" alt="">
-              <span class="sheet-character-name">{{ character.name }}</span>
+              <button class="sheet-character-icon-btn" [id]="'character_sheet_icon_' + character.id"
+                (click)="showCharacter(character)" [attr.aria-label]="'Open the ' + character.name + ' player aid'">
+                <img class="sheet-character-icon" [src]="character.icon" alt="" draggable="false">
+              </button>
+              <div class="sheet-character-text">
+                <span class="sheet-character-name">{{ character.name }}</span>
+                @if (showAbilities) {
+                  <span class="sheet-character-ability">{{ character.ability }}</span>
+                }
+              </div>
             </li>
           }
         </ul>

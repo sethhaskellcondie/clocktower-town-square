@@ -6,7 +6,7 @@
 
 <app-player-aids #aids></app-player-aids>
 
-<app-character-sheet></app-character-sheet>
+<app-character-sheet [activeAid]="aids.shelf.activeAid" (openAid)="aids.show($event)"></app-character-sheet>
 
 <div class="info-table-container">
   @if (isDay) {

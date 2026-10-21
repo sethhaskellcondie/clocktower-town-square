@@ -1,23 +1,28 @@
-import { Component, ElementRef, HostListener, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, HostListener, Input, OnChanges, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { Character } from './character';
+import { PlayerAid } from '../player-aids/player-aid';
 import { Script } from '../scripts/script';
 import { ALL_SCRIPT, TROUBLE_BREWING } from '../scripts/script-library';
+
+// Travelers can be on either team, so they get a team of their own
+type SheetTeam = 'good' | 'evil' | 'traveler';
 
 // A heading on the sheet, with the characters of its type listed under it
 export interface CharacterGroup {
   id: string;
   title: string;
-  team: 'good' | 'evil';
+  team: SheetTeam;
   characters: Character[];
 }
 
-// The types the sheet lists, in the order a printed character sheet does.
-// Travelers aren't on a character sheet, so they're left off.
-const SHEET_GROUPS: readonly { id: string; title: string; type: string; team: 'good' | 'evil' }[] = [
+// The types the sheet lists, in the order a printed character sheet does,
+// with the travelers after
+const SHEET_GROUPS: readonly { id: string; title: string; type: string; team: SheetTeam }[] = [
   { id: 'townsfolk', title: 'Townsfolk', type: 'Townsfolk', team: 'good' },
   { id: 'outsiders', title: 'Outsiders', type: 'Outsider', team: 'good' },
   { id: 'minions', title: 'Minions', type: 'Minion', team: 'evil' },
   { id: 'demons', title: 'Demons', type: 'Demon', team: 'evil' },
+  { id: 'travelers', title: 'Travelers', type: 'Traveler', team: 'traveler' },
 ];
 
 // The first script is the one the sheet opens on
@@ -31,7 +36,12 @@ const SHEET_SCRIPTS: Script[] = [ALL_SCRIPT, TROUBLE_BREWING];
   templateUrl: './character-sheet.component.html',
   styleUrl: './character-sheet.component.scss'
 })
-export class CharacterSheetComponent {
+export class CharacterSheetComponent implements OnChanges {
+  // The aid the player aids modal is showing, if any, so the sheet knows
+  // when an aid it opened has closed
+  @Input() activeAid: PlayerAid | null = null;
+  @Output() openAid = new EventEmitter<PlayerAid>();
+
   readonly scripts: readonly Script[] = SHEET_SCRIPTS;
   activeScript: Script = this.scripts[0];
   open = false;
@@ -40,10 +50,29 @@ export class CharacterSheetComponent {
   // Scales the shelf, its icons and its text, stepped by the buttons beside
   // the first heading
   size: 'small' | 'medium' | 'large' = 'small';
+  // Whether each character's ability is printed beneath its name
+  showAbilities = false;
+
+  // The aid opened from the sheet while it's showing, so the sheet can
+  // reopen once it closes
+  private sheetAid: PlayerAid | null = null;
 
   @ViewChild('scriptPicker') scriptPicker?: ElementRef<HTMLElement>;
 
   constructor(private host: ElementRef<HTMLElement>) {}
+
+  // The sheet comes back once the aid it opened closes. Reopening here rather
+  // than in the click or key that closed the aid keeps this sheet's own
+  // outside-click and Escape handlers from shutting it again straight away.
+  // If another aid takes its place, the sheet stays shut.
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['activeAid'] && this.sheetAid && this.activeAid !== this.sheetAid) {
+      if (!this.activeAid) {
+        this.open = true;
+      }
+      this.sheetAid = null;
+    }
+  }
 
   // The picked script's characters under their type's heading, leaving out
   // any type the script has none of
@@ -74,6 +103,17 @@ export class CharacterSheetComponent {
   selectScript(script: Script): void {
     this.scriptMenuOpen = false;
     this.activeScript = script;
+  }
+
+  // The sheet steps aside while the character's aid is open
+  showCharacter(character: Character): void {
+    this.close();
+    this.sheetAid = new PlayerAid({ character });
+    this.openAid.emit(this.sheetAid);
+  }
+
+  toggleAbilities(): void {
+    this.showAbilities = !this.showAbilities;
   }
 
   sizeUp(): void {

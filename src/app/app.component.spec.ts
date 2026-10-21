@@ -5,6 +5,7 @@ import { DayTimerService } from './day-timer/day-timer.service';
 import { HOW_TO_PLAY_VIDEO, NO_DEATHS } from './player-aids/player-aid-library';
 import { BAD_MOON_RISING } from './scripts/script-library';
 import { travelerRows } from './character-icon/character-options';
+import { WASHERWOMAN } from './character-sheets/character-library';
 
 describe('AppComponent', () => {
   beforeEach(async () => {
@@ -57,6 +58,49 @@ describe('AppComponent', () => {
     app.playerAids!.shelf.selectScript(BAD_MOON_RISING);
     fixture.detectChanges();
     expect(traveler.characterRows).toEqual(travelerRows(BAD_MOON_RISING));
+  });
+
+  it("opens a character's aid from the character sheet, then returns to the sheet once it closes", () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    fixture.detectChanges();
+    const compiled = fixture.nativeElement as HTMLElement;
+    const shelf = fixture.componentInstance.playerAids!.shelf;
+    const sheetOpen = () => compiled.querySelector('.sheet-shelf')!.classList.contains('open');
+    const click = (selector: string) => {
+      (compiled.querySelector(selector) as HTMLElement).click();
+      fixture.detectChanges();
+    };
+
+    click('#character_sheet_toggle');
+    click(`#character_sheet_icon_${WASHERWOMAN.id}`);
+    expect(sheetOpen()).toBeFalse();
+    expect(shelf.activeAid?.character).toBe(WASHERWOMAN);
+    expect(compiled.querySelector('.aid-modal h2')?.textContent).toContain('Washerwoman');
+
+    // The close click lands outside the sheet, which mustn't shut it again
+    click('#player_aid_close');
+    expect(shelf.activeAid).toBeNull();
+    expect(sheetOpen()).toBeTrue();
+
+    // Likewise for the Escape that closes the aid
+    click(`#character_sheet_icon_${WASHERWOMAN.id}`);
+    document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }));
+    fixture.detectChanges();
+    expect(shelf.activeAid).toBeNull();
+    expect(sheetOpen()).toBeTrue();
+  });
+
+  it("leaves the character sheet shut when an aid opened elsewhere closes", () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    fixture.detectChanges();
+    const compiled = fixture.nativeElement as HTMLElement;
+    const shelf = fixture.componentInstance.playerAids!.shelf;
+
+    shelf.openAid(HOW_TO_PLAY_VIDEO, shelf.sections[0]);
+    fixture.detectChanges();
+    (compiled.querySelector('#player_aid_close') as HTMLElement).click();
+    fixture.detectChanges();
+    expect(compiled.querySelector('.sheet-shelf')!.classList).not.toContain('open');
   });
 
   it('steps the attract mode on A, but not while a player aid is open', () => {
