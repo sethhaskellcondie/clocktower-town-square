@@ -4,13 +4,14 @@ import { By } from '@angular/platform-browser';
 import { CharacterIconComponent } from './character-icon.component';
 import { LANDMARK_FABLED, LANDMARK_LORIC, PLAYER_FABLED, TRAVELER_CHARACTERS, travelerRows } from './character-options';
 import { PlayerAid } from '../player-aids/player-aid';
-import { ALL_SCRIPT, BAD_MOON_RISING, PlayerAidShelf, TROUBLE_BREWING } from '../player-aids/player-aid-shelf';
+import { ALL_SCRIPT, BAD_MOON_RISING, PlayerAidShelf, SECTS_AND_VIOLETS, TROUBLE_BREWING } from '../player-aids/player-aid-shelf';
 import { PlayerComponent } from '../player/player.component';
 import { TravelerComponent } from '../traveler/traveler.component';
 import { LandmarkComponent } from '../landmark/landmark.component';
 
 const TB_TRAVELERS = ['Scapegoat', 'Gunslinger', 'Beggar', 'Bureaucrat', 'Thief'];
 const BMR_TRAVELERS = ['Apprentice', 'Matron', 'Voudon', 'Judge', 'Bishop'];
+const SNV_TRAVELERS = ['Barista', 'Harlot', 'Butcher', 'Bone Collector', 'Deviant'];
 
 // Each token on the board offers its own set of character icons, a row at a
 // time. Travelers start on the "All" script, with a row for each script.
@@ -19,7 +20,7 @@ const TOKENS: { kind: string; component: Type<PlayerComponent | TravelerComponen
     kind: 'traveler',
     component: TravelerComponent,
     tokenClass: '.traveler-circle',
-    rows: [TB_TRAVELERS, BMR_TRAVELERS],
+    rows: [TB_TRAVELERS, BMR_TRAVELERS, SNV_TRAVELERS],
   },
   {
     kind: 'player',
@@ -164,6 +165,10 @@ describe('Traveler options', () => {
     fixture.componentRef.setInput('script', BAD_MOON_RISING);
     fixture.detectChanges();
     expect(pickerRows(el)).toEqual([BMR_TRAVELERS]);
+
+    fixture.componentRef.setInput('script', SECTS_AND_VIOLETS);
+    fixture.detectChanges();
+    expect(pickerRows(el)).toEqual([SNV_TRAVELERS]);
   });
 
   it('offers a row for each script when "All" is picked', () => {
@@ -171,7 +176,7 @@ describe('Traveler options', () => {
     fixture.detectChanges();
     fixture.componentRef.setInput('script', ALL_SCRIPT);
     fixture.detectChanges();
-    expect(pickerRows(el)).toEqual([TB_TRAVELERS, BMR_TRAVELERS]);
+    expect(pickerRows(el)).toEqual([TB_TRAVELERS, BMR_TRAVELERS, SNV_TRAVELERS]);
   });
 });
 
@@ -181,6 +186,7 @@ describe('Character options', () => {
     const expected: [readonly { aid: PlayerAid }[], string][] = [
       [travelerRows(TROUBLE_BREWING)[0], 'traveler'],
       [travelerRows(BAD_MOON_RISING)[0], 'traveler-bmr'],
+      [travelerRows(SECTS_AND_VIOLETS)[0], 'traveler-snv'],
       [PLAYER_FABLED, 'fabled'],
       [LANDMARK_FABLED, 'fabled'],
       [LANDMARK_LORIC, 'loric'],

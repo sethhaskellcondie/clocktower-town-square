@@ -654,6 +654,91 @@ export const BISHOP_NOMINATIONS = new PlayerAid({
   ],
 });
 
+export const BARISTA_SERVICE = new PlayerAid({
+  id: 'barista-service',
+  title: 'The Barista',
+  summary: 'Makes a player sober and healthy, or their ability work twice.',
+  blocks: [
+    {
+      type: 'image',
+      src: 'assets/player_aids/icons/sects_and_violets/travelers/barista.png',
+      alt: 'Barista icon: a steaming teacup on a saucer, half blue and half red',
+    },
+    {
+      type: 'text',
+      text: 'Each night, until dusk, 1) a player becomes sober, healthy & gets true info, or 2) their ability works twice. They learn which.',
+    },
+  ],
+});
+
+export const HARLOT_VISIT = new PlayerAid({
+  id: 'harlot-visit',
+  title: 'The Harlot',
+  summary: "Can learn a willing player's character, at the risk of both dying.",
+  blocks: [
+    {
+      type: 'image',
+      src: 'assets/player_aids/icons/sects_and_violets/travelers/harlot.png',
+      alt: 'Harlot icon: a laced corset, half blue and half red',
+    },
+    {
+      type: 'text',
+      text: 'Each night (except the first), choose a living player: if they agree, you learn their character, but you both might die.',
+    },
+  ],
+});
+
+export const BUTCHER_NOMINATION = new PlayerAid({
+  id: 'butcher-nomination',
+  title: 'The Butcher',
+  summary: 'Can nominate again after the first execution.',
+  blocks: [
+    {
+      type: 'image',
+      src: 'assets/player_aids/icons/sects_and_violets/travelers/butcher.png',
+      alt: 'Butcher icon: a meat cleaver, half blue and half red',
+    },
+    {
+      type: 'text',
+      text: 'Each day, after the 1st execution, you may nominate again.',
+    },
+  ],
+});
+
+export const BONE_COLLECTOR_REVIVAL = new PlayerAid({
+  id: 'bone-collector-revival',
+  title: 'The Bone Collector',
+  summary: 'Gives a dead player their ability back.',
+  blocks: [
+    {
+      type: 'image',
+      src: 'assets/player_aids/icons/sects_and_violets/travelers/bone_collector.png',
+      alt: 'Bone Collector icon: two crossed bones tied with feathers, half blue and half red',
+    },
+    {
+      type: 'text',
+      text: 'Once per game, at night (except the first), choose a dead player: they regain their ability until dusk.',
+    },
+  ],
+});
+
+export const DEVIANT_EXILE = new PlayerAid({
+  id: 'deviant-exile',
+  title: 'The Deviant',
+  summary: "Can't be exiled after being funny.",
+  blocks: [
+    {
+      type: 'image',
+      src: 'assets/player_aids/icons/sects_and_violets/travelers/deviant.png',
+      alt: 'Deviant icon: a spiked collar, half blue and half red',
+    },
+    {
+      type: 'text',
+      text: 'If you were funny today, you cannot die by exile.',
+    },
+  ],
+});
+
 export const ANGEL_PROTECTION = new PlayerAid({
   id: 'angel-protection',
   title: 'The Angel',

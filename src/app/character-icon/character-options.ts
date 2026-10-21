@@ -1,22 +1,27 @@
 import { PlayerAid } from '../player-aids/player-aid';
 import { PlayerAidScript } from '../player-aids/player-aid-script';
-import { ALL_SCRIPT, BAD_MOON_RISING, TROUBLE_BREWING } from '../player-aids/player-aid-shelf';
+import { ALL_SCRIPT, BAD_MOON_RISING, SECTS_AND_VIOLETS, TROUBLE_BREWING } from '../player-aids/player-aid-shelf';
 import {
   ANGEL_PROTECTION,
   APPRENTICE_ABILITY,
+  BARISTA_SERVICE,
   BEGGAR_VOTING,
   BIG_WIG_NOMINEES,
   BISHOP_NOMINATIONS,
+  BONE_COLLECTOR_REVIVAL,
   BOOTLEGGER_HOMEBREW,
   BUDDHIST_SILENCE,
   BUREAUCRAT_VOTES,
+  BUTCHER_NOMINATION,
   DEUS_EX_FIASCO_MISTAKE,
+  DEVIANT_EXILE,
   DOOMSAYER_SACRIFICE,
   FERRYMAN_VOTES,
   FIDDLER_CONTEST,
   GARDENER_SEATING,
   GOD_OF_UG_HAT,
   GUNSLINGER_SHOT,
+  HARLOT_VISIT,
   HELLS_LIBRARIAN_SILENCE,
   HINDU_REINCARNATION,
   JUDGE_RULING,
@@ -57,6 +62,11 @@ export const TRAVELER_CHARACTERS: readonly CharacterOption[] = [
   { id: 'voudon', name: 'Voudon', icon: 'assets/player_aids/icons/bad_moon_rising/travelers/voudon.png', aid: VOUDON_VOTING, scripts: [BAD_MOON_RISING] },
   { id: 'judge', name: 'Judge', icon: 'assets/player_aids/icons/bad_moon_rising/travelers/judge.png', aid: JUDGE_RULING, scripts: [BAD_MOON_RISING] },
   { id: 'bishop', name: 'Bishop', icon: 'assets/player_aids/icons/bad_moon_rising/travelers/bishop.png', aid: BISHOP_NOMINATIONS, scripts: [BAD_MOON_RISING] },
+  { id: 'barista', name: 'Barista', icon: 'assets/player_aids/icons/sects_and_violets/travelers/barista.png', aid: BARISTA_SERVICE, scripts: [SECTS_AND_VIOLETS] },
+  { id: 'harlot', name: 'Harlot', icon: 'assets/player_aids/icons/sects_and_violets/travelers/harlot.png', aid: HARLOT_VISIT, scripts: [SECTS_AND_VIOLETS] },
+  { id: 'butcher', name: 'Butcher', icon: 'assets/player_aids/icons/sects_and_violets/travelers/butcher.png', aid: BUTCHER_NOMINATION, scripts: [SECTS_AND_VIOLETS] },
+  { id: 'bone-collector', name: 'Bone Collector', icon: 'assets/player_aids/icons/sects_and_violets/travelers/bone_collector.png', aid: BONE_COLLECTOR_REVIVAL, scripts: [SECTS_AND_VIOLETS] },
+  { id: 'deviant', name: 'Deviant', icon: 'assets/player_aids/icons/sects_and_violets/travelers/deviant.png', aid: DEVIANT_EXILE, scripts: [SECTS_AND_VIOLETS] },
 ];
 
 // The rows of travelers to offer while a script is picked on the shelf: one
