@@ -688,6 +688,23 @@ export const BUDDHIST_SILENCE = new PlayerAid({
   ],
 });
 
+export const DEUS_EX_FIASCO_MISTAKE = new PlayerAid({
+  id: 'deus-ex-fiasco-mistake',
+  title: 'The Deus ex Fiasco',
+  summary: 'The Storyteller will admit to at least one mistake.',
+  blocks: [
+    {
+      type: 'image',
+      src: 'assets/player_aids/icons/fabled/deus_ex_fiasco.png',
+      alt: 'Deus ex Fiasco icon: a golden thumbs up rising from a cloud',
+    },
+    {
+      type: 'text',
+      text: '(Experimental) At least once per game, the Storyteller will make a mistake, correct it, and publicly admit to it.',
+    },
+  ],
+});
+
 export const DOOMSAYER_SACRIFICE = new PlayerAid({
   id: 'doomsayer-sacrifice',
   title: 'The Doomsayer',
@@ -701,6 +718,23 @@ export const DOOMSAYER_SACRIFICE = new PlayerAid({
     {
       type: 'text',
       text: 'If 4 or more players live, each living player may publicly choose (once per game) that a player of their own alignment dies.',
+    },
+  ],
+});
+
+export const FERRYMAN_VOTES = new PlayerAid({
+  id: 'ferryman-votes',
+  title: 'The Ferryman',
+  summary: 'Dead players get their vote back on the final day.',
+  blocks: [
+    {
+      type: 'image',
+      src: 'assets/player_aids/icons/fabled/ferryman.png',
+      alt: 'Ferryman icon: a golden hooded figure poling a boat',
+    },
+    {
+      type: 'text',
+      text: '(Experimental) On the final day, all dead players regain their vote token.',
     },
   ],
 });

@@ -32,7 +32,7 @@ const TOKENS: { kind: string; component: Type<PlayerComponent | TravelerComponen
     component: LandmarkComponent,
     tokenClass: '.landmark-square',
     rows: [
-      ['Fiddler', "Hell's Librarian"],
+      ['Deus ex Fiasco', 'Ferryman', 'Fiddler', "Hell's Librarian"],
       ['Big Wig', 'Bootlegger', 'Gardener', 'God of Ug', 'Hindu', 'Knaves', 'Pope', 'Storm Catcher', 'Tor', 'Ventriloquist', 'Zenomancer'],
     ],
   },

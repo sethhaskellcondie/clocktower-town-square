@@ -10,7 +10,9 @@ import {
   BOOTLEGGER_HOMEBREW,
   BUDDHIST_SILENCE,
   BUREAUCRAT_VOTES,
+  DEUS_EX_FIASCO_MISTAKE,
   DOOMSAYER_SACRIFICE,
+  FERRYMAN_VOTES,
   FIDDLER_CONTEST,
   GARDENER_SEATING,
   GOD_OF_UG_HAT,
@@ -79,6 +81,8 @@ export const PLAYER_FABLED: readonly CharacterOption[] = [
 
 // Fabled that are about the game as a whole, offered on landmarks
 export const LANDMARK_FABLED: readonly CharacterOption[] = [
+  { id: 'deus-ex-fiasco', name: 'Deus ex Fiasco', icon: 'assets/player_aids/icons/fabled/deus_ex_fiasco.png', aid: DEUS_EX_FIASCO_MISTAKE },
+  { id: 'ferryman', name: 'Ferryman', icon: 'assets/player_aids/icons/fabled/ferryman.png', aid: FERRYMAN_VOTES },
   { id: 'fiddler', name: 'Fiddler', icon: 'assets/player_aids/icons/fabled/fiddler.png', aid: FIDDLER_CONTEST },
   { id: 'hells-librarian', name: "Hell's Librarian", icon: 'assets/player_aids/icons/fabled/hells_librarian.png', aid: HELLS_LIBRARIAN_SILENCE },
 ];
