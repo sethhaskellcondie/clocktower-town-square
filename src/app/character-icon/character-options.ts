@@ -13,12 +13,15 @@ import {
   BUDDHIST_SILENCE,
   BUREAUCRAT_VOTES,
   BUTCHER_NOMINATION,
+  CACKLEJACK_CHANGE,
   DEUS_EX_FIASCO_MISTAKE,
   DEVIANT_EXILE,
   DOOMSAYER_SACRIFICE,
   FERRYMAN_VOTES,
   FIDDLER_CONTEST,
+  GANGSTER_KILL,
   GARDENER_SEATING,
+  GNOME_PROTECTION,
   GOD_OF_UG_HAT,
   GUNSLINGER_SHOT,
   HARLOT_VISIT,
@@ -67,6 +70,10 @@ export const TRAVELER_CHARACTERS: readonly CharacterOption[] = [
   { id: 'butcher', name: 'Butcher', icon: 'assets/player_aids/icons/sects_and_violets/travelers/butcher.png', aid: BUTCHER_NOMINATION, scripts: [SECTS_AND_VIOLETS] },
   { id: 'bone-collector', name: 'Bone Collector', icon: 'assets/player_aids/icons/sects_and_violets/travelers/bone_collector.png', aid: BONE_COLLECTOR_REVIVAL, scripts: [SECTS_AND_VIOLETS] },
   { id: 'deviant', name: 'Deviant', icon: 'assets/player_aids/icons/sects_and_violets/travelers/deviant.png', aid: DEVIANT_EXILE, scripts: [SECTS_AND_VIOLETS] },
+  // Experimental travelers aren't in any one script, so they're only offered with "All" picked
+  { id: 'gangster', name: 'Gangster', icon: 'assets/player_aids/icons/experimental/travelers/gangster.png', aid: GANGSTER_KILL, scripts: [ALL_SCRIPT] },
+  { id: 'gnome', name: 'Gnome', icon: 'assets/player_aids/icons/experimental/travelers/gnome.png', aid: GNOME_PROTECTION, scripts: [ALL_SCRIPT] },
+  { id: 'cacklejack', name: 'Cacklejack', icon: 'assets/player_aids/icons/experimental/travelers/cacklejack.png', aid: CACKLEJACK_CHANGE, scripts: [ALL_SCRIPT] },
 ];
 
 // The rows of travelers to offer while a script is picked on the shelf: one

@@ -12,6 +12,7 @@ import { LandmarkComponent } from '../landmark/landmark.component';
 const TB_TRAVELERS = ['Scapegoat', 'Gunslinger', 'Beggar', 'Bureaucrat', 'Thief'];
 const BMR_TRAVELERS = ['Apprentice', 'Matron', 'Voudon', 'Judge', 'Bishop'];
 const SNV_TRAVELERS = ['Barista', 'Harlot', 'Butcher', 'Bone Collector', 'Deviant'];
+const EXPERIMENTAL_TRAVELERS = ['Gangster', 'Gnome', 'Cacklejack'];
 
 // Each token on the board offers its own set of character icons, a row at a
 // time. Travelers start on the "All" script, with a row for each script.
@@ -20,7 +21,7 @@ const TOKENS: { kind: string; component: Type<PlayerComponent | TravelerComponen
     kind: 'traveler',
     component: TravelerComponent,
     tokenClass: '.traveler-circle',
-    rows: [TB_TRAVELERS, BMR_TRAVELERS, SNV_TRAVELERS],
+    rows: [TB_TRAVELERS, BMR_TRAVELERS, SNV_TRAVELERS, EXPERIMENTAL_TRAVELERS],
   },
   {
     kind: 'player',
@@ -176,7 +177,7 @@ describe('Traveler options', () => {
     fixture.detectChanges();
     fixture.componentRef.setInput('script', ALL_SCRIPT);
     fixture.detectChanges();
-    expect(pickerRows(el)).toEqual([TB_TRAVELERS, BMR_TRAVELERS, SNV_TRAVELERS]);
+    expect(pickerRows(el)).toEqual([TB_TRAVELERS, BMR_TRAVELERS, SNV_TRAVELERS, EXPERIMENTAL_TRAVELERS]);
   });
 });
 
@@ -187,6 +188,7 @@ describe('Character options', () => {
       [travelerRows(TROUBLE_BREWING)[0], 'traveler'],
       [travelerRows(BAD_MOON_RISING)[0], 'traveler-bmr'],
       [travelerRows(SECTS_AND_VIOLETS)[0], 'traveler-snv'],
+      [travelerRows(ALL_SCRIPT)[3], 'traveler-experimental'],
       [PLAYER_FABLED, 'fabled'],
       [LANDMARK_FABLED, 'fabled'],
       [LANDMARK_LORIC, 'loric'],

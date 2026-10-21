@@ -15,6 +15,7 @@ import {
   BUREAUCRAT_VOTES,
   BUTCHER_NOMINATION,
   BUTLER_VOTING,
+  CACKLEJACK_CHANGE,
   CHARACTER_SHEET,
   CHEF_PAIRS,
   CLOCKTOWER_WIKI,
@@ -28,8 +29,10 @@ import {
   DRUNK_AND_POISONED,
   FERRYMAN_VOTES,
   FIDDLER_CONTEST,
+  GANGSTER_KILL,
   GARDENER_SEATING,
   GETTING_STARTED,
+  GNOME_PROTECTION,
   GOOD_TEAM_FIRST_NIGHT,
   GOD_OF_UG_HAT,
   GOOD_VS_EVIL,
@@ -134,6 +137,12 @@ const TRAVELER_SNV = new PlayerAidSection({
   aids: [BARISTA_SERVICE, HARLOT_VISIT, BUTCHER_NOMINATION, BONE_COLLECTOR_REVIVAL, DEVIANT_EXILE],
 });
 
+const TRAVELER_EXPERIMENTAL = new PlayerAidSection({
+  id: 'traveler-experimental',
+  title: 'Travelers (Experimental)',
+  aids: [GANGSTER_KILL, GNOME_PROTECTION, CACKLEJACK_CHANGE],
+});
+
 const FABLED = new PlayerAidSection({
   id: 'fabled',
   title: 'Fabled',
@@ -190,6 +199,7 @@ export const ALL_SCRIPT = new PlayerAidScript({
     TRAVELER,
     TRAVELER_BMR,
     TRAVELER_SNV,
+    TRAVELER_EXPERIMENTAL,
     FABLED,
     LORIC,
     // Last, since it's for the storyteller rather than the players

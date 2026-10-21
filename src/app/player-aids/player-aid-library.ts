@@ -739,6 +739,57 @@ export const DEVIANT_EXILE = new PlayerAid({
   ],
 });
 
+export const GANGSTER_KILL = new PlayerAid({
+  id: 'gangster-kill',
+  title: 'The Gangster',
+  summary: 'Can kill a neighbor, if their other neighbor agrees.',
+  blocks: [
+    {
+      type: 'image',
+      src: 'assets/player_aids/icons/experimental/travelers/gangster.png',
+      alt: 'Gangster icon: a fedora, half blue and half red',
+    },
+    {
+      type: 'text',
+      text: '(Experimental) Once per day, you may choose to kill an alive neighbor, if your other alive neighbor agrees.',
+    },
+  ],
+});
+
+export const GNOME_PROTECTION = new PlayerAid({
+  id: 'gnome-protection',
+  title: 'The Gnome',
+  summary: 'Can kill anyone who nominates a player on their team.',
+  blocks: [
+    {
+      type: 'image',
+      src: 'assets/player_aids/icons/experimental/travelers/gnome.png',
+      alt: 'Gnome icon: a striped, curled gnome hat, half blue and half red',
+    },
+    {
+      type: 'text',
+      text: '(Experimental) All players start knowing a player of your alignment. You may choose to kill anyone who nominates them.',
+    },
+  ],
+});
+
+export const CACKLEJACK_CHANGE = new PlayerAid({
+  id: 'cacklejack-change',
+  title: 'The Cacklejack',
+  summary: 'Makes a player change character each night.',
+  blocks: [
+    {
+      type: 'image',
+      src: 'assets/player_aids/icons/experimental/travelers/cacklejack.png',
+      alt: 'Cacklejack icon: a light bulb on a molecule-like base, half blue and half red',
+    },
+    {
+      type: 'text',
+      text: '(Experimental) Each day, choose a player: a different player changes character tonight.',
+    },
+  ],
+});
+
 export const ANGEL_PROTECTION = new PlayerAid({
   id: 'angel-protection',
   title: 'The Angel',
