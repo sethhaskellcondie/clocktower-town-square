@@ -23,7 +23,7 @@
       </ul>
     }
   </div>
-  <div class="sheet-groups">
+  <div class="sheet-groups" [style.--sheet-number-digits]="numberDigits">
     @for (group of groups; track group.id) {
       <section class="sheet-group" [id]="'character_sheet_group_' + group.id">
         <div class="sheet-group-header">
@@ -48,6 +48,7 @@
                 <img class="sheet-character-icon" [src]="character.icon" alt="" draggable="false">
               </button>
               <div class="sheet-character-text">
+                <span class="sheet-character-number">{{ group.start + $index }}</span>
                 <span class="sheet-character-name">{{ character.name }}</span>
                 @if (showAbilities) {
                   <span class="sheet-character-ability">{{ character.ability }}</span>

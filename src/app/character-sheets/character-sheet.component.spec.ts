@@ -2,8 +2,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CharacterSheetComponent } from './character-sheet.component';
 import { PlayerAid } from '../player-aids/player-aid';
 import { Script } from '../scripts/script';
-import { TROUBLE_BREWING } from '../scripts/script-library';
-import { IMP, SCAPEGOAT, WASHERWOMAN } from './character-library';
+import { ALL_SCRIPT, BAD_MOON_RISING, SECTS_AND_VIOLETS, TROUBLE_BREWING } from '../scripts/script-library';
+import { DEVIANT, GRANDMOTHER, IMP, SCAPEGOAT, VOUDON, WASHERWOMAN } from './character-library';
 
 describe('CharacterSheetComponent', () => {
   let fixture: ComponentFixture<CharacterSheetComponent>;
@@ -37,12 +37,46 @@ describe('CharacterSheetComponent', () => {
   });
 
   it('lists the characters from Townsfolk to Demons, each under its heading, with the travelers last', () => {
+    fixture.componentInstance.selectScript(TROUBLE_BREWING);
+    fixture.detectChanges();
     expect(headings()).toEqual(['Townsfolk', 'Outsiders', 'Minions', 'Demons', 'Travelers']);
     expect(names('townsfolk')).toEqual(['Washerwoman', 'Librarian', 'Investigator', 'Chef', 'Empath', 'Fortune Teller', 'Undertaker', 'Monk', 'Ravenkeeper', 'Virgin', 'Slayer', 'Soldier', 'Mayor']);
     expect(names('outsiders')).toEqual(['Butler', 'Drunk', 'Recluse', 'Saint']);
     expect(names('minions')).toEqual(['Poisoner', 'Spy', 'Scarlet Woman', 'Baron']);
     expect(names('demons')).toEqual(['Imp']);
     expect(names('travelers')).toEqual(['Scapegoat', 'Gunslinger', 'Beggar', 'Bureaucrat', 'Thief']);
+  });
+
+  it('numbers the characters down the sheet, carrying on from one heading to the next', () => {
+    fixture.componentInstance.selectScript(TROUBLE_BREWING);
+    fixture.detectChanges();
+    const numbers = Array.from(el.querySelectorAll('.sheet-character-number')).map(n => n.textContent?.trim());
+    expect(numbers).toEqual(Array.from({ length: 27 }, (_, i) => String(i + 1)));
+    expect(el.querySelector(`#character_sheet_character_${WASHERWOMAN.id} .sheet-character-number`)?.textContent).toBe('1');
+    expect(el.querySelector(`#character_sheet_character_${IMP.id} .sheet-character-number`)?.textContent).toBe('22');
+    expect(el.querySelector(`#character_sheet_character_${SCAPEGOAT.id} .sheet-character-number`)?.textContent).toBe('23');
+  });
+
+  it('numbers every character on the All sheet once, from 1 to the last', () => {
+    const numbers = Array.from(el.querySelectorAll('.sheet-character-number')).map(n => n.textContent?.trim());
+    expect(numbers).toEqual(ALL_SCRIPT.characters.map((_, i) => String(i + 1)));
+  });
+
+  it("renumbers by where the characters fall on the picked script's sheet", () => {
+    fixture.componentInstance.selectScript(new Script({ id: 'small', name: 'Small', base: false, characters: [SCAPEGOAT, IMP, WASHERWOMAN] }));
+    fixture.detectChanges();
+    const number = (id: string) => el.querySelector(`#character_sheet_character_${id} .sheet-character-number`)?.textContent;
+    expect(number(WASHERWOMAN.id)).toBe('1');
+    expect(number(IMP.id)).toBe('2');
+    expect(number(SCAPEGOAT.id)).toBe('3');
+  });
+
+  it('gives every number the width of the longest, so the icons line up', () => {
+    const digits = () => (el.querySelector('.sheet-groups') as HTMLElement).style.getPropertyValue('--sheet-number-digits');
+    expect(digits()).toBe('2');
+    fixture.componentInstance.selectScript(new Script({ id: 'small', name: 'Small', base: false, characters: [WASHERWOMAN, IMP] }));
+    fixture.detectChanges();
+    expect(digits()).toBe('1');
   });
 
   it("shows the travelers' icons and abilities like any other character", () => {
@@ -178,13 +212,29 @@ describe('CharacterSheetComponent', () => {
 
     click('#character_sheet_script_toggle');
     const options = Array.from(el.querySelectorAll('.sheet-script-option')).map(o => o.textContent?.trim());
-    expect(options).toEqual(['All', 'Trouble Brewing']);
+    expect(options).toEqual(['All', 'Trouble Brewing', 'Bad Moon Rising', 'Sects & Violets']);
     expect(el.querySelector('#character_sheet_script_all')?.getAttribute('aria-selected')).toBe('true');
 
     click('#character_sheet_script_trouble-brewing');
     expect(el.querySelector('.sheet-script-menu')).toBeNull();
     expect(header()?.textContent).toContain('Script: Trouble Brewing');
     expect(names('demons')).toEqual(['Imp']);
+  });
+
+  it('lists the Bad Moon Rising and Sects & Violets characters on their own sheets', () => {
+    fixture.componentInstance.selectScript(BAD_MOON_RISING);
+    fixture.detectChanges();
+    expect(headings()).toEqual(['Townsfolk', 'Outsiders', 'Minions', 'Demons', 'Travelers']);
+    expect(names('townsfolk')[0]).toBe(GRANDMOTHER.name);
+    expect(names('demons')).toEqual(['Zombuul', 'Pukka', 'Shabaloth', 'Po']);
+    expect(names('travelers').at(-1)).toBe(VOUDON.name);
+    expect(el.querySelector(`#character_sheet_character_${WASHERWOMAN.id}`)).toBeNull();
+
+    fixture.componentInstance.selectScript(SECTS_AND_VIOLETS);
+    fixture.detectChanges();
+    expect(names('demons')).toEqual(['Fang Gu', 'Vigormortis', 'No Dashii', 'Vortox']);
+    expect(names('travelers').at(-1)).toBe(DEVIANT.name);
+    expect(el.querySelector(`#character_sheet_character_${GRANDMOTHER.id}`)).toBeNull();
   });
 
   it("shows only the picked script's characters, and only the types it has", () => {

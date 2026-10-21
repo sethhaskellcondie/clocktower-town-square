@@ -1,5 +1,5 @@
 import { Script } from './script';
-import { TROUBLE_BREWING_CHARACTERS } from '../character-sheets/character-library';
+import { BAD_MOON_RISING_CHARACTERS, SECTS_AND_VIOLETS_CHARACTERS, TROUBLE_BREWING_CHARACTERS } from '../character-sheets/character-library';
 import {
   CHARACTER_FAQ,
   CHARACTER_FAQ_BMR,
@@ -27,7 +27,7 @@ export const ALL_SCRIPT = new Script({
   id: 'all',
   name: 'All',
   base: false,
-  characters: [...TROUBLE_BREWING_CHARACTERS],
+  characters: [...TROUBLE_BREWING_CHARACTERS, ...BAD_MOON_RISING_CHARACTERS, ...SECTS_AND_VIOLETS_CHARACTERS],
   sections: [
     INTRODUCTION,
     FIRST_NIGHT,
@@ -70,6 +70,7 @@ export const BAD_MOON_RISING = new Script({
   id: 'bad-moon-rising',
   name: 'Bad Moon Rising',
   base: true,
+  characters: [...BAD_MOON_RISING_CHARACTERS],
   sections: [
     TIPS,
     CHARACTER_FAQ_BMR,
@@ -85,6 +86,7 @@ export const SECTS_AND_VIOLETS = new Script({
   id: 'sects-and-violets',
   name: 'Sects & Violets',
   base: true,
+  characters: [...SECTS_AND_VIOLETS_CHARACTERS],
   sections: [
     TIPS,
     CHARACTER_FAQ_SNV,

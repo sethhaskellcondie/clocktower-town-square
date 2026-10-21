@@ -2,7 +2,7 @@ import { Component, ElementRef, EventEmitter, HostListener, Input, OnChanges, Ou
 import { Character } from './character';
 import { PlayerAid } from '../player-aids/player-aid';
 import { Script } from '../scripts/script';
-import { ALL_SCRIPT, TROUBLE_BREWING } from '../scripts/script-library';
+import { ALL_SCRIPT, BAD_MOON_RISING, SECTS_AND_VIOLETS, TROUBLE_BREWING } from '../scripts/script-library';
 
 // Travelers can be on either team, so they get a team of their own
 type SheetTeam = 'good' | 'evil' | 'traveler';
@@ -13,6 +13,9 @@ export interface CharacterGroup {
   title: string;
   team: SheetTeam;
   characters: Character[];
+  // The number beside the group's first character, with the rest counting
+  // on from it
+  start: number;
 }
 
 // The types the sheet lists, in the order a printed character sheet does,
@@ -26,7 +29,7 @@ const SHEET_GROUPS: readonly { id: string; title: string; type: string; team: Sh
 ];
 
 // The first script is the one the sheet opens on
-const SHEET_SCRIPTS: Script[] = [ALL_SCRIPT, TROUBLE_BREWING];
+const SHEET_SCRIPTS: Script[] = [ALL_SCRIPT, TROUBLE_BREWING, BAD_MOON_RISING, SECTS_AND_VIOLETS];
 
 // A shelf on the right, mirroring the Player Aids shelf on the left, that
 // shows the characters of the picked script grouped by type
@@ -75,11 +78,25 @@ export class CharacterSheetComponent implements OnChanges {
   }
 
   // The picked script's characters under their type's heading, leaving out
-  // any type the script has none of
+  // any type the script has none of. The characters are numbered by where
+  // they fall on the sheet, top to bottom, carrying on from one heading to
+  // the next, so the numbers belong to the sheet rather than the characters.
   get groups(): CharacterGroup[] {
+    let next = 1;
     return SHEET_GROUPS
       .map(({ id, title, type, team }) => ({ id, title, team, characters: this.activeScript.characters.filter(c => c.type === type) }))
-      .filter(group => group.characters.length > 0);
+      .filter(group => group.characters.length > 0)
+      .map(group => {
+        const start = next;
+        next += group.characters.length;
+        return { ...group, start };
+      });
+  }
+
+  // How many digits the last number runs to, so every number can be given
+  // the same width and the icons beside them line up
+  get numberDigits(): number {
+    return String(this.groups.reduce((count, group) => count + group.characters.length, 0)).length;
   }
 
   toggle(): void {

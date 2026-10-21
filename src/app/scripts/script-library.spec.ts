@@ -26,6 +26,12 @@ describe('Script library', () => {
     }
   });
 
+  it('lists every character in "All" once', () => {
+    const ids = ALL_SCRIPT.characters.map(character => character.id);
+    expect(new Set(ids).size).toBe(ids.length);
+    expect(ids.length).toBe(87);
+  });
+
   it('lists every Trouble Brewing character once: 13 Townsfolk, 4 Outsiders, 4 Minions, a Demon, and 5 Travelers', () => {
     const count = (type: string) => TROUBLE_BREWING.characters.filter(character => character.type === type).length;
     expect(count('Townsfolk')).toBe(13);
@@ -36,4 +42,17 @@ describe('Script library', () => {
     expect(TROUBLE_BREWING.characters.length).toBe(27);
     expect(new Set(TROUBLE_BREWING.characters.map(character => character.id)).size).toBe(27);
   });
+
+  for (const script of [BAD_MOON_RISING, SECTS_AND_VIOLETS]) {
+    it(`lists every ${script.name} character once: 13 Townsfolk, 4 Outsiders, 4 Minions, 4 Demons, and 5 Travelers`, () => {
+      const count = (type: string) => script.characters.filter(character => character.type === type).length;
+      expect(count('Townsfolk')).toBe(13);
+      expect(count('Outsider')).toBe(4);
+      expect(count('Minion')).toBe(4);
+      expect(count('Demon')).toBe(4);
+      expect(count('Traveler')).toBe(5);
+      expect(script.characters.length).toBe(30);
+      expect(new Set(script.characters.map(character => character.id)).size).toBe(30);
+    });
+  }
 });

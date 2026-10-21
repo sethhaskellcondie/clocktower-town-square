@@ -57,8 +57,10 @@
   top: 60px;
   right: 16px;
   z-index: 20;
-  // Never wider than the screen leaves room for
-  width: min(var(--sheet-width), calc(100vw - 32px));
+  // Just wide enough for the longest name, but never wider than the screen
+  // leaves room for
+  width: max-content;
+  max-width: calc(100vw - 32px);
   max-height: calc(100vh - 76px);
   display: flex;
   flex-direction: column;
@@ -75,9 +77,9 @@
   transition: transform 0.25s ease, visibility 0s linear 0.25s;
 
   // Size variants, stepped by the buttons beside the first heading. The
-  // abilities need a much wider shelf, wide enough to keep both columns
-  // readable, even though it reaches over the middle of the screen.
-  --sheet-width: 320px;
+  // abilities would run the shelf the width of the screen, so they get a set
+  // width instead, wide enough to keep both columns readable, even though it
+  // reaches over the middle of the screen.
   --sheet-ability-width: 700px;
   --sheet-icon-size: 44px;
   --sheet-name-size: 14px;
@@ -85,7 +87,6 @@
   --sheet-title-size: 13px;
 
   &.size-medium {
-    --sheet-width: 420px;
     --sheet-ability-width: 820px;
     --sheet-icon-size: 56px;
     --sheet-name-size: 17px;
@@ -94,7 +95,6 @@
   }
 
   &.size-large {
-    --sheet-width: 520px;
     --sheet-ability-width: 940px;
     --sheet-icon-size: 68px;
     --sheet-name-size: 20px;
@@ -324,7 +324,7 @@
 .sheet-characters {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 2px 8px;
+  gap: 2px 20px;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -344,14 +344,29 @@
   color: white;
 }
 
+// A dim number before the name, right-aligned in a column as wide as the
+// sheet's longest number so the names line up beneath one another
+.sheet-character-number {
+  flex-shrink: 0;
+  min-width: calc(var(--sheet-number-digits, 2) * 1ch);
+  font-size: 0.85em;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+// The number sits in a column of its own before the name, so the ability
+// lines up beneath the name rather than the number
 .sheet-character-text {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: baseline;
+  gap: 2px 5px;
   min-width: 0;
 }
 
 .sheet-character-ability {
+  grid-column: 2;
   font-size: var(--sheet-ability-size);
   line-height: 1.3;
   color: rgba(255, 255, 255, 0.75);
