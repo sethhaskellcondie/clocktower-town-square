@@ -153,7 +153,7 @@ describe('PlayerAidsComponent', () => {
     click('#player_aid_character-faq_spy-grimoire');
     const paragraph = el.querySelector('.aid-modal-body p');
     expect(paragraph?.textContent).toContain('The Spy');
-    expect(paragraph?.querySelector('img.inline-icon')?.getAttribute('src')).toBe('assets/player_aids/icon_spy.png');
+    expect(paragraph?.querySelector('img.inline-icon')?.getAttribute('src')).toBe('assets/player_aids/icons/trouble_brewing/spy.png');
   });
 
   it('renders bold and struck-through runs inside paragraph text', () => {

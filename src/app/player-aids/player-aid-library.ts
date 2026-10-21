@@ -123,7 +123,7 @@ export const SOCIAL_DEDUCTION = new PlayerAid({
   blocks: [
     {
       type: 'image',
-      src: 'assets/player_aids/icon_botc.png',
+      src: 'assets/player_aids/icons/botc.png',
       alt: 'Blood on the Clocktower icon: a horned demon face door knocker in purple',
     },
     {
@@ -140,7 +140,7 @@ export const THE_SETTING = new PlayerAid({
   blocks: [
     {
       type: 'image',
-      src: 'assets/player_aids/icon_clocktower.svg',
+      src: 'assets/player_aids/clocktower.svg',
       alt: 'Clocktower icon: a red silhouette of a tall clocktower',
     },
     {
@@ -290,7 +290,7 @@ export const SPY_GRIMOIRE = new PlayerAid({
       type: 'text',
       text: [
         'The Spy',
-        { icon: 'assets/player_aids/icon_spy.png', alt: 'Spy icon' },
+        { icon: 'assets/player_aids/icons/trouble_brewing/spy.png', alt: 'Spy icon' },
         ' can see inside the Grimoire, this is an example setup of the Grimoire.',
       ],
     },
@@ -313,7 +313,7 @@ export const BUTLER_VOTING = new PlayerAid({
   blocks: [
     {
       type: 'image',
-      src: 'assets/player_aids/icon_butler.png',
+      src: 'assets/player_aids/icons/trouble_brewing/butler.png',
       alt: 'Butler icon: a hand holding a covered serving tray',
     },
     {
@@ -330,7 +330,7 @@ export const DEMON_FIRST_NIGHT = new PlayerAid({
   blocks: [
     {
       type: 'image',
-      src: 'assets/player_aids/icon_imp.png',
+      src: 'assets/player_aids/icons/trouble_brewing/imp.png',
       alt: 'Imp icon: a red trident',
     },
     {
@@ -438,7 +438,7 @@ export const CHEF_PAIRS = new PlayerAid({
       type: 'text',
       text: [
         'The Chef',
-        { icon: 'assets/player_aids/icon_chef.png', alt: 'Chef icon' },
+        { icon: 'assets/player_aids/icons/trouble_brewing/chef.png', alt: 'Chef icon' },
         ' learns how many EVIL PAIRS there are on the first night. In a 13 player game there are 13 pairs, each player is included in one pair with each of their neighbors. In this example (disregard the colors) there is 1 evil pair, 2 good pairs, and 2 dead pairs.',
       ],
     },
@@ -457,7 +457,7 @@ export const UNDERTAKER_EXECUTIONS = new PlayerAid({
   blocks: [
     {
       type: 'image',
-      src: 'assets/player_aids/icon_undertaker.png',
+      src: 'assets/player_aids/icons/trouble_brewing/undertaker.png',
       alt: 'Undertaker icon: a blue shovel',
     },
     {
@@ -474,7 +474,7 @@ export const MOONCHILD_DEATH = new PlayerAid({
   blocks: [
     {
       type: 'image',
-      src: 'assets/player_aids/icon_moonchild.png',
+      src: 'assets/player_aids/icons/bad_moon_rising/moonchild.png',
       alt: 'Moonchild icon: a blue crescent moon pendant',
     },
     {
@@ -491,7 +491,7 @@ export const SCAPEGOAT_EXECUTION = new PlayerAid({
   blocks: [
     {
       type: 'image',
-      src: 'assets/player_aids/icon_scapegoat.png',
+      src: 'assets/player_aids/icons/trouble_brewing/travelers/scapegoat.png',
       alt: 'Scapegoat icon: a horned goat head, half blue and half red',
     },
     {
@@ -508,7 +508,7 @@ export const GUNSLINGER_SHOT = new PlayerAid({
   blocks: [
     {
       type: 'image',
-      src: 'assets/player_aids/icon_gunslinger.png',
+      src: 'assets/player_aids/icons/trouble_brewing/travelers/gunslinger.png',
       alt: 'Gunslinger icon: two crossed flintlock pistols, half blue and half red',
     },
     {
@@ -525,7 +525,7 @@ export const BEGGAR_VOTING = new PlayerAid({
   blocks: [
     {
       type: 'image',
-      src: 'assets/player_aids/icon_beggar.png',
+      src: 'assets/player_aids/icons/trouble_brewing/travelers/beggar.png',
       alt: 'Beggar icon: a wooden bowl, half blue and half red',
     },
     {
@@ -542,7 +542,7 @@ export const BUREAUCRAT_VOTES = new PlayerAid({
   blocks: [
     {
       type: 'image',
-      src: 'assets/player_aids/icon_bureaucrat.png',
+      src: 'assets/player_aids/icons/trouble_brewing/travelers/bureaucrat.png',
       alt: 'Bureaucrat icon: a sealed stack of papers, half blue and half red',
     },
     {
@@ -559,7 +559,7 @@ export const THIEF_VOTES = new PlayerAid({
   blocks: [
     {
       type: 'image',
-      src: 'assets/player_aids/icon_thief.png',
+      src: 'assets/player_aids/icons/trouble_brewing/travelers/thief.png',
       alt: 'Thief icon: a sparkling gem, half blue and half red',
     },
     {
@@ -576,7 +576,7 @@ export const APPRENTICE_ABILITY = new PlayerAid({
   blocks: [
     {
       type: 'image',
-      src: 'assets/player_aids/icon_apprentice.png',
+      src: 'assets/player_aids/icons/bad_moon_rising/travelers/apprentice.png',
       alt: 'Apprentice icon: a hammer and a chisel, half blue and half red',
     },
     {
@@ -593,7 +593,7 @@ export const MATRON_SEATING = new PlayerAid({
   blocks: [
     {
       type: 'image',
-      src: 'assets/player_aids/icon_matron.png',
+      src: 'assets/player_aids/icons/bad_moon_rising/travelers/matron.png',
       alt: 'Matron icon: a pair of lorgnette spectacles on a long handle, half blue and half red',
     },
     {
@@ -610,7 +610,7 @@ export const VOUDON_VOTING = new PlayerAid({
   blocks: [
     {
       type: 'image',
-      src: 'assets/player_aids/icon_voudon.png',
+      src: 'assets/player_aids/icons/bad_moon_rising/travelers/voudon.png',
       alt: 'Voudon icon: a decorated sugar skull, half blue and half red',
     },
     {
@@ -627,7 +627,7 @@ export const JUDGE_RULING = new PlayerAid({
   blocks: [
     {
       type: 'image',
-      src: 'assets/player_aids/icon_judge.png',
+      src: 'assets/player_aids/icons/bad_moon_rising/travelers/judge.png',
       alt: 'Judge icon: a gavel above its sound block, half blue and half red',
     },
     {
@@ -644,7 +644,7 @@ export const BISHOP_NOMINATIONS = new PlayerAid({
   blocks: [
     {
       type: 'image',
-      src: 'assets/player_aids/icon_bishop.png',
+      src: 'assets/player_aids/icons/bad_moon_rising/travelers/bishop.png',
       alt: "Bishop icon: a bishop's mitre with a cross, half blue and half red",
     },
     {
@@ -661,7 +661,7 @@ export const ANGEL_PROTECTION = new PlayerAid({
   blocks: [
     {
       type: 'image',
-      src: 'assets/player_aids/icon_angel.png',
+      src: 'assets/player_aids/icons/fabled/angel.png',
       alt: 'Angel icon: a golden halo',
     },
     {
@@ -678,7 +678,7 @@ export const BUDDHIST_SILENCE = new PlayerAid({
   blocks: [
     {
       type: 'image',
-      src: 'assets/player_aids/icon_buddhist.png',
+      src: 'assets/player_aids/icons/fabled/buddhist.png',
       alt: 'Buddhist icon: a golden lotus flower',
     },
     {
@@ -695,7 +695,7 @@ export const DOOMSAYER_SACRIFICE = new PlayerAid({
   blocks: [
     {
       type: 'image',
-      src: 'assets/player_aids/icon_doomsayer.png',
+      src: 'assets/player_aids/icons/fabled/doomsayer.png',
       alt: 'Doomsayer icon: a golden lightning bolt',
     },
     {
@@ -712,7 +712,7 @@ export const FIDDLER_CONTEST = new PlayerAid({
   blocks: [
     {
       type: 'image',
-      src: 'assets/player_aids/icon_fiddler.png',
+      src: 'assets/player_aids/icons/fabled/fiddler.png',
       alt: 'Fiddler icon: a golden fiddle and bow',
     },
     {
@@ -729,7 +729,7 @@ export const HELLS_LIBRARIAN_SILENCE = new PlayerAid({
   blocks: [
     {
       type: 'image',
-      src: 'assets/player_aids/icon_hells_librarian.png',
+      src: 'assets/player_aids/icons/fabled/hells_librarian.png',
       alt: "Hell's Librarian icon: a golden stack of books",
     },
     {
@@ -746,7 +746,7 @@ export const REVOLUTIONARY_NEIGHBORS = new PlayerAid({
   blocks: [
     {
       type: 'image',
-      src: 'assets/player_aids/icon_revolutionary.png',
+      src: 'assets/player_aids/icons/fabled/revolutionary.png',
       alt: 'Revolutionary icon: a golden raised fist',
     },
     {
@@ -763,7 +763,7 @@ export const BIG_WIG_NOMINEES = new PlayerAid({
   blocks: [
     {
       type: 'image',
-      src: 'assets/player_aids/icon_big_wig.png',
+      src: 'assets/player_aids/icons/loric/big_wig.png',
       alt: "Big Wig icon: a green powdered judge's wig",
     },
     {
@@ -780,7 +780,7 @@ export const BOOTLEGGER_HOMEBREW = new PlayerAid({
   blocks: [
     {
       type: 'image',
-      src: 'assets/player_aids/icon_bootlegger.png',
+      src: 'assets/player_aids/icons/loric/bootlegger.png',
       alt: 'Bootlegger icon: a green wooden crate on wheels marked with a skull and crossbones',
     },
     {
@@ -797,7 +797,7 @@ export const GARDENER_SEATING = new PlayerAid({
   blocks: [
     {
       type: 'image',
-      src: 'assets/player_aids/icon_gardener.png',
+      src: 'assets/player_aids/icons/loric/gardener.png',
       alt: 'Gardener icon: a green sprout curling up from a mound of soil',
     },
     {
@@ -814,7 +814,7 @@ export const GOD_OF_UG_HAT = new PlayerAid({
   blocks: [
     {
       type: 'image',
-      src: 'assets/player_aids/icon_god_of_ug.png',
+      src: 'assets/player_aids/icons/loric/god_of_ug.png',
       alt: 'God of Ug icon: a green shaggy fur hat with two curved horns',
     },
     {
@@ -831,7 +831,7 @@ export const HINDU_REINCARNATION = new PlayerAid({
   blocks: [
     {
       type: 'image',
-      src: 'assets/player_aids/icon_hindu.png',
+      src: 'assets/player_aids/icons/loric/hindu.png',
       alt: 'Hindu icon: a green brushstroke Om symbol',
     },
     {
@@ -848,7 +848,7 @@ export const KNAVES_STORYTELLERS = new PlayerAid({
   blocks: [
     {
       type: 'image',
-      src: 'assets/player_aids/icon_knaves.png',
+      src: 'assets/player_aids/icons/loric/knaves.png',
       alt: 'Knaves icon: two green jesters back to back, crossing spears behind a diamond shield',
     },
     {
@@ -865,7 +865,7 @@ export const POPE_DUPLICATES = new PlayerAid({
   blocks: [
     {
       type: 'image',
-      src: 'assets/player_aids/icon_pope.png',
+      src: 'assets/player_aids/icons/loric/pope.png',
       alt: 'Pope icon: a green apple with a bite taken out of it',
     },
     {
@@ -882,7 +882,7 @@ export const STORM_CATCHER_PROTECTION = new PlayerAid({
   blocks: [
     {
       type: 'image',
-      src: 'assets/player_aids/icon_storm_catcher.png',
+      src: 'assets/player_aids/icons/loric/storm_catcher.png',
       alt: 'Storm Catcher icon: a pair of green brass goggles with adjustable lenses',
     },
     {
@@ -899,7 +899,7 @@ export const TOR_HIDDEN_CHARACTERS = new PlayerAid({
   blocks: [
     {
       type: 'image',
-      src: 'assets/player_aids/icon_tor.png',
+      src: 'assets/player_aids/icons/loric/tor.png',
       alt: 'Tor icon: a green tunnel of archways receding into the distance',
     },
     {
@@ -916,7 +916,7 @@ export const VENTRILOQUIST_NOMINATIONS = new PlayerAid({
   blocks: [
     {
       type: 'image',
-      src: 'assets/player_aids/icon_ventriloquist.png',
+      src: 'assets/player_aids/icons/loric/ventriloquist.png',
       alt: 'Ventriloquist icon: a green sock puppet with googly eyes and a shaggy mop of hair',
     },
     {
@@ -933,7 +933,7 @@ export const ZENOMANCER_GOALS = new PlayerAid({
   blocks: [
     {
       type: 'image',
-      src: 'assets/player_aids/icon_zenomancer.png',
+      src: 'assets/player_aids/icons/loric/zenomancer.png',
       alt: 'Zenomancer icon: a green spiral of curling tendrils',
     },
     {
