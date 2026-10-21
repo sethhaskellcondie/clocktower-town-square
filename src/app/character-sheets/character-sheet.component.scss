@@ -1,0 +1,241 @@
+// Styled to match the Player Aids shelf, mirrored to the right-hand side
+
+// A thin, dim gold scrollbar in place of the browser's bright default.
+// Chrome and Firefox take the standard properties, which switch off the
+// -webkit- pseudo-elements, so those only reach browsers without them (Safari).
+@mixin sheet-scrollbar {
+  @supports (scrollbar-color: auto) {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(209, 181, 106, 0.4) transparent;
+  }
+
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: rgba(209, 181, 106, 0.4);
+    border-radius: 4px;
+
+    &:hover {
+      background-color: rgba(209, 181, 106, 0.7);
+    }
+  }
+}
+
+.sheet-toggle-btn {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 20;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+  padding: 8px 16px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s, border-color 0.2s, color 0.2s;
+
+  &:hover,
+  &.active {
+    background-color: rgba(0, 0, 0, 0.85);
+  }
+
+  &.active {
+    border-color: #d1b56a;
+    color: #d1b56a;
+  }
+}
+
+.sheet-shelf {
+  position: fixed;
+  top: 60px;
+  right: 16px;
+  z-index: 20;
+  width: 320px;
+  max-height: calc(100vh - 76px);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+  box-sizing: border-box;
+  background-color: rgba(0, 0, 0, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+
+  // Slide in from the right; visibility keeps it out of the tab order while closed
+  transform: translateX(calc(100% + 16px));
+  visibility: hidden;
+  transition: transform 0.25s ease, visibility 0s linear 0.25s;
+
+  &.open {
+    transform: translateX(0);
+    visibility: visible;
+    transition: transform 0.25s ease, visibility 0s;
+  }
+}
+
+.sheet-script-picker {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.sheet-script-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  width: 100%;
+  padding: 8px 10px;
+  text-align: left;
+  background-color: rgba(209, 181, 106, 0.12);
+  color: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(209, 181, 106, 0.6);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+
+  &:hover,
+  .expanded > & {
+    background-color: rgba(209, 181, 106, 0.22);
+  }
+}
+
+.sheet-script-label {
+  font-size: 13px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.sheet-script-name {
+  color: #d1b56a;
+}
+
+// A caret drawn with borders, pointing down until the dropdown opens
+.sheet-chevron {
+  flex-shrink: 0;
+  width: 6px;
+  height: 6px;
+  margin-right: 4px;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: rotate(-45deg);
+  transition: transform 0.2s ease;
+
+  .expanded > .sheet-script-toggle > & {
+    transform: rotate(45deg);
+  }
+}
+
+// Hangs over the characters rather than pushing them down
+.sheet-script-menu {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  z-index: 1;
+  margin: 0;
+  padding: 4px;
+  list-style: none;
+  background-color: rgba(12, 10, 24, 0.97);
+  border: 1px solid rgba(209, 181, 106, 0.6);
+  border-radius: 4px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+}
+
+.sheet-script-option {
+  padding: 8px 10px;
+  font-size: 14px;
+  color: white;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+
+  &:hover,
+  &:focus-visible {
+    background-color: rgba(255, 255, 255, 0.12);
+    outline: none;
+  }
+
+  // A check mark drawn with borders marks the picked script
+  &.selected {
+    color: #d1b56a;
+
+    &::after {
+      content: '';
+      float: right;
+      width: 5px;
+      height: 10px;
+      margin: 2px 4px 0 0;
+      border-right: 2px solid currentColor;
+      border-bottom: 2px solid currentColor;
+      transform: rotate(45deg);
+    }
+  }
+}
+
+// The characters scroll beneath the script header, which stays put at the top
+.sheet-groups {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-height: 0;
+  overflow-y: auto;
+  @include sheet-scrollbar;
+}
+
+// Blue for the good types and red for the evil ones, as in the spread table
+.sheet-group-title {
+  margin: 0 0 6px;
+  padding: 6px 2px;
+  font-size: 13px;
+  font-weight: normal;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+
+  &.good {
+    color: #6a9bd1;
+  }
+
+  &.evil {
+    color: #d16a6a;
+  }
+}
+
+.sheet-characters {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sheet-character {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  font-size: 14px;
+  color: white;
+}
+
+// The icons have generous transparent padding, so they're drawn larger than
+// they look
+.sheet-character-icon {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+}
+
+.sheet-empty {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 14px;
+  text-align: center;
+}

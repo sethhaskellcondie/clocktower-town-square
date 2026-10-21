@@ -1,4 +1,5 @@
 import { PlayerAid } from './player-aid';
+import { BUTLER } from '../character-sheets/character-library';
 
 // Every player aid, each created once. The shelf decides which sections
 // they appear in.
@@ -307,20 +308,8 @@ export const SPY_GRIMOIRE = new PlayerAid({
 });
 
 export const BUTLER_VOTING = new PlayerAid({
-  id: 'butler-voting',
-  title: 'The Butler',
+  character: BUTLER,
   summary: 'When the Butler may raise their hand to vote.',
-  blocks: [
-    {
-      type: 'image',
-      src: 'assets/player_aids/icons/trouble_brewing/outsiders/butler.png',
-      alt: 'Butler icon: a hand holding a covered serving tray',
-    },
-    {
-      type: 'text',
-      text: "During a nomination, the Butler may only have their hand raised to vote if the Master has their hand raised to vote or if the Master's vote has already been counted. The Butler must keep track of their Master. If they vote illegally their vote will be counted like normal, but don't do that, it's not cool.",
-    },
-  ],
 });
 
 export const DEMON_FIRST_NIGHT = new PlayerAid({

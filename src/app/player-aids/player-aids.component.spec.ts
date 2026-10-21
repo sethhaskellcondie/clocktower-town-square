@@ -1,10 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { PlayerAidsComponent } from './player-aids.component';
-import { PlayerAidScript } from './player-aid-script';
 import { PlayerAidSection } from './player-aid-section';
 import { PlayerAidShelf } from './player-aid-shelf';
 import { PlayerAid } from './player-aid';
 import { HOW_TO_PLAY_VIDEO } from './player-aid-library';
+import { Script } from '../scripts/script';
+import { Character } from '../character-sheets/character';
 
 describe('PlayerAidsComponent', () => {
   let fixture: ComponentFixture<PlayerAidsComponent>;
@@ -70,7 +71,7 @@ describe('PlayerAidsComponent', () => {
   });
 
   it('marks a script with no sections as empty', () => {
-    fixture.componentInstance.shelf = new PlayerAidShelf([new PlayerAidScript({ id: 'bare', title: 'Bare' })]);
+    fixture.componentInstance.shelf = new PlayerAidShelf([new Script({ id: 'bare', name: 'Bare', base: false })]);
     fixture.detectChanges();
     expect(el.querySelector('.aids-shelf-sections > .aid-empty')?.textContent).toContain('No sections yet.');
   });
@@ -127,9 +128,10 @@ describe('PlayerAidsComponent', () => {
   });
 
   it('marks a section with no aids as empty', () => {
-    fixture.componentInstance.shelf = new PlayerAidShelf([new PlayerAidScript({
+    fixture.componentInstance.shelf = new PlayerAidShelf([new Script({
       id: 'script',
-      title: 'Script',
+      name: 'Script',
+      base: false,
       sections: [
         new PlayerAidSection({ id: 'filled', title: 'Filled', aids: [HOW_TO_PLAY_VIDEO] }),
         new PlayerAidSection({ id: 'empty', title: 'Empty' }),
@@ -154,6 +156,30 @@ describe('PlayerAidsComponent', () => {
     const paragraph = el.querySelector('.aid-modal-body p');
     expect(paragraph?.textContent).toContain('The Spy');
     expect(paragraph?.querySelector('img.inline-icon')?.getAttribute('src')).toBe('assets/player_aids/icons/trouble_brewing/minions/spy.png');
+  });
+
+  it('lays out a character aid with its icon beside its ability, notes beneath, and a wiki link by the close button', () => {
+    click('#player_aid_character-faq_butler');
+    const modal = el.querySelector('.aid-modal')!;
+    expect(modal.querySelector('h2')?.textContent?.replace(/\s+/g, ' ').trim()).toBe('Butler (Outsider)');
+    const link = modal.querySelector('.aid-modal-header > a.aid-wiki-link');
+    expect(link?.textContent).toBe('Wiki Page');
+    expect(link?.getAttribute('href')).toBe('https://wiki.bloodontheclocktower.com/Butler');
+    expect(link?.getAttribute('target')).toBe('_blank');
+    expect(link?.nextElementSibling?.id).toBe('player_aid_close');
+
+    const row = modal.querySelector('.aid-modal-body > .aid-character')!;
+    expect(row.querySelector('img.aid-character-icon')?.getAttribute('src')).toBe('assets/player_aids/icons/trouble_brewing/outsiders/butler.png');
+    expect(row.querySelector('.aid-character-ability')?.textContent).toBe('Each night, choose a player (not yourself): tomorrow, you may only vote if they are voting too.');
+    expect(row.nextElementSibling?.textContent).toContain('the Butler may only have their hand raised to vote');
+  });
+
+  it('leaves out the notes of a character aid when the character has none', () => {
+    fixture.componentInstance.shelf.show(new PlayerAid({
+      character: new Character({ id: 'plain', name: 'Plain', icon: 'plain.png', type: 'Townsfolk', ability: 'Does a thing.', link: 'https://example.com/Plain' }),
+    }));
+    fixture.detectChanges();
+    expect(el.querySelectorAll('.aid-modal-body > *').length).toBe(1);
   });
 
   it('renders bold and struck-through runs inside paragraph text', () => {

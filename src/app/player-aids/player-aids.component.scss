@@ -395,6 +395,19 @@
   }
 }
 
+// Pushed right so it sits beside the close button
+.aid-wiki-link {
+  flex-shrink: 0;
+  margin-left: auto;
+  font-size: 18px;
+  white-space: nowrap;
+  color: #d1b56a;
+
+  &:hover {
+    color: white;
+  }
+}
+
 .aid-close-btn {
   flex-shrink: 0;
   width: 36px;
@@ -468,6 +481,26 @@
     margin-top: 8px;
     font-size: 14px;
     color: rgba(255, 255, 255, 0.7);
+  }
+
+  // A character's icon on the left, with its ability beside it in its own
+  // color so it stands apart from the notes beneath
+  .aid-character {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+
+  img.aid-character-icon {
+    flex-shrink: 0;
+    width: 140px;
+    border-radius: 0;
+  }
+
+  p.aid-character-ability {
+    margin: 0;
+    color: #8ec5ff;
   }
 }
 

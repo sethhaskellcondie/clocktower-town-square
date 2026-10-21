@@ -1,5 +1,4 @@
 import { PlayerAid } from './player-aid';
-import { PlayerAidScript } from './player-aid-script';
 import { PlayerAidSection } from './player-aid-section';
 import { PlayerAidShelf } from './player-aid-shelf';
 import { Script } from '../scripts/script';
@@ -13,7 +12,7 @@ describe('PlayerAidShelf', () => {
 
   // A shelf with a single script holding the given sections
   const shelfOf = (...sections: PlayerAidSection[]) =>
-    new PlayerAidShelf([new PlayerAidScript({ id: 'script', title: 'Script', sections })]);
+    new PlayerAidShelf([new Script({ id: 'script', name: 'Script', base: false, sections })]);
 
   beforeEach(() => {
     shelf = shelfOf(first, second);
@@ -91,8 +90,8 @@ describe('PlayerAidShelf', () => {
   });
 
   it('shows the sections of the picked script, starting on the first script', () => {
-    const everything = new PlayerAidScript({ id: 'everything', title: 'Everything', sections: [first, second] });
-    const partial = new PlayerAidScript({ id: 'partial', title: 'Partial', sections: [second] });
+    const everything = new Script({ id: 'everything', name: 'Everything', base: false, sections: [first, second] });
+    const partial = new Script({ id: 'partial', name: 'Partial', base: false, sections: [second] });
     shelf = new PlayerAidShelf([everything, partial]);
     expect(shelf.activeScript).toBe(everything);
     expect(shelf.sections).toEqual([first, second]);
@@ -105,19 +104,11 @@ describe('PlayerAidShelf', () => {
     expect(shelf.isExpanded(second)).toBeFalse();
   });
 
-  it('titles a script after the script it is for, and lets "All" give its own title', () => {
-    const custom = new Script({ name: 'Custom' });
-    expect(new PlayerAidScript({ id: 'custom', script: custom }).title).toBe('Custom');
-    expect(new PlayerAidScript({ id: 'custom', script: custom }).script).toBe(custom);
-    expect(new PlayerAidScript({ id: 'all', title: 'All' }).script).toBeNull();
-    expect(custom.base).toBeFalse();
-  });
-
   it('shows an aid from outside the shelf from another script when the picked one leaves it out', () => {
     const elsewhere = new PlayerAid({ id: 'elsewhere', title: 'Elsewhere', blocks: [] });
     const other = new PlayerAidSection({ id: 'other', title: 'Other', aids: [elsewhere, shared] });
-    const picked = new PlayerAidScript({ id: 'picked', title: 'Picked', sections: [second] });
-    shelf = new PlayerAidShelf([new PlayerAidScript({ id: 'first-script', title: 'First', sections: [other] }), picked]);
+    const picked = new Script({ id: 'picked', name: 'Picked', base: false, sections: [second] });
+    shelf = new PlayerAidShelf([new Script({ id: 'first-script', name: 'First', base: false, sections: [other] }), picked]);
     shelf.selectScript(picked);
 
     shelf.show(shared);

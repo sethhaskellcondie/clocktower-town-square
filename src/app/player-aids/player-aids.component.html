@@ -8,7 +8,7 @@
   <div class="aid-script-picker" [class.expanded]="shelf.scriptMenuOpen" #scriptPicker>
     <button id="player_aid_script_toggle" class="aid-script-toggle" (click)="shelf.toggleScriptMenu()"
       aria-haspopup="listbox" [attr.aria-expanded]="shelf.scriptMenuOpen" aria-controls="player_aid_script_menu">
-      <span class="aid-script-label">Script: <span class="aid-script-name">{{ shelf.activeScript.title }}</span></span>
+      <span class="aid-script-label">Script: <span class="aid-script-name">{{ shelf.activeScript.name }}</span></span>
       <span class="aid-section-chevron" aria-hidden="true"></span>
     </button>
     @if (shelf.scriptMenuOpen) {
@@ -18,7 +18,7 @@
             [class.selected]="shelf.isActiveScript(script)" [attr.aria-selected]="shelf.isActiveScript(script)"
             tabindex="0" (click)="shelf.selectScript(script)" (keydown.enter)="shelf.selectScript(script)"
             (keydown.space)="$event.preventDefault(); shelf.selectScript(script)">
-            {{ script.title }}
+            {{ script.name }}
           </li>
         }
       </ul>
@@ -91,10 +91,29 @@
     }
     <div class="aid-modal" role="dialog" aria-modal="true" [attr.aria-label]="activeAid.title" (click)="$event.stopPropagation()">
       <header class="aid-modal-header">
-        <h2>{{ activeAid.title }}</h2>
+        <h2>
+          {{ activeAid.title }}
+          @if (activeAid.character; as character) {
+            ({{ character.type }})
+          }
+        </h2>
+        @if (activeAid.character; as character) {
+          <a class="aid-wiki-link" [href]="character.link" target="_blank" rel="noopener">Wiki Page</a>
+        }
         <button id="player_aid_close" class="aid-close-btn" (click)="shelf.closeAid()" aria-label="Close">&times;</button>
       </header>
       <div class="aid-modal-body" #modalBody>
+        <!-- A character's aid is always laid out the same way: its icon with
+             its ability beside it, then any notes beneath -->
+        @if (activeAid.character; as character) {
+          <div class="aid-character">
+            <img class="aid-character-icon" [src]="character.icon" [alt]="character.name + ' icon'">
+            <p class="aid-character-ability">{{ character.ability }}</p>
+          </div>
+          @if (character.additionalText) {
+            <p>{{ character.additionalText }}</p>
+          }
+        }
         @for (block of activeAid.blocks; track $index) {
           @switch (block.type) {
             @case ('heading') {

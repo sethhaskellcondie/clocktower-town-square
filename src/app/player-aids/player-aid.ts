@@ -1,3 +1,5 @@
+import { Character } from '../character-sheets/character';
+
 // A player aid is an ordered list of content blocks, so text and pictures
 // can be interleaved however the aid needs to read.
 export type PlayerAidBlock =
@@ -15,17 +17,31 @@ export type PlayerAidTextPart =
   | { text: string; style: 'bold' | 'strike' };
 
 // Each aid is created once in the library and can then be placed in as
-// many shelf sections as it's useful in
+// many shelf sections as it's useful in. An aid is either made of blocks, or
+// is about a character, which is laid out the same way every time: titled by
+// the character's name, with its icon, ability, and notes as the content.
 export class PlayerAid {
   readonly id: string;
   readonly title: string;
   readonly summary?: string; // one-liner shown under the title on the shelf
   readonly blocks: readonly PlayerAidBlock[];
+  readonly character?: Character;
 
-  constructor(config: { id: string; title: string; summary?: string; blocks: PlayerAidBlock[] }) {
-    this.id = config.id;
-    this.title = config.title;
+  constructor(
+    config:
+      | { id: string; title: string; summary?: string; blocks: PlayerAidBlock[] }
+      | { character: Character; summary?: string },
+  ) {
+    if ('character' in config) {
+      this.id = config.character.id;
+      this.title = config.character.name;
+      this.blocks = [];
+      this.character = config.character;
+    } else {
+      this.id = config.id;
+      this.title = config.title;
+      this.blocks = config.blocks;
+    }
     this.summary = config.summary;
-    this.blocks = config.blocks;
   }
 }

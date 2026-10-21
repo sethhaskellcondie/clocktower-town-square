@@ -4,8 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { PlayerAid } from '../player-aids/player-aid';
 import { CharacterIconComponent } from '../character-icon/character-icon.component';
 import { CharacterOption, travelerRows } from '../character-icon/character-options';
-import { PlayerAidScript } from '../player-aids/player-aid-script';
-import { ALL_SCRIPT } from '../player-aids/player-aid-shelf';
+import { Script } from '../scripts/script';
+import { ALL_SCRIPT } from '../scripts/script-library';
 
 export type TravelerState = 'alive' | 'marked for death' | 'killed during the night' | 'dead with vote' | 'dead without vote';
 
@@ -32,7 +32,7 @@ export class TravelerComponent implements OnInit {
   @Output() stateChange = new EventEmitter<TravelerState>();
   @Output() openAid = new EventEmitter<PlayerAid>();
   // The travelers offered follow the script picked on the player aid shelf
-  @Input() set script(script: PlayerAidScript) {
+  @Input() set script(script: Script) {
     this.characterRows = travelerRows(script);
   }
   characterRows: CharacterOption[][] = travelerRows(ALL_SCRIPT);

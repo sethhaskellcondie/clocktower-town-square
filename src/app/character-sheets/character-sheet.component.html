@@ -1,0 +1,43 @@
+<button id="character_sheet_toggle" class="sheet-toggle-btn" [class.active]="open" (click)="toggle()" [attr.aria-expanded]="open">
+  Character Sheet
+</button>
+
+<nav class="sheet-shelf" [class.open]="open" aria-label="Character sheet">
+  <div class="sheet-script-picker" [class.expanded]="scriptMenuOpen" #scriptPicker>
+    <button id="character_sheet_script_toggle" class="sheet-script-toggle" (click)="toggleScriptMenu()"
+      aria-haspopup="listbox" [attr.aria-expanded]="scriptMenuOpen" aria-controls="character_sheet_script_menu">
+      <span class="sheet-script-label">Script: <span class="sheet-script-name">{{ activeScript.name }}</span></span>
+      <span class="sheet-chevron" aria-hidden="true"></span>
+    </button>
+    @if (scriptMenuOpen) {
+      <ul id="character_sheet_script_menu" class="sheet-script-menu" role="listbox" aria-label="Script">
+        @for (script of scripts; track script.id) {
+          <li role="option" class="sheet-script-option" [id]="'character_sheet_script_' + script.id"
+            [class.selected]="script === activeScript" [attr.aria-selected]="script === activeScript"
+            tabindex="0" (click)="selectScript(script)" (keydown.enter)="selectScript(script)"
+            (keydown.space)="$event.preventDefault(); selectScript(script)">
+            {{ script.name }}
+          </li>
+        }
+      </ul>
+    }
+  </div>
+  <div class="sheet-groups">
+    @for (group of groups; track group.id) {
+      <section class="sheet-group" [id]="'character_sheet_group_' + group.id">
+        <h2 class="sheet-group-title" [class.good]="group.team === 'good'" [class.evil]="group.team === 'evil'">{{ group.title }}</h2>
+        <ul class="sheet-characters">
+          @for (character of group.characters; track character.id) {
+            <!-- The name sits beside the icon, so the icon needs no alt text of its own -->
+            <li class="sheet-character" [id]="'character_sheet_character_' + character.id">
+              <img class="sheet-character-icon" [src]="character.icon" alt="">
+              <span class="sheet-character-name">{{ character.name }}</span>
+            </li>
+          }
+        </ul>
+      </section>
+    } @empty {
+      <div class="sheet-empty">No characters yet.</div>
+    }
+  </div>
+</nav>

@@ -4,7 +4,8 @@ import { By } from '@angular/platform-browser';
 import { CharacterIconComponent } from './character-icon.component';
 import { LANDMARK_FABLED, LANDMARK_LORIC, PLAYER_FABLED, TRAVELER_CHARACTERS, travelerRows } from './character-options';
 import { PlayerAid } from '../player-aids/player-aid';
-import { ALL_SCRIPT, BAD_MOON_RISING_AIDS, PlayerAidShelf, SECTS_AND_VIOLETS_AIDS, TROUBLE_BREWING_AIDS } from '../player-aids/player-aid-shelf';
+import { PlayerAidShelf } from '../player-aids/player-aid-shelf';
+import { ALL_SCRIPT, BAD_MOON_RISING, SECTS_AND_VIOLETS, TROUBLE_BREWING } from '../scripts/script-library';
 import { PlayerComponent } from '../player/player.component';
 import { TravelerComponent } from '../traveler/traveler.component';
 import { LandmarkComponent } from '../landmark/landmark.component';
@@ -159,21 +160,21 @@ describe('Traveler options', () => {
   });
 
   it("offers only the picked script's travelers", () => {
-    fixture.componentRef.setInput('script', TROUBLE_BREWING_AIDS);
+    fixture.componentRef.setInput('script', TROUBLE_BREWING);
     fixture.detectChanges();
     expect(pickerRows(el)).toEqual([TB_TRAVELERS]);
 
-    fixture.componentRef.setInput('script', BAD_MOON_RISING_AIDS);
+    fixture.componentRef.setInput('script', BAD_MOON_RISING);
     fixture.detectChanges();
     expect(pickerRows(el)).toEqual([BMR_TRAVELERS]);
 
-    fixture.componentRef.setInput('script', SECTS_AND_VIOLETS_AIDS);
+    fixture.componentRef.setInput('script', SECTS_AND_VIOLETS);
     fixture.detectChanges();
     expect(pickerRows(el)).toEqual([SNV_TRAVELERS]);
   });
 
   it('offers a row for each script when "All" is picked', () => {
-    fixture.componentRef.setInput('script', BAD_MOON_RISING_AIDS);
+    fixture.componentRef.setInput('script', BAD_MOON_RISING);
     fixture.detectChanges();
     fixture.componentRef.setInput('script', ALL_SCRIPT);
     fixture.detectChanges();
@@ -185,9 +186,9 @@ describe('Character options', () => {
   it('opens each character in the shelf section it belongs to', () => {
     const shelf = new PlayerAidShelf();
     const expected: [readonly { aid: PlayerAid }[], string][] = [
-      [travelerRows(TROUBLE_BREWING_AIDS)[0], 'traveler'],
-      [travelerRows(BAD_MOON_RISING_AIDS)[0], 'traveler-bmr'],
-      [travelerRows(SECTS_AND_VIOLETS_AIDS)[0], 'traveler-snv'],
+      [travelerRows(TROUBLE_BREWING)[0], 'traveler'],
+      [travelerRows(BAD_MOON_RISING)[0], 'traveler-bmr'],
+      [travelerRows(SECTS_AND_VIOLETS)[0], 'traveler-snv'],
       [travelerRows(ALL_SCRIPT)[3], 'traveler-experimental'],
       [PLAYER_FABLED, 'fabled'],
       [LANDMARK_FABLED, 'fabled'],

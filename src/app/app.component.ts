@@ -4,6 +4,7 @@ import { PlayerComponent } from './player/player.component';
 import { TravelerComponent } from './traveler/traveler.component';
 import { LandmarkComponent } from './landmark/landmark.component';
 import { PlayerAidsComponent } from './player-aids/player-aids.component';
+import { CharacterSheetComponent } from './character-sheets/character-sheet.component';
 import { AttractBannerComponent } from './attract-mode/attract-banner.component';
 import { AttractModeService } from './attract-mode/attract-mode.service';
 import { DayTimerComponent } from './day-timer/day-timer.component';
@@ -38,7 +39,7 @@ interface DeathToken {
 
 @Component({
   selector: 'app-root',
-  imports: [CommonModule, PlayerComponent, TravelerComponent, LandmarkComponent, PlayerAidsComponent, AttractBannerComponent, DayTimerComponent],
+  imports: [CommonModule, PlayerComponent, TravelerComponent, LandmarkComponent, PlayerAidsComponent, CharacterSheetComponent, AttractBannerComponent, DayTimerComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
