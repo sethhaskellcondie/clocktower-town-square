@@ -116,6 +116,16 @@ const TRAVELER_BMR = new PlayerAidSection({
   aids: [APPRENTICE_ABILITY, MATRON_SEATING, VOUDON_VOTING, JUDGE_RULING, BISHOP_NOMINATIONS],
 });
 
+const CHARACTER_FAQ_SNV = new PlayerAidSection({
+  id: 'character-faq-snv',
+  title: 'Character FAQ (S&V)',
+});
+
+const TRAVELER_SNV = new PlayerAidSection({
+  id: 'traveler-snv',
+  title: 'Travelers (S&V)',
+});
+
 const FABLED = new PlayerAidSection({
   id: 'fabled',
   title: 'Fabled',
@@ -166,8 +176,10 @@ export const ALL_SCRIPT = new PlayerAidScript({
     TIPS,
     CHARACTER_FAQ,
     CHARACTER_FAQ_BMR,
+    CHARACTER_FAQ_SNV,
     TRAVELER,
     TRAVELER_BMR,
+    TRAVELER_SNV,
     FABLED,
     LORIC,
     // Last, since it's for the storyteller rather than the players
@@ -206,8 +218,22 @@ export const BAD_MOON_RISING = new PlayerAidScript({
   ],
 });
 
+export const SECTS_AND_VIOLETS = new PlayerAidScript({
+  id: 'sects-and-violets',
+  title: 'Sects & Violets',
+  sections: [
+    TIPS,
+    CHARACTER_FAQ_SNV,
+    TRAVELER_SNV,
+    FABLED,
+    LORIC,
+    // Last, since it's for the storyteller rather than the players
+    STORYTELLER_TIPS,
+  ],
+});
+
 // The first script is the one the shelf opens on
-const SHELF_SCRIPTS: PlayerAidScript[] = [ALL_SCRIPT, TROUBLE_BREWING, BAD_MOON_RISING];
+const SHELF_SCRIPTS: PlayerAidScript[] = [ALL_SCRIPT, TROUBLE_BREWING, BAD_MOON_RISING, SECTS_AND_VIOLETS];
 
 // Holds the shelf's scripts and everything about its state: whether it's
 // open, which script is picked, which sections are expanded, and which aid

@@ -1,3 +1,30 @@
+// A thin, dim gold scrollbar in place of the browser's bright default.
+// Chrome and Firefox take the standard properties, which switch off the
+// -webkit- pseudo-elements, so those only reach browsers without them (Safari).
+@mixin aid-scrollbar {
+  @supports (scrollbar-color: auto) {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(209, 181, 106, 0.4) transparent;
+  }
+
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: rgba(209, 181, 106, 0.4);
+    border-radius: 4px;
+
+    &:hover {
+      background-color: rgba(209, 181, 106, 0.7);
+    }
+  }
+}
+
 .aids-toggle-btn {
   position: fixed;
   top: 16px;
@@ -58,6 +85,7 @@
   gap: 8px;
   min-height: 0;
   overflow-y: auto;
+  @include aid-scrollbar;
 }
 
 .aid-script-picker {
@@ -391,6 +419,7 @@
   padding: 16px 24px 24px;
   font-size: 20px;
   line-height: 1.5;
+  @include aid-scrollbar;
 
   h3 {
     margin: 24px 0 8px;
