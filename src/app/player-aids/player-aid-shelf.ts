@@ -1,6 +1,7 @@
 import { PlayerAid } from './player-aid';
 import { PlayerAidScript } from './player-aid-script';
 import { PlayerAidSection } from './player-aid-section';
+import { BAD_MOON_RISING, SECTS_AND_VIOLETS, TROUBLE_BREWING } from '../scripts/script-library';
 import {
   ANGEL_PROTECTION,
   APPRENTICE_ABILITY,
@@ -184,7 +185,7 @@ const STORYTELLER_TIPS = new PlayerAidSection({
 
 // Which sections appear in which script. A section can be listed in as many
 // scripts as it's useful in. Scripts are exported so travelers can say which
-// scripts they're in.
+// scripts they're offered with.
 export const ALL_SCRIPT = new PlayerAidScript({
   id: 'all',
   title: 'All',
@@ -207,9 +208,9 @@ export const ALL_SCRIPT = new PlayerAidScript({
   ],
 });
 
-export const TROUBLE_BREWING = new PlayerAidScript({
+export const TROUBLE_BREWING_AIDS = new PlayerAidScript({
   id: 'trouble-brewing',
-  title: 'Trouble Brewing',
+  script: TROUBLE_BREWING,
   sections: [
     INTRODUCTION,
     FIRST_NIGHT,
@@ -224,9 +225,9 @@ export const TROUBLE_BREWING = new PlayerAidScript({
   ],
 });
 
-export const BAD_MOON_RISING = new PlayerAidScript({
+export const BAD_MOON_RISING_AIDS = new PlayerAidScript({
   id: 'bad-moon-rising',
-  title: 'Bad Moon Rising',
+  script: BAD_MOON_RISING,
   sections: [
     TIPS,
     CHARACTER_FAQ_BMR,
@@ -238,9 +239,9 @@ export const BAD_MOON_RISING = new PlayerAidScript({
   ],
 });
 
-export const SECTS_AND_VIOLETS = new PlayerAidScript({
+export const SECTS_AND_VIOLETS_AIDS = new PlayerAidScript({
   id: 'sects-and-violets',
-  title: 'Sects & Violets',
+  script: SECTS_AND_VIOLETS,
   sections: [
     TIPS,
     CHARACTER_FAQ_SNV,
@@ -253,7 +254,7 @@ export const SECTS_AND_VIOLETS = new PlayerAidScript({
 });
 
 // The first script is the one the shelf opens on
-const SHELF_SCRIPTS: PlayerAidScript[] = [ALL_SCRIPT, TROUBLE_BREWING, BAD_MOON_RISING, SECTS_AND_VIOLETS];
+const SHELF_SCRIPTS: PlayerAidScript[] = [ALL_SCRIPT, TROUBLE_BREWING_AIDS, BAD_MOON_RISING_AIDS, SECTS_AND_VIOLETS_AIDS];
 
 // Holds the shelf's scripts and everything about its state: whether it's
 // open, which script is picked, which sections are expanded, and which aid

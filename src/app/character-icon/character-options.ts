@@ -1,6 +1,6 @@
 import { PlayerAid } from '../player-aids/player-aid';
 import { PlayerAidScript } from '../player-aids/player-aid-script';
-import { ALL_SCRIPT, BAD_MOON_RISING, SECTS_AND_VIOLETS, TROUBLE_BREWING } from '../player-aids/player-aid-shelf';
+import { ALL_SCRIPT, BAD_MOON_RISING_AIDS, SECTS_AND_VIOLETS_AIDS, TROUBLE_BREWING_AIDS } from '../player-aids/player-aid-shelf';
 import {
   ANGEL_PROTECTION,
   APPRENTICE_ABILITY,
@@ -55,21 +55,21 @@ export interface CharacterOption {
 // The travelers offered on traveler circles, in the same order as the
 // shelf's Traveler sections
 export const TRAVELER_CHARACTERS: readonly CharacterOption[] = [
-  { id: 'scapegoat', name: 'Scapegoat', icon: 'assets/player_aids/icons/trouble_brewing/travelers/scapegoat.png', aid: SCAPEGOAT_EXECUTION, scripts: [TROUBLE_BREWING] },
-  { id: 'gunslinger', name: 'Gunslinger', icon: 'assets/player_aids/icons/trouble_brewing/travelers/gunslinger.png', aid: GUNSLINGER_SHOT, scripts: [TROUBLE_BREWING] },
-  { id: 'beggar', name: 'Beggar', icon: 'assets/player_aids/icons/trouble_brewing/travelers/beggar.png', aid: BEGGAR_VOTING, scripts: [TROUBLE_BREWING] },
-  { id: 'bureaucrat', name: 'Bureaucrat', icon: 'assets/player_aids/icons/trouble_brewing/travelers/bureaucrat.png', aid: BUREAUCRAT_VOTES, scripts: [TROUBLE_BREWING] },
-  { id: 'thief', name: 'Thief', icon: 'assets/player_aids/icons/trouble_brewing/travelers/thief.png', aid: THIEF_VOTES, scripts: [TROUBLE_BREWING] },
-  { id: 'apprentice', name: 'Apprentice', icon: 'assets/player_aids/icons/bad_moon_rising/travelers/apprentice.png', aid: APPRENTICE_ABILITY, scripts: [BAD_MOON_RISING] },
-  { id: 'matron', name: 'Matron', icon: 'assets/player_aids/icons/bad_moon_rising/travelers/matron.png', aid: MATRON_SEATING, scripts: [BAD_MOON_RISING] },
-  { id: 'voudon', name: 'Voudon', icon: 'assets/player_aids/icons/bad_moon_rising/travelers/voudon.png', aid: VOUDON_VOTING, scripts: [BAD_MOON_RISING] },
-  { id: 'judge', name: 'Judge', icon: 'assets/player_aids/icons/bad_moon_rising/travelers/judge.png', aid: JUDGE_RULING, scripts: [BAD_MOON_RISING] },
-  { id: 'bishop', name: 'Bishop', icon: 'assets/player_aids/icons/bad_moon_rising/travelers/bishop.png', aid: BISHOP_NOMINATIONS, scripts: [BAD_MOON_RISING] },
-  { id: 'barista', name: 'Barista', icon: 'assets/player_aids/icons/sects_and_violets/travelers/barista.png', aid: BARISTA_SERVICE, scripts: [SECTS_AND_VIOLETS] },
-  { id: 'harlot', name: 'Harlot', icon: 'assets/player_aids/icons/sects_and_violets/travelers/harlot.png', aid: HARLOT_VISIT, scripts: [SECTS_AND_VIOLETS] },
-  { id: 'butcher', name: 'Butcher', icon: 'assets/player_aids/icons/sects_and_violets/travelers/butcher.png', aid: BUTCHER_NOMINATION, scripts: [SECTS_AND_VIOLETS] },
-  { id: 'bone-collector', name: 'Bone Collector', icon: 'assets/player_aids/icons/sects_and_violets/travelers/bone_collector.png', aid: BONE_COLLECTOR_REVIVAL, scripts: [SECTS_AND_VIOLETS] },
-  { id: 'deviant', name: 'Deviant', icon: 'assets/player_aids/icons/sects_and_violets/travelers/deviant.png', aid: DEVIANT_EXILE, scripts: [SECTS_AND_VIOLETS] },
+  { id: 'scapegoat', name: 'Scapegoat', icon: 'assets/player_aids/icons/trouble_brewing/travelers/scapegoat.png', aid: SCAPEGOAT_EXECUTION, scripts: [TROUBLE_BREWING_AIDS] },
+  { id: 'gunslinger', name: 'Gunslinger', icon: 'assets/player_aids/icons/trouble_brewing/travelers/gunslinger.png', aid: GUNSLINGER_SHOT, scripts: [TROUBLE_BREWING_AIDS] },
+  { id: 'beggar', name: 'Beggar', icon: 'assets/player_aids/icons/trouble_brewing/travelers/beggar.png', aid: BEGGAR_VOTING, scripts: [TROUBLE_BREWING_AIDS] },
+  { id: 'bureaucrat', name: 'Bureaucrat', icon: 'assets/player_aids/icons/trouble_brewing/travelers/bureaucrat.png', aid: BUREAUCRAT_VOTES, scripts: [TROUBLE_BREWING_AIDS] },
+  { id: 'thief', name: 'Thief', icon: 'assets/player_aids/icons/trouble_brewing/travelers/thief.png', aid: THIEF_VOTES, scripts: [TROUBLE_BREWING_AIDS] },
+  { id: 'apprentice', name: 'Apprentice', icon: 'assets/player_aids/icons/bad_moon_rising/travelers/apprentice.png', aid: APPRENTICE_ABILITY, scripts: [BAD_MOON_RISING_AIDS] },
+  { id: 'matron', name: 'Matron', icon: 'assets/player_aids/icons/bad_moon_rising/travelers/matron.png', aid: MATRON_SEATING, scripts: [BAD_MOON_RISING_AIDS] },
+  { id: 'voudon', name: 'Voudon', icon: 'assets/player_aids/icons/bad_moon_rising/travelers/voudon.png', aid: VOUDON_VOTING, scripts: [BAD_MOON_RISING_AIDS] },
+  { id: 'judge', name: 'Judge', icon: 'assets/player_aids/icons/bad_moon_rising/travelers/judge.png', aid: JUDGE_RULING, scripts: [BAD_MOON_RISING_AIDS] },
+  { id: 'bishop', name: 'Bishop', icon: 'assets/player_aids/icons/bad_moon_rising/travelers/bishop.png', aid: BISHOP_NOMINATIONS, scripts: [BAD_MOON_RISING_AIDS] },
+  { id: 'barista', name: 'Barista', icon: 'assets/player_aids/icons/sects_and_violets/travelers/barista.png', aid: BARISTA_SERVICE, scripts: [SECTS_AND_VIOLETS_AIDS] },
+  { id: 'harlot', name: 'Harlot', icon: 'assets/player_aids/icons/sects_and_violets/travelers/harlot.png', aid: HARLOT_VISIT, scripts: [SECTS_AND_VIOLETS_AIDS] },
+  { id: 'butcher', name: 'Butcher', icon: 'assets/player_aids/icons/sects_and_violets/travelers/butcher.png', aid: BUTCHER_NOMINATION, scripts: [SECTS_AND_VIOLETS_AIDS] },
+  { id: 'bone-collector', name: 'Bone Collector', icon: 'assets/player_aids/icons/sects_and_violets/travelers/bone_collector.png', aid: BONE_COLLECTOR_REVIVAL, scripts: [SECTS_AND_VIOLETS_AIDS] },
+  { id: 'deviant', name: 'Deviant', icon: 'assets/player_aids/icons/sects_and_violets/travelers/deviant.png', aid: DEVIANT_EXILE, scripts: [SECTS_AND_VIOLETS_AIDS] },
   // Experimental travelers aren't in any one script, so they're only offered with "All" picked
   { id: 'gangster', name: 'Gangster', icon: 'assets/player_aids/icons/experimental/travelers/gangster.png', aid: GANGSTER_KILL, scripts: [ALL_SCRIPT] },
   { id: 'gnome', name: 'Gnome', icon: 'assets/player_aids/icons/experimental/travelers/gnome.png', aid: GNOME_PROTECTION, scripts: [ALL_SCRIPT] },

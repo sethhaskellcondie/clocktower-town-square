@@ -2,6 +2,7 @@ import { PlayerAid } from './player-aid';
 import { PlayerAidScript } from './player-aid-script';
 import { PlayerAidSection } from './player-aid-section';
 import { PlayerAidShelf } from './player-aid-shelf';
+import { Script } from '../scripts/script';
 
 describe('PlayerAidShelf', () => {
   const shared = new PlayerAid({ id: 'shared', title: 'Shared', blocks: [] });
@@ -102,6 +103,14 @@ describe('PlayerAidShelf', () => {
     expect(shelf.isActiveScript(partial)).toBeTrue();
     expect(shelf.sections).toEqual([second]);
     expect(shelf.isExpanded(second)).toBeFalse();
+  });
+
+  it('titles a script after the script it is for, and lets "All" give its own title', () => {
+    const custom = new Script({ name: 'Custom' });
+    expect(new PlayerAidScript({ id: 'custom', script: custom }).title).toBe('Custom');
+    expect(new PlayerAidScript({ id: 'custom', script: custom }).script).toBe(custom);
+    expect(new PlayerAidScript({ id: 'all', title: 'All' }).script).toBeNull();
+    expect(custom.base).toBeFalse();
   });
 
   it('shows an aid from outside the shelf from another script when the picked one leaves it out', () => {

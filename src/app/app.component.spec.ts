@@ -3,7 +3,7 @@ import { AppComponent } from './app.component';
 import { AttractModeService } from './attract-mode/attract-mode.service';
 import { DayTimerService } from './day-timer/day-timer.service';
 import { HOW_TO_PLAY_VIDEO, NO_DEATHS } from './player-aids/player-aid-library';
-import { BAD_MOON_RISING } from './player-aids/player-aid-shelf';
+import { BAD_MOON_RISING_AIDS } from './player-aids/player-aid-shelf';
 import { travelerRows } from './character-icon/character-options';
 
 describe('AppComponent', () => {
@@ -54,9 +54,9 @@ describe('AppComponent', () => {
     fixture.detectChanges();
     const traveler = app.travelerComponents.first;
 
-    app.playerAids!.shelf.selectScript(BAD_MOON_RISING);
+    app.playerAids!.shelf.selectScript(BAD_MOON_RISING_AIDS);
     fixture.detectChanges();
-    expect(traveler.characterRows).toEqual(travelerRows(BAD_MOON_RISING));
+    expect(traveler.characterRows).toEqual(travelerRows(BAD_MOON_RISING_AIDS));
   });
 
   it('steps the attract mode on A, but not while a player aid is open', () => {
