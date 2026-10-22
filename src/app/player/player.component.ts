@@ -1,5 +1,4 @@
 import { Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { PlayerAid } from '../player-aids/player-aid';
 import { CharacterIconComponent } from '../character-icon/character-icon.component';
@@ -10,7 +9,7 @@ export type PlayerState = 'alive' | 'marked for death' | 'killed during the nigh
 @Component({
   selector: 'app-player',
   standalone: true,
-  imports: [CommonModule, FormsModule, CharacterIconComponent],
+  imports: [FormsModule, CharacterIconComponent],
   templateUrl: './player.component.html',
   styleUrl: './player.component.scss'
 })

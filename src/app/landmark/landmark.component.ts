@@ -1,5 +1,4 @@
 import { Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { PlayerAid } from '../player-aids/player-aid';
 import { CharacterIconComponent } from '../character-icon/character-icon.component';
@@ -8,7 +7,7 @@ import { LANDMARK_FABLED, LANDMARK_LORIC } from '../character-icon/character-opt
 @Component({
   selector: 'app-landmark',
   standalone: true,
-  imports: [CommonModule, FormsModule, CharacterIconComponent],
+  imports: [FormsModule, CharacterIconComponent],
   templateUrl: './landmark.component.html',
   styleUrl: './landmark.component.scss'
 })
