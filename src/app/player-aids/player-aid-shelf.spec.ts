@@ -1,7 +1,7 @@
 import { PlayerAid } from './player-aid';
 import { PlayerAidSection } from './player-aid-section';
 import { PlayerAidShelf } from './player-aid-shelf';
-import { Script } from '../scripts/script';
+import { PlayerAidGroup } from './player-aid-group';
 
 describe('PlayerAidShelf', () => {
   const shared = new PlayerAid({ id: 'shared', title: 'Shared', blocks: [] });
@@ -10,9 +10,9 @@ describe('PlayerAidShelf', () => {
   const second = new PlayerAidSection({ id: 'second', title: 'Second', aids: [shared] });
   let shelf: PlayerAidShelf;
 
-  // A shelf with a single script holding the given sections
+  // A shelf with a single group holding the given sections
   const shelfOf = (...sections: PlayerAidSection[]) =>
-    new PlayerAidShelf([new Script({ id: 'script', name: 'Script', base: false, sections })]);
+    new PlayerAidShelf([new PlayerAidGroup({ id: 'group', name: 'Group', sections })]);
 
   beforeEach(() => {
     shelf = shelfOf(first, second);
@@ -89,27 +89,27 @@ describe('PlayerAidShelf', () => {
     expect(shelf.activeSection).toBe(second);
   });
 
-  it('shows the sections of the picked script, starting on the first script', () => {
-    const everything = new Script({ id: 'everything', name: 'Everything', base: false, sections: [first, second] });
-    const partial = new Script({ id: 'partial', name: 'Partial', base: false, sections: [second] });
+  it('shows the sections of the picked group, starting on the first group', () => {
+    const everything = new PlayerAidGroup({ id: 'everything', name: 'Everything', sections: [first, second] });
+    const partial = new PlayerAidGroup({ id: 'partial', name: 'Partial', sections: [second] });
     shelf = new PlayerAidShelf([everything, partial]);
-    expect(shelf.activeScript).toBe(everything);
+    expect(shelf.activeGroup).toBe(everything);
     expect(shelf.sections).toEqual([first, second]);
 
-    // A section can sit in several scripts, and switching starts it collapsed
+    // A section can sit in several groups, and switching starts it collapsed
     shelf.toggleSection(second);
-    shelf.selectScript(partial);
-    expect(shelf.isActiveScript(partial)).toBeTrue();
+    shelf.selectGroup(partial);
+    expect(shelf.isActiveGroup(partial)).toBeTrue();
     expect(shelf.sections).toEqual([second]);
     expect(shelf.isExpanded(second)).toBeFalse();
   });
 
-  it('shows an aid from outside the shelf from another script when the picked one leaves it out', () => {
+  it('shows an aid from outside the shelf from another group when the picked one leaves it out', () => {
     const elsewhere = new PlayerAid({ id: 'elsewhere', title: 'Elsewhere', blocks: [] });
     const other = new PlayerAidSection({ id: 'other', title: 'Other', aids: [elsewhere, shared] });
-    const picked = new Script({ id: 'picked', name: 'Picked', base: false, sections: [second] });
-    shelf = new PlayerAidShelf([new Script({ id: 'first-script', name: 'First', base: false, sections: [other] }), picked]);
-    shelf.selectScript(picked);
+    const picked = new PlayerAidGroup({ id: 'picked', name: 'Picked', sections: [second] });
+    shelf = new PlayerAidShelf([new PlayerAidGroup({ id: 'first-group', name: 'First', sections: [other] }), picked]);
+    shelf.selectGroup(picked);
 
     shelf.show(shared);
     expect(shelf.activeSection).toBe(second);
@@ -117,7 +117,7 @@ describe('PlayerAidShelf', () => {
     shelf.show(elsewhere);
     expect(shelf.activeAid).toBe(elsewhere);
     expect(shelf.activeSection).toBe(other);
-    expect(shelf.activeScript).toBe(picked);
+    expect(shelf.activeGroup).toBe(picked);
   });
 
   it('steps back from the open aid, then the shelf', () => {

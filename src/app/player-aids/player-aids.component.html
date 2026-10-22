@@ -3,22 +3,22 @@
 </button>
 
 <nav class="aids-shelf" [class.open]="shelf.open" aria-label="Player aids">
-  <!-- The script header opens a dropdown over the sections, rather than an
+  <!-- The group header opens a dropdown over the sections, rather than an
        accordion, to set it apart from the section headers below it -->
-  <div class="aid-script-picker" [class.expanded]="shelf.scriptMenuOpen" #scriptPicker>
-    <button id="player_aid_script_toggle" class="aid-script-toggle" (click)="shelf.toggleScriptMenu()"
-      aria-haspopup="listbox" [attr.aria-expanded]="shelf.scriptMenuOpen" aria-controls="player_aid_script_menu">
-      <span class="aid-script-label">Script: <span class="aid-script-name">{{ shelf.activeScript.name }}</span></span>
+  <div class="aid-group-picker" [class.expanded]="shelf.groupMenuOpen" #groupPicker>
+    <button id="player_aid_group_toggle" class="aid-group-toggle" (click)="shelf.toggleGroupMenu()"
+      aria-haspopup="listbox" [attr.aria-expanded]="shelf.groupMenuOpen" aria-controls="player_aid_group_menu">
+      <span class="aid-group-label">Group: <span class="aid-group-name">{{ shelf.activeGroup.name }}</span></span>
       <span class="aid-section-chevron" aria-hidden="true"></span>
     </button>
-    @if (shelf.scriptMenuOpen) {
-      <ul id="player_aid_script_menu" class="aid-script-menu" role="listbox" aria-label="Script">
-        @for (script of shelf.scripts; track script.id) {
-          <li role="option" class="aid-script-option" [id]="'player_aid_script_' + script.id"
-            [class.selected]="shelf.isActiveScript(script)" [attr.aria-selected]="shelf.isActiveScript(script)"
-            tabindex="0" (click)="shelf.selectScript(script)" (keydown.enter)="shelf.selectScript(script)"
-            (keydown.space)="$event.preventDefault(); shelf.selectScript(script)">
-            {{ script.name }}
+    @if (shelf.groupMenuOpen) {
+      <ul id="player_aid_group_menu" class="aid-group-menu" role="listbox" aria-label="Group">
+        @for (group of shelf.groups; track group.id) {
+          <li role="option" class="aid-group-option" [id]="'player_aid_group_' + group.id"
+            [class.selected]="shelf.isActiveGroup(group)" [attr.aria-selected]="shelf.isActiveGroup(group)"
+            tabindex="0" (click)="shelf.selectGroup(group)" (keydown.enter)="shelf.selectGroup(group)"
+            (keydown.space)="$event.preventDefault(); shelf.selectGroup(group)">
+            {{ group.name }}
           </li>
         }
       </ul>

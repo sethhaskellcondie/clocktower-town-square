@@ -47,15 +47,18 @@ describe('AppComponent', () => {
     expect(compiled.querySelector('.project-banner')).toBeNull();
   });
 
-  it("offers travelers from the script picked on the player aid shelf", () => {
+  it("offers travelers from the script picked on the character sheet", () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
+    const compiled = fixture.nativeElement as HTMLElement;
     fixture.detectChanges();
     app.addTraveler();
     fixture.detectChanges();
     const traveler = app.travelerComponents.first;
 
-    app.playerAids!.shelf.selectScript(BAD_MOON_RISING);
+    (compiled.querySelector('#character_sheet_script_toggle') as HTMLElement).click();
+    fixture.detectChanges();
+    (compiled.querySelector('#character_sheet_script_' + BAD_MOON_RISING.id) as HTMLElement).click();
     fixture.detectChanges();
     expect(traveler.characterRows).toEqual(travelerRows(BAD_MOON_RISING));
   });

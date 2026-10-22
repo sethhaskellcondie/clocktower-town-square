@@ -1,43 +1,46 @@
 import { PlayerAid } from '../player-aids/player-aid';
+import { Character } from '../character-sheets/character';
+import {
+  APPRENTICE,
+  BARISTA,
+  BEGGAR,
+  BISHOP,
+  BONE_COLLECTOR,
+  BUREAUCRAT,
+  BUTCHER,
+  CACKLEJACK,
+  DEVIANT,
+  GANGSTER,
+  GNOME,
+  GUNSLINGER,
+  HARLOT,
+  JUDGE,
+  MATRON,
+  SCAPEGOAT,
+  THIEF,
+  VOUDON,
+} from '../character-sheets/character-library';
 import { Script } from '../scripts/script';
 import { ALL_SCRIPT, BAD_MOON_RISING, EXPERIMENTAL, SECTS_AND_VIOLETS, TROUBLE_BREWING } from '../scripts/script-library';
 import {
   ANGEL_PROTECTION,
-  APPRENTICE_ABILITY,
-  BARISTA_SERVICE,
-  BEGGAR_VOTING,
   BIG_WIG_NOMINEES,
-  BISHOP_NOMINATIONS,
-  BONE_COLLECTOR_REVIVAL,
   BOOTLEGGER_HOMEBREW,
   BUDDHIST_SILENCE,
-  BUREAUCRAT_VOTES,
-  BUTCHER_NOMINATION,
-  CACKLEJACK_CHANGE,
   DEUS_EX_FIASCO_MISTAKE,
-  DEVIANT_EXILE,
   DOOMSAYER_SACRIFICE,
   FERRYMAN_VOTES,
   FIDDLER_CONTEST,
-  GANGSTER_KILL,
   GARDENER_SEATING,
-  GNOME_PROTECTION,
   GOD_OF_UG_HAT,
-  GUNSLINGER_SHOT,
-  HARLOT_VISIT,
   HELLS_LIBRARIAN_SILENCE,
   HINDU_REINCARNATION,
-  JUDGE_RULING,
   KNAVES_STORYTELLERS,
-  MATRON_SEATING,
   POPE_DUPLICATES,
   REVOLUTIONARY_NEIGHBORS,
-  SCAPEGOAT_EXECUTION,
   STORM_CATCHER_PROTECTION,
-  THIEF_VOTES,
   TOR_HIDDEN_CHARACTERS,
   VENTRILOQUIST_NOMINATIONS,
-  VOUDON_VOTING,
   ZENOMANCER_GOALS,
 } from '../player-aids/player-aid-library';
 
@@ -52,32 +55,38 @@ export interface CharacterOption {
   scripts?: readonly Script[];
 }
 
-// The travelers offered on traveler circles, in the same order as the
-// shelf's Traveler sections
+// A traveler is offered with its character's name and icon, and opens its
+// character's player aid
+function travelerOption(character: Character, scripts: readonly Script[]): CharacterOption {
+  return { id: character.id, name: character.name, icon: character.icon, aid: new PlayerAid({ character }), scripts };
+}
+
+// The travelers offered on traveler circles
 export const TRAVELER_CHARACTERS: readonly CharacterOption[] = [
-  { id: 'scapegoat', name: 'Scapegoat', icon: 'assets/player_aids/icons/trouble_brewing/travelers/scapegoat.png', aid: SCAPEGOAT_EXECUTION, scripts: [TROUBLE_BREWING] },
-  { id: 'gunslinger', name: 'Gunslinger', icon: 'assets/player_aids/icons/trouble_brewing/travelers/gunslinger.png', aid: GUNSLINGER_SHOT, scripts: [TROUBLE_BREWING] },
-  { id: 'beggar', name: 'Beggar', icon: 'assets/player_aids/icons/trouble_brewing/travelers/beggar.png', aid: BEGGAR_VOTING, scripts: [TROUBLE_BREWING] },
-  { id: 'bureaucrat', name: 'Bureaucrat', icon: 'assets/player_aids/icons/trouble_brewing/travelers/bureaucrat.png', aid: BUREAUCRAT_VOTES, scripts: [TROUBLE_BREWING] },
-  { id: 'thief', name: 'Thief', icon: 'assets/player_aids/icons/trouble_brewing/travelers/thief.png', aid: THIEF_VOTES, scripts: [TROUBLE_BREWING] },
-  { id: 'apprentice', name: 'Apprentice', icon: 'assets/player_aids/icons/bad_moon_rising/travelers/apprentice.png', aid: APPRENTICE_ABILITY, scripts: [BAD_MOON_RISING] },
-  { id: 'matron', name: 'Matron', icon: 'assets/player_aids/icons/bad_moon_rising/travelers/matron.png', aid: MATRON_SEATING, scripts: [BAD_MOON_RISING] },
-  { id: 'voudon', name: 'Voudon', icon: 'assets/player_aids/icons/bad_moon_rising/travelers/voudon.png', aid: VOUDON_VOTING, scripts: [BAD_MOON_RISING] },
-  { id: 'judge', name: 'Judge', icon: 'assets/player_aids/icons/bad_moon_rising/travelers/judge.png', aid: JUDGE_RULING, scripts: [BAD_MOON_RISING] },
-  { id: 'bishop', name: 'Bishop', icon: 'assets/player_aids/icons/bad_moon_rising/travelers/bishop.png', aid: BISHOP_NOMINATIONS, scripts: [BAD_MOON_RISING] },
-  { id: 'barista', name: 'Barista', icon: 'assets/player_aids/icons/sects_and_violets/travelers/barista.png', aid: BARISTA_SERVICE, scripts: [SECTS_AND_VIOLETS] },
-  { id: 'harlot', name: 'Harlot', icon: 'assets/player_aids/icons/sects_and_violets/travelers/harlot.png', aid: HARLOT_VISIT, scripts: [SECTS_AND_VIOLETS] },
-  { id: 'butcher', name: 'Butcher', icon: 'assets/player_aids/icons/sects_and_violets/travelers/butcher.png', aid: BUTCHER_NOMINATION, scripts: [SECTS_AND_VIOLETS] },
-  { id: 'bone-collector', name: 'Bone Collector', icon: 'assets/player_aids/icons/sects_and_violets/travelers/bone_collector.png', aid: BONE_COLLECTOR_REVIVAL, scripts: [SECTS_AND_VIOLETS] },
-  { id: 'deviant', name: 'Deviant', icon: 'assets/player_aids/icons/sects_and_violets/travelers/deviant.png', aid: DEVIANT_EXILE, scripts: [SECTS_AND_VIOLETS] },
-  { id: 'gangster', name: 'Gangster', icon: 'assets/player_aids/icons/experimental/travelers/gangster.png', aid: GANGSTER_KILL, scripts: [EXPERIMENTAL] },
-  { id: 'gnome', name: 'Gnome', icon: 'assets/player_aids/icons/experimental/travelers/gnome.png', aid: GNOME_PROTECTION, scripts: [EXPERIMENTAL] },
-  { id: 'cacklejack', name: 'Cacklejack', icon: 'assets/player_aids/icons/experimental/travelers/cacklejack.png', aid: CACKLEJACK_CHANGE, scripts: [EXPERIMENTAL] },
+  travelerOption(SCAPEGOAT, [TROUBLE_BREWING]),
+  travelerOption(GUNSLINGER, [TROUBLE_BREWING]),
+  travelerOption(BEGGAR, [TROUBLE_BREWING]),
+  travelerOption(BUREAUCRAT, [TROUBLE_BREWING]),
+  travelerOption(THIEF, [TROUBLE_BREWING]),
+  travelerOption(APPRENTICE, [BAD_MOON_RISING]),
+  travelerOption(MATRON, [BAD_MOON_RISING]),
+  travelerOption(VOUDON, [BAD_MOON_RISING]),
+  travelerOption(JUDGE, [BAD_MOON_RISING]),
+  travelerOption(BISHOP, [BAD_MOON_RISING]),
+  travelerOption(BARISTA, [SECTS_AND_VIOLETS]),
+  travelerOption(HARLOT, [SECTS_AND_VIOLETS]),
+  travelerOption(BUTCHER, [SECTS_AND_VIOLETS]),
+  travelerOption(BONE_COLLECTOR, [SECTS_AND_VIOLETS]),
+  travelerOption(DEVIANT, [SECTS_AND_VIOLETS]),
+  travelerOption(GANGSTER, [EXPERIMENTAL]),
+  travelerOption(GNOME, [EXPERIMENTAL]),
+  travelerOption(CACKLEJACK, [EXPERIMENTAL]),
 ];
 
-// The rows of travelers to offer while a script is picked on the shelf: one
-// row of that script's travelers, or with "All" picked, a row for each script
-// holding the travelers in it, so a traveler in two scripts shows in both
+// The rows of travelers to offer while a script is picked on the character
+// sheet: one row of that script's travelers, or with "All" picked, a row for
+// each script holding the travelers in it, so a traveler in two scripts
+// shows in both
 export function travelerRows(script: Script): CharacterOption[][] {
   const scripts = script === ALL_SCRIPT
     ? [...new Set(TRAVELER_CHARACTERS.flatMap(traveler => traveler.scripts ?? []))]

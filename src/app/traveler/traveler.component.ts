@@ -31,7 +31,7 @@ export class TravelerComponent implements OnInit {
   isWinner = false;
   @Output() stateChange = new EventEmitter<TravelerState>();
   @Output() openAid = new EventEmitter<PlayerAid>();
-  // The travelers offered follow the script picked on the player aid shelf
+  // The travelers offered follow the script picked on the character sheet
   @Input() set script(script: Script) {
     this.characterRows = travelerRows(script);
   }

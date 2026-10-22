@@ -1,20 +1,20 @@
 import { PlayerAid } from './player-aid';
 import { PlayerAidSection } from './player-aid-section';
-import { Script } from '../scripts/script';
-import { ALL_SCRIPT, BAD_MOON_RISING, EXPERIMENTAL, SECTS_AND_VIOLETS, TROUBLE_BREWING } from '../scripts/script-library';
+import { PlayerAidGroup } from './player-aid-group';
+import { ALL_GROUP, INTRODUCTION_GROUP, LEARNING_GROUP, VETERAN_GROUP } from './player-aid-groups';
 
-// The first script is the one the shelf opens on
-const SHELF_SCRIPTS: Script[] = [ALL_SCRIPT, TROUBLE_BREWING, BAD_MOON_RISING, SECTS_AND_VIOLETS, EXPERIMENTAL];
+// The first group is the one the shelf opens on
+const SHELF_GROUPS: PlayerAidGroup[] = [ALL_GROUP, INTRODUCTION_GROUP, LEARNING_GROUP, VETERAN_GROUP];
 
-// Holds the shelf's scripts and everything about its state: whether it's
-// open, which script is picked, which sections are expanded, and which aid
+// Holds the shelf's groups and everything about its state: whether it's
+// open, which group is picked, which sections are expanded, and which aid
 // is being viewed
 export class PlayerAidShelf {
   open = false;
-  // The script whose sections the shelf is showing
-  activeScript: Script;
-  // Whether the dropdown for picking a script is showing
-  scriptMenuOpen = false;
+  // The group whose sections the shelf is showing
+  activeGroup: PlayerAidGroup;
+  // Whether the dropdown for picking a group is showing
+  groupMenuOpen = false;
   activeAid: PlayerAid | null = null;
   // The section the active aid was opened from, since an aid can be in several
   activeSection: PlayerAidSection | null = null;
@@ -22,12 +22,12 @@ export class PlayerAidShelf {
   // ids of the open section and the sections it's nested in.
   private expandedSections = new Set<string>();
 
-  constructor(readonly scripts: readonly Script[] = SHELF_SCRIPTS) {
-    this.activeScript = scripts[0];
+  constructor(readonly groups: readonly PlayerAidGroup[] = SHELF_GROUPS) {
+    this.activeGroup = groups[0];
   }
 
   get sections(): readonly PlayerAidSection[] {
-    return this.activeScript.sections;
+    return this.activeGroup.sections;
   }
 
   toggle(): void {
@@ -38,27 +38,27 @@ export class PlayerAidShelf {
     }
   }
 
-  // Closing the shelf closes the script dropdown with it, so the shelf
-  // reopens with only the script header showing
+  // Closing the shelf closes the group dropdown with it, so the shelf
+  // reopens with only the group header showing
   close(): void {
     this.open = false;
-    this.scriptMenuOpen = false;
+    this.groupMenuOpen = false;
   }
 
-  toggleScriptMenu(): void {
-    this.scriptMenuOpen = !this.scriptMenuOpen;
+  toggleGroupMenu(): void {
+    this.groupMenuOpen = !this.groupMenuOpen;
   }
 
-  isActiveScript(script: Script): boolean {
-    return this.activeScript === script;
+  isActiveGroup(group: PlayerAidGroup): boolean {
+    return this.activeGroup === group;
   }
 
-  // Picking a script closes the dropdown. Switching scripts starts its
+  // Picking a group closes the dropdown. Switching groups starts its
   // sections collapsed.
-  selectScript(script: Script): void {
-    this.scriptMenuOpen = false;
-    if (!this.isActiveScript(script)) {
-      this.activeScript = script;
+  selectGroup(group: PlayerAidGroup): void {
+    this.groupMenuOpen = false;
+    if (!this.isActiveGroup(group)) {
+      this.activeGroup = group;
       this.expandedSections.clear();
     }
   }
@@ -97,12 +97,12 @@ export class PlayerAidShelf {
   }
 
   // Open an aid from outside the shelf (e.g. a traveler icon on the board),
-  // browsing within the first section that lists it. The picked script is
+  // browsing within the first section that lists it. The picked group is
   // searched first, then the others, so the aid opens even when the picked
-  // script leaves it out.
+  // group leaves it out.
   show(aid: PlayerAid): void {
-    const section = [this.activeScript, ...this.scripts]
-      .flatMap(script => script.allSections())
+    const section = [this.activeGroup, ...this.groups]
+      .flatMap(group => group.allSections())
       .find(s => s.aids.includes(aid));
     this.activeAid = aid;
     this.activeSection = section ?? null;
@@ -144,13 +144,13 @@ export class PlayerAidShelf {
     this.activeSection = null;
   }
 
-  // Peel back one layer at a time: the open aid first, then the script
+  // Peel back one layer at a time: the open aid first, then the group
   // dropdown, then the shelf
   back(): void {
     if (this.activeAid) {
       this.closeAid();
-    } else if (this.scriptMenuOpen) {
-      this.scriptMenuOpen = false;
+    } else if (this.groupMenuOpen) {
+      this.groupMenuOpen = false;
     } else if (this.open) {
       this.close();
     }

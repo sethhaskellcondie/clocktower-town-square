@@ -6,7 +6,7 @@
 
 <app-player-aids #aids></app-player-aids>
 
-<app-character-sheet [activeAid]="aids.shelf.activeAid" (openAid)="aids.show($event)"></app-character-sheet>
+<app-character-sheet #sheet [activeAid]="aids.shelf.activeAid" (openAid)="aids.show($event)"></app-character-sheet>
 
 <div class="info-table-container">
   @if (isDay) {
@@ -125,7 +125,7 @@
 }
 
 @for (traveler of travelers; track traveler.number) {
-  <app-traveler [size]="playerSize" [number]="traveler.number" [initialX]="traveler.initialX" [initialY]="traveler.initialY" [texture]="traveler.texture" [isDay]="isDay" [locked]="isSpinning" [script]="aids.shelf.activeScript" (stateChange)="onTravelerStateChange()" (openAid)="playerAids?.show($event)"></app-traveler>
+  <app-traveler [size]="playerSize" [number]="traveler.number" [initialX]="traveler.initialX" [initialY]="traveler.initialY" [texture]="traveler.texture" [isDay]="isDay" [locked]="isSpinning" [script]="sheet.activeScript" (stateChange)="onTravelerStateChange()" (openAid)="playerAids?.show($event)"></app-traveler>
 }
 
 @for (landmark of landmarks; track landmark.number) {

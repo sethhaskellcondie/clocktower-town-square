@@ -77,8 +77,8 @@
   }
 }
 
-// The sections scroll beneath the script header, which stays put at the top
-// and leaves the shelf unclipped so the script dropdown can hang over them
+// The sections scroll beneath the group header, which stays put at the top
+// and leaves the shelf unclipped so the group dropdown can hang over them
 .aids-shelf-sections {
   display: flex;
   flex-direction: column;
@@ -88,12 +88,12 @@
   @include aid-scrollbar;
 }
 
-.aid-script-picker {
+.aid-group-picker {
   position: relative;
   flex-shrink: 0;
 }
 
-.aid-script-toggle {
+.aid-group-toggle {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -114,23 +114,23 @@
   }
 }
 
-.aid-script-label {
+.aid-group-label {
   font-size: 13px;
   letter-spacing: 2px;
   text-transform: uppercase;
 }
 
-.aid-script-name {
+.aid-group-name {
   color: #d1b56a;
 }
 
 // The chevron borrowed from the section headers turns down while open
-.expanded > .aid-script-toggle > .aid-section-chevron {
+.expanded > .aid-group-toggle > .aid-section-chevron {
   transform: rotate(45deg);
 }
 
 // Floats over the sections below rather than pushing them down
-.aid-script-menu {
+.aid-group-menu {
   position: absolute;
   top: calc(100% + 4px);
   left: 0;
@@ -146,7 +146,7 @@
   animation: aid-fade-in 0.15s ease;
 }
 
-.aid-script-option {
+.aid-group-option {
   padding: 8px 10px;
   font-size: 14px;
   color: white;
@@ -160,7 +160,7 @@
     outline: none;
   }
 
-  // A check mark drawn with borders marks the picked script
+  // A check mark drawn with borders marks the picked group
   &.selected {
     color: #d1b56a;
 

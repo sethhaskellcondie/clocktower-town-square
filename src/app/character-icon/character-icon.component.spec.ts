@@ -187,13 +187,16 @@ describe('Traveler options', () => {
 });
 
 describe('Character options', () => {
-  it('opens each character in the shelf section it belongs to', () => {
+  it("opens each traveler's character aid", () => {
+    for (const traveler of TRAVELER_CHARACTERS) {
+      expect(traveler.aid.character?.id).withContext(traveler.name).toBe(traveler.id);
+      expect(traveler.aid.character?.type).withContext(traveler.name).toBe('Traveler');
+    }
+  });
+
+  it('opens each Fabled and Loric in the shelf section it belongs to', () => {
     const shelf = new PlayerAidShelf();
     const expected: [readonly { aid: PlayerAid }[], string][] = [
-      [travelerRows(TROUBLE_BREWING)[0], 'traveler'],
-      [travelerRows(BAD_MOON_RISING)[0], 'traveler-bmr'],
-      [travelerRows(SECTS_AND_VIOLETS)[0], 'traveler-snv'],
-      [travelerRows(EXPERIMENTAL)[0], 'traveler-experimental'],
       [PLAYER_FABLED, 'fabled'],
       [LANDMARK_FABLED, 'fabled'],
       [LANDMARK_LORIC, 'loric'],

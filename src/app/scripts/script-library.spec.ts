@@ -12,14 +12,6 @@ describe('Script library', () => {
     expect(EXPERIMENTAL.base).toBeFalse();
   });
 
-  it('lists every section from the other scripts in "All"', () => {
-    for (const script of otherScripts) {
-      for (const section of script.sections) {
-        expect(ALL_SCRIPT.sections).withContext(`${script.name}: ${section.title}`).toContain(section);
-      }
-    }
-  });
-
   it('lists every character from the other scripts in "All"', () => {
     for (const script of otherScripts) {
       for (const character of script.characters) {

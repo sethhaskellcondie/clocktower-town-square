@@ -5,7 +5,7 @@ import { PlayerAidShelf } from './player-aid-shelf';
 import { PlayerAid } from './player-aid';
 import { HOW_TO_PLAY_VIDEO } from './player-aid-library';
 import { ACROBAT } from '../character-sheets/character-library';
-import { Script } from '../scripts/script';
+import { PlayerAidGroup } from './player-aid-group';
 import { Character } from '../character-sheets/character';
 
 describe('PlayerAidsComponent', () => {
@@ -36,58 +36,60 @@ describe('PlayerAidsComponent', () => {
 
   it('groups aids on the shelf under their section titles', () => {
     const titles = Array.from(el.querySelectorAll('.aid-section-title')).map(t => t.textContent?.trim());
-    expect(titles).toEqual(['Introduction', 'The First Night', 'The First Day', 'Tips', 'Character FAQ (TB)', 'Character FAQ (BMR)', 'Character FAQ (S&V)', 'Travelers (TB)', 'Travelers (BMR)', 'Travelers (S&V)', 'Travelers (Experimental)', 'Fabled', 'Loric', 'Storyteller Tips']);
+    expect(titles).toEqual(['Introduction', 'The First Night', 'The First Day', 'Tips', 'Character FAQ (TB)', 'Character FAQ (BMR)', 'Character FAQ (S&V)', 'Fabled', 'Loric', 'Storyteller Tips']);
     expect(el.querySelector('#player_aid_section_tips #player_aid_tips_how-to-play-video')).not.toBeNull();
     expect(el.querySelector('#player_aid_section_character-faq #player_aid_character-faq_spy-grimoire')).not.toBeNull();
     expect(el.querySelector('#player_aid_section_storyteller-tips #player_aid_storyteller-tips_attract-mode-hotkeys')).not.toBeNull();
     expect(el.querySelector('#player_aid_section_storyteller-tips #player_aid_storyteller-tips_day-timer-hotkeys')).not.toBeNull();
   });
 
-  it('picks the script from a dropdown under the script header, starting on All', () => {
+  it('picks the group from a dropdown under the group header, starting on All', () => {
     const titles = () => Array.from(el.querySelectorAll('.aid-section-title')).map(t => t.textContent?.trim());
-    const header = () => el.querySelector('#player_aid_script_toggle');
-    expect(header()?.textContent).toContain('Script: All');
+    const header = () => el.querySelector('#player_aid_group_toggle');
+    expect(header()?.textContent).toContain('Group: All');
     expect(header()?.getAttribute('aria-expanded')).toBe('false');
-    expect(el.querySelector('.aid-script-menu')).toBeNull();
+    expect(el.querySelector('.aid-group-menu')).toBeNull();
 
-    click('#player_aid_script_toggle');
-    const options = Array.from(el.querySelectorAll('.aid-script-option')).map(o => o.textContent?.trim());
-    expect(options).toEqual(['All', 'Trouble Brewing', 'Bad Moon Rising', 'Sects & Violets', 'Experimental']);
-    expect(el.querySelector('#player_aid_script_all')?.getAttribute('aria-selected')).toBe('true');
+    click('#player_aid_group_toggle');
+    const options = Array.from(el.querySelectorAll('.aid-group-option')).map(o => o.textContent?.trim());
+    expect(options).toEqual(['All', 'Introduction', 'Learning', 'Veteran']);
+    expect(el.querySelector('#player_aid_group_all')?.getAttribute('aria-selected')).toBe('true');
 
-    // Switching scripts starts the sections collapsed
     click('#player_aid_section_toggle_tips');
-    click('#player_aid_script_toggle');
-    click('#player_aid_script_trouble-brewing');
-    expect(el.querySelector('.aid-script-menu')).toBeNull();
-    expect(header()?.textContent).toContain('Script: Trouble Brewing');
-    expect(titles()).toContain('Character FAQ (TB)');
-    expect(el.querySelector('#player_aid_section_tips')?.classList).not.toContain('expanded');
+    click('#player_aid_group_toggle');
+    click('#player_aid_group_introduction');
+    expect(el.querySelector('.aid-group-menu')).toBeNull();
+    expect(header()?.textContent).toContain('Group: Introduction');
+    expect(titles()).toEqual([]);
 
-    click('#player_aid_script_toggle');
-    expect(el.querySelector('#player_aid_script_trouble-brewing')?.classList).toContain('selected');
-    expect(el.querySelector('#player_aid_script_all')?.classList).not.toContain('selected');
-    click('#player_aid_script_all');
-    expect(header()?.textContent).toContain('Script: All');
+    click('#player_aid_group_toggle');
+    expect(el.querySelector('#player_aid_group_introduction')?.classList).toContain('selected');
+    expect(el.querySelector('#player_aid_group_all')?.classList).not.toContain('selected');
+
+    // Switching groups starts the sections collapsed
+    click('#player_aid_group_all');
+    expect(header()?.textContent).toContain('Group: All');
+    expect(titles()).toContain('Tips');
+    expect(el.querySelector('#player_aid_section_tips')?.classList).not.toContain('expanded');
   });
 
-  it('marks a script with no sections as empty', () => {
-    fixture.componentInstance.shelf = new PlayerAidShelf([new Script({ id: 'bare', name: 'Bare', base: false })]);
+  it('marks a group with no sections as empty', () => {
+    fixture.componentInstance.shelf = new PlayerAidShelf([new PlayerAidGroup({ id: 'bare', name: 'Bare' })]);
     fixture.detectChanges();
     expect(el.querySelector('.aids-shelf-sections > .aid-empty')?.textContent).toContain('No sections yet.');
   });
 
-  it('closes the script dropdown on a click elsewhere, then on Escape before the shelf', () => {
+  it('closes the group dropdown on a click elsewhere, then on Escape before the shelf', () => {
     click('#player_aids_toggle');
-    click('#player_aid_script_toggle');
+    click('#player_aid_group_toggle');
     click('#player_aid_section_toggle_tips');
-    expect(el.querySelector('.aid-script-menu')).toBeNull();
+    expect(el.querySelector('.aid-group-menu')).toBeNull();
     expect(el.querySelector('.aids-shelf')?.classList).toContain('open');
 
-    click('#player_aid_script_toggle');
+    click('#player_aid_group_toggle');
     document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }));
     fixture.detectChanges();
-    expect(el.querySelector('.aid-script-menu')).toBeNull();
+    expect(el.querySelector('.aid-group-menu')).toBeNull();
     expect(el.querySelector('.aids-shelf')?.classList).toContain('open');
   });
 
@@ -129,10 +131,9 @@ describe('PlayerAidsComponent', () => {
   });
 
   it('marks a section with no aids as empty', () => {
-    fixture.componentInstance.shelf = new PlayerAidShelf([new Script({
-      id: 'script',
-      name: 'Script',
-      base: false,
+    fixture.componentInstance.shelf = new PlayerAidShelf([new PlayerAidGroup({
+      id: 'group',
+      name: 'Group',
       sections: [
         new PlayerAidSection({ id: 'filled', title: 'Filled', aids: [HOW_TO_PLAY_VIDEO] }),
         new PlayerAidSection({ id: 'empty', title: 'Empty' }),
