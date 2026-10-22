@@ -1,32 +1,5 @@
 // Styled to match the Player Aids shelf, mirrored to the right-hand side
 
-// A thin, dim gold scrollbar in place of the browser's bright default.
-// Chrome and Firefox take the standard properties, which switch off the
-// -webkit- pseudo-elements, so those only reach browsers without them (Safari).
-@mixin sheet-scrollbar {
-  @supports (scrollbar-color: auto) {
-    scrollbar-width: thin;
-    scrollbar-color: rgba(209, 181, 106, 0.4) transparent;
-  }
-
-  &::-webkit-scrollbar {
-    width: 8px;
-  }
-
-  &::-webkit-scrollbar-track {
-    background: transparent;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background-color: rgba(209, 181, 106, 0.4);
-    border-radius: 4px;
-
-    &:hover {
-      background-color: rgba(209, 181, 106, 0.7);
-    }
-  }
-}
-
 .sheet-toggle-btn {
   position: fixed;
   top: 16px;
@@ -219,7 +192,6 @@
   gap: 12px;
   min-height: 0;
   overflow-y: auto;
-  @include sheet-scrollbar;
 }
 
 .sheet-group-header {

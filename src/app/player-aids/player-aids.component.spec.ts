@@ -208,7 +208,7 @@ describe('PlayerAidsComponent', () => {
 
   it('leaves out the notes of a character aid when the character has none', () => {
     fixture.componentInstance.shelf.show(new PlayerAid({
-      character: new Character({ id: 'plain', name: 'Plain', icon: 'plain.png', type: 'Townsfolk', ability: 'Does a thing.', link: 'https://example.com/Plain' }),
+      character: new Character({ id: 'plain', name: 'Plain', icon: 'assets/player_aids/icons/botc.png', type: 'Townsfolk', ability: 'Does a thing.', link: 'https://example.com/Plain' }),
     }));
     fixture.detectChanges();
     expect(el.querySelectorAll('.aid-modal-body > *').length).toBe(1);

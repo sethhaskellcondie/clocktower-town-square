@@ -27,7 +27,6 @@ export class LandmarkComponent implements OnInit {
   positionX = 0;
   positionY = 0;
   private isDragging = false;
-  private hasDragged = false;
   private offsetX = 0;
   private offsetY = 0;
 
@@ -43,7 +42,6 @@ export class LandmarkComponent implements OnInit {
   onMouseDown(event: MouseEvent): void {
     if (event.button !== 0) return; // Only handle left-click
     this.isDragging = true;
-    this.hasDragged = false;
     this.offsetX = event.clientX - this.positionX;
     this.offsetY = event.clientY - this.positionY;
     event.preventDefault();
@@ -52,7 +50,6 @@ export class LandmarkComponent implements OnInit {
   @HostListener('document:mousemove', ['$event'])
   onMouseMove(event: MouseEvent): void {
     if (this.isDragging) {
-      this.hasDragged = true;
       this.positionX = event.clientX - this.offsetX;
       this.positionY = event.clientY - this.offsetY;
     }

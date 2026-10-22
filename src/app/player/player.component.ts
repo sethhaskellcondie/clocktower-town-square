@@ -43,8 +43,6 @@ export class PlayerComponent implements OnInit {
   isEditing = false;
   @ViewChild('nameInput') nameInput!: ElementRef<HTMLInputElement>;
 
-  constructor(private elementRef: ElementRef) {}
-
   ngOnInit(): void {
     this.positionX = this.initialX;
     this.positionY = this.initialY;

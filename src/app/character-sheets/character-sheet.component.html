@@ -23,7 +23,7 @@
       </ul>
     }
   </div>
-  <div class="sheet-groups" [style.--sheet-number-digits]="numberDigits">
+  <div class="sheet-groups gold-scrollbar" [style.--sheet-number-digits]="numberDigits">
     @for (group of groups; track group.id) {
       <section class="sheet-group" [id]="'character_sheet_group_' + group.id">
         <div class="sheet-group-header">

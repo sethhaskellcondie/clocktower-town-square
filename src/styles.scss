@@ -63,3 +63,32 @@ body.day {
     radial-gradient(ellipse 70% 45% at 55% 12%, rgba(140, 125, 165, 0.22), transparent 70%),
     linear-gradient(to bottom, #3d3458 0%, #352c4e 55%, #2c2442 100%);
 }
+
+// A thin, dim gold scrollbar in place of the browser's bright default, shared
+// by the panels that scroll: the player aid shelf and dialog, and the
+// character sheet. Chrome and Firefox take the standard properties, which
+// switch off the -webkit- pseudo-elements, so those only reach browsers
+// without them (Safari).
+.gold-scrollbar {
+  @supports (scrollbar-color: auto) {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(209, 181, 106, 0.4) transparent;
+  }
+
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: rgba(209, 181, 106, 0.4);
+    border-radius: 4px;
+
+    &:hover {
+      background-color: rgba(209, 181, 106, 0.7);
+    }
+  }
+}

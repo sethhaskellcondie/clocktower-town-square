@@ -24,7 +24,7 @@
       </ul>
     }
   </div>
-  <div class="aids-shelf-sections">
+  <div class="aids-shelf-sections gold-scrollbar">
     @for (section of shelf.sections; track section.id) {
       <ng-container *ngTemplateOutlet="sectionTpl; context: { $implicit: section, depth: 0 }" />
     } @empty {
@@ -116,7 +116,7 @@
           <button id="player_aid_close" class="aid-close-btn" (click)="shelf.closeAid()" aria-label="Close">&times;</button>
         </div>
       </header>
-      <div class="aid-modal-body" #modalBody>
+      <div class="aid-modal-body gold-scrollbar" #modalBody>
         <!-- A character's aid is always laid out the same way: its icon with
              its ability beside it, then any notes beneath. An experimental
              character's ability is flagged as such, as the experimental
