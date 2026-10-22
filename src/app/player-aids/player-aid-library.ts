@@ -1,4 +1,5 @@
 import { PlayerAid } from './player-aid';
+import { TOYMAKER } from '../character-sheets/character-library';
 
 // Every player aid, each created once. The shelf decides which sections
 // they appear in.
@@ -383,6 +384,65 @@ export const DEATH_IS_NOT_THE_END = new PlayerAid({
     {
       type: 'text',
       text: 'If you die (nearly all of you will), you are still playing! The storyteller will not reveal your character, so continue to solve the mystery or bluff! You still talk, you still close your eyes at night, and you still win or lose with your team. Dead players cannot use their ability, they cannot nominate, and they get one ghost vote for the rest of the game. The game is usually decided by ghost votes, and how they are used.',
+    },
+  ],
+});
+
+export const FIVE_TO_SIX_PLAYERS = new PlayerAid({
+  id: '5-6-players',
+  title: '5-6 Players',
+  summary: 'What changes in a game this small.',
+  blocks: [
+    {
+      type: 'image',
+      src: 'assets/player_aids/teensyville.svg',
+      alt: 'Five tokens seated in a circle, three blue good players and two red evil players',
+    },
+    {
+      type: 'text',
+      text: "Teensyville games are smaller games for 5-6 players. All of the same rules apply except the Demon and the Minion do not know who each other are, and the Demon doesn't get any 'characters that are not in play'.",
+    },
+  ],
+});
+
+export const TEENSYVILLE_CHANGES = new PlayerAid({
+  id: 'teensyville-changes',
+  title: 'Teensyville Changes',
+  summary: 'Fast games, high distrust, and the Toymaker.',
+  blocks: [
+    {
+      type: 'image',
+      src: TOYMAKER.icon,
+      alt: 'Toymaker icon: a jointed wooden toy figure in gold',
+    },
+    {
+      type: 'text',
+      text: 'Teensyville games are very fast, and the distrust is very high because if you are a good player in a 5 player game there is a 50% chance you are speaking with an evil player. Sometimes private chats are barred or limited in Teensyville games.',
+    },
+    {
+      type: 'text',
+      text: ['For a different flavor of Teensyville add in the Toymaker', { character: TOYMAKER }, ' Fabled Character.'],
+    },
+  ],
+});
+
+export const TEENSYVILLE_SCRIPTS = new PlayerAid({
+  id: 'teensyville-scripts',
+  title: 'Teensyville Scripts',
+  summary: 'Smaller scripts, sometimes shown on screen.',
+  blocks: [
+    {
+      type: 'image',
+      src: 'assets/player_aids/teensyville_script.png',
+      alt: 'The Townsfolk of a Teensyville script, numbered 1 to 6: the Clockmaker, Investigator, Empath, Chambermaid, Artist, and Sage',
+    },
+    {
+      type: 'text',
+      text: 'Because Teensyville games are so small the scripts are small as well, containing 6 Townsfolk, 2 Outsiders, 2 Minions, and 1 or 2 Demons.',
+    },
+    {
+      type: 'text',
+      text: 'Sometimes scripts are displayed on the screen instead of being handed out. When playing like this, players may refer to the number of the character instead of pointing at their character sheet.',
     },
   ],
 });

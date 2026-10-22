@@ -518,6 +518,25 @@
     border-radius: 0;
   }
 
+  // A character's icon that opens its aid, glowing on hover to show it can
+  // be clicked
+  button.inline-character {
+    padding: 0;
+    background: none;
+    border: none;
+    font: inherit;
+    cursor: pointer;
+
+    img.inline-icon {
+      transition: filter 0.2s;
+    }
+
+    &:hover img.inline-icon,
+    &:focus-visible img.inline-icon {
+      filter: drop-shadow(0 0 6px #d1b56a);
+    }
+  }
+
   figure {
     margin: 16px 0;
     text-align: center;

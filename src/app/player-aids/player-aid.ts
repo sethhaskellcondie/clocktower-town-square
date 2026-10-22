@@ -10,10 +10,12 @@ export type PlayerAidBlock =
 
 // A paragraph can mix plain text with small inline icons, e.g. a character
 // icon right after the character's name, and with bold or struck-through
-// runs of text
+// runs of text. A character part shows that character's icon, and clicking
+// it opens the character's aid.
 export type PlayerAidTextPart =
   | string
   | { icon: string; alt: string }
+  | { character: Character }
   | { text: string; style: 'bold' | 'strike' };
 
 // An example Grimoire, for the characters that get to look inside it

@@ -66,10 +66,16 @@
 </ng-template>
 
 <!-- Renders a run of text: plain, with inline icons, or with bold and
-     struck-through parts. Shared by paragraphs and list items. -->
+     struck-through parts. Shared by paragraphs and list items. A character's
+     icon is a button that opens the character's aid. -->
 <ng-template #textTpl let-text>
   @for (part of textParts(text); track $index) {
-    @if (part.icon) {
+    @if (part.character; as character) {
+      <button class="inline-character" [id]="'player_aid_character_' + character.id" (click)="showCharacter(character)"
+        [attr.aria-label]="'Open the ' + character.name + ' player aid'" [title]="character.name">
+        <img class="inline-icon" [src]="character.icon" alt="">
+      </button>
+    } @else if (part.icon) {
       <img class="inline-icon" [src]="part.icon" [alt]="part.alt ?? ''">
     } @else if (part.style === 'bold') {
       <strong>{{ part.text }}</strong>

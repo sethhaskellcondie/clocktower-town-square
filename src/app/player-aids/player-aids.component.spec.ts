@@ -4,7 +4,7 @@ import { PlayerAidSection } from './player-aid-section';
 import { PlayerAidShelf } from './player-aid-shelf';
 import { PlayerAid } from './player-aid';
 import { HOW_TO_PLAY_VIDEO } from './player-aid-library';
-import { ACROBAT, BUTLER } from '../character-sheets/character-library';
+import { ACROBAT, BUTLER, TOYMAKER } from '../character-sheets/character-library';
 import { PlayerAidGroup } from './player-aid-group';
 import { Character } from '../character-sheets/character';
 
@@ -36,8 +36,9 @@ describe('PlayerAidsComponent', () => {
 
   it('groups aids on the shelf under their section titles', () => {
     const titles = Array.from(el.querySelectorAll('.aid-section-title')).map(t => t.textContent?.trim());
-    expect(titles).toEqual(['Rules', 'The First Night', 'The First Day', 'Tips', 'How to Use This Site']);
+    expect(titles).toEqual(['Rules', 'The First Night', 'The First Day', 'Tips', 'Teensyville', 'How to Use This Site']);
     expect(el.querySelector('#player_aid_section_tips #player_aid_tips_how-to-play-video')).not.toBeNull();
+    expect(el.querySelector('#player_aid_section_teensyville #player_aid_teensyville_5-6-players')).not.toBeNull();
     expect(el.querySelector('#player_aid_section_how-to-use-this-site #player_aid_how-to-use-this-site_attract-mode-hotkeys')).not.toBeNull();
     expect(el.querySelector('#player_aid_section_how-to-use-this-site #player_aid_how-to-use-this-site_day-timer-hotkeys')).not.toBeNull();
   });
@@ -59,7 +60,7 @@ describe('PlayerAidsComponent', () => {
     click('#player_aid_group_introduction');
     expect(el.querySelector('.aid-group-menu')).toBeNull();
     expect(header()?.textContent).toContain('Group: Introduction');
-    expect(titles()).toEqual(['Rules', 'The First Night', 'The First Day', 'Tips']);
+    expect(titles()).toEqual(['Rules', 'The First Night', 'The First Day', 'Tips', 'Teensyville']);
     expect(el.querySelector('#player_aid_section_tips')?.classList).not.toContain('expanded');
 
     click('#player_aid_group_toggle');
@@ -166,6 +167,20 @@ describe('PlayerAidsComponent', () => {
     const paragraph = el.querySelector('.aid-modal-body p');
     expect(paragraph?.textContent).toContain('The Spy');
     expect(paragraph?.querySelector('img.inline-icon')?.getAttribute('src')).toBe('assets/player_aids/icons/trouble_brewing/minions/spy.png');
+  });
+
+  it("opens a character's aid from its icon inside another aid's text", () => {
+    click('#player_aids_toggle');
+    click('#player_aid_section_toggle_teensyville');
+    click('#player_aid_teensyville_teensyville-changes');
+    const icon = el.querySelector('.aid-modal-body p button.inline-character#player_aid_character_toymaker');
+    expect(icon?.getAttribute('aria-label')).toBe('Open the Toymaker player aid');
+    expect(icon?.querySelector('img.inline-icon')?.getAttribute('src')).toBe(TOYMAKER.icon);
+
+    click('#player_aid_character_toymaker');
+    expect(el.querySelector('.aid-modal h2')?.textContent?.replace(/\s+/g, ' ').trim()).toBe('Toymaker (Fabled)');
+    expect(el.querySelector('.aid-character-ability')?.textContent).toBe(TOYMAKER.ability);
+    expect(el.querySelector('#player_aid_next')).toBeNull();
   });
 
   it('lays out a character aid with its icon beside its ability, notes beneath, and a wiki link by the close button', () => {

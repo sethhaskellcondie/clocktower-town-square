@@ -1,5 +1,6 @@
 import { Component, ElementRef, HostListener, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Character } from '../character-sheets/character';
 import { PlayerAid, PlayerAidTextPart } from './player-aid';
 import { PlayerAidShelf } from './player-aid-shelf';
 
@@ -57,9 +58,14 @@ export class PlayerAidsComponent {
     }
   }
 
+  // Open a character's aid from its icon in another aid's text
+  showCharacter(character: Character): void {
+    this.show(new PlayerAid({ character }));
+  }
+
   // Flatten a paragraph into one shape the template can render without
-  // needing to narrow the string | icon | styled text union
-  textParts(text: string | PlayerAidTextPart[]): { text?: string; icon?: string; alt?: string; style?: 'bold' | 'strike' }[] {
+  // needing to narrow the string | icon | character | styled text union
+  textParts(text: string | PlayerAidTextPart[]): { text?: string; icon?: string; alt?: string; character?: Character; style?: 'bold' | 'strike' }[] {
     const parts = typeof text === 'string' ? [text] : text;
     return parts.map(part => typeof part === 'string' ? { text: part } : part);
   }

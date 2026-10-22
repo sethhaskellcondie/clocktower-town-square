@@ -1741,6 +1741,7 @@ export const TOYMAKER = new Character({
   icon: 'assets/player_aids/icons/fabled/toymaker.png',
   type: 'Fabled',
   ability: 'The Demon may choose not to attack & must do this at least once per game. Evil players get normal starting info.',
+  additionalText: 'Used in Teensyville games.',
   link: 'https://wiki.bloodontheclocktower.com/Toymaker',
 });
 
