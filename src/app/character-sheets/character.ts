@@ -4,7 +4,7 @@ export class Character {
   readonly id: string;
   readonly name: string;
   readonly icon: string;
-  readonly type: string; // e.g. Townsfolk, Outsider, Minion, Demon, Traveler, Fabled
+  readonly type: string; // e.g. Townsfolk, Outsider, Minion, Demon, Traveler, Fabled, Loric
   readonly ability: string;
   readonly additionalText?: string; // extra notes shown beneath the ability
   readonly link: string; // where to read more, e.g. the character's wiki page

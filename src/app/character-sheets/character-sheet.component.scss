@@ -233,7 +233,8 @@
 }
 
 // Blue for the good types, red for the evil ones, and gold for the travelers,
-// as in the info tables
+// as in the info tables. The Fabled are orange and the Loric green, after
+// the colors of their icons.
 .sheet-group-title {
   margin: 0;
   font-size: var(--sheet-title-size);
@@ -251,6 +252,14 @@
 
   &.traveler {
     color: #d1b56a;
+  }
+
+  &.fabled {
+    color: #e0904f;
+  }
+
+  &.loric {
+    color: #7fae6a;
   }
 }
 

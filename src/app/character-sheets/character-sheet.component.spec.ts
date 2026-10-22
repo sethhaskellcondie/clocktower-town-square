@@ -2,8 +2,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CharacterSheetComponent } from './character-sheet.component';
 import { PlayerAid } from '../player-aids/player-aid';
 import { Script } from '../scripts/script';
-import { ALL_SCRIPT, BAD_MOON_RISING, EXPERIMENTAL, SECTS_AND_VIOLETS, TROUBLE_BREWING } from '../scripts/script-library';
-import { ACROBAT, DEVIANT, GRANDMOTHER, IMP, SCAPEGOAT, VOUDON, WASHERWOMAN } from './character-library';
+import { ALL_SCRIPT, BAD_MOON_RISING, EXPERIMENTAL, FABLED_AND_LORIC, SECTS_AND_VIOLETS, TROUBLE_BREWING } from '../scripts/script-library';
+import { ACROBAT, ANGEL, DEVIANT, GRANDMOTHER, IMP, SCAPEGOAT, VOUDON, WASHERWOMAN } from './character-library';
 
 describe('CharacterSheetComponent', () => {
   let fixture: ComponentFixture<CharacterSheetComponent>;
@@ -146,6 +146,8 @@ describe('CharacterSheetComponent', () => {
     expect(travelers).toContain('traveler');
     expect(travelers).not.toContain('good');
     expect(travelers).not.toContain('evil');
+    expect(el.querySelector('#character_sheet_group_fabled h2')?.classList).toContain('fabled');
+    expect(el.querySelector('#character_sheet_group_loric h2')?.classList).toContain('loric');
   });
 
   it('steps through three sizes with the buttons beside the Townsfolk heading', () => {
@@ -215,7 +217,7 @@ describe('CharacterSheetComponent', () => {
 
     click('#character_sheet_script_toggle');
     const options = Array.from(el.querySelectorAll('.sheet-script-option')).map(o => o.textContent?.trim());
-    expect(options).toEqual(['All', 'Trouble Brewing', 'Bad Moon Rising', 'Sects & Violets', 'Experimental']);
+    expect(options).toEqual(['All', 'Trouble Brewing', 'Bad Moon Rising', 'Sects & Violets', 'Experimental', 'Fabled and Loric']);
     expect(el.querySelector('#character_sheet_script_all')?.getAttribute('aria-selected')).toBe('true');
 
     click('#character_sheet_script_trouble-brewing');
@@ -246,6 +248,24 @@ describe('CharacterSheetComponent', () => {
     expect(names('townsfolk')[0]).toBe(ACROBAT.name);
     expect(names('travelers')).toEqual(['Cacklejack', 'Gangster', 'Gnome']);
     expect(el.querySelector(`#character_sheet_character_${ACROBAT.id} .sheet-character-ability`)?.textContent).toBe(ACROBAT.ability);
+  });
+
+  it('lists the Fabled and Loric on a sheet of their own, under their own headings', () => {
+    fixture.componentInstance.selectScript(FABLED_AND_LORIC);
+    fixture.detectChanges();
+    expect(headings()).toEqual(['Fabled', 'Loric']);
+    expect(names('fabled')).toEqual([
+      'Angel', 'Buddhist', 'Doomsayer', 'Fiddler', "Hell's Librarian", 'Revolutionary', 'Toymaker',
+      'Djinn', 'Duchess', 'Fibbin', 'Sentinel', 'Spirit of Ivory',
+      'Deus ex Fiasco', 'Ferryman',
+    ]);
+    expect(names('loric')).toEqual(['Big Wig', 'Bootlegger', 'Gardener', 'God of Ug', 'Hindu', 'Knaves', 'Pope', 'Storm Catcher', 'Tor', 'Ventriloquist', 'Zenomancer']);
+    expect(el.querySelector('#character_sheet_group_fabled #character_sheet_size_up')).not.toBeNull();
+    expect(el.querySelector(`#character_sheet_character_${ANGEL.id} .sheet-character-number`)?.textContent).toBe('1');
+  });
+
+  it('lists the Fabled and Loric after the travelers on the All sheet', () => {
+    expect(headings()).toEqual(['Townsfolk', 'Outsiders', 'Minions', 'Demons', 'Travelers', 'Fabled', 'Loric']);
   });
 
   it("shows only the picked script's characters, and only the types it has", () => {

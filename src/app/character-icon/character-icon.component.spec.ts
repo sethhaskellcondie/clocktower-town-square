@@ -2,9 +2,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Type } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { CharacterIconComponent } from './character-icon.component';
-import { LANDMARK_FABLED, LANDMARK_LORIC, PLAYER_FABLED, TRAVELER_CHARACTERS, travelerRows } from './character-options';
+import { CharacterOption, LANDMARK_FABLED, LANDMARK_LORIC, PLAYER_FABLED, TRAVELER_CHARACTERS, travelerRows } from './character-options';
 import { PlayerAid } from '../player-aids/player-aid';
-import { PlayerAidShelf } from '../player-aids/player-aid-shelf';
 import { ALL_SCRIPT, BAD_MOON_RISING, EXPERIMENTAL, SECTS_AND_VIOLETS, TROUBLE_BREWING } from '../scripts/script-library';
 import { PlayerComponent } from '../player/player.component';
 import { TravelerComponent } from '../traveler/traveler.component';
@@ -35,7 +34,7 @@ const TOKENS: { kind: string; component: Type<PlayerComponent | TravelerComponen
     component: LandmarkComponent,
     tokenClass: '.landmark-square',
     rows: [
-      ['Deus ex Fiasco', 'Ferryman', 'Fiddler', "Hell's Librarian"],
+      ['Fiddler', "Hell's Librarian", 'Toymaker', 'Djinn', 'Duchess', 'Fibbin', 'Sentinel', 'Spirit of Ivory', 'Deus ex Fiasco', 'Ferryman'],
       ['Big Wig', 'Bootlegger', 'Gardener', 'God of Ug', 'Hindu', 'Knaves', 'Pope', 'Storm Catcher', 'Tor', 'Ventriloquist', 'Zenomancer'],
     ],
   },
@@ -194,17 +193,16 @@ describe('Character options', () => {
     }
   });
 
-  it('opens each Fabled and Loric in the shelf section it belongs to', () => {
-    const shelf = new PlayerAidShelf();
-    const expected: [readonly { aid: PlayerAid }[], string][] = [
-      [PLAYER_FABLED, 'fabled'],
-      [LANDMARK_FABLED, 'fabled'],
-      [LANDMARK_LORIC, 'loric'],
+  it("opens each Fabled and Loric's character aid", () => {
+    const expected: [readonly CharacterOption[], string][] = [
+      [PLAYER_FABLED, 'Fabled'],
+      [LANDMARK_FABLED, 'Fabled'],
+      [LANDMARK_LORIC, 'Loric'],
     ];
-    for (const [options, section] of expected) {
+    for (const [options, type] of expected) {
       for (const option of options) {
-        shelf.show(option.aid);
-        expect(shelf.activeSection?.id).toBe(section);
+        expect(option.aid.character?.id).withContext(option.name).toBe(option.id);
+        expect(option.aid.character?.type).withContext(option.name).toBe(type);
       }
     }
   });

@@ -36,7 +36,7 @@ describe('PlayerAidsComponent', () => {
 
   it('groups aids on the shelf under their section titles', () => {
     const titles = Array.from(el.querySelectorAll('.aid-section-title')).map(t => t.textContent?.trim());
-    expect(titles).toEqual(['Introduction', 'The First Night', 'The First Day', 'Tips', 'Character FAQ (TB)', 'Character FAQ (BMR)', 'Character FAQ (S&V)', 'Fabled', 'Loric', 'Storyteller Tips']);
+    expect(titles).toEqual(['Tutorial', 'The First Night', 'The First Day', 'Tips', 'Character FAQ (TB)', 'Storyteller Tips']);
     expect(el.querySelector('#player_aid_section_tips #player_aid_tips_how-to-play-video')).not.toBeNull();
     expect(el.querySelector('#player_aid_section_character-faq #player_aid_character-faq_spy-grimoire')).not.toBeNull();
     expect(el.querySelector('#player_aid_section_storyteller-tips #player_aid_storyteller-tips_attract-mode-hotkeys')).not.toBeNull();
@@ -108,25 +108,25 @@ describe('PlayerAidsComponent', () => {
   });
 
   it('collapses each section until its header is clicked', () => {
-    const section = () => el.querySelector('#player_aid_section_introduction');
-    const toggle = () => el.querySelector('#player_aid_section_toggle_introduction');
+    const section = () => el.querySelector('#player_aid_section_tutorial');
+    const toggle = () => el.querySelector('#player_aid_section_toggle_tutorial');
     expect(section()?.classList).not.toContain('expanded');
     expect(toggle()?.getAttribute('aria-expanded')).toBe('false');
 
-    click('#player_aid_section_toggle_introduction');
+    click('#player_aid_section_toggle_tutorial');
     expect(section()?.classList).toContain('expanded');
     expect(toggle()?.getAttribute('aria-expanded')).toBe('true');
     expect(el.querySelector('#player_aid_section_character-faq')?.classList).not.toContain('expanded');
 
-    click('#player_aid_section_toggle_introduction');
+    click('#player_aid_section_toggle_tutorial');
     expect(section()?.classList).not.toContain('expanded');
   });
 
   it('closes the open section when another one is opened', () => {
-    click('#player_aid_section_toggle_introduction');
+    click('#player_aid_section_toggle_tutorial');
     click('#player_aid_section_toggle_character-faq');
     expect(el.querySelector('#player_aid_section_character-faq')?.classList).toContain('expanded');
-    expect(el.querySelector('#player_aid_section_introduction')?.classList).not.toContain('expanded');
+    expect(el.querySelector('#player_aid_section_tutorial')?.classList).not.toContain('expanded');
     expect(el.querySelectorAll('.aid-section.expanded').length).toBe(1);
   });
 
@@ -234,7 +234,7 @@ describe('PlayerAidsComponent', () => {
     const title = () => el.querySelector('.aid-modal h2')?.textContent?.trim();
     const button = (id: string) => el.querySelector(id) as HTMLButtonElement;
 
-    click('#player_aid_introduction_social-deduction');
+    click('#player_aid_tutorial_social-deduction');
     expect(button('#player_aid_previous').disabled).toBeTrue();
     click('#player_aid_next');
     expect(title()).toBe('The Setting');

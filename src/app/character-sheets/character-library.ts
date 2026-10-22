@@ -419,6 +419,7 @@ export const MOONCHILD = new Character({
   icon: 'assets/player_aids/icons/bad_moon_rising/outsiders/moonchild.png',
   type: 'Outsider',
   ability: 'When you learn that you died, publicly choose 1 alive player. Tonight, if it was a good player, they die.',
+  additionalText: 'If you are the Moonchild (or bluffing as the Moonchild) then when I announce that you have died, you must claim the Moonchild publicly and choose an alive player. You may ask for advice from the town while you make your choice, but you must make it.',
   link: 'https://wiki.bloodontheclocktower.com/Moonchild',
 });
 
@@ -1672,4 +1673,269 @@ export const EXPERIMENTAL_CHARACTERS: readonly Character[] = [
   CACKLEJACK,
   GANGSTER,
   GNOME,
+];
+
+// Fabled
+export const ANGEL = new Character({
+  id: 'angel',
+  name: 'Angel',
+  icon: 'assets/player_aids/icons/fabled/angel.png',
+  type: 'Fabled',
+  ability: 'Something bad might happen to whoever is most responsible for the death of a new player.',
+  link: 'https://wiki.bloodontheclocktower.com/Angel',
+});
+
+export const BUDDHIST = new Character({
+  id: 'buddhist',
+  name: 'Buddhist',
+  icon: 'assets/player_aids/icons/fabled/buddhist.png',
+  type: 'Fabled',
+  ability: 'For the first 2 minutes of each day, veteran players may not talk.',
+  link: 'https://wiki.bloodontheclocktower.com/Buddhist',
+});
+
+export const DOOMSAYER = new Character({
+  id: 'doomsayer',
+  name: 'Doomsayer',
+  icon: 'assets/player_aids/icons/fabled/doomsayer.png',
+  type: 'Fabled',
+  ability: 'If 4 or more players live, each living player may publicly choose (once per game) that a player of their own alignment dies.',
+  link: 'https://wiki.bloodontheclocktower.com/Doomsayer',
+});
+
+export const FIDDLER = new Character({
+  id: 'fiddler',
+  name: 'Fiddler',
+  icon: 'assets/player_aids/icons/fabled/fiddler.png',
+  type: 'Fabled',
+  ability: 'Once per game, the Demon secretly chooses an opposing player: all players choose which of these 2 players win.',
+  additionalText: 'The player who is chosen wins along with their team.',
+  link: 'https://wiki.bloodontheclocktower.com/Fiddler',
+});
+
+export const HELLS_LIBRARIAN = new Character({
+  id: 'hells-librarian',
+  name: "Hell's Librarian",
+  icon: 'assets/player_aids/icons/fabled/hells_librarian.png',
+  type: 'Fabled',
+  ability: 'Something bad might happen to whoever talks when the Storyteller has asked for silence.',
+  link: "https://wiki.bloodontheclocktower.com/Hell's_Librarian",
+});
+
+export const REVOLUTIONARY = new Character({
+  id: 'revolutionary',
+  name: 'Revolutionary',
+  icon: 'assets/player_aids/icons/fabled/revolutionary.png',
+  type: 'Fabled',
+  ability: '2 neighboring players are known to be the same alignment. Once per game, 1 of them registers falsely.',
+  link: 'https://wiki.bloodontheclocktower.com/Revolutionary',
+});
+
+export const TOYMAKER = new Character({
+  id: 'toymaker',
+  name: 'Toymaker',
+  icon: 'assets/player_aids/icons/fabled/toymaker.png',
+  type: 'Fabled',
+  ability: 'The Demon may choose not to attack & must do this at least once per game. Evil players get normal starting info.',
+  link: 'https://wiki.bloodontheclocktower.com/Toymaker',
+});
+
+export const DJINN = new Character({
+  id: 'djinn',
+  name: 'Djinn',
+  icon: 'assets/player_aids/icons/fabled/djinn.png',
+  type: 'Fabled',
+  ability: "Use the Djinn's special rule. All players know what it is.",
+  link: 'https://wiki.bloodontheclocktower.com/Djinn',
+});
+
+export const DUCHESS = new Character({
+  id: 'duchess',
+  name: 'Duchess',
+  icon: 'assets/player_aids/icons/fabled/duchess.png',
+  type: 'Fabled',
+  ability: 'Each day, 3 players may choose to visit you. At night*, each visitor learns how many visitors are evil, but 1 gets false info.',
+  link: 'https://wiki.bloodontheclocktower.com/Duchess',
+});
+
+export const FIBBIN = new Character({
+  id: 'fibbin',
+  name: 'Fibbin',
+  icon: 'assets/player_aids/icons/fabled/fibbin.png',
+  type: 'Fabled',
+  ability: 'Once per game, 1 good player might get incorrect information.',
+  link: 'https://wiki.bloodontheclocktower.com/Fibbin',
+});
+
+export const SENTINEL = new Character({
+  id: 'sentinel',
+  name: 'Sentinel',
+  icon: 'assets/player_aids/icons/fabled/sentinel.png',
+  type: 'Fabled',
+  ability: 'There might be 1 extra or 1 fewer Outsider in play.',
+  link: 'https://wiki.bloodontheclocktower.com/Sentinel',
+});
+
+export const SPIRIT_OF_IVORY = new Character({
+  id: 'spirit-of-ivory',
+  name: 'Spirit of Ivory',
+  icon: 'assets/player_aids/icons/fabled/spirit_of_ivory.png',
+  type: 'Fabled',
+  ability: "There can't be more than 1 extra evil player.",
+  link: 'https://wiki.bloodontheclocktower.com/Spirit_of_Ivory',
+});
+
+export const DEUS_EX_FIASCO = new Character({
+  id: 'deus-ex-fiasco',
+  name: 'Deus ex Fiasco',
+  icon: 'assets/player_aids/icons/fabled/deus_ex_fiasco.png',
+  type: 'Fabled',
+  ability: 'At least once per game, the Storyteller will make a mistake, correct it, and publicly admit to it.',
+  link: 'https://wiki.bloodontheclocktower.com/Deus_ex_Fiasco',
+  experimental: true,
+});
+
+export const FERRYMAN = new Character({
+  id: 'ferryman',
+  name: 'Ferryman',
+  icon: 'assets/player_aids/icons/fabled/ferryman.png',
+  type: 'Fabled',
+  ability: 'On the final day, all dead players regain their vote token.',
+  link: 'https://wiki.bloodontheclocktower.com/Ferryman',
+  experimental: true,
+});
+
+// Loric
+export const BIG_WIG = new Character({
+  id: 'big-wig',
+  name: 'Big Wig',
+  icon: 'assets/player_aids/icons/loric/big_wig.png',
+  type: 'Loric',
+  ability: 'Each nominee chooses a player: until voting, only they may speak & they are mad the nominee is good or they might die.',
+  link: 'https://wiki.bloodontheclocktower.com/Big_Wig',
+});
+
+export const BOOTLEGGER = new Character({
+  id: 'bootlegger',
+  name: 'Bootlegger',
+  icon: 'assets/player_aids/icons/loric/bootlegger.png',
+  type: 'Loric',
+  ability: 'This script has homebrew characters or rules.',
+  additionalText: 'The Storyteller will make the new additions clear before the game starts.',
+  link: 'https://wiki.bloodontheclocktower.com/Bootlegger',
+});
+
+export const GARDENER = new Character({
+  id: 'gardener',
+  name: 'Gardener',
+  icon: 'assets/player_aids/icons/loric/gardener.png',
+  type: 'Loric',
+  ability: "The Storyteller assigns all players' characters.",
+  additionalText: 'This is implemented by assigning characters to specific seats not people.',
+  link: 'https://wiki.bloodontheclocktower.com/Gardener',
+});
+
+export const GOD_OF_UG = new Character({
+  id: 'god-of-ug',
+  name: 'God of Ug',
+  icon: 'assets/player_aids/icons/loric/god_of_ug.png',
+  type: 'Loric',
+  ability: 'One Ug hat. When wear Ug hat, must speak one sound at a time but vote twice. If fail, pass Ug hat.',
+  link: 'https://wiki.bloodontheclocktower.com/God_of_Ug',
+});
+
+export const HINDU = new Character({
+  id: 'hindu',
+  name: 'Hindu',
+  icon: 'assets/player_aids/icons/loric/hindu.png',
+  type: 'Loric',
+  ability: 'The first 4 players to die are immediately reincarnated as Travellers of the same alignment.',
+  link: 'https://wiki.bloodontheclocktower.com/Hindu',
+});
+
+export const KNAVES = new Character({
+  id: 'knaves',
+  name: 'Knaves',
+  icon: 'assets/player_aids/icons/loric/knaves.png',
+  type: 'Loric',
+  ability: 'There are 2 Storytellers: one lies & one tells the truth. Once per game, at dusk, they might switch.',
+  link: 'https://wiki.bloodontheclocktower.com/Knaves',
+});
+
+export const POPE = new Character({
+  id: 'pope',
+  name: 'Pope',
+  icon: 'assets/player_aids/icons/loric/pope.png',
+  type: 'Loric',
+  ability: 'There are duplicate good characters in play. They might also be bluffs.',
+  link: 'https://wiki.bloodontheclocktower.com/Pope',
+});
+
+export const STORM_CATCHER = new Character({
+  id: 'storm-catcher',
+  name: 'Storm Catcher',
+  icon: 'assets/player_aids/icons/loric/storm_catcher.png',
+  type: 'Loric',
+  ability: 'Name a good character. If in play, they can only die by execution, but evil players learn which player it is.',
+  additionalText: 'The Storyteller will name the good character.',
+  link: 'https://wiki.bloodontheclocktower.com/Storm_Catcher',
+});
+
+export const TOR = new Character({
+  id: 'tor',
+  name: 'Tor',
+  icon: 'assets/player_aids/icons/loric/tor.png',
+  type: 'Loric',
+  ability: "Players don't know their character or alignment. They learn them when they die.",
+  link: 'https://wiki.bloodontheclocktower.com/Tor',
+});
+
+export const VENTRILOQUIST = new Character({
+  id: 'ventriloquist',
+  name: 'Ventriloquist',
+  icon: 'assets/player_aids/icons/loric/ventriloquist.png',
+  type: 'Loric',
+  ability: 'If a player is mad as a fresh character during their nomination, they might not die if executed today.',
+  link: 'https://wiki.bloodontheclocktower.com/Ventriloquist',
+});
+
+export const ZENOMANCER = new Character({
+  id: 'zenomancer',
+  name: 'Zenomancer',
+  icon: 'assets/player_aids/icons/loric/zenomancer.png',
+  type: 'Loric',
+  ability: 'One or more players each have a goal. When achieved, that player learns a piece of true info.',
+  additionalText: "Each player's goal is secret.",
+  link: 'https://wiki.bloodontheclocktower.com/Zenomancer',
+});
+
+// Every Fabled and Loric, in the order the wiki lists them. The wiki's
+// Fabled page groups them into those for social interactions and
+// accessibility, then those for custom scripts, then the experimental ones.
+export const FABLED_AND_LORIC_CHARACTERS: readonly Character[] = [
+  ANGEL,
+  BUDDHIST,
+  DOOMSAYER,
+  FIDDLER,
+  HELLS_LIBRARIAN,
+  REVOLUTIONARY,
+  TOYMAKER,
+  DJINN,
+  DUCHESS,
+  FIBBIN,
+  SENTINEL,
+  SPIRIT_OF_IVORY,
+  DEUS_EX_FIASCO,
+  FERRYMAN,
+  BIG_WIG,
+  BOOTLEGGER,
+  GARDENER,
+  GOD_OF_UG,
+  HINDU,
+  KNAVES,
+  POPE,
+  STORM_CATCHER,
+  TOR,
+  VENTRILOQUIST,
+  ZENOMANCER,
 ];

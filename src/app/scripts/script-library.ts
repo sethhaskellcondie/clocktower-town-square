@@ -2,6 +2,7 @@ import { Script } from './script';
 import {
   BAD_MOON_RISING_CHARACTERS,
   EXPERIMENTAL_CHARACTERS,
+  FABLED_AND_LORIC_CHARACTERS,
   SECTS_AND_VIOLETS_CHARACTERS,
   TROUBLE_BREWING_CHARACTERS,
 } from '../character-sheets/character-library';
@@ -15,7 +16,13 @@ export const ALL_SCRIPT = new Script({
   id: 'all',
   name: 'All',
   base: false,
-  characters: [...TROUBLE_BREWING_CHARACTERS, ...BAD_MOON_RISING_CHARACTERS, ...SECTS_AND_VIOLETS_CHARACTERS, ...EXPERIMENTAL_CHARACTERS],
+  characters: [
+    ...TROUBLE_BREWING_CHARACTERS,
+    ...BAD_MOON_RISING_CHARACTERS,
+    ...SECTS_AND_VIOLETS_CHARACTERS,
+    ...EXPERIMENTAL_CHARACTERS,
+    ...FABLED_AND_LORIC_CHARACTERS,
+  ],
 });
 
 export const TROUBLE_BREWING = new Script({
@@ -46,4 +53,14 @@ export const EXPERIMENTAL = new Script({
   name: 'Experimental',
   base: false,
   characters: [...EXPERIMENTAL_CHARACTERS],
+});
+
+// The Fabled and Loric, which the Storyteller can add to a game on any
+// script. It holds no other types of character, and isn't an official
+// script, so it counts as a custom one.
+export const FABLED_AND_LORIC = new Script({
+  id: 'fabled-and-loric',
+  name: 'Fabled and Loric',
+  base: false,
+  characters: [...FABLED_AND_LORIC_CHARACTERS],
 });

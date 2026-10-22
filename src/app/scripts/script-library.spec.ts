@@ -1,15 +1,16 @@
-import { ALL_SCRIPT, BAD_MOON_RISING, EXPERIMENTAL, SECTS_AND_VIOLETS, TROUBLE_BREWING } from './script-library';
+import { ALL_SCRIPT, BAD_MOON_RISING, EXPERIMENTAL, FABLED_AND_LORIC, SECTS_AND_VIOLETS, TROUBLE_BREWING } from './script-library';
 
 describe('Script library', () => {
   const baseScripts = [TROUBLE_BREWING, BAD_MOON_RISING, SECTS_AND_VIOLETS];
-  const otherScripts = [...baseScripts, EXPERIMENTAL];
+  const otherScripts = [...baseScripts, EXPERIMENTAL, FABLED_AND_LORIC];
 
-  it('marks the official scripts as base, and "All" and Experimental as custom', () => {
+  it('marks the official scripts as base, and "All", Experimental, and Fabled and Loric as custom', () => {
     for (const script of baseScripts) {
       expect(script.base).withContext(script.name).toBeTrue();
     }
     expect(ALL_SCRIPT.base).toBeFalse();
     expect(EXPERIMENTAL.base).toBeFalse();
+    expect(FABLED_AND_LORIC.base).toBeFalse();
   });
 
   it('lists every character from the other scripts in "All"', () => {
@@ -23,7 +24,7 @@ describe('Script library', () => {
   it('lists every character in "All" once', () => {
     const ids = ALL_SCRIPT.characters.map(character => character.id);
     expect(new Set(ids).size).toBe(ids.length);
-    expect(ids.length).toBe(156);
+    expect(ids.length).toBe(181);
   });
 
   it('lists every Trouble Brewing character once: 13 Townsfolk, 4 Outsiders, 4 Minions, a Demon, and 5 Travelers', () => {
@@ -59,6 +60,14 @@ describe('Script library', () => {
     expect(count('Traveler')).toBe(3);
     expect(EXPERIMENTAL.characters.length).toBe(69);
     expect(new Set(EXPERIMENTAL.characters.map(character => character.id)).size).toBe(69);
+  });
+
+  it('lists every Fabled and Loric once, 14 Fabled and 11 Loric, and no other types', () => {
+    const count = (type: string) => FABLED_AND_LORIC.characters.filter(character => character.type === type).length;
+    expect(count('Fabled')).toBe(14);
+    expect(count('Loric')).toBe(11);
+    expect(FABLED_AND_LORIC.characters.length).toBe(25);
+    expect(new Set(FABLED_AND_LORIC.characters.map(character => character.id)).size).toBe(25);
   });
 
   it('marks the experimental characters as experimental, and no others', () => {

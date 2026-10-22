@@ -2,10 +2,11 @@ import { Component, ElementRef, EventEmitter, HostListener, Input, OnChanges, Ou
 import { Character } from './character';
 import { PlayerAid } from '../player-aids/player-aid';
 import { Script } from '../scripts/script';
-import { ALL_SCRIPT, BAD_MOON_RISING, EXPERIMENTAL, SECTS_AND_VIOLETS, TROUBLE_BREWING } from '../scripts/script-library';
+import { ALL_SCRIPT, BAD_MOON_RISING, EXPERIMENTAL, FABLED_AND_LORIC, SECTS_AND_VIOLETS, TROUBLE_BREWING } from '../scripts/script-library';
 
-// Travelers can be on either team, so they get a team of their own
-type SheetTeam = 'good' | 'evil' | 'traveler';
+// Travelers can be on either team, and the Fabled and Loric are on neither,
+// so each of them gets a team of its own
+type SheetTeam = 'good' | 'evil' | 'traveler' | 'fabled' | 'loric';
 
 // A heading on the sheet, with the characters of its type listed under it
 export interface CharacterGroup {
@@ -19,17 +20,19 @@ export interface CharacterGroup {
 }
 
 // The types the sheet lists, in the order a printed character sheet does,
-// with the travelers after
+// with the travelers after, then the Fabled and Loric
 const SHEET_GROUPS: readonly { id: string; title: string; type: string; team: SheetTeam }[] = [
   { id: 'townsfolk', title: 'Townsfolk', type: 'Townsfolk', team: 'good' },
   { id: 'outsiders', title: 'Outsiders', type: 'Outsider', team: 'good' },
   { id: 'minions', title: 'Minions', type: 'Minion', team: 'evil' },
   { id: 'demons', title: 'Demons', type: 'Demon', team: 'evil' },
   { id: 'travelers', title: 'Travelers', type: 'Traveler', team: 'traveler' },
+  { id: 'fabled', title: 'Fabled', type: 'Fabled', team: 'fabled' },
+  { id: 'loric', title: 'Loric', type: 'Loric', team: 'loric' },
 ];
 
 // The first script is the one the sheet opens on
-const SHEET_SCRIPTS: Script[] = [ALL_SCRIPT, TROUBLE_BREWING, BAD_MOON_RISING, SECTS_AND_VIOLETS, EXPERIMENTAL];
+const SHEET_SCRIPTS: Script[] = [ALL_SCRIPT, TROUBLE_BREWING, BAD_MOON_RISING, SECTS_AND_VIOLETS, EXPERIMENTAL, FABLED_AND_LORIC];
 
 // A shelf on the right, mirroring the Player Aids shelf on the left, that
 // shows the characters of the picked script grouped by type

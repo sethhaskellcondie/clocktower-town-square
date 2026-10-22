@@ -28,8 +28,10 @@
       <section class="sheet-group" [id]="'character_sheet_group_' + group.id">
         <div class="sheet-group-header">
           <h2 class="sheet-group-title" [class.good]="group.team === 'good'" [class.evil]="group.team === 'evil'"
-            [class.traveler]="group.team === 'traveler'">{{ group.title }}</h2>
-          <!-- The controls sit on the first heading, which is Townsfolk on any real script -->
+            [class.traveler]="group.team === 'traveler'" [class.fabled]="group.team === 'fabled'"
+            [class.loric]="group.team === 'loric'">{{ group.title }}</h2>
+          <!-- The controls sit on the first heading, which is Townsfolk on any
+               script but Fabled and Loric, where it's Fabled -->
           @if ($first) {
             <div class="sheet-controls">
               <input id="character_sheet_show_abilities" type="checkbox" class="sheet-ability-checkbox"

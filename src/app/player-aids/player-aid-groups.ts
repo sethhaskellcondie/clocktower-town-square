@@ -1,15 +1,11 @@
 import { PlayerAidGroup } from './player-aid-group';
 import {
   CHARACTER_FAQ,
-  CHARACTER_FAQ_BMR,
-  CHARACTER_FAQ_SNV,
-  FABLED,
   FIRST_DAY,
   FIRST_NIGHT,
-  INTRODUCTION,
-  LORIC,
   STORYTELLER_TIPS,
   TIPS,
+  TUTORIAL,
 } from './player-aid-sections';
 
 // Every group, each created once, along with the sections the shelf shows
@@ -21,15 +17,11 @@ export const ALL_GROUP = new PlayerAidGroup({
   id: 'all',
   name: 'All',
   sections: [
-    INTRODUCTION,
+    TUTORIAL,
     FIRST_NIGHT,
     FIRST_DAY,
     TIPS,
     CHARACTER_FAQ,
-    CHARACTER_FAQ_BMR,
-    CHARACTER_FAQ_SNV,
-    FABLED,
-    LORIC,
     // Last, since it's for the storyteller rather than the players
     STORYTELLER_TIPS,
   ],
