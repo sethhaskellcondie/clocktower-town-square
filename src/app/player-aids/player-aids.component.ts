@@ -12,6 +12,7 @@ import { PlayerAidShelf } from './player-aid-shelf';
 })
 export class PlayerAidsComponent {
   shelf = new PlayerAidShelf();
+  size: 'small' | 'medium' | 'large' = 'small';
 
   @ViewChild('modalBody') modalBody?: ElementRef<HTMLElement>;
   @ViewChild('groupPicker') groupPicker?: ElementRef<HTMLElement>;
@@ -31,6 +32,22 @@ export class PlayerAidsComponent {
   showNext(): void {
     this.shelf.showNext();
     this.scrollToTop();
+  }
+
+  sizeUp(): void {
+    if (this.size === 'small') {
+      this.size = 'medium';
+    } else if (this.size === 'medium') {
+      this.size = 'large';
+    }
+  }
+
+  sizeDown(): void {
+    if (this.size === 'large') {
+      this.size = 'medium';
+    } else if (this.size === 'medium') {
+      this.size = 'small';
+    }
   }
 
   // The modal stays put while its aid changes, so start each aid at the top

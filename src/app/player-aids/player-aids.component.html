@@ -89,7 +89,9 @@
         <span class="aid-nav-arrow previous" aria-hidden="true"></span>
       </button>
     }
-    <div class="aid-modal" role="dialog" aria-modal="true" [attr.aria-label]="activeAid.title" (click)="$event.stopPropagation()">
+    <div class="aid-modal" [class.size-small]="size === 'small'" [class.size-medium]="size === 'medium'"
+      [class.size-large]="size === 'large'" role="dialog" aria-modal="true" [attr.aria-label]="activeAid.title"
+      (click)="$event.stopPropagation()">
       <header class="aid-modal-header">
         <h2>
           {{ activeAid.title }}
@@ -97,10 +99,16 @@
             ({{ character.type }})
           }
         </h2>
-        @if (activeAid.character; as character) {
-          <a class="aid-wiki-link" [href]="character.link" target="_blank" rel="noopener">Wiki Page</a>
-        }
-        <button id="player_aid_close" class="aid-close-btn" (click)="shelf.closeAid()" aria-label="Close">&times;</button>
+        <div class="aid-size-controls">
+          <button id="player_aid_size_up" class="aid-size-btn" (click)="sizeUp()" [disabled]="size === 'large'" aria-label="Larger player aid">+</button>
+          <button id="player_aid_size_down" class="aid-size-btn" (click)="sizeDown()" [disabled]="size === 'small'" aria-label="Smaller player aid">-</button>
+        </div>
+        <div class="aid-modal-actions">
+          @if (activeAid.character; as character) {
+            <a class="aid-wiki-link" [href]="character.link" target="_blank" rel="noopener">Wiki Page</a>
+          }
+          <button id="player_aid_close" class="aid-close-btn" (click)="shelf.closeAid()" aria-label="Close">&times;</button>
+        </div>
       </header>
       <div class="aid-modal-body" #modalBody>
         <!-- A character's aid is always laid out the same way: its icon with

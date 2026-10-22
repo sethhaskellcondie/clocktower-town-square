@@ -172,7 +172,7 @@ describe('PlayerAidsComponent', () => {
     fixture.detectChanges();
     const modal = el.querySelector('.aid-modal')!;
     expect(modal.querySelector('h2')?.textContent?.replace(/\s+/g, ' ').trim()).toBe('Butler (Outsider)');
-    const link = modal.querySelector('.aid-modal-header > a.aid-wiki-link');
+    const link = modal.querySelector('.aid-modal-actions > a.aid-wiki-link');
     expect(link?.textContent).toBe('Wiki Page');
     expect(link?.getAttribute('href')).toBe('https://wiki.bloodontheclocktower.com/Butler');
     expect(link?.getAttribute('target')).toBe('_blank');
@@ -259,6 +259,35 @@ describe('PlayerAidsComponent', () => {
 
     click('#player_aid_first-night_good-team-first-night');
     expect(button('#player_aid_next').disabled).toBeTrue();
+  });
+
+  it('steps the modal through three sizes with the buttons between its title and close button', () => {
+    const modal = () => el.querySelector('.aid-modal')!.classList;
+    const up = () => el.querySelector('#player_aid_size_up') as HTMLButtonElement;
+    const down = () => el.querySelector('#player_aid_size_down') as HTMLButtonElement;
+    click('#player_aid_tutorial_social-deduction');
+    expect(el.querySelector('.aid-modal-header > h2 + .aid-size-controls > #player_aid_size_up')).not.toBeNull();
+    expect(el.querySelector('.aid-size-controls + .aid-modal-actions > #player_aid_close')).not.toBeNull();
+
+    expect(modal()).toContain('size-small');
+    expect(down().disabled).toBeTrue();
+    click('#player_aid_size_up');
+    expect(modal()).toContain('size-medium');
+    click('#player_aid_size_up');
+    expect(modal()).toContain('size-large');
+    expect(up().disabled).toBeTrue();
+
+    // The size holds while stepping between aids, and after closing
+    click('#player_aid_next');
+    expect(modal()).toContain('size-large');
+    click('#player_aid_close');
+    click('#player_aid_tips_how-to-play-video');
+    expect(modal()).toContain('size-large');
+
+    click('#player_aid_size_down');
+    click('#player_aid_size_down');
+    expect(modal()).toContain('size-small');
+    expect(modal()).not.toContain('size-large');
   });
 
   it('closes the modal from the close button and the backdrop, but not from inside the modal', () => {
