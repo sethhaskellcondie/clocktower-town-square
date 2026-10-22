@@ -4,7 +4,7 @@ import {
   FIRST_NIGHT,
   HOW_TO_USE_THIS_SITE,
   TIPS,
-  TUTORIAL,
+  RULES,
 } from './player-aid-sections';
 
 // Every group, each created once, along with the sections the shelf shows
@@ -16,7 +16,7 @@ export const ALL_GROUP = new PlayerAidGroup({
   id: 'all',
   name: 'All',
   sections: [
-    TUTORIAL,
+    RULES,
     FIRST_NIGHT,
     FIRST_DAY,
     TIPS,
@@ -28,6 +28,7 @@ export const ALL_GROUP = new PlayerAidGroup({
 export const INTRODUCTION_GROUP = new PlayerAidGroup({
   id: 'introduction',
   name: 'Introduction',
+  sections: [RULES, FIRST_NIGHT, FIRST_DAY, TIPS],
 });
 
 export const ADVANCED_GROUP = new PlayerAidGroup({

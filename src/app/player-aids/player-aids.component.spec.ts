@@ -36,7 +36,7 @@ describe('PlayerAidsComponent', () => {
 
   it('groups aids on the shelf under their section titles', () => {
     const titles = Array.from(el.querySelectorAll('.aid-section-title')).map(t => t.textContent?.trim());
-    expect(titles).toEqual(['Tutorial', 'The First Night', 'The First Day', 'Tips', 'How to Use This Site']);
+    expect(titles).toEqual(['Rules', 'The First Night', 'The First Day', 'Tips', 'How to Use This Site']);
     expect(el.querySelector('#player_aid_section_tips #player_aid_tips_how-to-play-video')).not.toBeNull();
     expect(el.querySelector('#player_aid_section_how-to-use-this-site #player_aid_how-to-use-this-site_attract-mode-hotkeys')).not.toBeNull();
     expect(el.querySelector('#player_aid_section_how-to-use-this-site #player_aid_how-to-use-this-site_day-timer-hotkeys')).not.toBeNull();
@@ -59,7 +59,8 @@ describe('PlayerAidsComponent', () => {
     click('#player_aid_group_introduction');
     expect(el.querySelector('.aid-group-menu')).toBeNull();
     expect(header()?.textContent).toContain('Group: Introduction');
-    expect(titles()).toEqual([]);
+    expect(titles()).toEqual(['Rules', 'The First Night', 'The First Day', 'Tips']);
+    expect(el.querySelector('#player_aid_section_tips')?.classList).not.toContain('expanded');
 
     click('#player_aid_group_toggle');
     expect(el.querySelector('#player_aid_group_introduction')?.classList).toContain('selected');
@@ -107,25 +108,25 @@ describe('PlayerAidsComponent', () => {
   });
 
   it('collapses each section until its header is clicked', () => {
-    const section = () => el.querySelector('#player_aid_section_tutorial');
-    const toggle = () => el.querySelector('#player_aid_section_toggle_tutorial');
+    const section = () => el.querySelector('#player_aid_section_rules');
+    const toggle = () => el.querySelector('#player_aid_section_toggle_rules');
     expect(section()?.classList).not.toContain('expanded');
     expect(toggle()?.getAttribute('aria-expanded')).toBe('false');
 
-    click('#player_aid_section_toggle_tutorial');
+    click('#player_aid_section_toggle_rules');
     expect(section()?.classList).toContain('expanded');
     expect(toggle()?.getAttribute('aria-expanded')).toBe('true');
     expect(el.querySelector('#player_aid_section_tips')?.classList).not.toContain('expanded');
 
-    click('#player_aid_section_toggle_tutorial');
+    click('#player_aid_section_toggle_rules');
     expect(section()?.classList).not.toContain('expanded');
   });
 
   it('closes the open section when another one is opened', () => {
-    click('#player_aid_section_toggle_tutorial');
+    click('#player_aid_section_toggle_rules');
     click('#player_aid_section_toggle_tips');
     expect(el.querySelector('#player_aid_section_tips')?.classList).toContain('expanded');
-    expect(el.querySelector('#player_aid_section_tutorial')?.classList).not.toContain('expanded');
+    expect(el.querySelector('#player_aid_section_rules')?.classList).not.toContain('expanded');
     expect(el.querySelectorAll('.aid-section.expanded').length).toBe(1);
   });
 
@@ -242,7 +243,7 @@ describe('PlayerAidsComponent', () => {
     const title = () => el.querySelector('.aid-modal h2')?.textContent?.trim();
     const button = (id: string) => el.querySelector(id) as HTMLButtonElement;
 
-    click('#player_aid_tutorial_social-deduction');
+    click('#player_aid_rules_social-deduction');
     expect(button('#player_aid_previous').disabled).toBeTrue();
     click('#player_aid_next');
     expect(title()).toBe('The Setting');
@@ -265,7 +266,7 @@ describe('PlayerAidsComponent', () => {
     const modal = () => el.querySelector('.aid-modal')!.classList;
     const up = () => el.querySelector('#player_aid_size_up') as HTMLButtonElement;
     const down = () => el.querySelector('#player_aid_size_down') as HTMLButtonElement;
-    click('#player_aid_tutorial_social-deduction');
+    click('#player_aid_rules_social-deduction');
     expect(el.querySelector('.aid-modal-header > h2 + .aid-size-controls > #player_aid_size_up')).not.toBeNull();
     expect(el.querySelector('.aid-size-controls + .aid-modal-actions > #player_aid_close')).not.toBeNull();
 

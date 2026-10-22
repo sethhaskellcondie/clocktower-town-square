@@ -25,9 +25,9 @@ import {
 
 // Which aids appear in which section of the shelf. An aid from the library
 // can be listed in as many sections as it's useful in.
-export const TUTORIAL = new PlayerAidSection({
-  id: 'tutorial',
-  title: 'Tutorial',
+export const RULES = new PlayerAidSection({
+  id: 'rules',
+  title: 'Rules',
   aids: [
     SOCIAL_DEDUCTION,
     THE_SETTING,
@@ -49,13 +49,13 @@ export const FIRST_NIGHT = new PlayerAidSection({
 export const FIRST_DAY = new PlayerAidSection({
   id: 'first-day',
   title: 'The First Day',
-  aids: [GETTING_STARTED, NOMINATIONS, DEATH_IS_NOT_THE_END, TOWN_SQUARE],
+  aids: [GETTING_STARTED, NOMINATIONS, DEATH_IS_NOT_THE_END],
 });
 
 export const TIPS = new PlayerAidSection({
   id: 'tips',
   title: 'Tips',
-  aids: [HOW_TO_PLAY_VIDEO, CLOCKTOWER_WIKI, CHARACTER_SHEET],
+  aids: [TOWN_SQUARE, HOW_TO_PLAY_VIDEO, CLOCKTOWER_WIKI, CHARACTER_SHEET],
 });
 
 export const HOW_TO_USE_THIS_SITE = new PlayerAidSection({
