@@ -16,6 +16,7 @@ export const ALL_SCRIPT = new Script({
   id: 'all',
   name: 'All',
   base: false,
+  teensyville: false,
   characters: [
     ...TROUBLE_BREWING_CHARACTERS,
     ...BAD_MOON_RISING_CHARACTERS,
@@ -29,6 +30,7 @@ export const TROUBLE_BREWING = new Script({
   id: 'trouble-brewing',
   name: 'Trouble Brewing',
   base: true,
+  teensyville: false,
   characters: [...TROUBLE_BREWING_CHARACTERS],
 });
 
@@ -36,6 +38,7 @@ export const BAD_MOON_RISING = new Script({
   id: 'bad-moon-rising',
   name: 'Bad Moon Rising',
   base: true,
+  teensyville: false,
   characters: [...BAD_MOON_RISING_CHARACTERS],
 });
 
@@ -43,6 +46,7 @@ export const SECTS_AND_VIOLETS = new Script({
   id: 'sects-and-violets',
   name: 'Sects & Violets',
   base: true,
+  teensyville: false,
   characters: [...SECTS_AND_VIOLETS_CHARACTERS],
 });
 
@@ -52,6 +56,7 @@ export const EXPERIMENTAL = new Script({
   id: 'experimental',
   name: 'Experimental',
   base: false,
+  teensyville: false,
   characters: [...EXPERIMENTAL_CHARACTERS],
 });
 
@@ -62,5 +67,6 @@ export const FABLED_AND_LORIC = new Script({
   id: 'fabled-and-loric',
   name: 'Fabled and Loric',
   base: false,
+  teensyville: false,
   characters: [...FABLED_AND_LORIC_CHARACTERS],
 });

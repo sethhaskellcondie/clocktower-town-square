@@ -13,6 +13,12 @@ describe('Script library', () => {
     expect(FABLED_AND_LORIC.base).toBeFalse();
   });
 
+  it('marks none of the scripts as Teensyville', () => {
+    for (const script of [ALL_SCRIPT, ...otherScripts]) {
+      expect(script.teensyville).withContext(script.name).toBeFalse();
+    }
+  });
+
   it('lists every character from the other scripts in "All"', () => {
     for (const script of otherScripts) {
       for (const character of script.characters) {

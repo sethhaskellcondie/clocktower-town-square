@@ -63,7 +63,7 @@ describe('CharacterSheetComponent', () => {
   });
 
   it("renumbers by where the characters fall on the picked script's sheet", () => {
-    fixture.componentInstance.selectScript(new Script({ id: 'small', name: 'Small', base: false, characters: [SCAPEGOAT, IMP, WASHERWOMAN] }));
+    fixture.componentInstance.selectScript(new Script({ id: 'small', name: 'Small', base: false, teensyville: false, characters: [SCAPEGOAT, IMP, WASHERWOMAN] }));
     fixture.detectChanges();
     const number = (id: string) => el.querySelector(`#character_sheet_character_${id} .sheet-character-number`)?.textContent;
     expect(number(WASHERWOMAN.id)).toBe('1');
@@ -77,7 +77,7 @@ describe('CharacterSheetComponent', () => {
     fixture.componentInstance.selectScript(TROUBLE_BREWING);
     fixture.detectChanges();
     expect(digits()).toBe('2');
-    fixture.componentInstance.selectScript(new Script({ id: 'small', name: 'Small', base: false, characters: [WASHERWOMAN, IMP] }));
+    fixture.componentInstance.selectScript(new Script({ id: 'small', name: 'Small', base: false, teensyville: false, characters: [WASHERWOMAN, IMP] }));
     fixture.detectChanges();
     expect(digits()).toBe('1');
   });
@@ -205,7 +205,7 @@ describe('CharacterSheetComponent', () => {
   });
 
   it('keeps the size buttons on the first heading when a script has no Townsfolk', () => {
-    fixture.componentInstance.selectScript(new Script({ id: 'evil', name: 'Evil', base: false, characters: [IMP] }));
+    fixture.componentInstance.selectScript(new Script({ id: 'evil', name: 'Evil', base: false, teensyville: false, characters: [IMP] }));
     fixture.detectChanges();
     expect(el.querySelector('#character_sheet_group_demons #character_sheet_size_up')).not.toBeNull();
   });
@@ -270,12 +270,12 @@ describe('CharacterSheetComponent', () => {
 
   it("shows only the picked script's characters, and only the types it has", () => {
     const component = fixture.componentInstance;
-    component.selectScript(new Script({ id: 'small', name: 'Small', base: false, characters: [WASHERWOMAN, IMP] }));
+    component.selectScript(new Script({ id: 'small', name: 'Small', base: false, teensyville: false, characters: [WASHERWOMAN, IMP] }));
     fixture.detectChanges();
     expect(headings()).toEqual(['Townsfolk', 'Demons']);
     expect(names('townsfolk')).toEqual(['Washerwoman']);
 
-    component.selectScript(new Script({ id: 'bare', name: 'Bare', base: false }));
+    component.selectScript(new Script({ id: 'bare', name: 'Bare', base: false, teensyville: false }));
     fixture.detectChanges();
     expect(el.querySelector('.sheet-empty')?.textContent).toContain('No characters yet.');
 
