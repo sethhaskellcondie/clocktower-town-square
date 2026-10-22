@@ -38,6 +38,7 @@ export const CHEF = new Character({
   icon: 'assets/player_aids/icons/trouble_brewing/townsfolk/chef.png',
   type: 'Townsfolk',
   ability: 'You start knowing how many pairs of evil players there are.',
+  additionalText: 'The Chef learns how many EVIL PAIRS there are on the first night. In a 13 player game there are 13 pairs, each player is included in one pair with each of their neighbors. In this example (disregard the colors) there is 1 evil pair, 2 good pairs, and 2 dead pairs.',
   link: 'https://wiki.bloodontheclocktower.com/Chef',
 });
 
@@ -65,6 +66,7 @@ export const UNDERTAKER = new Character({
   icon: 'assets/player_aids/icons/trouble_brewing/townsfolk/undertaker.png',
   type: 'Townsfolk',
   ability: 'Each night*, you learn which character died by execution today.',
+  additionalText: 'The undertaker learns who was killed by execution, not players who die at night. Executions happen via public vote during the day, there is only one execution per day.',
   link: 'https://wiki.bloodontheclocktower.com/Undertaker',
 });
 
@@ -176,6 +178,7 @@ export const SPY = new Character({
   icon: 'assets/player_aids/icons/trouble_brewing/minions/spy.png',
   type: 'Minion',
   ability: 'Each night, you see the Grimoire. You might register as good & as a Townsfolk or Outsider, even if dead.',
+  additionalText: 'Remember that the spy can appear as "Good", "Townsfolk" or an "Outsider" even if they are dead. The Spy can see inside the Grimoire, this is an example setup of the Grimoire.',
   link: 'https://wiki.bloodontheclocktower.com/Spy',
 });
 
@@ -1435,6 +1438,7 @@ export const WIDOW = new Character({
   icon: 'assets/player_aids/icons/experimental/minions/widow.png',
   type: 'Minion',
   ability: 'On your 1st night, look at the Grimoire & choose a player: they are poisoned. 1 good player knows a Widow is in play.',
+  additionalText: 'Here is an example of the Grimoire. The Widow only acts on the first night and the selected player is poisoned until the Widow dies.',
   link: 'https://wiki.bloodontheclocktower.com/Widow',
   experimental: true,
 });

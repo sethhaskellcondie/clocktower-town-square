@@ -1,5 +1,4 @@
 import { PlayerAid } from './player-aid';
-import { BUTLER } from '../character-sheets/character-library';
 
 // Every player aid, each created once. The shelf decides which sections
 // they appear in.
@@ -282,36 +281,6 @@ export const THE_FOUR_RULES = new PlayerAid({
   ],
 });
 
-export const SPY_GRIMOIRE = new PlayerAid({
-  id: 'spy-grimoire',
-  title: 'The Spy & the Grimoire',
-  summary: 'An example Grimoire setup, as the Spy would see it.',
-  blocks: [
-    {
-      type: 'text',
-      text: [
-        'The Spy',
-        { icon: 'assets/player_aids/icons/trouble_brewing/minions/spy.png', alt: 'Spy icon' },
-        ' can see inside the Grimoire, this is an example setup of the Grimoire.',
-      ],
-    },
-    {
-      type: 'image',
-      src: 'assets/player_aids/spy_grimoire.jpg',
-      alt: 'An open Grimoire with character tokens, reminder tokens, and the first night sheet laid out',
-    },
-    {
-      type: 'text',
-      text: 'Remember that the spy can appear as "Good", "Townsfolk" or an "Outsider" even if they are dead.',
-    },
-  ],
-});
-
-export const BUTLER_VOTING = new PlayerAid({
-  character: BUTLER,
-  summary: 'When the Butler may raise their hand to vote.',
-});
-
 export const DEMON_FIRST_NIGHT = new PlayerAid({
   id: 'demon-first-night',
   title: 'The Demon, Night One',
@@ -414,44 +383,6 @@ export const DEATH_IS_NOT_THE_END = new PlayerAid({
     {
       type: 'text',
       text: 'If you die (nearly all of you will), you are still playing! The storyteller will not reveal your character, so continue to solve the mystery or bluff! You still talk, you still close your eyes at night, and you still win or lose with your team. Dead players cannot use their ability, they cannot nominate, and they get one ghost vote for the rest of the game. The game is usually decided by ghost votes, and how they are used.',
-    },
-  ],
-});
-
-export const CHEF_PAIRS = new PlayerAid({
-  id: 'chef-pairs',
-  title: 'The Chef',
-  summary: 'How evil pairs are counted, with an example.',
-  blocks: [
-    {
-      type: 'text',
-      text: [
-        'The Chef',
-        { icon: 'assets/player_aids/icons/trouble_brewing/townsfolk/chef.png', alt: 'Chef icon' },
-        ' learns how many EVIL PAIRS there are on the first night. In a 13 player game there are 13 pairs, each player is included in one pair with each of their neighbors. In this example (disregard the colors) there is 1 evil pair, 2 good pairs, and 2 dead pairs.',
-      ],
-    },
-    {
-      type: 'image',
-      src: 'assets/player_aids/pairs_example.png',
-      alt: 'A 13 player town square with evil, good, and dead tokens seated around the circle',
-    },
-  ],
-});
-
-export const UNDERTAKER_EXECUTIONS = new PlayerAid({
-  id: 'undertaker-executions',
-  title: 'The Undertaker',
-  summary: 'Learns who was executed, not who died at night.',
-  blocks: [
-    {
-      type: 'image',
-      src: 'assets/player_aids/icons/trouble_brewing/townsfolk/undertaker.png',
-      alt: 'Undertaker icon: a blue shovel',
-    },
-    {
-      type: 'text',
-      text: 'The undertaker learns who was killed by execution, not players who die at night. Executions happen via public vote during the day, there is only one execution per day.',
     },
   ],
 });

@@ -1,10 +1,10 @@
 import { PlayerAid } from './player-aid';
 import { PlayerAidSection } from './player-aid-section';
 import { PlayerAidGroup } from './player-aid-group';
-import { ALL_GROUP, INTRODUCTION_GROUP, LEARNING_GROUP, VETERAN_GROUP } from './player-aid-groups';
+import { ADVANCED_GROUP, ALL_GROUP, INTRODUCTION_GROUP } from './player-aid-groups';
 
 // The first group is the one the shelf opens on
-const SHELF_GROUPS: PlayerAidGroup[] = [ALL_GROUP, INTRODUCTION_GROUP, LEARNING_GROUP, VETERAN_GROUP];
+const SHELF_GROUPS: PlayerAidGroup[] = [ALL_GROUP, INTRODUCTION_GROUP, ADVANCED_GROUP];
 
 // Holds the shelf's groups and everything about its state: whether it's
 // open, which group is picked, which sections are expanded, and which aid

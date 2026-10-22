@@ -1,9 +1,7 @@
 import { PlayerAidSection } from './player-aid-section';
 import {
   ATTRACT_MODE_HOTKEYS,
-  BUTLER_VOTING,
   CHARACTER_SHEET,
-  CHEF_PAIRS,
   CLOCKTOWER_WIKI,
   DAY_AND_NIGHT,
   DAY_TIMER_HOTKEYS,
@@ -20,11 +18,9 @@ import {
   PLAYER_AID_HOTKEYS,
   PLAYER_TRAITS,
   SOCIAL_DEDUCTION,
-  SPY_GRIMOIRE,
   THE_FOUR_RULES,
   THE_SETTING,
   TOWN_SQUARE,
-  UNDERTAKER_EXECUTIONS,
 } from './player-aid-library';
 
 // Which aids appear in which section of the shelf. An aid from the library
@@ -56,20 +52,14 @@ export const FIRST_DAY = new PlayerAidSection({
   aids: [GETTING_STARTED, NOMINATIONS, DEATH_IS_NOT_THE_END, TOWN_SQUARE],
 });
 
-export const CHARACTER_FAQ = new PlayerAidSection({
-  id: 'character-faq',
-  title: 'Character FAQ (TB)',
-  aids: [UNDERTAKER_EXECUTIONS, CHEF_PAIRS, BUTLER_VOTING, SPY_GRIMOIRE],
-});
-
 export const TIPS = new PlayerAidSection({
   id: 'tips',
   title: 'Tips',
   aids: [HOW_TO_PLAY_VIDEO, CLOCKTOWER_WIKI, CHARACTER_SHEET],
 });
 
-export const STORYTELLER_TIPS = new PlayerAidSection({
-  id: 'storyteller-tips',
-  title: 'Storyteller Tips',
+export const HOW_TO_USE_THIS_SITE = new PlayerAidSection({
+  id: 'how-to-use-this-site',
+  title: 'How to Use This Site',
   aids: [ATTRACT_MODE_HOTKEYS, DAY_TIMER_HOTKEYS, PLAYER_AID_HOTKEYS],
 });

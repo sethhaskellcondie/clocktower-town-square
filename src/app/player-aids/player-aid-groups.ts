@@ -1,9 +1,8 @@
 import { PlayerAidGroup } from './player-aid-group';
 import {
-  CHARACTER_FAQ,
   FIRST_DAY,
   FIRST_NIGHT,
-  STORYTELLER_TIPS,
+  HOW_TO_USE_THIS_SITE,
   TIPS,
   TUTORIAL,
 } from './player-aid-sections';
@@ -21,9 +20,8 @@ export const ALL_GROUP = new PlayerAidGroup({
     FIRST_NIGHT,
     FIRST_DAY,
     TIPS,
-    CHARACTER_FAQ,
-    // Last, since it's for the storyteller rather than the players
-    STORYTELLER_TIPS,
+    // Last, since it's about the site rather than the game
+    HOW_TO_USE_THIS_SITE,
   ],
 });
 
@@ -32,12 +30,7 @@ export const INTRODUCTION_GROUP = new PlayerAidGroup({
   name: 'Introduction',
 });
 
-export const LEARNING_GROUP = new PlayerAidGroup({
-  id: 'learning',
-  name: 'Learning',
-});
-
-export const VETERAN_GROUP = new PlayerAidGroup({
-  id: 'veteran',
-  name: 'Veteran',
+export const ADVANCED_GROUP = new PlayerAidGroup({
+  id: 'advanced',
+  name: 'Advanced',
 });

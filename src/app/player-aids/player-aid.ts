@@ -16,10 +16,31 @@ export type PlayerAidTextPart =
   | { icon: string; alt: string }
   | { text: string; style: 'bold' | 'strike' };
 
+// An example Grimoire, for the characters that get to look inside it
+const GRIMOIRE_EXAMPLE: PlayerAidBlock = {
+  type: 'image',
+  src: 'assets/player_aids/spy_grimoire.jpg',
+  alt: 'An open Grimoire with character tokens, reminder tokens, and the first night sheet laid out',
+};
+
+// The few characters whose aid shows a picture beneath its notes, by the
+// character's id: the Chef's notes walk through an example town square, and
+// the Spy and the Widow both look inside the Grimoire
+const CHARACTER_PICTURES: Record<string, PlayerAidBlock> = {
+  chef: {
+    type: 'image',
+    src: 'assets/player_aids/pairs_example.png',
+    alt: 'A 13 player town square with evil, good, and dead tokens seated around the circle',
+  },
+  spy: GRIMOIRE_EXAMPLE,
+  widow: GRIMOIRE_EXAMPLE,
+};
+
 // Each aid is created once in the library and can then be placed in as
 // many shelf sections as it's useful in. An aid is either made of blocks, or
 // is about a character, which is laid out the same way every time: titled by
-// the character's name, with its icon, ability, and notes as the content.
+// the character's name, with its icon, ability, and notes as the content
+// (and, for a few characters, a picture beneath the notes).
 export class PlayerAid {
   readonly id: string;
   readonly title: string;
@@ -35,7 +56,8 @@ export class PlayerAid {
     if ('character' in config) {
       this.id = config.character.id;
       this.title = config.character.name;
-      this.blocks = [];
+      const picture = CHARACTER_PICTURES[config.character.id];
+      this.blocks = picture ? [picture] : [];
       this.character = config.character;
     } else {
       this.id = config.id;

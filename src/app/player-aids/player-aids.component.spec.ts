@@ -4,7 +4,7 @@ import { PlayerAidSection } from './player-aid-section';
 import { PlayerAidShelf } from './player-aid-shelf';
 import { PlayerAid } from './player-aid';
 import { HOW_TO_PLAY_VIDEO } from './player-aid-library';
-import { ACROBAT } from '../character-sheets/character-library';
+import { ACROBAT, BUTLER } from '../character-sheets/character-library';
 import { PlayerAidGroup } from './player-aid-group';
 import { Character } from '../character-sheets/character';
 
@@ -36,11 +36,10 @@ describe('PlayerAidsComponent', () => {
 
   it('groups aids on the shelf under their section titles', () => {
     const titles = Array.from(el.querySelectorAll('.aid-section-title')).map(t => t.textContent?.trim());
-    expect(titles).toEqual(['Tutorial', 'The First Night', 'The First Day', 'Tips', 'Character FAQ (TB)', 'Storyteller Tips']);
+    expect(titles).toEqual(['Tutorial', 'The First Night', 'The First Day', 'Tips', 'How to Use This Site']);
     expect(el.querySelector('#player_aid_section_tips #player_aid_tips_how-to-play-video')).not.toBeNull();
-    expect(el.querySelector('#player_aid_section_character-faq #player_aid_character-faq_spy-grimoire')).not.toBeNull();
-    expect(el.querySelector('#player_aid_section_storyteller-tips #player_aid_storyteller-tips_attract-mode-hotkeys')).not.toBeNull();
-    expect(el.querySelector('#player_aid_section_storyteller-tips #player_aid_storyteller-tips_day-timer-hotkeys')).not.toBeNull();
+    expect(el.querySelector('#player_aid_section_how-to-use-this-site #player_aid_how-to-use-this-site_attract-mode-hotkeys')).not.toBeNull();
+    expect(el.querySelector('#player_aid_section_how-to-use-this-site #player_aid_how-to-use-this-site_day-timer-hotkeys')).not.toBeNull();
   });
 
   it('picks the group from a dropdown under the group header, starting on All', () => {
@@ -52,7 +51,7 @@ describe('PlayerAidsComponent', () => {
 
     click('#player_aid_group_toggle');
     const options = Array.from(el.querySelectorAll('.aid-group-option')).map(o => o.textContent?.trim());
-    expect(options).toEqual(['All', 'Introduction', 'Learning', 'Veteran']);
+    expect(options).toEqual(['All', 'Introduction', 'Advanced']);
     expect(el.querySelector('#player_aid_group_all')?.getAttribute('aria-selected')).toBe('true');
 
     click('#player_aid_section_toggle_tips');
@@ -116,7 +115,7 @@ describe('PlayerAidsComponent', () => {
     click('#player_aid_section_toggle_tutorial');
     expect(section()?.classList).toContain('expanded');
     expect(toggle()?.getAttribute('aria-expanded')).toBe('true');
-    expect(el.querySelector('#player_aid_section_character-faq')?.classList).not.toContain('expanded');
+    expect(el.querySelector('#player_aid_section_tips')?.classList).not.toContain('expanded');
 
     click('#player_aid_section_toggle_tutorial');
     expect(section()?.classList).not.toContain('expanded');
@@ -124,8 +123,8 @@ describe('PlayerAidsComponent', () => {
 
   it('closes the open section when another one is opened', () => {
     click('#player_aid_section_toggle_tutorial');
-    click('#player_aid_section_toggle_character-faq');
-    expect(el.querySelector('#player_aid_section_character-faq')?.classList).toContain('expanded');
+    click('#player_aid_section_toggle_tips');
+    expect(el.querySelector('#player_aid_section_tips')?.classList).toContain('expanded');
     expect(el.querySelector('#player_aid_section_tutorial')?.classList).not.toContain('expanded');
     expect(el.querySelectorAll('.aid-section.expanded').length).toBe(1);
   });
@@ -154,14 +153,23 @@ describe('PlayerAidsComponent', () => {
   });
 
   it('renders inline icons inside paragraph text', () => {
-    click('#player_aid_character-faq_spy-grimoire');
+    fixture.componentInstance.shelf.show(new PlayerAid({
+      id: 'inline-icon',
+      title: 'Inline Icon',
+      blocks: [{
+        type: 'text',
+        text: ['The Spy', { icon: 'assets/player_aids/icons/trouble_brewing/minions/spy.png', alt: 'Spy icon' }, ' can see inside the Grimoire.'],
+      }],
+    }));
+    fixture.detectChanges();
     const paragraph = el.querySelector('.aid-modal-body p');
     expect(paragraph?.textContent).toContain('The Spy');
     expect(paragraph?.querySelector('img.inline-icon')?.getAttribute('src')).toBe('assets/player_aids/icons/trouble_brewing/minions/spy.png');
   });
 
   it('lays out a character aid with its icon beside its ability, notes beneath, and a wiki link by the close button', () => {
-    click('#player_aid_character-faq_butler');
+    fixture.componentInstance.shelf.show(new PlayerAid({ character: BUTLER }));
+    fixture.detectChanges();
     const modal = el.querySelector('.aid-modal')!;
     expect(modal.querySelector('h2')?.textContent?.replace(/\s+/g, ' ').trim()).toBe('Butler (Outsider)');
     const link = modal.querySelector('.aid-modal-header > a.aid-wiki-link');
