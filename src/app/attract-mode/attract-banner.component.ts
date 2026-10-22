@@ -1,4 +1,4 @@
-import { Component, OnDestroy, effect, signal } from '@angular/core';
+import { Component, OnDestroy, effect, signal, ChangeDetectionStrategy } from '@angular/core';
 import { AttractModeService } from './attract-mode.service';
 import { ATTRACT_REASONS } from './attract-reasons';
 
@@ -10,6 +10,7 @@ const REASON_ROTATION_MS = 6000;
   selector: 'app-attract-banner',
   standalone: true,
   templateUrl: './attract-banner.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './attract-banner.component.scss'
 })
 export class AttractBannerComponent implements OnDestroy {

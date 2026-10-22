@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, HostListener, Input, OnChanges, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, HostListener, Input, OnChanges, Output, SimpleChanges, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { Character } from './character';
 import { PlayerAid } from '../player-aids/player-aid';
 import { Script } from '../scripts/script';
@@ -40,6 +40,7 @@ const SHEET_SCRIPTS: Script[] = [ALL_SCRIPT, TROUBLE_BREWING, BAD_MOON_RISING, S
   selector: 'app-character-sheet',
   standalone: true,
   templateUrl: './character-sheet.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './character-sheet.component.scss'
 })
 export class CharacterSheetComponent implements OnChanges {

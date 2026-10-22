@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Output, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { PlayerAid } from '../player-aids/player-aid';
 import { CharacterIconComponent } from '../character-icon/character-icon.component';
@@ -9,6 +9,7 @@ import { LANDMARK_FABLED, LANDMARK_LORIC } from '../character-icon/character-opt
   standalone: true,
   imports: [FormsModule, CharacterIconComponent],
   templateUrl: './landmark.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './landmark.component.scss'
 })
 export class LandmarkComponent implements OnInit {

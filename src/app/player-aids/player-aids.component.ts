@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostListener, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Character } from '../character-sheets/character';
 import { PlayerAid, PlayerAidTextPart } from './player-aid';
@@ -9,6 +9,7 @@ import { PlayerAidShelf } from './player-aid-shelf';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './player-aids.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './player-aids.component.scss'
 })
 export class PlayerAidsComponent {
