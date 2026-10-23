@@ -1,4 +1,4 @@
-import { Component, HostListener, OnDestroy, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { Component, HostListener, OnDestroy, QueryList, ViewChild, ViewChildren, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PlayerComponent } from './player/player.component';
 import { TravelerComponent } from './traveler/traveler.component';
@@ -41,6 +41,7 @@ interface DeathToken {
   selector: 'app-root',
   imports: [CommonModule, PlayerComponent, TravelerComponent, LandmarkComponent, PlayerAidsComponent, CharacterSheetComponent, AttractBannerComponent, DayTimerComponent],
   templateUrl: './app.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './app.component.scss'
 })
 export class AppComponent implements OnDestroy {

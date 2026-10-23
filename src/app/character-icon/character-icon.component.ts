@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, ChangeDetectionStrategy } from '@angular/core';
 import { PlayerAid } from '../player-aids/player-aid';
 import { CharacterOption } from './character-options';
 
@@ -9,6 +9,7 @@ import { CharacterOption } from './character-options';
   selector: 'app-character-icon',
   standalone: true,
   templateUrl: './character-icon.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './character-icon.component.scss'
 })
 export class CharacterIconComponent implements OnChanges {
