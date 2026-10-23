@@ -1,0 +1,225 @@
+$grow: 400ms;
+$small-height: 128px;
+$button-purple: #6e6388; // same dusty violet as the project banner text
+
+// The attract banner flipped to the bottom: one element that slides up as a
+// footer (small), then stretches to cover the screen (large). Plain CSS
+// transitions between the mode classes.
+.next-session-shelf {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: $small-height;
+  box-sizing: border-box;
+  overflow: hidden;
+  // Above the tokens (1-3) and info table (10), below the Player Aids and
+  // Character Sheet shelves (20), so they stay usable
+  z-index: 15;
+  background-color: rgba(0, 0, 0, 0.7);
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
+  color: white;
+  // Tokens under the footer can still be grabbed and dragged; only its
+  // buttons take clicks
+  pointer-events: none;
+  user-select: none;
+  // Shrinking back to small: drop beneath the shelves only once the footer
+  // is done shrinking
+  transition:
+    transform $grow ease,
+    height $grow ease,
+    background-color $grow ease,
+    z-index 0s linear $grow,
+    visibility 0s linear 0s;
+
+  &.mode-off {
+    transform: translateY(100%);
+    visibility: hidden;
+    // Stay visible until the slide down finishes
+    transition:
+      transform $grow ease,
+      height $grow ease,
+      background-color $grow ease,
+      z-index 0s linear $grow,
+      visibility 0s linear $grow;
+  }
+
+  &.mode-large {
+    height: 100vh;
+    // Covers the shelf buttons, but stays below the aid modal (100)
+    z-index: 50;
+    pointer-events: auto;
+    // Solid, so the board behind never shows through the text
+    background-color: #060510;
+    transition:
+      transform $grow ease,
+      height $grow ease,
+      background-color $grow ease,
+      z-index 0s linear 0s,
+      visibility 0s linear 0s;
+  }
+}
+
+// Pinned to the bottom, so it stays put while the shelf grows upward
+.small-content {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: $small-height;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+  // Keeps the text and code clear of the shelf's own buttons on the right
+  padding: 8px 140px;
+  box-sizing: border-box;
+  transition: opacity 200ms ease $grow * 0.6, visibility 0s linear $grow * 0.6;
+
+  .mode-large & {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 150ms ease, visibility 0s linear 150ms;
+  }
+}
+
+.small-text {
+  font-size: 32px;
+  letter-spacing: 2px;
+  white-space: nowrap;
+  color: #d1b56a;
+}
+
+// Crisp module edges scan more reliably than smoothed ones
+.small-qr,
+.large-qr {
+  display: block;
+  image-rendering: pixelated;
+  border-radius: 4px;
+}
+
+.small-qr {
+  height: $small-height - 16px;
+  width: auto;
+}
+
+// Kept quiet so they don't pull focus from the shelf on the TV: no fill or
+// outline until hovered, and characters in the project banner's violet
+.action-btn {
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  background-color: transparent;
+  color: $button-purple;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: bold;
+  line-height: 1;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.08);
+    color: #a59cbd; // a lighter shade of the same violet
+  }
+}
+
+// Bottom right. It stays put while the shelf grows, so the chevron is in the
+// same spot in Large.
+.shelf-actions {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  // Above the full-screen .large-content, which would otherwise take its clicks
+  z-index: 1;
+  display: flex;
+  gap: 8px;
+}
+
+// Points up to grow to Large, then flips down to shrink back to Small
+.chevron {
+  width: 9px;
+  height: 9px;
+  margin-top: 5px;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: rotate(-135deg);
+  transition: transform $grow ease, margin-top $grow ease;
+
+  .mode-large & {
+    margin-top: -5px;
+    transform: rotate(45deg);
+  }
+}
+
+.large-content {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  padding: 48px 24px;
+  box-sizing: border-box;
+  text-align: center;
+  // Fades in only once the shelf has finished growing
+  animation: next-session-fade-in 500ms ease $grow both;
+}
+
+.large-thanks {
+  max-width: 1200px;
+  margin: 0;
+  text-wrap: balance;
+  font-size: clamp(32px, 4.5vw, 64px);
+  font-weight: normal;
+  letter-spacing: 2px;
+  line-height: 1.25;
+}
+
+.large-invite {
+  max-width: 1000px;
+  margin: 0;
+  text-wrap: balance;
+  font-size: clamp(22px, 2.8vw, 40px);
+  line-height: 1.4;
+  color: #d1b56a;
+}
+
+// As big as the screen allows while leaving room for the text above
+.large-qr {
+  width: min(50vh, 80vw, 560px);
+  height: auto;
+  margin-top: 16px;
+  border-radius: 8px;
+}
+
+@keyframes next-session-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .next-session-shelf,
+  .next-session-shelf.mode-off,
+  .next-session-shelf.mode-large,
+  .small-content,
+  .chevron {
+    transition-duration: 0s;
+    transition-delay: 0s;
+  }
+
+  .large-content {
+    animation: none;
+  }
+}

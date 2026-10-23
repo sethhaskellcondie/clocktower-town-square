@@ -454,7 +454,7 @@ export const ATTRACT_MODE_HOTKEYS = new PlayerAid({
   blocks: [
     {
       type: 'text',
-      text: ['Click ', { text: 'A Seth Condie Project', style: 'bold' }, ' at the top of the screen to show the small banner.'],
+      text: ['Click ', { text: 'Attract Mode', style: 'bold' }, ' at the top of the screen to show the small banner.'],
     },
     { type: 'heading', text: 'Banner' },
     {
@@ -478,6 +478,24 @@ export const ATTRACT_MODE_HOTKEYS = new PlayerAid({
     {
       type: 'text',
       text: [{ text: 'R', style: 'bold' }, ': reset the countdown to 0.'],
+    },
+    { type: 'text', text: "Hotkeys don't work while a player aid is open or while typing in a field." },
+  ],
+});
+
+export const NEXT_SESSION_HOTKEYS = new PlayerAid({
+  id: 'next-session-hotkeys',
+  title: 'Next Session Hotkeys',
+  summary: 'Keyboard shortcuts for the next session shelf.',
+  blocks: [
+    {
+      type: 'text',
+      text: ['Click ', { text: 'A Seth Condie Project', style: 'bold' }, ' at the bottom of the screen to show the footer with the sign-up QR code.'],
+    },
+    { type: 'heading', text: 'Shelf' },
+    {
+      type: 'text',
+      text: [{ text: 'Q', style: 'bold' }, ': step the shelf through off → footer → full screen → footer → off.'],
     },
     { type: 'text', text: "Hotkeys don't work while a player aid is open or while typing in a field." },
   ],

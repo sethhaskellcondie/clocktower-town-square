@@ -1,19 +1,29 @@
-.project-banner {
+.project-banner,
+.project-footer {
   position: absolute;
-  top: 16px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 10;
   font-size: 22px;
   letter-spacing: 3px;
   color: #6e6388; // dusty violet, recedes into the tapestry background
+  opacity: 0.5;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
-  // Clicking it shows the attract banner. It's a small area, so blocking
-  // drags beneath it is fine.
+  // Clicking the banner shows the attract banner, and clicking the footer
+  // shows the next session shelf. They're small areas, so blocking drags
+  // beneath them is fine.
   pointer-events: auto;
   cursor: pointer;
   user-select: none;
   white-space: nowrap;
+}
+
+.project-banner {
+  top: 16px;
+}
+
+.project-footer {
+  bottom: 16px;
 }
 
 .info-table-container {

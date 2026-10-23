@@ -1,0 +1,24 @@
+<div class="next-session-shelf" [class]="'mode-' + nextSession.mode()" [attr.aria-hidden]="nextSession.mode() === 'off'">
+  <div class="small-content">
+    <span class="small-text">Sign up for next month's session!</span>
+    <img class="small-qr" [src]="qrSrc" alt="QR code to sign up for the next session">
+  </div>
+
+  <div class="shelf-actions">
+    <button id="next_session_resize" class="action-btn" (click)="toggleSize()"
+      [attr.aria-label]="nextSession.mode() === 'large' ? 'Shrink the next session shelf' : 'Expand the next session shelf'">
+      <span class="chevron" aria-hidden="true"></span>
+    </button>
+    @if (nextSession.mode() !== 'large') {
+      <button id="next_session_close" class="action-btn" (click)="nextSession.setMode('off')" aria-label="Hide the next session shelf">&times;</button>
+    }
+  </div>
+
+  @if (nextSession.mode() === 'large') {
+    <div class="large-content">
+      <h1 class="large-thanks">Thanks to We Geek Together Provo for hosting this session!</h1>
+      <p class="large-invite">Use this link to sign up for the next session and bring a friend!</p>
+      <img class="large-qr" [src]="qrSrc" alt="QR code to sign up for the next session">
+    </div>
+  }
+</div>

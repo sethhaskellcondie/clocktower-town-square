@@ -2,6 +2,7 @@ import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { AppComponent } from './app.component';
 import { AttractModeService } from './attract-mode/attract-mode.service';
 import { DayTimerService } from './day-timer/day-timer.service';
+import { NextSessionService } from './next-session/next-session.service';
 import { HOW_TO_PLAY_VIDEO, NO_DEATHS } from './player-aids/player-aid-library';
 import { BAD_MOON_RISING } from './scripts/script-library';
 import { travelerRows } from './character-icon/character-options';
@@ -25,7 +26,8 @@ describe('AppComponent', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('.project-banner')?.textContent).toContain('A Seth Condie Project');
+    expect(compiled.querySelector('.project-banner')?.textContent).toContain('Attract Mode');
+    expect(compiled.querySelector('.project-footer')?.textContent).toContain('A Seth Condie Project');
     expect(compiled.querySelector('#players_table')).not.toBeNull();
   });
 
@@ -39,6 +41,18 @@ describe('AppComponent', () => {
     expect(TestBed.inject(AttractModeService).mode()).toBe('small');
     expect(compiled.querySelector('.attract-banner')?.classList).toContain('mode-small');
     expect(compiled.querySelector('.project-banner')).toBeNull();
+  });
+
+  it('shows the next session footer when the project footer is clicked', () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    fixture.detectChanges();
+    const compiled = fixture.nativeElement as HTMLElement;
+    (compiled.querySelector('.project-footer') as HTMLElement).click();
+    fixture.detectChanges();
+
+    expect(TestBed.inject(NextSessionService).mode()).toBe('small');
+    expect(compiled.querySelector('.next-session-shelf')?.classList).toContain('mode-small');
+    expect(compiled.querySelector('.project-footer')).toBeNull();
   });
 
   it("offers travelers from the script picked on the character sheet", () => {

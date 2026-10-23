@@ -1,6 +1,12 @@
 @if (attract.mode() === 'off') {
-  <div class="project-banner" (click)="activateAttract()">A Seth Condie Project</div>
+  <div class="project-banner" (click)="activateAttract()">Attract Mode</div>
 }
+
+@if (nextSession.mode() === 'off') {
+  <div class="project-footer" (click)="activateNextSession()">A Seth Condie Project</div>
+}
+
+<app-next-session-shelf></app-next-session-shelf>
 
 <app-attract-banner></app-attract-banner>
 

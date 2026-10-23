@@ -15,6 +15,7 @@ import {
   HAND_SIGNALS,
   HOW_TO_PLAY_VIDEO,
   MINIONS_FIRST_NIGHT,
+  NEXT_SESSION_HOTKEYS,
   NOMINATIONS,
   PLAYER_AID_HOTKEYS,
   PLAYER_TRAITS,
@@ -70,5 +71,5 @@ export const TEENSYVILLE = new PlayerAidSection({
 export const HOW_TO_USE_THIS_SITE = new PlayerAidSection({
   id: 'how-to-use-this-site',
   title: 'How to Use This Site',
-  aids: [ATTRACT_MODE_HOTKEYS, DAY_TIMER_HOTKEYS, PLAYER_AID_HOTKEYS],
+  aids: [ATTRACT_MODE_HOTKEYS, NEXT_SESSION_HOTKEYS, DAY_TIMER_HOTKEYS, PLAYER_AID_HOTKEYS],
 });

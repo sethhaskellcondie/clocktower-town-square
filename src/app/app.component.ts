@@ -7,6 +7,8 @@ import { PlayerAidsComponent } from './player-aids/player-aids.component';
 import { CharacterSheetComponent } from './character-sheets/character-sheet.component';
 import { AttractBannerComponent } from './attract-mode/attract-banner.component';
 import { AttractModeService } from './attract-mode/attract-mode.service';
+import { NextSessionShelfComponent } from './next-session/next-session-shelf.component';
+import { NextSessionService } from './next-session/next-session.service';
 import { DayTimerComponent } from './day-timer/day-timer.component';
 import { DayTimerService } from './day-timer/day-timer.service';
 import { NO_DEATHS } from './player-aids/player-aid-library';
@@ -39,7 +41,7 @@ interface DeathToken {
 
 @Component({
   selector: 'app-root',
-  imports: [NgClass, PlayerComponent, TravelerComponent, LandmarkComponent, PlayerAidsComponent, CharacterSheetComponent, AttractBannerComponent, DayTimerComponent],
+  imports: [NgClass, PlayerComponent, TravelerComponent, LandmarkComponent, PlayerAidsComponent, CharacterSheetComponent, AttractBannerComponent, NextSessionShelfComponent, DayTimerComponent],
   templateUrl: './app.component.html',
   changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './app.component.scss'
@@ -53,18 +55,23 @@ export class AppComponent implements OnDestroy {
   @ViewChildren(LandmarkComponent) landmarkComponents!: QueryList<LandmarkComponent>;
   @ViewChild(PlayerAidsComponent) playerAids?: PlayerAidsComponent;
 
-  constructor(readonly attract: AttractModeService, readonly dayTimer: DayTimerService) {}
+  constructor(readonly attract: AttractModeService, readonly nextSession: NextSessionService, readonly dayTimer: DayTimerService) {}
 
   activateAttract(): void {
     this.attract.setMode('small');
   }
 
-  // Attract hotkeys, plus the day timer's during the day. While a player aid
-  // is open its own keys win: the arrows scroll and page through it.
+  activateNextSession(): void {
+    this.nextSession.setMode('small');
+  }
+
+  // Attract and next session hotkeys, plus the day timer's during the day.
+  // While a player aid is open its own keys win: the arrows scroll and page
+  // through it.
   @HostListener('document:keydown', ['$event'])
   onKeydown(event: KeyboardEvent): void {
     if (this.playerAids?.shelf.activeAid) return;
-    if (this.attract.handleKey(event) || (this.isDay && this.dayTimer.handleKey(event))) {
+    if (this.attract.handleKey(event) || this.nextSession.handleKey(event) || (this.isDay && this.dayTimer.handleKey(event))) {
       event.preventDefault();
     }
   }
