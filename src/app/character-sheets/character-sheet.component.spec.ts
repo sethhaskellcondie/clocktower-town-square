@@ -26,6 +26,12 @@ describe('CharacterSheetComponent', () => {
   const headings = () => Array.from(el.querySelectorAll('.sheet-group-title')).map(h => h.textContent?.trim());
   const names = (group: string) =>
     Array.from(el.querySelectorAll(`#character_sheet_group_${group} .sheet-character-name`)).map(n => n.textContent?.trim());
+  // The sheet fills its two columns a row at a time, so its left column is
+  // every other name from the first, and its right column the rest
+  const columns = (group: string) => {
+    const all = names(group);
+    return [all.filter((_, i) => i % 2 === 0), all.filter((_, i) => i % 2 === 1)];
+  };
 
   it('toggles the shelf from the top-right button', () => {
     expect(el.querySelector('.sheet-shelf')?.classList).not.toContain('open');
@@ -40,11 +46,39 @@ describe('CharacterSheetComponent', () => {
     fixture.componentInstance.selectScript(TROUBLE_BREWING);
     fixture.detectChanges();
     expect(headings()).toEqual(['Townsfolk', 'Outsiders', 'Minions', 'Demons', 'Travelers']);
-    expect(names('townsfolk')).toEqual(['Washerwoman', 'Librarian', 'Investigator', 'Chef', 'Empath', 'Fortune Teller', 'Undertaker', 'Monk', 'Ravenkeeper', 'Virgin', 'Slayer', 'Soldier', 'Mayor']);
-    expect(names('outsiders')).toEqual(['Butler', 'Drunk', 'Recluse', 'Saint']);
-    expect(names('minions')).toEqual(['Poisoner', 'Spy', 'Scarlet Woman', 'Baron']);
+    expect(names('townsfolk')).toEqual(['Washerwoman', 'Monk', 'Librarian', 'Ravenkeeper', 'Investigator', 'Virgin', 'Chef', 'Slayer', 'Empath', 'Soldier', 'Fortune Teller', 'Mayor', 'Undertaker']);
+    expect(names('outsiders')).toEqual(['Butler', 'Recluse', 'Drunk', 'Saint']);
+    expect(names('minions')).toEqual(['Poisoner', 'Scarlet Woman', 'Spy', 'Baron']);
     expect(names('demons')).toEqual(['Imp']);
-    expect(names('travelers')).toEqual(['Scapegoat', 'Gunslinger', 'Beggar', 'Bureaucrat', 'Thief']);
+    expect(names('travelers')).toEqual(['Scapegoat', 'Bureaucrat', 'Gunslinger', 'Thief', 'Beggar']);
+  });
+
+  it("lays out the base scripts' characters in the columns of their PDFs, the left column taking the odd one out", () => {
+    fixture.componentInstance.selectScript(TROUBLE_BREWING);
+    fixture.detectChanges();
+    expect(columns('townsfolk')).toEqual([
+      ['Washerwoman', 'Librarian', 'Investigator', 'Chef', 'Empath', 'Fortune Teller', 'Undertaker'],
+      ['Monk', 'Ravenkeeper', 'Virgin', 'Slayer', 'Soldier', 'Mayor'],
+    ]);
+    expect(columns('outsiders')).toEqual([['Butler', 'Drunk'], ['Recluse', 'Saint']]);
+    expect(columns('minions')).toEqual([['Poisoner', 'Spy'], ['Scarlet Woman', 'Baron']]);
+    expect(columns('demons')).toEqual([['Imp'], []]);
+
+    fixture.componentInstance.selectScript(BAD_MOON_RISING);
+    fixture.detectChanges();
+    expect(columns('townsfolk')).toEqual([
+      ['Grandmother', 'Sailor', 'Chambermaid', 'Exorcist', 'Innkeeper', 'Gambler', 'Gossip'],
+      ['Courtier', 'Professor', 'Minstrel', 'Tea Lady', 'Pacifist', 'Fool'],
+    ]);
+    expect(columns('demons')).toEqual([['Zombuul', 'Pukka'], ['Shabaloth', 'Po']]);
+
+    fixture.componentInstance.selectScript(SECTS_AND_VIOLETS);
+    fixture.detectChanges();
+    expect(columns('townsfolk')).toEqual([
+      ['Clockmaker', 'Dreamer', 'Snake Charmer', 'Mathematician', 'Flowergirl', 'Town Crier', 'Oracle'],
+      ['Savant', 'Seamstress', 'Philosopher', 'Artist', 'Juggler', 'Sage'],
+    ]);
+    expect(columns('demons')).toEqual([['Fang Gu', 'Vigormortis'], ['No Dashii', 'Vortox']]);
   });
 
   it('numbers the characters down the sheet, carrying on from one heading to the next', () => {
@@ -231,14 +265,14 @@ describe('CharacterSheetComponent', () => {
     fixture.detectChanges();
     expect(headings()).toEqual(['Townsfolk', 'Outsiders', 'Minions', 'Demons', 'Travelers']);
     expect(names('townsfolk')[0]).toBe(GRANDMOTHER.name);
-    expect(names('demons')).toEqual(['Zombuul', 'Pukka', 'Shabaloth', 'Po']);
-    expect(names('travelers').at(-1)).toBe(VOUDON.name);
+    expect(names('demons')).toEqual(['Zombuul', 'Shabaloth', 'Pukka', 'Po']);
+    expect(names('travelers')).toContain(VOUDON.name);
     expect(el.querySelector(`#character_sheet_character_${WASHERWOMAN.id}`)).toBeNull();
 
     fixture.componentInstance.selectScript(SECTS_AND_VIOLETS);
     fixture.detectChanges();
-    expect(names('demons')).toEqual(['Fang Gu', 'Vigormortis', 'No Dashii', 'Vortox']);
-    expect(names('travelers').at(-1)).toBe(DEVIANT.name);
+    expect(names('demons')).toEqual(['Fang Gu', 'No Dashii', 'Vigormortis', 'Vortox']);
+    expect(names('travelers')).toContain(DEVIANT.name);
     expect(el.querySelector(`#character_sheet_character_${GRANDMOTHER.id}`)).toBeNull();
   });
 
@@ -250,14 +284,14 @@ describe('CharacterSheetComponent', () => {
     expect(el.querySelector(`#character_sheet_character_${ACROBAT.id} .sheet-character-ability`)?.textContent).toBe(ACROBAT.ability);
   });
 
-  it('lists the No Greater Joy characters in the order of its character sheet, with no travelers', () => {
+  it('lays out the No Greater Joy characters as on its PDF, with no travelers', () => {
     fixture.componentInstance.selectScript(NO_GREATER_JOY);
     fixture.detectChanges();
     expect(headings()).toEqual(['Townsfolk', 'Outsiders', 'Minions', 'Demons']);
-    expect(names('townsfolk')).toEqual(['Clockmaker', 'Investigator', 'Empath', 'Chambermaid', 'Artist', 'Sage']);
-    expect(names('outsiders')).toEqual(['Drunk', 'Klutz']);
-    expect(names('minions')).toEqual(['Scarlet Woman', 'Baron']);
-    expect(names('demons')).toEqual(['Imp']);
+    expect(columns('townsfolk')).toEqual([['Clockmaker', 'Investigator', 'Empath'], ['Chambermaid', 'Artist', 'Sage']]);
+    expect(columns('outsiders')).toEqual([['Drunk'], ['Klutz']]);
+    expect(columns('minions')).toEqual([['Scarlet Woman'], ['Baron']]);
+    expect(columns('demons')).toEqual([['Imp'], []]);
   });
 
   it("links to the script's night order beneath its last group, only when it has one", () => {
@@ -265,14 +299,35 @@ describe('CharacterSheetComponent', () => {
 
     fixture.componentInstance.selectScript(NO_GREATER_JOY);
     fixture.detectChanges();
-    const nightOrder = el.querySelector('.sheet-groups')?.lastElementChild;
-    expect(nightOrder?.classList).toContain('sheet-night-order');
-    expect(Array.from(nightOrder!.querySelectorAll('a')).map(a => a.textContent?.trim())).toEqual(['First Night', 'Other Nights']);
-    expect(nightOrder!.querySelector('button')).toBeNull();
+    const footer = el.querySelector('.sheet-groups')?.lastElementChild;
+    expect(footer?.classList).toContain('sheet-footer');
+    const nightOrder = footer!.querySelector('.sheet-night-order')!;
+    expect(Array.from(nightOrder.querySelectorAll('a')).map(a => a.textContent?.trim())).toEqual(['First Night', 'Other Nights']);
+    expect(nightOrder.querySelector('button')).toBeNull();
 
     fixture.componentInstance.selectScript(TROUBLE_BREWING);
     fixture.detectChanges();
     expect(el.querySelector('.sheet-night-order')).toBeNull();
+  });
+
+  it("credits the script's author on the night order's row, after its links, only when it has one", () => {
+    expect(el.querySelector('.sheet-footer')).toBeNull();
+
+    fixture.componentInstance.selectScript(NO_GREATER_JOY);
+    fixture.detectChanges();
+    const footer = el.querySelector('.sheet-footer')!;
+    expect(Array.from(footer.children).map(child => child.className)).toEqual(['sheet-night-order', 'sheet-author']);
+    expect(footer.querySelector('#character_sheet_author')?.textContent?.trim()).toBe('by Steven Medway');
+
+    // A script with an author but no night order still gets the row
+    fixture.componentInstance.selectScript(new Script({ id: 'authored', name: 'Authored', author: 'Someone', base: false, teensyville: false }));
+    fixture.detectChanges();
+    expect(el.querySelector('.sheet-night-order')).toBeNull();
+    expect(el.querySelector('#character_sheet_author')?.textContent?.trim()).toBe('by Someone');
+
+    fixture.componentInstance.selectScript(TROUBLE_BREWING);
+    fixture.detectChanges();
+    expect(el.querySelector('.sheet-footer')).toBeNull();
   });
 
   it('opens each night of the night order as an aid, stepping aside until it closes', () => {

@@ -1,4 +1,5 @@
 import { Script } from './script';
+import { Character } from '../character-sheets/character';
 import { NightOrderStep } from '../player-aids/player-aid';
 import {
   ARTIST,
@@ -22,6 +23,21 @@ import {
 // Every script, each created once, along with the characters the character
 // sheet shows while it's picked.
 
+// A script's PDF fills each type's characters down its left column, then
+// down its right, with the left column taking the odd one out, while the
+// character sheet fills its two columns a row at a time. Given the characters
+// in the order they're read on the PDF, this interleaves each type's two
+// columns so every character lands where it sits on the PDF.
+function asOnPdf(characters: readonly Character[]): Character[] {
+  const types = [...new Set(characters.map(character => character.type))];
+  return types.flatMap(type => {
+    const ofType = characters.filter(character => character.type === type);
+    const left = ofType.slice(0, Math.ceil(ofType.length / 2));
+    const right = ofType.slice(left.length);
+    return left.flatMap((character, i) => i < right.length ? [character, right[i]] : [character]);
+  });
+}
+
 // Every character, so a game on any script can find what it needs. It isn't
 // one of the official scripts, so it counts as a custom one.
 export const ALL_SCRIPT = new Script({
@@ -43,7 +59,7 @@ export const TROUBLE_BREWING = new Script({
   name: 'Trouble Brewing',
   base: true,
   teensyville: false,
-  characters: [...TROUBLE_BREWING_CHARACTERS],
+  characters: asOnPdf(TROUBLE_BREWING_CHARACTERS),
 });
 
 export const BAD_MOON_RISING = new Script({
@@ -51,7 +67,7 @@ export const BAD_MOON_RISING = new Script({
   name: 'Bad Moon Rising',
   base: true,
   teensyville: false,
-  characters: [...BAD_MOON_RISING_CHARACTERS],
+  characters: asOnPdf(BAD_MOON_RISING_CHARACTERS),
 });
 
 export const SECTS_AND_VIOLETS = new Script({
@@ -59,7 +75,7 @@ export const SECTS_AND_VIOLETS = new Script({
   name: 'Sects & Violets',
   base: true,
   teensyville: false,
-  characters: [...SECTS_AND_VIOLETS_CHARACTERS],
+  characters: asOnPdf(SECTS_AND_VIOLETS_CHARACTERS),
 });
 
 // The experimental characters, which aren't in any of the base scripts. They
@@ -87,14 +103,14 @@ export const FABLED_AND_LORIC = new Script({
 const DUSK: NightOrderStep = { name: 'Dusk', icon: 'assets/player_aids/icons/dusk.svg', reminder: 'Start the Night Phase.' };
 const DAWN: NightOrderStep = { name: 'Dawn', icon: 'assets/player_aids/icons/dawn.svg', reminder: 'Wait for a few seconds. End the Night Phase.' };
 
-// A custom Teensyville script, in the order of its character sheet
+// A custom Teensyville script, in the order its PDF is read
 export const NO_GREATER_JOY = new Script({
   id: 'no-greater-joy',
   name: 'No Greater Joy',
   author: 'Steven Medway',
   base: false,
   teensyville: true,
-  characters: [
+  characters: asOnPdf([
     CLOCKMAKER,
     INVESTIGATOR,
     EMPATH,
@@ -106,7 +122,7 @@ export const NO_GREATER_JOY = new Script({
     SCARLET_WOMAN,
     BARON,
     IMP,
-  ],
+  ]),
   nightOrder: {
     firstNight: [
       DUSK,

@@ -380,15 +380,30 @@
   height: var(--sheet-icon-size);
 }
 
-// The links to a script's night order sit beneath its last group, in gold
-// like the wiki link on a character's aid
-.sheet-night-order {
+// The row beneath the last group, with the night order on the left and the
+// author pushed to the right, even when there's no night order. On a narrow
+// sheet the author wraps beneath the links, still on the right.
+.sheet-footer {
   display: flex;
-  justify-content: center;
-  gap: 24px;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 24px;
   padding: 8px 2px 2px;
   border-top: 1px solid rgba(255, 255, 255, 0.2);
   font-size: var(--sheet-name-size);
+}
+
+// The links to a script's night order, in gold like the wiki link on a
+// character's aid
+.sheet-night-order {
+  display: flex;
+  gap: 24px;
+}
+
+.sheet-author {
+  margin-left: auto;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: var(--sheet-ability-size);
 }
 
 .sheet-night-link {
