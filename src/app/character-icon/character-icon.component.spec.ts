@@ -4,7 +4,7 @@ import { By } from '@angular/platform-browser';
 import { CharacterIconComponent } from './character-icon.component';
 import { CharacterOption, LANDMARK_FABLED, LANDMARK_LORIC, PLAYER_FABLED, TRAVELER_CHARACTERS, travelerRows } from './character-options';
 import { PlayerAid } from '../player-aids/player-aid';
-import { ALL_SCRIPT, BAD_MOON_RISING, EXPERIMENTAL, SECTS_AND_VIOLETS, TROUBLE_BREWING } from '../scripts/script-library';
+import { ALL_SCRIPT, BAD_MOON_RISING, EXPERIMENTAL, NO_GREATER_JOY, RACE_TO_THE_BOTTOM, SECTS_AND_VIOLETS, TROUBLE_BREWING } from '../scripts/script-library';
 import { PlayerComponent } from '../player/player.component';
 import { TravelerComponent } from '../traveler/traveler.component';
 import { LandmarkComponent } from '../landmark/landmark.component';
@@ -176,6 +176,16 @@ describe('Traveler options', () => {
     expect(pickerRows(el)).toEqual([EXPERIMENTAL_TRAVELERS]);
   });
 
+  it('offers the travelers a custom script recommends, and none when it recommends none', () => {
+    fixture.componentRef.setInput('script', RACE_TO_THE_BOTTOM);
+    fixture.detectChanges();
+    expect(pickerRows(el)).toEqual([['Scapegoat', 'Beggar', 'Bishop', 'Barista', 'Harlot']]);
+
+    fixture.componentRef.setInput('script', NO_GREATER_JOY);
+    fixture.detectChanges();
+    expect(pickerRows(el)).toEqual([]);
+  });
+
   it('offers a row for each script when "All" is picked', () => {
     fixture.componentRef.setInput('script', BAD_MOON_RISING);
     fixture.detectChanges();
@@ -213,10 +223,12 @@ describe('Character options', () => {
     }
   });
 
-  it('lists a traveler in a row for each of its scripts when "All" is picked', () => {
+  it('lists every traveler once when "All" is picked, in the row of the script it comes from', () => {
     const rows = travelerRows(ALL_SCRIPT);
-    const appearances = rows.flat().length;
-    const memberships = TRAVELER_CHARACTERS.reduce((sum, t) => sum + (t.scripts?.length ?? 0), 0);
-    expect(appearances).toBe(memberships);
+    expect(rows.flat().length).toBe(TRAVELER_CHARACTERS.length);
+    expect(new Set(rows.flat()).size).toBe(TRAVELER_CHARACTERS.length);
+    for (const row of rows) {
+      expect(new Set(row.map(traveler => traveler.scripts?.[0])).size).toBe(1);
+    }
   });
 });

@@ -26,7 +26,7 @@ import {
   VOUDON,
 } from '../character-sheets/character-library';
 import { Script } from '../scripts/script';
-import { ALL_SCRIPT, BAD_MOON_RISING, EXPERIMENTAL, SECTS_AND_VIOLETS, TROUBLE_BREWING } from '../scripts/script-library';
+import { ALL_SCRIPT, BAD_MOON_RISING, EXPERIMENTAL, RACE_TO_THE_BOTTOM, SECTS_AND_VIOLETS, TROUBLE_BREWING } from '../scripts/script-library';
 
 // A character that can be pinned beside a token on the board: its icon is
 // shown there, and clicking it opens the character's player aid
@@ -35,7 +35,8 @@ export interface CharacterOption {
   name: string;
   icon: string;
   aid: PlayerAid;
-  // The scripts a traveler belongs to, which decide when it's offered
+  // The scripts a traveler belongs to, which decide when it's offered: first
+  // the script it comes from, then any custom scripts that recommend it
   scripts?: readonly Script[];
 }
 
@@ -50,18 +51,18 @@ function travelerOption(character: Character, scripts: readonly Script[]): Chara
 
 // The travelers offered on traveler circles
 export const TRAVELER_CHARACTERS: readonly CharacterOption[] = [
-  travelerOption(SCAPEGOAT, [TROUBLE_BREWING]),
+  travelerOption(SCAPEGOAT, [TROUBLE_BREWING, RACE_TO_THE_BOTTOM]),
   travelerOption(GUNSLINGER, [TROUBLE_BREWING]),
-  travelerOption(BEGGAR, [TROUBLE_BREWING]),
+  travelerOption(BEGGAR, [TROUBLE_BREWING, RACE_TO_THE_BOTTOM]),
   travelerOption(BUREAUCRAT, [TROUBLE_BREWING]),
   travelerOption(THIEF, [TROUBLE_BREWING]),
   travelerOption(APPRENTICE, [BAD_MOON_RISING]),
   travelerOption(MATRON, [BAD_MOON_RISING]),
   travelerOption(VOUDON, [BAD_MOON_RISING]),
   travelerOption(JUDGE, [BAD_MOON_RISING]),
-  travelerOption(BISHOP, [BAD_MOON_RISING]),
-  travelerOption(BARISTA, [SECTS_AND_VIOLETS]),
-  travelerOption(HARLOT, [SECTS_AND_VIOLETS]),
+  travelerOption(BISHOP, [BAD_MOON_RISING, RACE_TO_THE_BOTTOM]),
+  travelerOption(BARISTA, [SECTS_AND_VIOLETS, RACE_TO_THE_BOTTOM]),
+  travelerOption(HARLOT, [SECTS_AND_VIOLETS, RACE_TO_THE_BOTTOM]),
   travelerOption(BUTCHER, [SECTS_AND_VIOLETS]),
   travelerOption(BONE_COLLECTOR, [SECTS_AND_VIOLETS]),
   travelerOption(DEVIANT, [SECTS_AND_VIOLETS]),
@@ -72,15 +73,14 @@ export const TRAVELER_CHARACTERS: readonly CharacterOption[] = [
 
 // The rows of travelers to offer while a script is picked on the character
 // sheet: one row of that script's travelers, or with "All" picked, a row for
-// each script holding the travelers in it, so a traveler in two scripts
-// shows in both
+// each script the travelers come from, so each traveler shows once
 export function travelerRows(script: Script): CharacterOption[][] {
-  const scripts = script === ALL_SCRIPT
-    ? [...new Set(TRAVELER_CHARACTERS.flatMap(traveler => traveler.scripts ?? []))]
-    : [script];
-  return scripts
-    .map(s => TRAVELER_CHARACTERS.filter(traveler => traveler.scripts?.includes(s)))
-    .filter(row => row.length > 0);
+  if (script === ALL_SCRIPT) {
+    const homes = [...new Set(TRAVELER_CHARACTERS.map(traveler => traveler.scripts?.[0]))];
+    return homes.map(home => TRAVELER_CHARACTERS.filter(traveler => traveler.scripts?.[0] === home));
+  }
+  const row = TRAVELER_CHARACTERS.filter(traveler => traveler.scripts?.includes(script));
+  return row.length > 0 ? [row] : [];
 }
 
 // Fabled that are about a particular player, offered on player circles

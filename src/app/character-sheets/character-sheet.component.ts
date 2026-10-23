@@ -2,7 +2,18 @@ import { Component, ElementRef, EventEmitter, HostListener, Input, OnChanges, Ou
 import { Character } from './character';
 import { PlayerAid } from '../player-aids/player-aid';
 import { Script } from '../scripts/script';
-import { ALL_SCRIPT, BAD_MOON_RISING, EXPERIMENTAL, FABLED_AND_LORIC, NO_GREATER_JOY, SECTS_AND_VIOLETS, TROUBLE_BREWING } from '../scripts/script-library';
+import {
+  ALL_SCRIPT,
+  BAD_MOON_RISING,
+  EXPERIMENTAL,
+  FABLED_AND_LORIC,
+  LAISSEZ_UN_FAIRE,
+  NO_GREATER_JOY,
+  OVER_THE_RIVER,
+  RACE_TO_THE_BOTTOM,
+  SECTS_AND_VIOLETS,
+  TROUBLE_BREWING,
+} from '../scripts/script-library';
 
 // Travelers can be on either team, and the Fabled and Loric are on neither,
 // so each of them gets a team of its own
@@ -32,7 +43,18 @@ const SHEET_GROUPS: readonly { id: string; title: string; type: string; team: Sh
 ];
 
 // The first script is the one the sheet opens on
-const SHEET_SCRIPTS: Script[] = [ALL_SCRIPT, TROUBLE_BREWING, BAD_MOON_RISING, SECTS_AND_VIOLETS, EXPERIMENTAL, FABLED_AND_LORIC, NO_GREATER_JOY];
+const SHEET_SCRIPTS: Script[] = [
+  ALL_SCRIPT,
+  TROUBLE_BREWING,
+  BAD_MOON_RISING,
+  SECTS_AND_VIOLETS,
+  EXPERIMENTAL,
+  FABLED_AND_LORIC,
+  NO_GREATER_JOY,
+  RACE_TO_THE_BOTTOM,
+  OVER_THE_RIVER,
+  LAISSEZ_UN_FAIRE,
+];
 
 // A shelf on the right, mirroring the Player Aids shelf on the left, that
 // shows the characters of the picked script grouped by type

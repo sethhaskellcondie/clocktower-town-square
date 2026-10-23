@@ -2,7 +2,18 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CharacterSheetComponent } from './character-sheet.component';
 import { PlayerAid } from '../player-aids/player-aid';
 import { Script } from '../scripts/script';
-import { ALL_SCRIPT, BAD_MOON_RISING, EXPERIMENTAL, FABLED_AND_LORIC, NO_GREATER_JOY, SECTS_AND_VIOLETS, TROUBLE_BREWING } from '../scripts/script-library';
+import {
+  ALL_SCRIPT,
+  BAD_MOON_RISING,
+  EXPERIMENTAL,
+  FABLED_AND_LORIC,
+  LAISSEZ_UN_FAIRE,
+  NO_GREATER_JOY,
+  OVER_THE_RIVER,
+  RACE_TO_THE_BOTTOM,
+  SECTS_AND_VIOLETS,
+  TROUBLE_BREWING,
+} from '../scripts/script-library';
 import { ACROBAT, ANGEL, DEVIANT, GRANDMOTHER, IMP, SCAPEGOAT, VOUDON, WASHERWOMAN } from './character-library';
 
 describe('CharacterSheetComponent', () => {
@@ -251,7 +262,18 @@ describe('CharacterSheetComponent', () => {
 
     click('#character_sheet_script_toggle');
     const options = Array.from(el.querySelectorAll('.sheet-script-option')).map(o => o.textContent?.trim());
-    expect(options).toEqual(['All', 'Trouble Brewing', 'Bad Moon Rising', 'Sects & Violets', 'Experimental', 'Fabled and Loric', 'No Greater Joy']);
+    expect(options).toEqual([
+      'All',
+      'Trouble Brewing',
+      'Bad Moon Rising',
+      'Sects & Violets',
+      'Experimental',
+      'Fabled and Loric',
+      'No Greater Joy',
+      'Race to the Bottom',
+      'Over the River',
+      'Laissez Un Faire',
+    ]);
     expect(el.querySelector('#character_sheet_script_all')?.getAttribute('aria-selected')).toBe('true');
 
     click('#character_sheet_script_trouble-brewing');
@@ -292,6 +314,36 @@ describe('CharacterSheetComponent', () => {
     expect(columns('outsiders')).toEqual([['Drunk'], ['Klutz']]);
     expect(columns('minions')).toEqual([['Scarlet Woman'], ['Baron']]);
     expect(columns('demons')).toEqual([['Imp'], []]);
+  });
+
+  it('lists the Race to the Bottom characters in the order of its single-column PDF, with its travelers and Fabled', () => {
+    fixture.componentInstance.selectScript(RACE_TO_THE_BOTTOM);
+    fixture.detectChanges();
+    expect(headings()).toEqual(['Townsfolk', 'Outsiders', 'Minions', 'Demons', 'Travelers', 'Fabled']);
+    expect(names('townsfolk')).toEqual(['Clockmaker', 'Empath', 'Dreamer', 'Courtier', 'Slayer', 'Mayor']);
+    expect(names('outsiders')).toEqual(['Lunatic', 'Klutz']);
+    expect(names('minions')).toEqual(['Spy', 'Scarlet Woman']);
+    expect(names('demons')).toEqual(['Vortox']);
+    expect(names('travelers')).toEqual(['Barista', 'Harlot', 'Beggar', 'Scapegoat', 'Bishop']);
+    expect(names('fabled')).toEqual(['Doomsayer', 'Sentinel']);
+  });
+
+  it('lays out the Over the River and Laissez Un Faire characters as on their PDFs, with no travelers', () => {
+    fixture.componentInstance.selectScript(OVER_THE_RIVER);
+    fixture.detectChanges();
+    expect(headings()).toEqual(['Townsfolk', 'Outsiders', 'Minions', 'Demons']);
+    expect(columns('townsfolk')).toEqual([['Grandmother', 'Clockmaker', 'Innkeeper'], ['Snake Charmer', 'Professor', 'Slayer']]);
+    expect(columns('outsiders')).toEqual([['Lunatic'], ['Recluse']]);
+    expect(columns('minions')).toEqual([['Godfather'], ['Spy']]);
+    expect(columns('demons')).toEqual([['Imp'], []]);
+
+    fixture.componentInstance.selectScript(LAISSEZ_UN_FAIRE);
+    fixture.detectChanges();
+    expect(headings()).toEqual(['Townsfolk', 'Outsiders', 'Minions', 'Demons']);
+    expect(columns('townsfolk')).toEqual([['Balloonist', 'Savant', 'Amnesiac'], ['Fisherman', 'Artist', 'Cannibal']]);
+    expect(columns('outsiders')).toEqual([['Mutant'], ['Lunatic']]);
+    expect(columns('minions')).toEqual([['Widow'], ['Goblin']]);
+    expect(columns('demons')).toEqual([['Leviathan'], []]);
   });
 
   it("links to the script's night order beneath its last group, only when it has one", () => {
