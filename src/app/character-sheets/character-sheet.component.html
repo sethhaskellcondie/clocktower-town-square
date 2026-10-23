@@ -12,12 +12,20 @@
     </button>
     @if (scriptMenuOpen) {
       <ul id="character_sheet_script_menu" class="sheet-script-menu" role="listbox" aria-label="Script">
-        @for (script of scripts; track script.id) {
-          <li role="option" class="sheet-script-option" [id]="'character_sheet_script_' + script.id"
-            [class.selected]="script === activeScript" [attr.aria-selected]="script === activeScript"
-            tabindex="0" (click)="selectScript(script)" (keydown.enter)="selectScript(script)"
-            (keydown.space)="$event.preventDefault(); selectScript(script)">
-            {{ script.name }}
+        @for (section of scriptSections; track section.id) {
+          <li role="group" class="sheet-script-section" [id]="'character_sheet_script_section_' + section.id"
+            [attr.aria-labelledby]="'character_sheet_script_section_title_' + section.id">
+            <div class="sheet-script-section-title" [id]="'character_sheet_script_section_title_' + section.id">{{ section.title }}</div>
+            <ul class="sheet-script-section-options" role="none">
+              @for (script of section.scripts; track script.id) {
+                <li role="option" class="sheet-script-option" [id]="'character_sheet_script_' + script.id"
+                  [class.selected]="script === activeScript" [attr.aria-selected]="script === activeScript"
+                  tabindex="0" (click)="selectScript(script)" (keydown.enter)="selectScript(script)"
+                  (keydown.space)="$event.preventDefault(); selectScript(script)">
+                  {{ script.name }}
+                </li>
+              }
+            </ul>
           </li>
         }
       </ul>

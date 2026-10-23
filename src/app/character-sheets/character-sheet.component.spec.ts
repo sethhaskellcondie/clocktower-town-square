@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { CharacterSheetComponent } from './character-sheet.component';
+import { CharacterSheetComponent, sectionScripts } from './character-sheet.component';
 import { PlayerAid } from '../player-aids/player-aid';
 import { Script } from '../scripts/script';
 import {
@@ -108,7 +108,7 @@ describe('CharacterSheetComponent', () => {
   });
 
   it("renumbers by where the characters fall on the picked script's sheet", () => {
-    fixture.componentInstance.selectScript(new Script({ id: 'small', name: 'Small', base: false, teensyville: false, characters: [SCAPEGOAT, IMP, WASHERWOMAN] }));
+    fixture.componentInstance.selectScript(new Script({ id: 'small', name: 'Small', base: false, teensyville: false, reference: false, characters: [SCAPEGOAT, IMP, WASHERWOMAN] }));
     fixture.detectChanges();
     const number = (id: string) => el.querySelector(`#character_sheet_character_${id} .sheet-character-number`)?.textContent;
     expect(number(WASHERWOMAN.id)).toBe('1');
@@ -122,7 +122,7 @@ describe('CharacterSheetComponent', () => {
     fixture.componentInstance.selectScript(TROUBLE_BREWING);
     fixture.detectChanges();
     expect(digits()).toBe('2');
-    fixture.componentInstance.selectScript(new Script({ id: 'small', name: 'Small', base: false, teensyville: false, characters: [WASHERWOMAN, IMP] }));
+    fixture.componentInstance.selectScript(new Script({ id: 'small', name: 'Small', base: false, teensyville: false, reference: false, characters: [WASHERWOMAN, IMP] }));
     fixture.detectChanges();
     expect(digits()).toBe('1');
   });
@@ -250,7 +250,7 @@ describe('CharacterSheetComponent', () => {
   });
 
   it('keeps the size buttons on the first heading when a script has no Townsfolk', () => {
-    fixture.componentInstance.selectScript(new Script({ id: 'evil', name: 'Evil', base: false, teensyville: false, characters: [IMP] }));
+    fixture.componentInstance.selectScript(new Script({ id: 'evil', name: 'Evil', base: false, teensyville: false, reference: false, characters: [IMP] }));
     fixture.detectChanges();
     expect(el.querySelector('#character_sheet_group_demons #character_sheet_size_up')).not.toBeNull();
   });
@@ -261,18 +261,14 @@ describe('CharacterSheetComponent', () => {
     expect(el.querySelector('.sheet-script-menu')).toBeNull();
 
     click('#character_sheet_script_toggle');
-    const options = Array.from(el.querySelectorAll('.sheet-script-option')).map(o => o.textContent?.trim());
-    expect(options).toEqual([
-      'All',
-      'Trouble Brewing',
-      'Bad Moon Rising',
-      'Sects & Violets',
-      'Experimental',
-      'Fabled and Loric',
-      'No Greater Joy',
-      'Race to the Bottom',
-      'Over the River',
-      'Laissez Un Faire',
+    const sections = Array.from(el.querySelectorAll('.sheet-script-section')).map(section => [
+      section.querySelector('.sheet-script-section-title')?.textContent?.trim(),
+      Array.from(section.querySelectorAll('.sheet-script-option')).map(o => o.textContent?.trim()),
+    ]);
+    expect(sections).toEqual([
+      ['Base', ['Trouble Brewing', 'Bad Moon Rising', 'Sects & Violets']],
+      ['Teensyville', ['No Greater Joy', 'Race to the Bottom', 'Over the River', 'Laissez Un Faire']],
+      ['Reference', ['All', 'Experimental', 'Fabled and Loric']],
     ]);
     expect(el.querySelector('#character_sheet_script_all')?.getAttribute('aria-selected')).toBe('true');
 
@@ -372,7 +368,7 @@ describe('CharacterSheetComponent', () => {
     expect(footer.querySelector('#character_sheet_author')?.textContent?.trim()).toBe('by Steven Medway');
 
     // A script with an author but no night order still gets the row
-    fixture.componentInstance.selectScript(new Script({ id: 'authored', name: 'Authored', author: 'Someone', base: false, teensyville: false }));
+    fixture.componentInstance.selectScript(new Script({ id: 'authored', name: 'Authored', author: 'Someone', base: false, teensyville: false, reference: false }));
     fixture.detectChanges();
     expect(el.querySelector('.sheet-night-order')).toBeNull();
     expect(el.querySelector('#character_sheet_author')?.textContent?.trim()).toBe('by Someone');
@@ -426,12 +422,12 @@ describe('CharacterSheetComponent', () => {
 
   it("shows only the picked script's characters, and only the types it has", () => {
     const component = fixture.componentInstance;
-    component.selectScript(new Script({ id: 'small', name: 'Small', base: false, teensyville: false, characters: [WASHERWOMAN, IMP] }));
+    component.selectScript(new Script({ id: 'small', name: 'Small', base: false, teensyville: false, reference: false, characters: [WASHERWOMAN, IMP] }));
     fixture.detectChanges();
     expect(headings()).toEqual(['Townsfolk', 'Demons']);
     expect(names('townsfolk')).toEqual(['Washerwoman']);
 
-    component.selectScript(new Script({ id: 'bare', name: 'Bare', base: false, teensyville: false }));
+    component.selectScript(new Script({ id: 'bare', name: 'Bare', base: false, teensyville: false, reference: false }));
     fixture.detectChanges();
     expect(el.querySelector('.sheet-empty')?.textContent).toContain('No characters yet.');
 
@@ -448,6 +444,17 @@ describe('CharacterSheetComponent', () => {
     document.body.click();
     fixture.detectChanges();
     expect(el.querySelector('.sheet-shelf')?.classList).not.toContain('open');
+  });
+
+  it('lists custom scripts that are neither Teensyville nor reference under Custom, between Base and Teensyville', () => {
+    const custom = new Script({ id: 'custom', name: 'Custom', base: false, teensyville: false, reference: false });
+    const sections = sectionScripts([ALL_SCRIPT, NO_GREATER_JOY, custom, TROUBLE_BREWING, FABLED_AND_LORIC]);
+    expect(sections.map(section => [section.title, section.scripts])).toEqual([
+      ['Base', [TROUBLE_BREWING]],
+      ['Custom', [custom]],
+      ['Teensyville', [NO_GREATER_JOY]],
+      ['Reference', [ALL_SCRIPT, FABLED_AND_LORIC]],
+    ]);
   });
 
   it('closes the script dropdown on a click elsewhere, then on Escape before the shelf', () => {

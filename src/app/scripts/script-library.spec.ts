@@ -34,6 +34,13 @@ describe('Script library', () => {
     }
   });
 
+  it('marks only "All", Experimental, and Fabled and Loric as reference scripts', () => {
+    const referenceScripts = [ALL_SCRIPT, EXPERIMENTAL, FABLED_AND_LORIC];
+    for (const script of [ALL_SCRIPT, ...otherScripts]) {
+      expect(script.reference).withContext(script.name).toBe(referenceScripts.includes(script));
+    }
+  });
+
   it('credits each Teensyville script to its author, and no other script to one', () => {
     expect(NO_GREATER_JOY.author).toBe('Steven Medway');
     expect(RACE_TO_THE_BOTTOM.author).toBe('Evin Donahoe');

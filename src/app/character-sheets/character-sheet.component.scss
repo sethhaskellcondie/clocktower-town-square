@@ -154,6 +154,27 @@
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
 }
 
+// A rule between each heading and the scripts above it
+.sheet-script-section + .sheet-script-section {
+  margin-top: 4px;
+  padding-top: 4px;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.sheet-script-section-title {
+  padding: 6px 10px 2px;
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #d1b56a;
+}
+
+.sheet-script-section-options {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
 .sheet-script-option {
   padding: 8px 10px;
   font-size: 14px;

@@ -74,6 +74,7 @@ export const ALL_SCRIPT = new Script({
   name: 'All',
   base: false,
   teensyville: false,
+  reference: true,
   characters: [
     ...TROUBLE_BREWING_CHARACTERS,
     ...BAD_MOON_RISING_CHARACTERS,
@@ -88,6 +89,7 @@ export const TROUBLE_BREWING = new Script({
   name: 'Trouble Brewing',
   base: true,
   teensyville: false,
+  reference: false,
   characters: asOnPdf(TROUBLE_BREWING_CHARACTERS),
 });
 
@@ -96,6 +98,7 @@ export const BAD_MOON_RISING = new Script({
   name: 'Bad Moon Rising',
   base: true,
   teensyville: false,
+  reference: false,
   characters: asOnPdf(BAD_MOON_RISING_CHARACTERS),
 });
 
@@ -104,6 +107,7 @@ export const SECTS_AND_VIOLETS = new Script({
   name: 'Sects & Violets',
   base: true,
   teensyville: false,
+  reference: false,
   characters: asOnPdf(SECTS_AND_VIOLETS_CHARACTERS),
 });
 
@@ -114,6 +118,7 @@ export const EXPERIMENTAL = new Script({
   name: 'Experimental',
   base: false,
   teensyville: false,
+  reference: true,
   characters: [...EXPERIMENTAL_CHARACTERS],
 });
 
@@ -125,6 +130,7 @@ export const FABLED_AND_LORIC = new Script({
   name: 'Fabled and Loric',
   base: false,
   teensyville: false,
+  reference: true,
   characters: [...FABLED_AND_LORIC_CHARACTERS],
 });
 
@@ -218,6 +224,7 @@ export const NO_GREATER_JOY = new Script({
   author: 'Steven Medway',
   base: false,
   teensyville: true,
+  reference: false,
   characters: asOnPdf([
     CLOCKMAKER,
     INVESTIGATOR,
@@ -266,6 +273,7 @@ export const RACE_TO_THE_BOTTOM = new Script({
   author: 'Evin Donahoe',
   base: false,
   teensyville: true,
+  reference: false,
   characters: [
     CLOCKMAKER,
     EMPATH,
@@ -330,6 +338,7 @@ export const OVER_THE_RIVER = new Script({
   author: 'Andrew Nathenson',
   base: false,
   teensyville: true,
+  reference: false,
   characters: asOnPdf([
     GRANDMOTHER,
     CLOCKMAKER,
@@ -377,6 +386,7 @@ export const LAISSEZ_UN_FAIRE = new Script({
   author: 'Steven Medway',
   base: false,
   teensyville: true,
+  reference: false,
   characters: asOnPdf([
     BALLOONIST,
     SAVANT,

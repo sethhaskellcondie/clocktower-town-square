@@ -56,6 +56,31 @@ const SHEET_SCRIPTS: Script[] = [
   LAISSEZ_UN_FAIRE,
 ];
 
+// A heading in the script dropdown, with the scripts it covers listed under it
+export interface ScriptSection {
+  id: string;
+  title: string;
+  scripts: Script[];
+}
+
+// The headings the script dropdown lists the scripts under, in order. The
+// Teensyville and reference scripts are custom too, but each kind gets a
+// heading of its own, so Custom holds only the rest.
+const SCRIPT_SECTIONS: readonly { id: string; title: string; covers: (script: Script) => boolean }[] = [
+  { id: 'base', title: 'Base', covers: script => script.base },
+  { id: 'custom', title: 'Custom', covers: script => !script.base && !script.teensyville && !script.reference },
+  { id: 'teensyville', title: 'Teensyville', covers: script => script.teensyville },
+  { id: 'reference', title: 'Reference', covers: script => script.reference },
+];
+
+// The scripts under their heading in the dropdown, leaving out any heading
+// with no scripts
+export function sectionScripts(scripts: readonly Script[]): ScriptSection[] {
+  return SCRIPT_SECTIONS
+    .map(({ id, title, covers }) => ({ id, title, scripts: scripts.filter(covers) }))
+    .filter(section => section.scripts.length > 0);
+}
+
 // A shelf on the right, mirroring the Player Aids shelf on the left, that
 // shows the characters of the picked script grouped by type
 @Component({
@@ -72,6 +97,7 @@ export class CharacterSheetComponent implements OnChanges {
 
   readonly scripts: readonly Script[] = SHEET_SCRIPTS;
   activeScript: Script = this.scripts[0];
+  readonly scriptSections: readonly ScriptSection[] = sectionScripts(this.scripts);
   open = false;
   // Whether the dropdown for picking a script is showing
   scriptMenuOpen = false;
