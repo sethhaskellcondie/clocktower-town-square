@@ -101,6 +101,7 @@ import {
   TEA_LADY,
   THIEF,
   TOWN_CRIER,
+  TOYMAKER,
   TROUBLE_BREWING_CHARACTERS,
   UNDERTAKER,
   VIGORMORTIS,
@@ -825,7 +826,7 @@ export const ONE_IN_ONE_OUT = new Script({
 });
 
 // A custom Teensyville script, in the order its PDF is read, with the Fabled
-// it recommends after the rest
+// it recommends and the Toymaker after the rest
 export const TEENSY_TROUBLE_BREWING = new Script({
   id: 'teensy-trouble-brewing',
   name: 'Teensy Trouble Brewing',
@@ -846,6 +847,7 @@ export const TEENSY_TROUBLE_BREWING = new Script({
       IMP,
     ]),
     SENTINEL,
+    TOYMAKER,
   ],
   nightOrder: {
     firstNight: [
@@ -870,25 +872,29 @@ export const TEENSY_TROUBLE_BREWING = new Script({
   },
 });
 
-// A custom Teensyville script, in the order its PDF is read
+// A custom Teensyville script, in the order its PDF is read, with the
+// Toymaker after the rest
 export const NO_GREATER_JOY = new Script({
   id: 'no-greater-joy',
   name: 'No Greater Joy',
   author: 'Steven Medway',
   kind: 'Teensyville',
-  characters: asOnPdf([
-    CLOCKMAKER,
-    INVESTIGATOR,
-    EMPATH,
-    CHAMBERMAID,
-    ARTIST,
-    SAGE,
-    DRUNK,
-    KLUTZ,
-    SCARLET_WOMAN,
-    BARON,
-    IMP,
-  ]),
+  characters: [
+    ...asOnPdf([
+      CLOCKMAKER,
+      INVESTIGATOR,
+      EMPATH,
+      CHAMBERMAID,
+      ARTIST,
+      SAGE,
+      DRUNK,
+      KLUTZ,
+      SCARLET_WOMAN,
+      BARON,
+      IMP,
+    ]),
+    TOYMAKER,
+  ],
   nightOrder: {
     firstNight: [
       DUSK,
@@ -913,8 +919,8 @@ export const NO_GREATER_JOY = new Script({
   },
 });
 
-// A custom Teensyville script, with the travelers and Fabled it recommends.
-// Its PDF lists each type down a single column, so its characters keep that
+// A custom Teensyville script, with the travelers and Fabled it recommends,
+// and the Toymaker after them. Its PDF lists each type down a single column, so its characters keep that
 // order, and the sheet reads them a row at a time. It has no reminders of
 // its own for the night order, so they're worded as on the official night
 // sheet.
@@ -942,6 +948,7 @@ export const RACE_TO_THE_BOTTOM = new Script({
     BISHOP,
     DOOMSAYER,
     SENTINEL,
+    TOYMAKER,
   ],
   nightOrder: {
     firstNight: [
@@ -980,25 +987,29 @@ export const RACE_TO_THE_BOTTOM = new Script({
   },
 });
 
-// A custom Teensyville script, in the order its PDF is read
+// A custom Teensyville script, in the order its PDF is read, with the
+// Toymaker after the rest
 export const OVER_THE_RIVER = new Script({
   id: 'over-the-river',
   name: 'Over the River',
   author: 'Andrew Nathenson',
   kind: 'Teensyville',
-  characters: asOnPdf([
-    GRANDMOTHER,
-    CLOCKMAKER,
-    INNKEEPER,
-    SNAKE_CHARMER,
-    PROFESSOR,
-    SLAYER,
-    LUNATIC,
-    RECLUSE,
-    GODFATHER,
-    SPY,
-    IMP,
-  ]),
+  characters: [
+    ...asOnPdf([
+      GRANDMOTHER,
+      CLOCKMAKER,
+      INNKEEPER,
+      SNAKE_CHARMER,
+      PROFESSOR,
+      SLAYER,
+      LUNATIC,
+      RECLUSE,
+      GODFATHER,
+      SPY,
+      IMP,
+    ]),
+    TOYMAKER,
+  ],
   nightOrder: {
     firstNight: [
       DUSK,

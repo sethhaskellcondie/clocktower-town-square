@@ -18,7 +18,7 @@ import {
 } from './script-library';
 import { Script } from './script';
 import { NightOrderStep } from '../player-aids/player-aid';
-import { DJINN, DJINN_A_GRIMM_CHORUS, DJINN_LUNAR_ECLIPSE, DJINN_ONE_IN_ONE_OUT } from '../character-sheets/character-library';
+import { DJINN, DJINN_A_GRIMM_CHORUS, DJINN_LUNAR_ECLIPSE, DJINN_ONE_IN_ONE_OUT, TOYMAKER } from '../character-sheets/character-library';
 
 describe('Script library', () => {
   const baseScripts = [TROUBLE_BREWING, BAD_MOON_RISING, SECTS_AND_VIOLETS];
@@ -243,45 +243,61 @@ describe('Script library', () => {
     expect(DJINN.jinxes).toBeUndefined();
   });
 
-  it('lists every No Greater Joy character once: 6 Townsfolk, 2 Outsiders, 2 Minions, and a Demon', () => {
+  it('gives every Teensyville script but Laissez Un Faire the Toymaker, after its other characters', () => {
+    for (const script of teensyvilleScripts.filter(script => script !== LAISSEZ_UN_FAIRE)) {
+      expect(script.characters.at(-1)).withContext(script.name).toBe(TOYMAKER);
+    }
+    expect(LAISSEZ_UN_FAIRE.characters).not.toContain(TOYMAKER);
+  });
+
+  it('lists every No Greater Joy character once: 6 Townsfolk, 2 Outsiders, 2 Minions, a Demon, and a Fabled', () => {
     expect(count(NO_GREATER_JOY, 'Townsfolk')).toBe(6);
     expect(count(NO_GREATER_JOY, 'Outsider')).toBe(2);
     expect(count(NO_GREATER_JOY, 'Minion')).toBe(2);
     expect(count(NO_GREATER_JOY, 'Demon')).toBe(1);
-    expect(NO_GREATER_JOY.characters.length).toBe(11);
-    expect(new Set(NO_GREATER_JOY.characters.map(character => character.id)).size).toBe(11);
+    expect(count(NO_GREATER_JOY, 'Fabled')).toBe(1);
+    expect(NO_GREATER_JOY.characters.length).toBe(12);
+    expect(new Set(NO_GREATER_JOY.characters.map(character => character.id)).size).toBe(12);
   });
 
-  it('lists every Race to the Bottom character once: 6 Townsfolk, 2 Outsiders, 2 Minions, a Demon, 5 Travelers, and 2 Fabled', () => {
+  it('lists every Race to the Bottom character once: 6 Townsfolk, 2 Outsiders, 2 Minions, a Demon, 5 Travelers, and 3 Fabled', () => {
     expect(count(RACE_TO_THE_BOTTOM, 'Townsfolk')).toBe(6);
     expect(count(RACE_TO_THE_BOTTOM, 'Outsider')).toBe(2);
     expect(count(RACE_TO_THE_BOTTOM, 'Minion')).toBe(2);
     expect(count(RACE_TO_THE_BOTTOM, 'Demon')).toBe(1);
     expect(count(RACE_TO_THE_BOTTOM, 'Traveler')).toBe(5);
-    expect(count(RACE_TO_THE_BOTTOM, 'Fabled')).toBe(2);
-    expect(RACE_TO_THE_BOTTOM.characters.length).toBe(18);
-    expect(new Set(RACE_TO_THE_BOTTOM.characters.map(character => character.id)).size).toBe(18);
+    expect(count(RACE_TO_THE_BOTTOM, 'Fabled')).toBe(3);
+    expect(RACE_TO_THE_BOTTOM.characters.length).toBe(19);
+    expect(new Set(RACE_TO_THE_BOTTOM.characters.map(character => character.id)).size).toBe(19);
   });
 
-  for (const script of [OVER_THE_RIVER, LAISSEZ_UN_FAIRE]) {
-    it(`lists every ${script.name} character once: 6 Townsfolk, 2 Outsiders, 2 Minions, and a Demon`, () => {
-      expect(count(script, 'Townsfolk')).toBe(6);
-      expect(count(script, 'Outsider')).toBe(2);
-      expect(count(script, 'Minion')).toBe(2);
-      expect(count(script, 'Demon')).toBe(1);
-      expect(script.characters.length).toBe(11);
-      expect(new Set(script.characters.map(character => character.id)).size).toBe(11);
-    });
-  }
+  it('lists every Over the River character once: 6 Townsfolk, 2 Outsiders, 2 Minions, a Demon, and a Fabled', () => {
+    expect(count(OVER_THE_RIVER, 'Townsfolk')).toBe(6);
+    expect(count(OVER_THE_RIVER, 'Outsider')).toBe(2);
+    expect(count(OVER_THE_RIVER, 'Minion')).toBe(2);
+    expect(count(OVER_THE_RIVER, 'Demon')).toBe(1);
+    expect(count(OVER_THE_RIVER, 'Fabled')).toBe(1);
+    expect(OVER_THE_RIVER.characters.length).toBe(12);
+    expect(new Set(OVER_THE_RIVER.characters.map(character => character.id)).size).toBe(12);
+  });
 
-  it('lists every Teensy Trouble Brewing character once: 6 Townsfolk, 2 Outsiders, 2 Minions, a Demon, and a Fabled', () => {
+  it('lists every Laissez Un Faire character once: 6 Townsfolk, 2 Outsiders, 2 Minions, and a Demon', () => {
+    expect(count(LAISSEZ_UN_FAIRE, 'Townsfolk')).toBe(6);
+    expect(count(LAISSEZ_UN_FAIRE, 'Outsider')).toBe(2);
+    expect(count(LAISSEZ_UN_FAIRE, 'Minion')).toBe(2);
+    expect(count(LAISSEZ_UN_FAIRE, 'Demon')).toBe(1);
+    expect(LAISSEZ_UN_FAIRE.characters.length).toBe(11);
+    expect(new Set(LAISSEZ_UN_FAIRE.characters.map(character => character.id)).size).toBe(11);
+  });
+
+  it('lists every Teensy Trouble Brewing character once: 6 Townsfolk, 2 Outsiders, 2 Minions, a Demon, and 2 Fabled', () => {
     expect(count(TEENSY_TROUBLE_BREWING, 'Townsfolk')).toBe(6);
     expect(count(TEENSY_TROUBLE_BREWING, 'Outsider')).toBe(2);
     expect(count(TEENSY_TROUBLE_BREWING, 'Minion')).toBe(2);
     expect(count(TEENSY_TROUBLE_BREWING, 'Demon')).toBe(1);
-    expect(count(TEENSY_TROUBLE_BREWING, 'Fabled')).toBe(1);
-    expect(TEENSY_TROUBLE_BREWING.characters.length).toBe(12);
-    expect(new Set(TEENSY_TROUBLE_BREWING.characters.map(character => character.id)).size).toBe(12);
+    expect(count(TEENSY_TROUBLE_BREWING, 'Fabled')).toBe(2);
+    expect(TEENSY_TROUBLE_BREWING.characters.length).toBe(13);
+    expect(new Set(TEENSY_TROUBLE_BREWING.characters.map(character => character.id)).size).toBe(13);
   });
 
   it('lists every character from the other scripts in "All", with the Djinn in place of each script\'s own', () => {

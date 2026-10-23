@@ -383,17 +383,18 @@ describe('CharacterSheetComponent', () => {
     expect(names('fabled')).toEqual(['Djinn, One in one out', 'Spirit of Ivory']);
   });
 
-  it('lays out the No Greater Joy characters as on its PDF, with no travelers', () => {
+  it('lays out the No Greater Joy characters as on its PDF, with the Toymaker and no travelers', () => {
     fixture.componentInstance.selectScript(NO_GREATER_JOY);
     fixture.detectChanges();
-    expect(headings()).toEqual(['Townsfolk', 'Outsiders', 'Minions', 'Demons']);
+    expect(headings()).toEqual(['Townsfolk', 'Outsiders', 'Minions', 'Demons', 'Fabled']);
     expect(columns('townsfolk')).toEqual([['Clockmaker', 'Investigator', 'Empath'], ['Chambermaid', 'Artist', 'Sage']]);
     expect(columns('outsiders')).toEqual([['Drunk'], ['Klutz']]);
     expect(columns('minions')).toEqual([['Scarlet Woman'], ['Baron']]);
     expect(columns('demons')).toEqual([['Imp'], []]);
+    expect(names('fabled')).toEqual(['Toymaker']);
   });
 
-  it('lists the Race to the Bottom characters in the order of its single-column PDF, with its travelers and Fabled', () => {
+  it('lists the Race to the Bottom characters in the order of its single-column PDF, with its travelers, its Fabled, and the Toymaker', () => {
     fixture.componentInstance.selectScript(RACE_TO_THE_BOTTOM);
     fixture.detectChanges();
     expect(headings()).toEqual(['Townsfolk', 'Outsiders', 'Minions', 'Demons', 'Travelers', 'Fabled']);
@@ -402,17 +403,18 @@ describe('CharacterSheetComponent', () => {
     expect(names('minions')).toEqual(['Spy', 'Scarlet Woman']);
     expect(names('demons')).toEqual(['Vortox']);
     expect(names('travelers')).toEqual(['Barista', 'Harlot', 'Beggar', 'Scapegoat', 'Bishop']);
-    expect(names('fabled')).toEqual(['Doomsayer', 'Sentinel']);
+    expect(names('fabled')).toEqual(['Doomsayer', 'Sentinel', 'Toymaker']);
   });
 
-  it('lays out the Over the River and Laissez Un Faire characters as on their PDFs, with no travelers', () => {
+  it('lays out the Over the River characters as on its PDF, with the Toymaker and no travelers, and Laissez Un Faire with neither', () => {
     fixture.componentInstance.selectScript(OVER_THE_RIVER);
     fixture.detectChanges();
-    expect(headings()).toEqual(['Townsfolk', 'Outsiders', 'Minions', 'Demons']);
+    expect(headings()).toEqual(['Townsfolk', 'Outsiders', 'Minions', 'Demons', 'Fabled']);
     expect(columns('townsfolk')).toEqual([['Grandmother', 'Clockmaker', 'Innkeeper'], ['Snake Charmer', 'Professor', 'Slayer']]);
     expect(columns('outsiders')).toEqual([['Lunatic'], ['Recluse']]);
     expect(columns('minions')).toEqual([['Godfather'], ['Spy']]);
     expect(columns('demons')).toEqual([['Imp'], []]);
+    expect(names('fabled')).toEqual(['Toymaker']);
 
     fixture.componentInstance.selectScript(LAISSEZ_UN_FAIRE);
     fixture.detectChanges();
@@ -423,7 +425,7 @@ describe('CharacterSheetComponent', () => {
     expect(columns('demons')).toEqual([['Leviathan'], []]);
   });
 
-  it('lays out the Teensy Trouble Brewing characters as on its PDF, with its Fabled and no travelers', () => {
+  it('lays out the Teensy Trouble Brewing characters as on its PDF, with its Fabled, the Toymaker, and no travelers', () => {
     fixture.componentInstance.selectScript(TEENSY_TROUBLE_BREWING);
     fixture.detectChanges();
     expect(headings()).toEqual(['Townsfolk', 'Outsiders', 'Minions', 'Demons', 'Fabled']);
@@ -431,7 +433,7 @@ describe('CharacterSheetComponent', () => {
     expect(columns('outsiders')).toEqual([['Drunk'], ['Recluse']]);
     expect(columns('minions')).toEqual([['Poisoner'], ['Spy']]);
     expect(columns('demons')).toEqual([['Imp'], []]);
-    expect(names('fabled')).toEqual(['Sentinel']);
+    expect(names('fabled')).toEqual(['Sentinel', 'Toymaker']);
   });
 
   it("links to the script's night order beneath its last group, only when it has one", () => {
