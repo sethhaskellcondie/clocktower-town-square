@@ -4,6 +4,7 @@ import { NightOrderStep } from '../player-aids/player-aid';
 import {
   AMNESIAC,
   ARTIST,
+  ASSASSIN,
   BAD_MOON_RISING_CHARACTERS,
   BALLOONIST,
   BARISTA,
@@ -14,6 +15,7 @@ import {
   CHAMBERMAID,
   CLOCKMAKER,
   COURTIER,
+  DEVILS_ADVOCATE,
   DOOMSAYER,
   DREAMER,
   DRUNK,
@@ -21,6 +23,9 @@ import {
   EXPERIMENTAL_CHARACTERS,
   FABLED_AND_LORIC_CHARACTERS,
   FISHERMAN,
+  FOOL,
+  FORTUNE_TELLER,
+  GAMBLER,
   GOBLIN,
   GODFATHER,
   GRANDMOTHER,
@@ -30,12 +35,18 @@ import {
   INVESTIGATOR,
   KLUTZ,
   LEVIATHAN,
+  LIBRARIAN,
   LUNATIC,
   MAYOR,
+  MONK,
+  MOONCHILD,
   MUTANT,
+  POISONER,
   PROFESSOR,
+  RAVENKEEPER,
   RECLUSE,
   SAGE,
+  SAINT,
   SAVANT,
   SCAPEGOAT,
   SCARLET_WOMAN,
@@ -45,6 +56,7 @@ import {
   SNAKE_CHARMER,
   SPY,
   TROUBLE_BREWING_CHARACTERS,
+  UNDERTAKER,
   VORTOX,
   WIDOW,
 } from '../character-sheets/character-library';
@@ -201,6 +213,89 @@ const SNAKE_CHARMER_STEP: NightOrderStep = {
   ],
 };
 const AMNESIAC_STEP: NightOrderStep = { character: AMNESIAC, reminder: "Do whatever needs to be done to satisfy the Amnesiac's ability." };
+const GRANDMOTHER_FIRST_NIGHT: NightOrderStep = { character: GRANDMOTHER, reminder: 'Point to the grandchild player & show their character token.' };
+const GRANDMOTHER_OTHER_NIGHTS: NightOrderStep = { character: GRANDMOTHER, reminder: 'If the grandchild was killed by the Demon, the Grandmother dies too.' };
+const POISONER_STEP: NightOrderStep = { character: POISONER, reminder: 'The Poisoner chooses a player.' };
+const DEVILS_ADVOCATE_STEP: NightOrderStep = { character: DEVILS_ADVOCATE, reminder: "The Devil's Advocate chooses a living player." };
+const FORTUNE_TELLER_STEP: NightOrderStep = {
+  character: FORTUNE_TELLER,
+  reminder: ['The Fortune Teller chooses 2 players. Nod if either is the Demon (or the ', { text: 'RED HERRING', style: 'bold' }, ').'],
+};
+
+// A custom script, in the order its PDF is read. Its PDF balances the
+// Townsfolk columns by height, 6 on the left and 7 on the right, but the
+// sheet's left column takes the odd one out, so the Mayor moves from the foot
+// of the right column to the foot of the left, keeping every other Townsfolk
+// on its PDF row.
+export const EVERYONE_CAN_PLAY = new Script({
+  id: 'everyone-can-play',
+  name: 'Everyone Can Play',
+  author: 'Ben Burns',
+  kind: 'Custom',
+  characters: asOnPdf([
+    LIBRARIAN,
+    CLOCKMAKER,
+    GRANDMOTHER,
+    FORTUNE_TELLER,
+    EMPATH,
+    MONK,
+    MAYOR,
+    UNDERTAKER,
+    GAMBLER,
+    ARTIST,
+    SLAYER,
+    FOOL,
+    RAVENKEEPER,
+    DRUNK,
+    RECLUSE,
+    SAINT,
+    MOONCHILD,
+    BARON,
+    POISONER,
+    ASSASSIN,
+    DEVILS_ADVOCATE,
+    SPY,
+    SCARLET_WOMAN,
+    IMP,
+  ]),
+  nightOrder: {
+    firstNight: [
+      DUSK,
+      MINION_INFO,
+      DEMON_INFO,
+      POISONER_STEP,
+      DEVILS_ADVOCATE_STEP,
+      {
+        character: LIBRARIAN,
+        reminder: ['Show the Outsider character token. Point to both the ', { text: 'OUTSIDER', style: 'bold' }, ' and ', { text: 'WRONG', style: 'bold' }, ' players.'],
+      },
+      { character: EMPATH, reminder: 'Give a finger signal.' },
+      FORTUNE_TELLER_STEP,
+      GRANDMOTHER_FIRST_NIGHT,
+      { character: CLOCKMAKER, reminder: 'Give a finger signal.' },
+      SPY_STEP,
+      DAWN,
+    ],
+    otherNights: [
+      DUSK,
+      POISONER_STEP,
+      { character: GAMBLER, reminder: 'The Gambler chooses a player & a character.' },
+      { character: MONK, reminder: 'The Monk chooses a player.' },
+      DEVILS_ADVOCATE_STEP,
+      SCARLET_WOMAN_OTHER_NIGHTS,
+      IMP_OTHER_NIGHTS,
+      { character: ASSASSIN, reminder: 'The Assassin might choose a player.' },
+      { character: MOONCHILD, reminder: 'If the Moonchild is due to kill a good player, they die.' },
+      GRANDMOTHER_OTHER_NIGHTS,
+      { character: RAVENKEEPER, reminder: "If the Ravenkeeper died tonight, the Ravenkeeper chooses a player. Show that player's character token." },
+      { character: EMPATH, reminder: 'Give a finger signal.' },
+      FORTUNE_TELLER_STEP,
+      { character: UNDERTAKER, reminder: 'If a player was executed today, show their character token.' },
+      SPY_STEP,
+      DAWN,
+    ],
+  },
+});
 
 // A custom Teensyville script, in the order its PDF is read
 export const NO_GREATER_JOY = new Script({
@@ -337,7 +432,7 @@ export const OVER_THE_RIVER = new Script({
       LUNATIC_FIRST_NIGHT,
       SNAKE_CHARMER_STEP,
       { character: GODFATHER, reminder: 'Show the character tokens of all in-play Outsiders.' },
-      { character: GRANDMOTHER, reminder: 'Point to the grandchild player & show their character token.' },
+      GRANDMOTHER_FIRST_NIGHT,
       { character: CLOCKMAKER, reminder: 'Give a finger signal.' },
       SPY_STEP,
       DAWN,
@@ -350,7 +445,7 @@ export const OVER_THE_RIVER = new Script({
       IMP_OTHER_NIGHTS,
       { character: GODFATHER, reminder: 'If an Outsider died today, the Godfather chooses a player.' },
       { character: PROFESSOR, reminder: 'The Professor might choose a dead player.' },
-      { character: GRANDMOTHER, reminder: 'If the grandchild was killed by the Demon, the Grandmother dies too.' },
+      GRANDMOTHER_OTHER_NIGHTS,
       SPY_STEP,
       DAWN,
     ],

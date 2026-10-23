@@ -1,6 +1,7 @@
 import {
   ALL_SCRIPT,
   BAD_MOON_RISING,
+  EVERYONE_CAN_PLAY,
   EXPERIMENTAL,
   FABLED_AND_LORIC,
   LAISSEZ_UN_FAIRE,
@@ -15,13 +16,19 @@ import { NightOrderStep } from '../player-aids/player-aid';
 
 describe('Script library', () => {
   const baseScripts = [TROUBLE_BREWING, BAD_MOON_RISING, SECTS_AND_VIOLETS];
+  const customScripts = [EVERYONE_CAN_PLAY];
   const teensyvilleScripts = [NO_GREATER_JOY, RACE_TO_THE_BOTTOM, OVER_THE_RIVER, LAISSEZ_UN_FAIRE];
-  const otherScripts = [...baseScripts, EXPERIMENTAL, FABLED_AND_LORIC, ...teensyvilleScripts];
+  // The custom and Teensyville scripts, each made from its own PDF
+  const pdfScripts = [...customScripts, ...teensyvilleScripts];
+  const otherScripts = [...baseScripts, EXPERIMENTAL, FABLED_AND_LORIC, ...pdfScripts];
   const count = (script: Script, type: string) => script.characters.filter(character => character.type === type).length;
 
-  it('marks the official scripts as Base, the Teensyville scripts as Teensyville, and "All", Experimental, and Fabled and Loric as Reference', () => {
+  it('marks the official scripts as Base, Everyone Can Play as Custom, the Teensyville scripts as Teensyville, and "All", Experimental, and Fabled and Loric as Reference', () => {
     for (const script of baseScripts) {
       expect(script.kind).withContext(script.name).toBe('Base');
+    }
+    for (const script of customScripts) {
+      expect(script.kind).withContext(script.name).toBe('Custom');
     }
     for (const script of teensyvilleScripts) {
       expect(script.kind).withContext(script.name).toBe('Teensyville');
@@ -31,19 +38,31 @@ describe('Script library', () => {
     }
   });
 
-  it('credits each Teensyville script to its author, and no other script to one', () => {
+  it('credits each custom and Teensyville script to its author, and no other script to one', () => {
+    expect(EVERYONE_CAN_PLAY.author).toBe('Ben Burns');
     expect(NO_GREATER_JOY.author).toBe('Steven Medway');
     expect(RACE_TO_THE_BOTTOM.author).toBe('Evin Donahoe');
     expect(OVER_THE_RIVER.author).toBe('Andrew Nathenson');
     expect(LAISSEZ_UN_FAIRE.author).toBe('Steven Medway');
-    for (const script of [ALL_SCRIPT, ...otherScripts].filter(script => !teensyvilleScripts.includes(script))) {
+    for (const script of [ALL_SCRIPT, ...otherScripts].filter(script => !pdfScripts.includes(script))) {
       expect(script.author).withContext(script.name).toBeUndefined();
     }
   });
 
-  it('gives each Teensyville script the night order on its PDF, waking only its own characters, and no other script one', () => {
+  it('gives each custom and Teensyville script the night order on its PDF, waking only its own characters, and no other script one', () => {
     const names = (steps: readonly NightOrderStep[]) => steps.map(step => 'character' in step ? step.character.name : step.name);
     const expected: [Script, string[], string[]][] = [
+      [
+        EVERYONE_CAN_PLAY,
+        [
+          'Dusk', 'Minion info', 'Demon info', 'Poisoner', "Devil's Advocate", 'Librarian', 'Empath', 'Fortune Teller', 'Grandmother',
+          'Clockmaker', 'Spy', 'Dawn',
+        ],
+        [
+          'Dusk', 'Poisoner', 'Gambler', 'Monk', "Devil's Advocate", 'Scarlet Woman', 'Imp', 'Assassin', 'Moonchild', 'Grandmother',
+          'Ravenkeeper', 'Empath', 'Fortune Teller', 'Undertaker', 'Spy', 'Dawn',
+        ],
+      ],
       [
         NO_GREATER_JOY,
         ['Dusk', 'Investigator', 'Empath', 'Clockmaker', 'Chambermaid', 'Dawn'],
@@ -75,9 +94,18 @@ describe('Script library', () => {
       }
     }
 
-    for (const script of [ALL_SCRIPT, ...otherScripts].filter(script => !teensyvilleScripts.includes(script))) {
+    for (const script of [ALL_SCRIPT, ...otherScripts].filter(script => !pdfScripts.includes(script))) {
       expect(script.nightOrder).withContext(script.name).toBeUndefined();
     }
+  });
+
+  it('lists every Everyone Can Play character once: 13 Townsfolk, 4 Outsiders, 6 Minions, and a Demon', () => {
+    expect(count(EVERYONE_CAN_PLAY, 'Townsfolk')).toBe(13);
+    expect(count(EVERYONE_CAN_PLAY, 'Outsider')).toBe(4);
+    expect(count(EVERYONE_CAN_PLAY, 'Minion')).toBe(6);
+    expect(count(EVERYONE_CAN_PLAY, 'Demon')).toBe(1);
+    expect(EVERYONE_CAN_PLAY.characters.length).toBe(24);
+    expect(new Set(EVERYONE_CAN_PLAY.characters.map(character => character.id)).size).toBe(24);
   });
 
   it('lists every No Greater Joy character once: 6 Townsfolk, 2 Outsiders, 2 Minions, and a Demon', () => {

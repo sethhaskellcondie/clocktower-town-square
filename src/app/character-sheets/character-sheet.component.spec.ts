@@ -5,6 +5,7 @@ import { Script } from '../scripts/script';
 import {
   ALL_SCRIPT,
   BAD_MOON_RISING,
+  EVERYONE_CAN_PLAY,
   EXPERIMENTAL,
   FABLED_AND_LORIC,
   LAISSEZ_UN_FAIRE,
@@ -271,6 +272,7 @@ describe('CharacterSheetComponent', () => {
     ]);
     expect(sections).toEqual([
       ['Base', ['Trouble Brewing', 'Bad Moon Rising', 'Sects & Violets']],
+      ['Custom', ['Everyone Can Play']],
       ['Teensyville', ['No Greater Joy', 'Race to the Bottom', 'Over the River', 'Laissez Un Faire']],
       ['Reference', ['All', 'Experimental', 'Fabled and Loric']],
     ]);
@@ -304,6 +306,19 @@ describe('CharacterSheetComponent', () => {
     expect(names('townsfolk')[0]).toBe(ACROBAT.name);
     expect(names('travelers')).toEqual(['Cacklejack', 'Gangster', 'Gnome']);
     expect(el.querySelector(`#character_sheet_character_${ACROBAT.id} .sheet-character-ability`)?.textContent).toBe(ACROBAT.ability);
+  });
+
+  it('lays out the Everyone Can Play characters as on its PDF, with the Mayor at the foot of the left column, and no travelers', () => {
+    fixture.componentInstance.selectScript(EVERYONE_CAN_PLAY);
+    fixture.detectChanges();
+    expect(headings()).toEqual(['Townsfolk', 'Outsiders', 'Minions', 'Demons']);
+    expect(columns('townsfolk')).toEqual([
+      ['Librarian', 'Clockmaker', 'Grandmother', 'Fortune Teller', 'Empath', 'Monk', 'Mayor'],
+      ['Undertaker', 'Gambler', 'Artist', 'Slayer', 'Fool', 'Ravenkeeper'],
+    ]);
+    expect(columns('outsiders')).toEqual([['Drunk', 'Recluse'], ['Saint', 'Moonchild']]);
+    expect(columns('minions')).toEqual([['Baron', 'Poisoner', 'Assassin'], ["Devil's Advocate", 'Spy', 'Scarlet Woman']]);
+    expect(columns('demons')).toEqual([['Imp'], []]);
   });
 
   it('lays out the No Greater Joy characters as on its PDF, with no travelers', () => {
