@@ -1,4 +1,12 @@
 import { Character } from '../character-sheets/character';
+import { NightOrderStep } from '../player-aids/player-aid';
+
+// The order the Storyteller works through each night, written out once for
+// the first night and once for every night after it
+export interface NightOrder {
+  firstNight: readonly NightOrderStep[];
+  otherNights: readonly NightOrderStep[];
+}
 
 // A script is the set of characters a game is played with. Base scripts are
 // the official ones; any other script is a custom one. Picking a script on
@@ -12,13 +20,15 @@ export class Script {
   readonly base: boolean;
   readonly teensyville: boolean; // made for a small game of 5 or 6 players
   readonly characters: readonly Character[];
+  readonly nightOrder?: NightOrder; // linked beneath the characters on the sheet, if the script has one
 
-  constructor(config: { id: string; name: string; author?: string; base: boolean; teensyville: boolean; characters?: Character[] }) {
+  constructor(config: { id: string; name: string; author?: string; base: boolean; teensyville: boolean; characters?: Character[]; nightOrder?: NightOrder }) {
     this.id = config.id;
     this.name = config.name;
     this.author = config.author;
     this.base = config.base;
     this.teensyville = config.teensyville;
     this.characters = config.characters ?? [];
+    this.nightOrder = config.nightOrder;
   }
 }

@@ -479,21 +479,22 @@
     border-radius: 0;
   }
 
-  // A character's icon that opens its aid, glowing on hover to show it can
-  // be clicked
-  button.inline-character {
+  // A character's icon that opens its aid, in a paragraph or a night order,
+  // glowing on hover to show it can be clicked
+  button.inline-character,
+  button.aid-night-icon-btn {
     padding: 0;
     background: none;
     border: none;
     font: inherit;
     cursor: pointer;
 
-    img.inline-icon {
+    img {
       transition: filter 0.2s;
     }
 
-    &:hover img.inline-icon,
-    &:focus-visible img.inline-icon {
+    &:hover img,
+    &:focus-visible img {
       filter: drop-shadow(0 0 6px #d1b56a);
     }
   }
@@ -533,6 +534,37 @@
   p.aid-character-ability {
     margin: 0;
     color: #d1b56a;
+  }
+
+  // A night order lines up in three columns, as on the back of a script:
+  // the icons, the names, then the reminders, set off by a thin rule. Each
+  // step takes its columns from the list, so they line up from step to step.
+  .aid-night-order {
+    display: grid;
+    grid-template-columns: auto auto 1fr;
+    gap: 8px 12px;
+    padding: 0;
+    list-style: none;
+  }
+
+  .aid-night-step {
+    display: grid;
+    grid-column: 1 / -1;
+    grid-template-columns: subgrid;
+    align-items: center;
+    margin: 0;
+  }
+
+  .aid-night-icon {
+    display: block;
+    width: 2.6em;
+    height: 2.6em;
+    border-radius: 0;
+  }
+
+  .aid-night-reminder {
+    padding-left: 12px;
+    border-left: 1px solid rgba(209, 181, 106, 0.5);
   }
 }
 

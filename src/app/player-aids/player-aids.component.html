@@ -161,6 +161,26 @@
                 }
               </figure>
             }
+            <!-- Laid out as on the back of a script: each step's icon, its
+                 name, then the Storyteller's reminder -->
+            @case ('night-order') {
+              <ol class="aid-night-order">
+                @for (step of nightSteps(block.steps); track $index) {
+                  <li class="aid-night-step">
+                    @if (step.character; as character) {
+                      <button class="aid-night-icon-btn" [id]="'player_aid_night_' + character.id" (click)="showCharacter(character)"
+                        [attr.aria-label]="'Open the ' + character.name + ' player aid'">
+                        <img class="aid-night-icon" [src]="character.icon" alt="">
+                      </button>
+                    } @else {
+                      <img class="aid-night-icon" [src]="step.icon" alt="">
+                    }
+                    <strong class="aid-night-name">{{ step.name }}</strong>
+                    <span class="aid-night-reminder"><ng-container *ngTemplateOutlet="textTpl; context: { $implicit: step.reminder }" /></span>
+                  </li>
+                }
+              </ol>
+            }
           }
         }
       </div>

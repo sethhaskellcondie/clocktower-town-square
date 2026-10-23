@@ -6,7 +6,8 @@ export type PlayerAidBlock =
   | { type: 'heading'; text: string }
   | { type: 'text'; text: string | PlayerAidTextPart[] }
   | { type: 'list'; items: (string | PlayerAidTextPart[])[]; ordered?: boolean }
-  | { type: 'image'; src: string; alt: string; caption?: string };
+  | { type: 'image'; src: string; alt: string; caption?: string }
+  | { type: 'night-order'; steps: readonly NightOrderStep[] };
 
 // A paragraph can mix plain text with small inline icons, e.g. a character
 // icon right after the character's name, and with bold or struck-through
@@ -17,6 +18,14 @@ export type PlayerAidTextPart =
   | { icon: string; alt: string }
   | { character: Character }
   | { text: string; style: 'bold' | 'strike' };
+
+// A step of a night in a script's night order, with the Storyteller's
+// reminder of what to do: either a character they wake, whose icon opens
+// the character's aid, or one of the steps that isn't a character, like
+// Dusk and Dawn, with an icon of its own
+export type NightOrderStep =
+  | { character: Character; reminder: string | PlayerAidTextPart[] }
+  | { name: string; icon: string; reminder: string | PlayerAidTextPart[] };
 
 // An example Grimoire, for the characters that get to look inside it
 const GRIMOIRE_EXAMPLE: PlayerAidBlock = {

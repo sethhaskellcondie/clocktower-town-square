@@ -380,6 +380,30 @@
   height: var(--sheet-icon-size);
 }
 
+// The links to a script's night order sit beneath its last group, in gold
+// like the wiki link on a character's aid
+.sheet-night-order {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  padding: 8px 2px 2px;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  font-size: var(--sheet-name-size);
+}
+
+.sheet-night-link {
+  color: #d1b56a;
+
+  &:hover {
+    color: white;
+  }
+
+  &:focus-visible {
+    outline: 2px solid #d1b56a;
+    outline-offset: 2px;
+  }
+}
+
 .sheet-empty {
   color: rgba(255, 255, 255, 0.6);
   font-size: 14px;

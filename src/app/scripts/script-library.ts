@@ -1,8 +1,20 @@
 import { Script } from './script';
+import { NightOrderStep } from '../player-aids/player-aid';
 import {
+  ARTIST,
   BAD_MOON_RISING_CHARACTERS,
+  BARON,
+  CHAMBERMAID,
+  CLOCKMAKER,
+  DRUNK,
+  EMPATH,
   EXPERIMENTAL_CHARACTERS,
   FABLED_AND_LORIC_CHARACTERS,
+  IMP,
+  INVESTIGATOR,
+  KLUTZ,
+  SAGE,
+  SCARLET_WOMAN,
   SECTS_AND_VIOLETS_CHARACTERS,
   TROUBLE_BREWING_CHARACTERS,
 } from '../character-sheets/character-library';
@@ -69,4 +81,62 @@ export const FABLED_AND_LORIC = new Script({
   base: false,
   teensyville: false,
   characters: [...FABLED_AND_LORIC_CHARACTERS],
+});
+
+// Every night starts and ends the same way, whatever the script
+const DUSK: NightOrderStep = { name: 'Dusk', icon: 'assets/player_aids/icons/dusk.svg', reminder: 'Start the Night Phase.' };
+const DAWN: NightOrderStep = { name: 'Dawn', icon: 'assets/player_aids/icons/dawn.svg', reminder: 'Wait for a few seconds. End the Night Phase.' };
+
+// A custom Teensyville script, in the order of its character sheet
+export const NO_GREATER_JOY = new Script({
+  id: 'no-greater-joy',
+  name: 'No Greater Joy',
+  author: 'Steven Medway',
+  base: false,
+  teensyville: true,
+  characters: [
+    CLOCKMAKER,
+    INVESTIGATOR,
+    EMPATH,
+    CHAMBERMAID,
+    ARTIST,
+    SAGE,
+    DRUNK,
+    KLUTZ,
+    SCARLET_WOMAN,
+    BARON,
+    IMP,
+  ],
+  nightOrder: {
+    firstNight: [
+      DUSK,
+      {
+        character: INVESTIGATOR,
+        reminder: ['Show the Minion character token. Point to both the ', { text: 'MINION', style: 'bold' }, ' and ', { text: 'WRONG', style: 'bold' }, ' players.'],
+      },
+      { character: EMPATH, reminder: 'Give a finger signal.' },
+      { character: CLOCKMAKER, reminder: 'Give a finger signal.' },
+      { character: CHAMBERMAID, reminder: 'The Chambermaid chooses 2 living players. Give a finger signal.' },
+      DAWN,
+    ],
+    otherNights: [
+      DUSK,
+      {
+        character: SCARLET_WOMAN,
+        reminder: ['If the Scarlet Woman became the Demon today, show them the ', { text: 'YOU ARE', style: 'bold' }, ' token, then the Demon token.'],
+      },
+      {
+        character: IMP,
+        reminder: [
+          'The Imp chooses a player. • If the Imp chose themselves: Replace 1 alive Minion token with a spare Imp token. Put the old Imp to sleep. Wake the new Imp. Show the ',
+          { text: 'YOU ARE', style: 'bold' },
+          ' token, then show the Imp token.',
+        ],
+      },
+      { character: SAGE, reminder: 'If the Demon killed the Sage, wake the Sage and point to 2 players, 1 of which is the Demon.' },
+      { character: EMPATH, reminder: 'Give a finger signal.' },
+      { character: CHAMBERMAID, reminder: 'The Chambermaid chooses 2 living players. Give a finger signal.' },
+      DAWN,
+    ],
+  },
 });

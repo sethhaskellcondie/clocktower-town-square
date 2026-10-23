@@ -1,7 +1,7 @@
 import { Component, ElementRef, HostListener, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { NgTemplateOutlet } from '@angular/common';
 import { Character } from '../character-sheets/character';
-import { PlayerAid, PlayerAidTextPart } from './player-aid';
+import { NightOrderStep, PlayerAid, PlayerAidTextPart } from './player-aid';
 import { PlayerAidShelf } from './player-aid-shelf';
 
 @Component({
@@ -68,6 +68,14 @@ export class PlayerAidsComponent {
   textParts(text: string | PlayerAidTextPart[]): { text?: string; icon?: string; alt?: string; character?: Character; style?: 'bold' | 'strike' }[] {
     const parts = typeof text === 'string' ? [text] : text;
     return parts.map(part => typeof part === 'string' ? { text: part } : part);
+  }
+
+  // Flatten a night order's steps the same way, giving a character's step
+  // the character's name and icon
+  nightSteps(steps: readonly NightOrderStep[]): { name: string; icon: string; character?: Character; reminder: string | PlayerAidTextPart[] }[] {
+    return steps.map(step => 'character' in step
+      ? { name: step.character.name, icon: step.character.icon, character: step.character, reminder: step.reminder }
+      : step);
   }
 
   // Clicking anywhere outside the shelf closes it. The toggle button and the

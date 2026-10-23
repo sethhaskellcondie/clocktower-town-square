@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+  <!-- A crescent moon and stars on a night sky, as the night order starts -->
+  <mask id="crescent">
+    <rect width="100" height="100" fill="white"/>
+    <circle cx="56" cy="44" r="13" fill="black"/>
+  </mask>
+  <circle cx="50" cy="50" r="27" fill="#2b1d3a" stroke="#f1ebdc" stroke-width="3"/>
+  <circle cx="47" cy="52" r="15" fill="#f1ebdc" mask="url(#crescent)"/>
+  <circle cx="62" cy="61" r="1.6" fill="#f1ebdc"/>
+  <circle cx="66" cy="38" r="1.2" fill="#f1ebdc"/>
+  <circle cx="38" cy="33" r="1" fill="#f1ebdc"/>
+</svg>

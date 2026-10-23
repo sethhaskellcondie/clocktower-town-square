@@ -229,6 +229,38 @@ describe('PlayerAidsComponent', () => {
     expect(paragraph?.querySelector('strong')?.textContent).toBe('another player');
   });
 
+  it("lays out a night order's steps with their icons, names, and reminders, a character's icon opening its aid", () => {
+    fixture.componentInstance.shelf.show(new PlayerAid({
+      id: 'night',
+      title: 'First Night',
+      blocks: [{
+        type: 'night-order',
+        steps: [
+          { name: 'Dusk', icon: 'assets/player_aids/icons/dusk.svg', reminder: 'Start the Night Phase.' },
+          { character: BUTLER, reminder: ['The Butler chooses their ', { text: 'MASTER', style: 'bold' }, '.'] },
+        ],
+      }],
+    }));
+    fixture.detectChanges();
+    const steps = el.querySelectorAll('.aid-modal-body ol.aid-night-order > li.aid-night-step');
+    expect(steps.length).toBe(2);
+
+    expect(steps[0].querySelector('img.aid-night-icon')?.getAttribute('src')).toBe('assets/player_aids/icons/dusk.svg');
+    expect(steps[0].querySelector('button')).toBeNull();
+    expect(steps[0].querySelector('.aid-night-name')?.textContent).toBe('Dusk');
+    expect(steps[0].querySelector('.aid-night-reminder')?.textContent).toBe('Start the Night Phase.');
+
+    const icon = steps[1].querySelector('button.aid-night-icon-btn');
+    expect(icon?.getAttribute('aria-label')).toBe('Open the Butler player aid');
+    expect(icon?.querySelector('img.aid-night-icon')?.getAttribute('src')).toBe(BUTLER.icon);
+    expect(steps[1].querySelector('.aid-night-name')?.textContent).toBe('Butler');
+    expect(steps[1].querySelector('.aid-night-reminder')?.textContent).toBe('The Butler chooses their MASTER.');
+    expect(steps[1].querySelector('.aid-night-reminder strong')?.textContent).toBe('MASTER');
+
+    click('#player_aid_night_butler');
+    expect(el.querySelector('.aid-modal h2')?.textContent?.replace(/\s+/g, ' ').trim()).toBe('Butler (Outsider)');
+  });
+
   it('renders a list block as a bulleted list', () => {
     fixture.componentInstance.shelf.show(new PlayerAid({
       id: 'listed',

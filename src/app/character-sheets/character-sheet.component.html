@@ -63,5 +63,12 @@
     } @empty {
       <div class="sheet-empty">No characters yet.</div>
     }
+    <!-- Links rather than buttons, so they read as part of the sheet -->
+    @if (activeScript.nightOrder) {
+      <div class="sheet-night-order">
+        <a id="character_sheet_first_night" class="sheet-night-link" href="#" (click)="$event.preventDefault(); showNightOrder('first')">First Night</a>
+        <a id="character_sheet_other_nights" class="sheet-night-link" href="#" (click)="$event.preventDefault(); showNightOrder('other')">Other Nights</a>
+      </div>
+    }
   </div>
 </nav>
