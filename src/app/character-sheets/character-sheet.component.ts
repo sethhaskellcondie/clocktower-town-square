@@ -38,7 +38,6 @@ const SHEET_SCRIPTS: Script[] = [ALL_SCRIPT, TROUBLE_BREWING, BAD_MOON_RISING, S
 // shows the characters of the picked script grouped by type
 @Component({
   selector: 'app-character-sheet',
-  standalone: true,
   templateUrl: './character-sheet.component.html',
   changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './character-sheet.component.scss'

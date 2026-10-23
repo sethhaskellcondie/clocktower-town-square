@@ -8,7 +8,6 @@ const REASON_ROTATION_MS = 6000;
 // slide and grow between modes; the service decides which mode it's in.
 @Component({
   selector: 'app-attract-banner',
-  standalone: true,
   templateUrl: './attract-banner.component.html',
   changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './attract-banner.component.scss'

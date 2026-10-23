@@ -5,7 +5,6 @@ import { DayTimerService } from './day-timer.service';
 // time, and blank again once "Time's up" has finished.
 @Component({
   selector: 'app-day-timer',
-  standalone: true,
   templateUrl: './day-timer.component.html',
   changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './day-timer.component.scss'

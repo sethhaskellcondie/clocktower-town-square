@@ -1,13 +1,12 @@
 import { Component, ElementRef, HostListener, ViewChild, ChangeDetectionStrategy } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { NgTemplateOutlet } from '@angular/common';
 import { Character } from '../character-sheets/character';
 import { PlayerAid, PlayerAidTextPart } from './player-aid';
 import { PlayerAidShelf } from './player-aid-shelf';
 
 @Component({
   selector: 'app-player-aids',
-  standalone: true,
-  imports: [CommonModule],
+  imports: [NgTemplateOutlet],
   templateUrl: './player-aids.component.html',
   changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './player-aids.component.scss'

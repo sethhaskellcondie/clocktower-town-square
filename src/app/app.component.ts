@@ -1,5 +1,5 @@
 import { Component, HostListener, OnDestroy, QueryList, ViewChild, ViewChildren, ChangeDetectionStrategy } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { PlayerComponent } from './player/player.component';
 import { TravelerComponent } from './traveler/traveler.component';
 import { LandmarkComponent } from './landmark/landmark.component';
@@ -39,13 +39,12 @@ interface DeathToken {
 
 @Component({
   selector: 'app-root',
-  imports: [CommonModule, PlayerComponent, TravelerComponent, LandmarkComponent, PlayerAidsComponent, CharacterSheetComponent, AttractBannerComponent, DayTimerComponent],
+  imports: [NgClass, PlayerComponent, TravelerComponent, LandmarkComponent, PlayerAidsComponent, CharacterSheetComponent, AttractBannerComponent, DayTimerComponent],
   templateUrl: './app.component.html',
   changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './app.component.scss'
 })
 export class AppComponent implements OnDestroy {
-  title = 'clocktower-town-square';
   players: PlayerData[] = [{ number: 1, initialX: 100, initialY: 100, texture: 1 }];
   travelers: TravelerData[] = [];
   landmarks: LandmarkData[] = [];

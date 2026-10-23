@@ -8,7 +8,6 @@ export type PlayerState = 'alive' | 'marked for death' | 'killed during the nigh
 
 @Component({
   selector: 'app-player',
-  standalone: true,
   imports: [FormsModule, CharacterIconComponent],
   templateUrl: './player.component.html',
   changeDetection: ChangeDetectionStrategy.Eager,

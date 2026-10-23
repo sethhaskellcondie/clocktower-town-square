@@ -6,7 +6,6 @@ import { LANDMARK_FABLED, LANDMARK_LORIC } from '../character-icon/character-opt
 
 @Component({
   selector: 'app-landmark',
-  standalone: true,
   imports: [FormsModule, CharacterIconComponent],
   templateUrl: './landmark.component.html',
   changeDetection: ChangeDetectionStrategy.Eager,

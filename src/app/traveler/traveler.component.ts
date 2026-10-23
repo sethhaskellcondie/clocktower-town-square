@@ -10,7 +10,6 @@ export type TravelerState = 'alive' | 'marked for death' | 'killed during the ni
 
 @Component({
   selector: 'app-traveler',
-  standalone: true,
   imports: [FormsModule, CharacterIconComponent],
   templateUrl: './traveler.component.html',
   changeDetection: ChangeDetectionStrategy.Eager,

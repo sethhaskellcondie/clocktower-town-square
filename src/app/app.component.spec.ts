@@ -21,12 +21,6 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have the 'clocktower-town-square' title`, () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app.title).toEqual('clocktower-town-square');
-  });
-
   it('should render the banner and the players table', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();

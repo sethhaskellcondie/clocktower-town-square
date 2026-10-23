@@ -7,7 +7,6 @@ import { CharacterOption } from './character-options';
 // otherwise clicking the icon opens the character's player aid.
 @Component({
   selector: 'app-character-icon',
-  standalone: true,
   templateUrl: './character-icon.component.html',
   changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './character-icon.component.scss'
