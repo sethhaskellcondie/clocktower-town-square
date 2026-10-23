@@ -19,25 +19,15 @@ describe('Script library', () => {
   const otherScripts = [...baseScripts, EXPERIMENTAL, FABLED_AND_LORIC, ...teensyvilleScripts];
   const count = (script: Script, type: string) => script.characters.filter(character => character.type === type).length;
 
-  it('marks the official scripts as base, and "All", Experimental, Fabled and Loric, and the Teensyville scripts as custom', () => {
+  it('marks the official scripts as Base, the Teensyville scripts as Teensyville, and "All", Experimental, and Fabled and Loric as Reference', () => {
     for (const script of baseScripts) {
-      expect(script.base).withContext(script.name).toBeTrue();
+      expect(script.kind).withContext(script.name).toBe('Base');
     }
-    for (const script of [ALL_SCRIPT, EXPERIMENTAL, FABLED_AND_LORIC, ...teensyvilleScripts]) {
-      expect(script.base).withContext(script.name).toBeFalse();
+    for (const script of teensyvilleScripts) {
+      expect(script.kind).withContext(script.name).toBe('Teensyville');
     }
-  });
-
-  it('marks only No Greater Joy, Race to the Bottom, Over the River, and Laissez Un Faire as Teensyville', () => {
-    for (const script of [ALL_SCRIPT, ...otherScripts]) {
-      expect(script.teensyville).withContext(script.name).toBe(teensyvilleScripts.includes(script));
-    }
-  });
-
-  it('marks only "All", Experimental, and Fabled and Loric as reference scripts', () => {
-    const referenceScripts = [ALL_SCRIPT, EXPERIMENTAL, FABLED_AND_LORIC];
-    for (const script of [ALL_SCRIPT, ...otherScripts]) {
-      expect(script.reference).withContext(script.name).toBe(referenceScripts.includes(script));
+    for (const script of [ALL_SCRIPT, EXPERIMENTAL, FABLED_AND_LORIC]) {
+      expect(script.kind).withContext(script.name).toBe('Reference');
     }
   });
 

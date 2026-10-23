@@ -1,7 +1,7 @@
 import { Component, ElementRef, EventEmitter, HostListener, Input, OnChanges, Output, SimpleChanges, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { Character } from './character';
 import { PlayerAid } from '../player-aids/player-aid';
-import { Script } from '../scripts/script';
+import { Script, ScriptKind } from '../scripts/script';
 import {
   ALL_SCRIPT,
   BAD_MOON_RISING,
@@ -44,16 +44,16 @@ const SHEET_GROUPS: readonly { id: string; title: string; type: string; team: Sh
 
 // The first script is the one the sheet opens on
 const SHEET_SCRIPTS: Script[] = [
-  ALL_SCRIPT,
   TROUBLE_BREWING,
   BAD_MOON_RISING,
   SECTS_AND_VIOLETS,
-  EXPERIMENTAL,
-  FABLED_AND_LORIC,
   NO_GREATER_JOY,
   RACE_TO_THE_BOTTOM,
   OVER_THE_RIVER,
   LAISSEZ_UN_FAIRE,
+  ALL_SCRIPT,
+  EXPERIMENTAL,
+  FABLED_AND_LORIC,
 ];
 
 // A heading in the script dropdown, with the scripts it covers listed under it
@@ -63,21 +63,14 @@ export interface ScriptSection {
   scripts: Script[];
 }
 
-// The headings the script dropdown lists the scripts under, in order. The
-// Teensyville and reference scripts are custom too, but each kind gets a
-// heading of its own, so Custom holds only the rest.
-const SCRIPT_SECTIONS: readonly { id: string; title: string; covers: (script: Script) => boolean }[] = [
-  { id: 'base', title: 'Base', covers: script => script.base },
-  { id: 'custom', title: 'Custom', covers: script => !script.base && !script.teensyville && !script.reference },
-  { id: 'teensyville', title: 'Teensyville', covers: script => script.teensyville },
-  { id: 'reference', title: 'Reference', covers: script => script.reference },
-];
+// The kinds of script the dropdown lists the scripts under, in order
+const SCRIPT_SECTIONS: readonly ScriptKind[] = ['Base', 'Custom', 'Teensyville', 'Reference'];
 
-// The scripts under their heading in the dropdown, leaving out any heading
-// with no scripts
+// The scripts under a heading for their kind in the dropdown, leaving out any
+// heading with no scripts
 export function sectionScripts(scripts: readonly Script[]): ScriptSection[] {
   return SCRIPT_SECTIONS
-    .map(({ id, title, covers }) => ({ id, title, scripts: scripts.filter(covers) }))
+    .map(kind => ({ id: kind.toLowerCase(), title: kind, scripts: scripts.filter(script => script.kind === kind) }))
     .filter(section => section.scripts.length > 0);
 }
 

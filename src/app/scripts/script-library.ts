@@ -67,14 +67,11 @@ function asOnPdf(characters: readonly Character[]): Character[] {
   });
 }
 
-// Every character, so a game on any script can find what it needs. It isn't
-// one of the official scripts, so it counts as a custom one.
+// Every character, so a game on any script can find what it needs
 export const ALL_SCRIPT = new Script({
   id: 'all',
   name: 'All',
-  base: false,
-  teensyville: false,
-  reference: true,
+  kind: 'Reference',
   characters: [
     ...TROUBLE_BREWING_CHARACTERS,
     ...BAD_MOON_RISING_CHARACTERS,
@@ -87,50 +84,38 @@ export const ALL_SCRIPT = new Script({
 export const TROUBLE_BREWING = new Script({
   id: 'trouble-brewing',
   name: 'Trouble Brewing',
-  base: true,
-  teensyville: false,
-  reference: false,
+  kind: 'Base',
   characters: asOnPdf(TROUBLE_BREWING_CHARACTERS),
 });
 
 export const BAD_MOON_RISING = new Script({
   id: 'bad-moon-rising',
   name: 'Bad Moon Rising',
-  base: true,
-  teensyville: false,
-  reference: false,
+  kind: 'Base',
   characters: asOnPdf(BAD_MOON_RISING_CHARACTERS),
 });
 
 export const SECTS_AND_VIOLETS = new Script({
   id: 'sects-and-violets',
   name: 'Sects & Violets',
-  base: true,
-  teensyville: false,
-  reference: false,
+  kind: 'Base',
   characters: asOnPdf(SECTS_AND_VIOLETS_CHARACTERS),
 });
 
-// The experimental characters, which aren't in any of the base scripts. They
-// aren't an official script of their own either, so it counts as a custom one.
+// The experimental characters, which aren't in any of the base scripts
 export const EXPERIMENTAL = new Script({
   id: 'experimental',
   name: 'Experimental',
-  base: false,
-  teensyville: false,
-  reference: true,
+  kind: 'Reference',
   characters: [...EXPERIMENTAL_CHARACTERS],
 });
 
 // The Fabled and Loric, which the Storyteller can add to a game on any
-// script. It holds no other types of character, and isn't an official
-// script, so it counts as a custom one.
+// script. It holds no other types of character.
 export const FABLED_AND_LORIC = new Script({
   id: 'fabled-and-loric',
   name: 'Fabled and Loric',
-  base: false,
-  teensyville: false,
-  reference: true,
+  kind: 'Reference',
   characters: [...FABLED_AND_LORIC_CHARACTERS],
 });
 
@@ -222,9 +207,7 @@ export const NO_GREATER_JOY = new Script({
   id: 'no-greater-joy',
   name: 'No Greater Joy',
   author: 'Steven Medway',
-  base: false,
-  teensyville: true,
-  reference: false,
+  kind: 'Teensyville',
   characters: asOnPdf([
     CLOCKMAKER,
     INVESTIGATOR,
@@ -271,9 +254,7 @@ export const RACE_TO_THE_BOTTOM = new Script({
   id: 'race-to-the-bottom',
   name: 'Race to the Bottom',
   author: 'Evin Donahoe',
-  base: false,
-  teensyville: true,
-  reference: false,
+  kind: 'Teensyville',
   characters: [
     CLOCKMAKER,
     EMPATH,
@@ -336,9 +317,7 @@ export const OVER_THE_RIVER = new Script({
   id: 'over-the-river',
   name: 'Over the River',
   author: 'Andrew Nathenson',
-  base: false,
-  teensyville: true,
-  reference: false,
+  kind: 'Teensyville',
   characters: asOnPdf([
     GRANDMOTHER,
     CLOCKMAKER,
@@ -384,9 +363,7 @@ export const LAISSEZ_UN_FAIRE = new Script({
   id: 'laissez-un-faire',
   name: 'Laissez Un Faire',
   author: 'Steven Medway',
-  base: false,
-  teensyville: true,
-  reference: false,
+  kind: 'Teensyville',
   characters: asOnPdf([
     BALLOONIST,
     SAVANT,

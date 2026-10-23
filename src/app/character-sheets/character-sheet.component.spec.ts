@@ -103,12 +103,14 @@ describe('CharacterSheetComponent', () => {
   });
 
   it('numbers every character on the All sheet once, from 1 to the last', () => {
+    fixture.componentInstance.selectScript(ALL_SCRIPT);
+    fixture.detectChanges();
     const numbers = Array.from(el.querySelectorAll('.sheet-character-number')).map(n => n.textContent?.trim());
     expect(numbers).toEqual(ALL_SCRIPT.characters.map((_, i) => String(i + 1)));
   });
 
   it("renumbers by where the characters fall on the picked script's sheet", () => {
-    fixture.componentInstance.selectScript(new Script({ id: 'small', name: 'Small', base: false, teensyville: false, reference: false, characters: [SCAPEGOAT, IMP, WASHERWOMAN] }));
+    fixture.componentInstance.selectScript(new Script({ id: 'small', name: 'Small', kind: 'Custom', characters: [SCAPEGOAT, IMP, WASHERWOMAN] }));
     fixture.detectChanges();
     const number = (id: string) => el.querySelector(`#character_sheet_character_${id} .sheet-character-number`)?.textContent;
     expect(number(WASHERWOMAN.id)).toBe('1');
@@ -118,11 +120,11 @@ describe('CharacterSheetComponent', () => {
 
   it('gives every number the width of the longest, so the icons line up', () => {
     const digits = () => (el.querySelector('.sheet-groups') as HTMLElement).style.getPropertyValue('--sheet-number-digits');
-    expect(digits()).toBe('3');
-    fixture.componentInstance.selectScript(TROUBLE_BREWING);
-    fixture.detectChanges();
     expect(digits()).toBe('2');
-    fixture.componentInstance.selectScript(new Script({ id: 'small', name: 'Small', base: false, teensyville: false, reference: false, characters: [WASHERWOMAN, IMP] }));
+    fixture.componentInstance.selectScript(ALL_SCRIPT);
+    fixture.detectChanges();
+    expect(digits()).toBe('3');
+    fixture.componentInstance.selectScript(new Script({ id: 'small', name: 'Small', kind: 'Custom', characters: [WASHERWOMAN, IMP] }));
     fixture.detectChanges();
     expect(digits()).toBe('1');
   });
@@ -185,6 +187,8 @@ describe('CharacterSheetComponent', () => {
   });
 
   it('colors the good headings apart from the evil ones, and the travelers apart from both', () => {
+    fixture.componentInstance.selectScript(ALL_SCRIPT);
+    fixture.detectChanges();
     expect(el.querySelector('#character_sheet_group_outsiders h2')?.classList).toContain('good');
     expect(el.querySelector('#character_sheet_group_minions h2')?.classList).toContain('evil');
     const travelers = el.querySelector('#character_sheet_group_travelers h2')?.classList;
@@ -250,14 +254,14 @@ describe('CharacterSheetComponent', () => {
   });
 
   it('keeps the size buttons on the first heading when a script has no Townsfolk', () => {
-    fixture.componentInstance.selectScript(new Script({ id: 'evil', name: 'Evil', base: false, teensyville: false, reference: false, characters: [IMP] }));
+    fixture.componentInstance.selectScript(new Script({ id: 'evil', name: 'Evil', kind: 'Custom', characters: [IMP] }));
     fixture.detectChanges();
     expect(el.querySelector('#character_sheet_group_demons #character_sheet_size_up')).not.toBeNull();
   });
 
-  it('picks the script from a dropdown, starting on All', () => {
+  it('picks the script from a dropdown, starting on Trouble Brewing', () => {
     const header = () => el.querySelector('#character_sheet_script_toggle');
-    expect(header()?.textContent).toContain('Script: All');
+    expect(header()?.textContent).toContain('Script: Trouble Brewing');
     expect(el.querySelector('.sheet-script-menu')).toBeNull();
 
     click('#character_sheet_script_toggle');
@@ -270,12 +274,12 @@ describe('CharacterSheetComponent', () => {
       ['Teensyville', ['No Greater Joy', 'Race to the Bottom', 'Over the River', 'Laissez Un Faire']],
       ['Reference', ['All', 'Experimental', 'Fabled and Loric']],
     ]);
-    expect(el.querySelector('#character_sheet_script_all')?.getAttribute('aria-selected')).toBe('true');
+    expect(el.querySelector('#character_sheet_script_trouble-brewing')?.getAttribute('aria-selected')).toBe('true');
 
-    click('#character_sheet_script_trouble-brewing');
+    click('#character_sheet_script_bad-moon-rising');
     expect(el.querySelector('.sheet-script-menu')).toBeNull();
-    expect(header()?.textContent).toContain('Script: Trouble Brewing');
-    expect(names('demons')).toEqual(['Imp']);
+    expect(header()?.textContent).toContain('Script: Bad Moon Rising');
+    expect(names('demons')).toEqual(['Zombuul', 'Shabaloth', 'Pukka', 'Po']);
   });
 
   it('lists the Bad Moon Rising and Sects & Violets characters on their own sheets', () => {
@@ -368,7 +372,7 @@ describe('CharacterSheetComponent', () => {
     expect(footer.querySelector('#character_sheet_author')?.textContent?.trim()).toBe('by Steven Medway');
 
     // A script with an author but no night order still gets the row
-    fixture.componentInstance.selectScript(new Script({ id: 'authored', name: 'Authored', author: 'Someone', base: false, teensyville: false, reference: false }));
+    fixture.componentInstance.selectScript(new Script({ id: 'authored', name: 'Authored', author: 'Someone', kind: 'Custom' }));
     fixture.detectChanges();
     expect(el.querySelector('.sheet-night-order')).toBeNull();
     expect(el.querySelector('#character_sheet_author')?.textContent?.trim()).toBe('by Someone');
@@ -417,17 +421,19 @@ describe('CharacterSheetComponent', () => {
   });
 
   it('lists the Fabled and Loric after the travelers on the All sheet', () => {
+    fixture.componentInstance.selectScript(ALL_SCRIPT);
+    fixture.detectChanges();
     expect(headings()).toEqual(['Townsfolk', 'Outsiders', 'Minions', 'Demons', 'Travelers', 'Fabled', 'Loric']);
   });
 
   it("shows only the picked script's characters, and only the types it has", () => {
     const component = fixture.componentInstance;
-    component.selectScript(new Script({ id: 'small', name: 'Small', base: false, teensyville: false, reference: false, characters: [WASHERWOMAN, IMP] }));
+    component.selectScript(new Script({ id: 'small', name: 'Small', kind: 'Custom', characters: [WASHERWOMAN, IMP] }));
     fixture.detectChanges();
     expect(headings()).toEqual(['Townsfolk', 'Demons']);
     expect(names('townsfolk')).toEqual(['Washerwoman']);
 
-    component.selectScript(new Script({ id: 'bare', name: 'Bare', base: false, teensyville: false, reference: false }));
+    component.selectScript(new Script({ id: 'bare', name: 'Bare', kind: 'Custom' }));
     fixture.detectChanges();
     expect(el.querySelector('.sheet-empty')?.textContent).toContain('No characters yet.');
 
@@ -447,7 +453,7 @@ describe('CharacterSheetComponent', () => {
   });
 
   it('lists custom scripts that are neither Teensyville nor reference under Custom, between Base and Teensyville', () => {
-    const custom = new Script({ id: 'custom', name: 'Custom', base: false, teensyville: false, reference: false });
+    const custom = new Script({ id: 'custom', name: 'Custom', kind: 'Custom' });
     const sections = sectionScripts([ALL_SCRIPT, NO_GREATER_JOY, custom, TROUBLE_BREWING, FABLED_AND_LORIC]);
     expect(sections.map(section => [section.title, section.scripts])).toEqual([
       ['Base', [TROUBLE_BREWING]],
