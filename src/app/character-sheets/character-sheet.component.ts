@@ -3,16 +3,21 @@ import { Character } from './character';
 import { PlayerAid } from '../player-aids/player-aid';
 import { Script, ScriptKind } from '../scripts/script';
 import {
+  A_GRIMM_CHORUS,
   ALL_SCRIPT,
   BAD_MOON_RISING,
   EVERYONE_CAN_PLAY,
   EXPERIMENTAL,
   FABLED_AND_LORIC,
+  HIDE_AND_SEEK,
   LAISSEZ_UN_FAIRE,
+  LUNAR_ECLIPSE,
   NO_GREATER_JOY,
+  ONE_IN_ONE_OUT,
   OVER_THE_RIVER,
   RACE_TO_THE_BOTTOM,
   SECTS_AND_VIOLETS,
+  TEENSY_TROUBLE_BREWING,
   TROUBLE_BREWING,
 } from '../scripts/script-library';
 
@@ -49,6 +54,11 @@ const SHEET_SCRIPTS: Script[] = [
   BAD_MOON_RISING,
   SECTS_AND_VIOLETS,
   EVERYONE_CAN_PLAY,
+  A_GRIMM_CHORUS,
+  HIDE_AND_SEEK,
+  LUNAR_ECLIPSE,
+  ONE_IN_ONE_OUT,
+  TEENSY_TROUBLE_BREWING,
   NO_GREATER_JOY,
   RACE_TO_THE_BOTTOM,
   OVER_THE_RIVER,

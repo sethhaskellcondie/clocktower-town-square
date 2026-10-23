@@ -2,7 +2,9 @@ import { Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Outpu
 import { FormsModule } from '@angular/forms';
 import { PlayerAid } from '../player-aids/player-aid';
 import { CharacterIconComponent } from '../character-icon/character-icon.component';
-import { LANDMARK_FABLED, LANDMARK_LORIC } from '../character-icon/character-options';
+import { CharacterOption, landmarkRows } from '../character-icon/character-options';
+import { Script } from '../scripts/script';
+import { ALL_SCRIPT } from '../scripts/script-library';
 
 @Component({
   selector: 'app-landmark',
@@ -20,7 +22,11 @@ export class LandmarkComponent implements OnInit {
   @Input() size: 'small' | 'medium' | 'large' = 'small';
   @Input() texture = 1;
   @Output() openAid = new EventEmitter<PlayerAid>();
-  readonly characterRows = [LANDMARK_FABLED, LANDMARK_LORIC];
+  // The Fabled offered follow the script picked on the character sheet
+  @Input() set script(script: Script) {
+    this.characterRows = landmarkRows(script);
+  }
+  characterRows: (readonly CharacterOption[])[] = landmarkRows(ALL_SCRIPT);
 
   // Dragging position
   positionX = 0;

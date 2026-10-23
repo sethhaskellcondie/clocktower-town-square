@@ -1,6 +1,6 @@
 import { PlayerAid } from './player-aid';
 import { Character } from '../character-sheets/character';
-import { CHEF, SPY, WIDOW } from '../character-sheets/character-library';
+import { CHEF, DJINN, DJINN_A_GRIMM_CHORUS, EXORCIST, PUKKA, SPY, SUMMONER, WIDOW, YAGGABABBLE } from '../character-sheets/character-library';
 
 describe('PlayerAid', () => {
   const character = new Character({
@@ -31,6 +31,25 @@ describe('PlayerAid', () => {
       const aid = new PlayerAid({ character });
       expect(aid.blocks).toEqual([jasmine.objectContaining({ type: 'image', src: 'assets/player_aids/spy_grimoire.jpg' })]);
     }
+  });
+
+  it("lists a script's jinxes beneath its Djinn, each after the icons of the characters it's between", () => {
+    const aid = new PlayerAid({ character: DJINN_A_GRIMM_CHORUS });
+    expect(aid.title).toBe('Djinn, A Grimm Chorus');
+    expect(aid.blocks).toEqual([
+      { type: 'heading', text: 'Jinxes' },
+      {
+        type: 'list',
+        items: [
+          [{ character: SUMMONER }, { character: PUKKA }, ' The Summoner may summon a Pukka on the 2nd night instead of the 3rd.'],
+          [{ character: YAGGABABBLE }, { character: EXORCIST }, ' If the Exorcist chooses the Yaggababble, the Yaggababble does not kill tonight.'],
+        ],
+      },
+    ]);
+  });
+
+  it('lists no jinxes beneath the Djinn of no script', () => {
+    expect(new PlayerAid({ character: DJINN }).blocks).toEqual([]);
   });
 
   it('is about no character when made of blocks', () => {

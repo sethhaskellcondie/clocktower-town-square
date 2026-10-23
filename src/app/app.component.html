@@ -135,5 +135,5 @@
 }
 
 @for (landmark of landmarks; track landmark.number) {
-  <app-landmark [size]="playerSize" [number]="landmark.number" [initialX]="landmark.initialX" [initialY]="landmark.initialY" [texture]="landmark.texture" (openAid)="playerAids?.show($event)"></app-landmark>
+  <app-landmark [size]="playerSize" [number]="landmark.number" [initialX]="landmark.initialX" [initialY]="landmark.initialY" [texture]="landmark.texture" [script]="sheet.activeScript" (openAid)="playerAids?.show($event)"></app-landmark>
 }

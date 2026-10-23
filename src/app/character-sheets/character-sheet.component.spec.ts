@@ -3,16 +3,21 @@ import { CharacterSheetComponent, sectionScripts } from './character-sheet.compo
 import { PlayerAid } from '../player-aids/player-aid';
 import { Script } from '../scripts/script';
 import {
+  A_GRIMM_CHORUS,
   ALL_SCRIPT,
   BAD_MOON_RISING,
   EVERYONE_CAN_PLAY,
   EXPERIMENTAL,
   FABLED_AND_LORIC,
+  HIDE_AND_SEEK,
   LAISSEZ_UN_FAIRE,
+  LUNAR_ECLIPSE,
   NO_GREATER_JOY,
+  ONE_IN_ONE_OUT,
   OVER_THE_RIVER,
   RACE_TO_THE_BOTTOM,
   SECTS_AND_VIOLETS,
+  TEENSY_TROUBLE_BREWING,
   TROUBLE_BREWING,
 } from '../scripts/script-library';
 import { ACROBAT, ANGEL, DEVIANT, GRANDMOTHER, IMP, SCAPEGOAT, VOUDON, WASHERWOMAN } from './character-library';
@@ -272,8 +277,8 @@ describe('CharacterSheetComponent', () => {
     ]);
     expect(sections).toEqual([
       ['Base', ['Trouble Brewing', 'Bad Moon Rising', 'Sects & Violets']],
-      ['Custom', ['Everyone Can Play']],
-      ['Teensyville', ['No Greater Joy', 'Race to the Bottom', 'Over the River', 'Laissez Un Faire']],
+      ['Custom', ['Everyone Can Play', 'A Grimm Chorus', 'Hide and Seek', 'Lunar Eclipse', 'One in one out']],
+      ['Teensyville', ['Teensy Trouble Brewing', 'No Greater Joy', 'Race to the Bottom', 'Over the River', 'Laissez Un Faire']],
       ['Reference', ['All', 'Experimental', 'Fabled and Loric']],
     ]);
     expect(el.querySelector('#character_sheet_script_trouble-brewing')?.getAttribute('aria-selected')).toBe('true');
@@ -321,6 +326,63 @@ describe('CharacterSheetComponent', () => {
     expect(columns('demons')).toEqual([['Imp'], []]);
   });
 
+  it('lays out the A Grimm Chorus characters as on its PDF, with its travelers and its Djinn', () => {
+    fixture.componentInstance.selectScript(A_GRIMM_CHORUS);
+    fixture.detectChanges();
+    expect(headings()).toEqual(['Townsfolk', 'Outsiders', 'Minions', 'Demons', 'Travelers', 'Fabled']);
+    expect(columns('townsfolk')).toEqual([
+      ['General', 'Village Idiot', 'Town Crier', 'Innkeeper', 'Gambler', 'Exorcist', 'Amnesiac'],
+      ['Nightwatchman', 'Slayer', 'Fisherman', 'Soldier', 'Minstrel', 'Cannibal'],
+    ]);
+    expect(columns('outsiders')).toEqual([['Damsel', 'Drunk'], ['Golem', 'Politician']]);
+    expect(columns('minions')).toEqual([['Godfather', 'Summoner'], ['Assassin', 'Scarlet Woman']]);
+    expect(columns('demons')).toEqual([['Yaggababble', 'Pukka'], ['Ojo', 'Po']]);
+    expect(names('travelers')).toEqual(['Thief', 'Harlot', 'Judge', 'Beggar', 'Scapegoat']);
+    expect(names('fabled')).toEqual(['Djinn, A Grimm Chorus']);
+  });
+
+  it('lays out the Hide and Seek characters as on its PDF, with no travelers or Fabled', () => {
+    fixture.componentInstance.selectScript(HIDE_AND_SEEK);
+    fixture.detectChanges();
+    expect(headings()).toEqual(['Townsfolk', 'Outsiders', 'Minions', 'Demons']);
+    expect(columns('townsfolk')).toEqual([
+      ['Noble', 'Librarian', 'Pixie', 'Preacher', 'Town Crier', 'Oracle', 'Undertaker'],
+      ['Dreamer', 'Seamstress', 'Artist', 'Huntsman', 'Ravenkeeper', 'Virgin'],
+    ]);
+    expect(columns('outsiders')).toEqual([['Damsel', 'Drunk'], ['Mutant', 'Goon']]);
+    expect(columns('minions')).toEqual([['Godfather', 'Mezepheles'], ['Poisoner', 'Cerenovus']]);
+    expect(columns('demons')).toEqual([['Pukka', 'Vigormortis'], ['Imp', 'Ojo']]);
+  });
+
+  it('lays out the Lunar Eclipse characters as on its PDF, with the Cannibal at the foot of the left column, its travelers, and its Fabled', () => {
+    fixture.componentInstance.selectScript(LUNAR_ECLIPSE);
+    fixture.detectChanges();
+    expect(headings()).toEqual(['Townsfolk', 'Outsiders', 'Minions', 'Demons', 'Travelers', 'Fabled']);
+    expect(columns('townsfolk')).toEqual([
+      ['Grandmother', 'Pixie', 'Sailor', 'Chambermaid', 'Mathematician', 'Innkeeper', 'Cannibal'],
+      ['Lycanthrope', 'Savant', 'Artist', 'Tea Lady', 'Magician', 'Mayor'],
+    ]);
+    expect(columns('outsiders')).toEqual([['Goon', 'Barber'], ['Lunatic', 'Puzzlemaster']]);
+    expect(columns('minions')).toEqual([['Godfather', "Devil's Advocate", 'Spy'], ['Assassin', 'Marionette']]);
+    expect(columns('demons')).toEqual([['No Dashii', 'Zombuul'], ['Vigormortis']]);
+    expect(names('travelers')).toEqual(['Barista', 'Harlot', 'Apprentice', 'Beggar', 'Voudon']);
+    expect(names('fabled')).toEqual(['Djinn, Lunar Eclipse', 'Spirit of Ivory']);
+  });
+
+  it('lays out the One in one out characters as on its PDF, with its Fabled and no travelers', () => {
+    fixture.componentInstance.selectScript(ONE_IN_ONE_OUT);
+    fixture.detectChanges();
+    expect(headings()).toEqual(['Townsfolk', 'Outsiders', 'Minions', 'Demons', 'Fabled']);
+    expect(columns('townsfolk')).toEqual([
+      ['Steward', 'Knight', 'High Priestess', 'Village Idiot', 'Snake Charmer', 'Fortune Teller', 'Oracle'],
+      ['Monk', 'Amnesiac', 'Fisherman', 'Seamstress', 'Farmer', 'Cannibal'],
+    ]);
+    expect(columns('outsiders')).toEqual([['Ogre', 'Goon'], ['Recluse', 'Drunk']]);
+    expect(columns('minions')).toEqual([['Poisoner', 'Harpy'], ['Spy', 'Mezepheles']]);
+    expect(columns('demons')).toEqual([['Kazali', 'Imp'], ['Ojo', 'Fang Gu']]);
+    expect(names('fabled')).toEqual(['Djinn, One in one out', 'Spirit of Ivory']);
+  });
+
   it('lays out the No Greater Joy characters as on its PDF, with no travelers', () => {
     fixture.componentInstance.selectScript(NO_GREATER_JOY);
     fixture.detectChanges();
@@ -359,6 +421,17 @@ describe('CharacterSheetComponent', () => {
     expect(columns('outsiders')).toEqual([['Mutant'], ['Lunatic']]);
     expect(columns('minions')).toEqual([['Widow'], ['Goblin']]);
     expect(columns('demons')).toEqual([['Leviathan'], []]);
+  });
+
+  it('lays out the Teensy Trouble Brewing characters as on its PDF, with its Fabled and no travelers', () => {
+    fixture.componentInstance.selectScript(TEENSY_TROUBLE_BREWING);
+    fixture.detectChanges();
+    expect(headings()).toEqual(['Townsfolk', 'Outsiders', 'Minions', 'Demons', 'Fabled']);
+    expect(columns('townsfolk')).toEqual([['Empath', 'Fortune Teller', 'Undertaker'], ['Monk', 'Slayer', 'Mayor']]);
+    expect(columns('outsiders')).toEqual([['Drunk'], ['Recluse']]);
+    expect(columns('minions')).toEqual([['Poisoner'], ['Spy']]);
+    expect(columns('demons')).toEqual([['Imp'], []]);
+    expect(names('fabled')).toEqual(['Sentinel']);
   });
 
   it("links to the script's night order beneath its last group, only when it has one", () => {

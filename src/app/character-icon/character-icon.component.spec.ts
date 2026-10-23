@@ -2,17 +2,33 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Type } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { CharacterIconComponent } from './character-icon.component';
-import { CharacterOption, LANDMARK_FABLED, LANDMARK_LORIC, PLAYER_FABLED, TRAVELER_CHARACTERS, travelerRows } from './character-options';
+import { CharacterOption, LANDMARK_FABLED, LANDMARK_LORIC, PLAYER_FABLED, TRAVELER_CHARACTERS, landmarkRows, travelerRows } from './character-options';
 import { PlayerAid } from '../player-aids/player-aid';
-import { ALL_SCRIPT, BAD_MOON_RISING, EXPERIMENTAL, NO_GREATER_JOY, RACE_TO_THE_BOTTOM, SECTS_AND_VIOLETS, TROUBLE_BREWING } from '../scripts/script-library';
+import { Script } from '../scripts/script';
+import {
+  A_GRIMM_CHORUS,
+  ALL_SCRIPT,
+  BAD_MOON_RISING,
+  EXPERIMENTAL,
+  HIDE_AND_SEEK,
+  LUNAR_ECLIPSE,
+  NO_GREATER_JOY,
+  ONE_IN_ONE_OUT,
+  RACE_TO_THE_BOTTOM,
+  SECTS_AND_VIOLETS,
+  TROUBLE_BREWING,
+} from '../scripts/script-library';
 import { PlayerComponent } from '../player/player.component';
 import { TravelerComponent } from '../traveler/traveler.component';
 import { LandmarkComponent } from '../landmark/landmark.component';
+import { DJINN, DJINN_A_GRIMM_CHORUS } from '../character-sheets/character-library';
 
 const TB_TRAVELERS = ['Scapegoat', 'Gunslinger', 'Beggar', 'Bureaucrat', 'Thief'];
 const BMR_TRAVELERS = ['Apprentice', 'Matron', 'Voudon', 'Judge', 'Bishop'];
 const SNV_TRAVELERS = ['Barista', 'Harlot', 'Butcher', 'Bone Collector', 'Deviant'];
 const EXPERIMENTAL_TRAVELERS = ['Gangster', 'Gnome', 'Cacklejack'];
+const LANDMARK_FABLED_NAMES = ['Fiddler', "Hell's Librarian", 'Toymaker', 'Djinn', 'Duchess', 'Fibbin', 'Sentinel', 'Spirit of Ivory', 'Deus ex Fiasco', 'Ferryman'];
+const LANDMARK_LORIC_NAMES = ['Big Wig', 'Bootlegger', 'Gardener', 'God of Ug', 'Hindu', 'Knaves', 'Pope', 'Storm Catcher', 'Tor', 'Ventriloquist', 'Zenomancer'];
 
 // Each token on the board offers its own set of character icons, a row at a
 // time. Travelers start on the "All" script, with a row for each script.
@@ -33,10 +49,7 @@ const TOKENS: { kind: string; component: Type<PlayerComponent | TravelerComponen
     kind: 'landmark',
     component: LandmarkComponent,
     tokenClass: '.landmark-square',
-    rows: [
-      ['Fiddler', "Hell's Librarian", 'Toymaker', 'Djinn', 'Duchess', 'Fibbin', 'Sentinel', 'Spirit of Ivory', 'Deus ex Fiasco', 'Ferryman'],
-      ['Big Wig', 'Bootlegger', 'Gardener', 'God of Ug', 'Hindu', 'Knaves', 'Pope', 'Storm Catcher', 'Tor', 'Ventriloquist', 'Zenomancer'],
-    ],
+    rows: [LANDMARK_FABLED_NAMES, LANDMARK_LORIC_NAMES],
   },
 ];
 
@@ -181,7 +194,19 @@ describe('Traveler options', () => {
     fixture.detectChanges();
     expect(pickerRows(el)).toEqual([['Scapegoat', 'Beggar', 'Bishop', 'Barista', 'Harlot']]);
 
+    fixture.componentRef.setInput('script', A_GRIMM_CHORUS);
+    fixture.detectChanges();
+    expect(pickerRows(el)).toEqual([['Scapegoat', 'Beggar', 'Thief', 'Judge', 'Harlot']]);
+
+    fixture.componentRef.setInput('script', LUNAR_ECLIPSE);
+    fixture.detectChanges();
+    expect(pickerRows(el)).toEqual([['Beggar', 'Apprentice', 'Voudon', 'Barista', 'Harlot']]);
+
     fixture.componentRef.setInput('script', NO_GREATER_JOY);
+    fixture.detectChanges();
+    expect(pickerRows(el)).toEqual([]);
+
+    fixture.componentRef.setInput('script', HIDE_AND_SEEK);
     fixture.detectChanges();
     expect(pickerRows(el)).toEqual([]);
   });
@@ -192,6 +217,51 @@ describe('Traveler options', () => {
     fixture.componentRef.setInput('script', ALL_SCRIPT);
     fixture.detectChanges();
     expect(pickerRows(el)).toEqual([TB_TRAVELERS, BMR_TRAVELERS, SNV_TRAVELERS, EXPERIMENTAL_TRAVELERS]);
+  });
+});
+
+describe('Landmark options', () => {
+  let fixture: ComponentFixture<LandmarkComponent>;
+  let el: HTMLElement;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({ imports: [LandmarkComponent] }).compileComponents();
+    fixture = TestBed.createComponent(LandmarkComponent);
+    el = fixture.nativeElement;
+    fixture.detectChanges();
+    el.querySelector('.landmark-square')!.dispatchEvent(new MouseEvent('contextmenu', { cancelable: true }));
+    fixture.detectChanges();
+    (el.querySelector('#landmark_1_character_add') as HTMLElement).click();
+    fixture.detectChanges();
+  });
+
+  // The landmark's Fabled, with a script's own Djinn in the Djinn's place
+  const withDjinn = (name: string) => LANDMARK_FABLED_NAMES.map(fabled => fabled === 'Djinn' ? name : fabled);
+
+  it("offers a script's own Djinn in the Djinn's place, only while that script is picked", () => {
+    const expected: [Script, string][] = [
+      [A_GRIMM_CHORUS, 'Djinn, A Grimm Chorus'],
+      [LUNAR_ECLIPSE, 'Djinn, Lunar Eclipse'],
+      [ONE_IN_ONE_OUT, 'Djinn, One in one out'],
+    ];
+    for (const [script, name] of expected) {
+      fixture.componentRef.setInput('script', script);
+      fixture.detectChanges();
+      expect(pickerRows(el)).withContext(script.name).toEqual([withDjinn(name), LANDMARK_LORIC_NAMES]);
+    }
+
+    for (const script of [HIDE_AND_SEEK, TROUBLE_BREWING, ALL_SCRIPT]) {
+      fixture.componentRef.setInput('script', script);
+      fixture.detectChanges();
+      expect(pickerRows(el)).withContext(script.name).toEqual([LANDMARK_FABLED_NAMES, LANDMARK_LORIC_NAMES]);
+    }
+  });
+
+  it("opens the script's own Djinn's aid, with its jinxes", () => {
+    const option = landmarkRows(A_GRIMM_CHORUS)[0].find(fabled => fabled.id === DJINN_A_GRIMM_CHORUS.id)!;
+    expect(option.aid.character).toBe(DJINN_A_GRIMM_CHORUS);
+    expect(option.aid.blocks).toContain({ type: 'heading', text: 'Jinxes' });
+    expect(landmarkRows(ALL_SCRIPT)[0].find(fabled => fabled.id === DJINN.id)?.aid.character).toBe(DJINN);
   });
 });
 

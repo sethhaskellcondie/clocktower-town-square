@@ -1,4 +1,4 @@
-import { Character } from '../character-sheets/character';
+import { Character, Jinx } from '../character-sheets/character';
 
 // A player aid is an ordered list of content blocks, so text and pictures
 // can be interleaved however the aid needs to read.
@@ -47,11 +47,21 @@ const CHARACTER_PICTURES: Record<string, PlayerAidBlock> = {
   widow: GRIMOIRE_EXAMPLE,
 };
 
+// A script's Djinn lists the script's jinxes beneath its notes, each after
+// the icons of the two characters it's between, as on the script's PDF
+function jinxBlocks(jinxes: readonly Jinx[]): PlayerAidBlock[] {
+  return [
+    { type: 'heading', text: 'Jinxes' },
+    { type: 'list', items: jinxes.map(({ characters: [first, second], rule }) => [{ character: first }, { character: second }, ` ${rule}`]) },
+  ];
+}
+
 // Each aid is created once in the library and can then be placed in as
 // many shelf sections as it's useful in. An aid is either made of blocks, or
 // is about a character, which is laid out the same way every time: titled by
 // the character's name, with its icon, ability, and notes as the content
-// (and, for a few characters, a picture beneath the notes).
+// (and, for a few characters, a picture beneath the notes, or for a script's
+// Djinn, the script's jinxes).
 export class PlayerAid {
   readonly id: string;
   readonly title: string;
@@ -67,8 +77,9 @@ export class PlayerAid {
     if ('character' in config) {
       this.id = config.character.id;
       this.title = config.character.name;
+      const jinxes = config.character.jinxes;
       const picture = CHARACTER_PICTURES[config.character.id];
-      this.blocks = picture ? [picture] : [];
+      this.blocks = [...(jinxes ? jinxBlocks(jinxes) : []), ...(picture ? [picture] : [])];
       this.character = config.character;
     } else {
       this.id = config.id;

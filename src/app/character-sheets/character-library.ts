@@ -1,4 +1,4 @@
-import { Character } from './character';
+import { Character, Jinx } from './character';
 
 // Every character, each created once and then listed in the scripts it's
 // played in. A character's player aid is made by passing it to a PlayerAid.
@@ -1944,3 +1944,38 @@ export const FABLED_AND_LORIC_CHARACTERS: readonly Character[] = [
   VENTRILOQUIST,
   ZENOMANCER,
 ];
+
+// A script with jinxes has a Djinn of its own, named for the script, which
+// holds the script's jinxes so its aid can list them. It's the Djinn in all
+// else.
+function scriptDjinn(scriptId: string, scriptName: string, jinxes: Jinx[]): Character {
+  return new Character({
+    id: `djinn-${scriptId}`,
+    name: `Djinn, ${scriptName}`,
+    icon: DJINN.icon,
+    type: DJINN.type,
+    ability: DJINN.ability,
+    link: DJINN.link,
+    jinxes,
+  });
+}
+
+// Each jinx is between the two characters it lists, in the order the
+// script's PDF shows their icons
+export const DJINN_A_GRIMM_CHORUS = scriptDjinn('a-grimm-chorus', 'A Grimm Chorus', [
+  { characters: [SUMMONER, PUKKA], rule: 'The Summoner may summon a Pukka on the 2nd night instead of the 3rd.' },
+  { characters: [YAGGABABBLE, EXORCIST], rule: 'If the Exorcist chooses the Yaggababble, the Yaggababble does not kill tonight.' },
+]);
+
+export const DJINN_LUNAR_ECLIPSE = scriptDjinn('lunar-eclipse', 'Lunar Eclipse', [
+  { characters: [MAGICIAN, MARIONETTE], rule: "If the Magician is alive, the Demon doesn't know which neighbor is the Marionette." },
+  { characters: [MAGICIAN, SPY], rule: "When the Spy sees the Grimoire, the Demon and Magician's character tokens are removed." },
+  { characters: [MATHEMATICIAN, CHAMBERMAID], rule: 'The Chambermaid can detect if the Mathematician will wake tonight.' },
+  { characters: [MATHEMATICIAN, LUNATIC], rule: 'The Mathematician learns if the Lunatic attacks a different player than the real Demon attacked.' },
+  { characters: [MATHEMATICIAN, MARIONETTE], rule: "The Mathematician learns if the Marionette's ability yielded false info or failed to work properly." },
+]);
+
+export const DJINN_ONE_IN_ONE_OUT = scriptDjinn('one-in-one-out', 'One in one out', [
+  { characters: [RECLUSE, OGRE], rule: 'If the Recluse registers as evil to the Ogre, the Ogre learns that they are evil.' },
+  { characters: [SPY, OGRE], rule: 'The Spy registers as evil to the Ogre.' },
+]);

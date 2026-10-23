@@ -4,7 +4,7 @@ import { PlayerAidSection } from './player-aid-section';
 import { PlayerAidShelf } from './player-aid-shelf';
 import { PlayerAid } from './player-aid';
 import { HOW_TO_PLAY_VIDEO } from './player-aid-library';
-import { ACROBAT, BUTLER, TOYMAKER } from '../character-sheets/character-library';
+import { ACROBAT, BUTLER, DJINN_LUNAR_ECLIPSE, MAGICIAN, MARIONETTE, TOYMAKER } from '../character-sheets/character-library';
 import { PlayerAidGroup } from './player-aid-group';
 import { Character } from '../character-sheets/character';
 
@@ -212,6 +212,25 @@ describe('PlayerAidsComponent', () => {
     }));
     fixture.detectChanges();
     expect(el.querySelectorAll('.aid-modal-body > *').length).toBe(1);
+  });
+
+  it("lists a script's jinxes beneath its Djinn's ability, each character's icon opening its aid", () => {
+    fixture.componentInstance.shelf.show(new PlayerAid({ character: DJINN_LUNAR_ECLIPSE }));
+    fixture.detectChanges();
+    const body = el.querySelector('.aid-modal-body')!;
+    expect(el.querySelector('.aid-modal h2')?.textContent?.replace(/\s+/g, ' ').trim()).toBe('Djinn, Lunar Eclipse (Fabled)');
+    expect(body.querySelector('.aid-character-ability')?.textContent).toBe(DJINN_LUNAR_ECLIPSE.ability);
+    expect(body.querySelector('h3')?.textContent).toBe('Jinxes');
+
+    const items = body.querySelectorAll('ul li');
+    expect(items.length).toBe(5);
+    const icons = Array.from(items[0].querySelectorAll('button.inline-character img.inline-icon')).map(img => img.getAttribute('src'));
+    expect(icons).toEqual([MAGICIAN.icon, MARIONETTE.icon]);
+    expect(items[0].textContent?.trim()).toBe("If the Magician is alive, the Demon doesn't know which neighbor is the Marionette.");
+
+    (items[0].querySelector(`#player_aid_character_${MARIONETTE.id}`) as HTMLElement).click();
+    fixture.detectChanges();
+    expect(el.querySelector('.aid-modal h2')?.textContent?.replace(/\s+/g, ' ').trim()).toBe('Marionette (Minion)');
   });
 
   it('renders bold and struck-through runs inside paragraph text', () => {
