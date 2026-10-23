@@ -24,7 +24,7 @@ export class Script {
   readonly author?: string; // who wrote the script, if known
   readonly kind: ScriptKind;
   readonly characters: readonly Character[];
-  readonly nightOrder?: NightOrder; // linked beneath the characters on the sheet, if the script has one
+  readonly nightOrder?: NightOrder; // linked beneath the characters on the sheet if the script has one
 
   constructor(config: { id: string; name: string; author?: string; kind: ScriptKind; characters?: Character[]; nightOrder?: NightOrder }) {
     this.id = config.id;
