@@ -36,8 +36,10 @@ describe('PlayerAidsComponent', () => {
 
   it('groups aids on the shelf under their section titles', () => {
     const titles = Array.from(el.querySelectorAll('.aid-section-title')).map(t => t.textContent?.trim());
-    expect(titles).toEqual(['Rules', 'The First Night', 'The First Day', 'Tips', 'Teensyville', 'How to Use This Site']);
-    expect(el.querySelector('#player_aid_section_tips #player_aid_tips_how-to-play-video')).not.toBeNull();
+    expect(titles).toEqual(['Rules', 'The First Night', 'The First Day', 'Beginner Tips', 'Advanced Tips', 'Teensyville', 'How to Use This Site']);
+    expect(el.querySelector('#player_aid_section_rules #player_aid_rules_how-to-play-video')).not.toBeNull();
+    expect(el.querySelector('#player_aid_section_advanced-tips #player_aid_advanced-tips_clocktower-wiki')).not.toBeNull();
+    expect(el.querySelector('#player_aid_section_tips #player_aid_tips_team-game')).not.toBeNull();
     expect(el.querySelector('#player_aid_section_teensyville #player_aid_teensyville_5-6-players')).not.toBeNull();
     expect(el.querySelector('#player_aid_section_how-to-use-this-site #player_aid_how-to-use-this-site_attract-mode-hotkeys')).not.toBeNull();
     expect(el.querySelector('#player_aid_section_how-to-use-this-site #player_aid_how-to-use-this-site_day-timer-hotkeys')).not.toBeNull();
@@ -60,17 +62,22 @@ describe('PlayerAidsComponent', () => {
     click('#player_aid_group_introduction');
     expect(el.querySelector('.aid-group-menu')).toBeNull();
     expect(header()?.textContent).toContain('Group: Introduction');
-    expect(titles()).toEqual(['Rules', 'The First Night', 'The First Day', 'Tips', 'Teensyville']);
+    expect(titles()).toEqual(['Rules', 'The First Night', 'The First Day', 'Beginner Tips', 'Teensyville']);
     expect(el.querySelector('#player_aid_section_tips')?.classList).not.toContain('expanded');
 
     click('#player_aid_group_toggle');
     expect(el.querySelector('#player_aid_group_introduction')?.classList).toContain('selected');
     expect(el.querySelector('#player_aid_group_all')?.classList).not.toContain('selected');
 
+    click('#player_aid_group_advanced');
+    expect(header()?.textContent).toContain('Group: Advanced');
+    expect(titles()).toEqual(['Advanced Tips']);
+
     // Switching groups starts the sections collapsed
+    click('#player_aid_group_toggle');
     click('#player_aid_group_all');
     expect(header()?.textContent).toContain('Group: All');
-    expect(titles()).toContain('Tips');
+    expect(titles()).toContain('Beginner Tips');
     expect(el.querySelector('#player_aid_section_tips')?.classList).not.toContain('expanded');
   });
 
@@ -96,10 +103,10 @@ describe('PlayerAidsComponent', () => {
 
   it('closes the shelf on a click outside it, but not on one inside it', () => {
     click('#player_aids_toggle');
-    click('#player_aid_section_toggle_tips');
+    click('#player_aid_section_toggle_rules');
     expect(el.querySelector('.aids-shelf')?.classList).toContain('open');
 
-    click('#player_aid_tips_how-to-play-video');
+    click('#player_aid_rules_how-to-play-video');
     click('.aid-backdrop');
     expect(el.querySelector('.aids-shelf')?.classList).toContain('open');
 
@@ -147,7 +154,7 @@ describe('PlayerAidsComponent', () => {
 
   it('opens an aid in a modal with its text and picture', () => {
     click('#player_aids_toggle');
-    click('#player_aid_tips_how-to-play-video');
+    click('#player_aid_rules_how-to-play-video');
     const modal = el.querySelector('.aid-modal');
     expect(modal?.querySelector('h2')?.textContent).toContain('How to Play');
     expect(modal?.textContent).toContain('Scan this to watch a video on how to play Blood on the Clocktower.');
@@ -309,20 +316,20 @@ describe('PlayerAidsComponent', () => {
     const title = () => el.querySelector('.aid-modal h2')?.textContent?.trim();
     const button = (id: string) => el.querySelector(id) as HTMLButtonElement;
 
-    click('#player_aid_rules_social-deduction');
+    click('#player_aid_rules_how-to-play-video');
     expect(button('#player_aid_previous').disabled).toBeTrue();
     click('#player_aid_next');
-    expect(title()).toBe('The Setting');
+    expect(title()).toBe('Social Deduction');
     expect(el.querySelector('.aid-modal')).not.toBeNull();
 
     document.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight' }));
     fixture.detectChanges();
-    expect(title()).toBe('Player Traits');
+    expect(title()).toBe('The Setting');
 
     document.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowLeft' }));
     fixture.detectChanges();
     click('#player_aid_previous');
-    expect(title()).toBe('Social Deduction');
+    expect(title()).toBe('How to Play');
 
     click('#player_aid_first-night_good-team-first-night');
     expect(button('#player_aid_next').disabled).toBeTrue();
@@ -348,7 +355,7 @@ describe('PlayerAidsComponent', () => {
     click('#player_aid_next');
     expect(modal()).toContain('size-large');
     click('#player_aid_close');
-    click('#player_aid_tips_how-to-play-video');
+    click('#player_aid_rules_how-to-play-video');
     expect(modal()).toContain('size-large');
 
     click('#player_aid_size_down');
@@ -358,20 +365,20 @@ describe('PlayerAidsComponent', () => {
   });
 
   it('closes the modal from the close button and the backdrop, but not from inside the modal', () => {
-    click('#player_aid_tips_how-to-play-video');
+    click('#player_aid_rules_how-to-play-video');
     click('.aid-modal-body');
     expect(el.querySelector('.aid-modal')).not.toBeNull();
     click('#player_aid_close');
     expect(el.querySelector('.aid-modal')).toBeNull();
 
-    click('#player_aid_tips_how-to-play-video');
+    click('#player_aid_rules_how-to-play-video');
     click('.aid-backdrop');
     expect(el.querySelector('.aid-modal')).toBeNull();
   });
 
   it('closes the modal, then the shelf, on Escape', () => {
     click('#player_aids_toggle');
-    click('#player_aid_tips_how-to-play-video');
+    click('#player_aid_rules_how-to-play-video');
     document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }));
     fixture.detectChanges();
     expect(el.querySelector('.aid-modal')).toBeNull();

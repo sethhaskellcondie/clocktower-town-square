@@ -117,6 +117,23 @@ export const CHARACTER_SHEET = new PlayerAid({
   ],
 });
 
+export const TEAM_GAME = new PlayerAid({
+  id: 'team-game',
+  title: 'This is a Team Game',
+  summary: 'The more convincing team wins, not the characters in the bag.',
+  blocks: [
+    {
+      type: 'image',
+      src: 'assets/player_aids/good_vs_evil.png',
+      alt: 'The Good team, the Butler and the Chef in blue, versus the Evil team, the Spy and the Imp in red',
+    },
+    {
+      type: 'text',
+      text: 'Blood on the Clocktower is a TEAM game, the fate of the game is NOT determined by the characters that have been placed in the bag at the start of the game, it is determined by which team controls the narrative and is more convincing!',
+    },
+  ],
+});
+
 export const SOCIAL_DEDUCTION = new PlayerAid({
   id: 'social-deduction',
   title: 'Social Deduction',

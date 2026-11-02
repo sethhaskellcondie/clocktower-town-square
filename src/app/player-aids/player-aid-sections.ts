@@ -20,6 +20,7 @@ import {
   PLAYER_AID_HOTKEYS,
   PLAYER_TRAITS,
   SOCIAL_DEDUCTION,
+  TEAM_GAME,
   TEENSYVILLE_CHANGES,
   TEENSYVILLE_SCRIPTS,
   THE_FOUR_RULES,
@@ -33,6 +34,7 @@ export const RULES = new PlayerAidSection({
   id: 'rules',
   title: 'Rules',
   aids: [
+    HOW_TO_PLAY_VIDEO,
     SOCIAL_DEDUCTION,
     THE_SETTING,
     PLAYER_TRAITS,
@@ -58,8 +60,14 @@ export const FIRST_DAY = new PlayerAidSection({
 
 export const TIPS = new PlayerAidSection({
   id: 'tips',
-  title: 'Tips',
-  aids: [TOWN_SQUARE, HOW_TO_PLAY_VIDEO, CLOCKTOWER_WIKI, CHARACTER_SHEET],
+  title: 'Beginner Tips',
+  aids: [TOWN_SQUARE, CHARACTER_SHEET, TEAM_GAME],
+});
+
+export const ADVANCED_TIPS = new PlayerAidSection({
+  id: 'advanced-tips',
+  title: 'Advanced Tips',
+  aids: [CLOCKTOWER_WIKI],
 });
 
 export const TEENSYVILLE = new PlayerAidSection({

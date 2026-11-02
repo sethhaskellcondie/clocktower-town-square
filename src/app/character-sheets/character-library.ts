@@ -11,6 +11,7 @@ export const WASHERWOMAN = new Character({
   icon: 'assets/player_aids/icons/trouble_brewing/townsfolk/washerwoman.png',
   type: 'Townsfolk',
   ability: 'You start knowing that 1 of 2 players is a particular Townsfolk.',
+  additionalText: 'The Washerwoman will wake on the first night, they will be shown a townsfolk token and then two players that could be that townsfolk. They will not wake again for the rest of the game.',
   link: 'https://wiki.bloodontheclocktower.com/Washerwoman',
 });
 
