@@ -1,8 +1,10 @@
 # Clocktower Town Square
 
-A town square for running in-person games of Blood on the Clocktower. Players, travelers, and landmarks sit on the board as tokens you can drag, name, and mark as they die. Alongside them are a day and night cycle with a day timer, the character sheets for each script, and a shelf of player aids covering the rules and every character.
+Digital aids for running in-person games of Blood on the Clocktower. The home page, at `/`, leads to the two pages below.
 
-A second page, at `/storyteller`, is made for the Storyteller's phone: storyteller aids, full-screen cards like "You are evil" to hold up to a player at night instead of speaking. Swipe left or right to move between them. Swipe up to see every aid and tap the ones to load or unload, then swipe down: only the loaded aids come round, and the phone remembers which they are. Each card is drawn from a color, a picture, and a few lines of text. The pictures are SVG files in `assets/storyteller_aids`, and a card can layer several of them together; see `src/app/storyteller-aids/storyteller-aid.ts` for how to make one.
+The town square, at `/town-square`, is made for the host's big screen. Players, travelers, and landmarks sit on the board as tokens you can drag, name, and mark as they die. Alongside them are a day and night cycle with a day timer, the character sheets for each script, and a shelf of player aids covering the rules and every character.
+
+The night communication aids, at `/storyteller`, are made for the Storyteller's phone: storyteller aids, full-screen cards like "You are evil" to hold up to a player at night instead of speaking. Swipe left or right to move between them. Swipe up to see every aid and tap the ones to load or unload, then swipe down: only the loaded aids come round, and the phone remembers which they are. Each card is drawn from a color, a picture, and a few lines of text. The pictures are SVG files in `assets/storyteller_aids`, and a card can layer several of them together; see `src/app/storyteller-aids/storyteller-aid.ts` for how to make one.
 
 Built with [Angular](https://angular.dev) 22.
 
@@ -22,7 +24,7 @@ To start a local development server, run:
 ng serve
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Once the server is running, open your browser and navigate to `http://localhost:4200/` for the home page, or straight to `http://localhost:4200/town-square` or `http://localhost:4200/storyteller`. The application will automatically reload whenever you modify any of the source files.
 
 ## Running tests
 
