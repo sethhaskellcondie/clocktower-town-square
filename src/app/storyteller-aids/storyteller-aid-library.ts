@@ -19,6 +19,30 @@ export const YOU_ARE_EVIL = new StorytellerAid({
   text: ['You', 'are', { emphasis: 'evil' }],
 });
 
+export const THIS_IS_THE_DEMON = new StorytellerAid({
+  id: 'this-is-the-demon',
+  category: 'standard',
+  color: STORYTELLER_AID_COLORS.red,
+  picture: STORYTELLER_AID_PICTURES.evilMask,
+  text: ['This', 'is the', { emphasis: 'demon' }],
+});
+
+export const THESE_ARE_YOUR_MINIONS = new StorytellerAid({
+  id: 'these-are-your-minions',
+  category: 'standard',
+  color: STORYTELLER_AID_COLORS.red,
+  picture: STORYTELLER_AID_PICTURES.evilMask,
+  text: ['These', 'are your', { emphasis: 'minions' }],
+});
+
+export const THESE_CHARACTERS_ARE_NOT_IN_PLAY = new StorytellerAid({
+  id: 'these-characters-are-not-in-play',
+  category: 'standard',
+  color: STORYTELLER_AID_COLORS.blue,
+  picture: STORYTELLER_AID_PICTURES.goodMask,
+  text: ['These', 'characters', 'are', { emphasis: 'not in play' }],
+});
+
 export const THESE_CHARACTERS_ARE_IN_PLAY = new StorytellerAid({
   id: 'these-characters-are-in-play',
   category: 'standard',
@@ -51,6 +75,14 @@ export const PLEASE_CHOOSE_AGAIN = new StorytellerAid({
   text: ['Please', { emphasis: 'choose' }, 'again'],
 });
 
+export const THIS_CHARACTER_SELECTED_YOU = new StorytellerAid({
+  id: 'this-character-selected-you',
+  category: 'standard',
+  color: STORYTELLER_AID_COLORS.green,
+  picture: STORYTELLER_AID_PICTURES.circles,
+  text: ['This', 'character', { emphasis: 'selected' }, 'you'],
+});
+
 export const WE_SHOULD_CHAT_TOMORROW = new StorytellerAid({
   id: 'we-should-chat-tomorrow',
   category: 'standard',
@@ -80,10 +112,14 @@ export const THESE_PLAYERS_ARE_NOT_LEGION = new StorytellerAid({
 const AIDS: readonly StorytellerAid[] = [
   YOU_ARE_GOOD,
   YOU_ARE_EVIL,
+  THIS_IS_THE_DEMON,
+  THESE_ARE_YOUR_MINIONS,
+  THESE_CHARACTERS_ARE_NOT_IN_PLAY,
   THESE_CHARACTERS_ARE_IN_PLAY,
   WHICH_ROLE_ARE_YOU_BLUFFING_AS,
   USE_YOUR_ABILITY,
   PLEASE_CHOOSE_AGAIN,
+  THIS_CHARACTER_SELECTED_YOU,
   WE_SHOULD_CHAT_TOMORROW,
   THE_LUNATIC_CHOSE_THESE_PLAYERS,
   THESE_PLAYERS_ARE_NOT_LEGION,

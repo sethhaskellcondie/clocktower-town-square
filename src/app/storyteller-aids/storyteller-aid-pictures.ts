@@ -8,6 +8,7 @@ import pointingHand from '../../../assets/storyteller_aids/pointing_hand.svg';
 import spiral from '../../../assets/storyteller_aids/spiral.svg';
 import handprint from '../../../assets/storyteller_aids/handprint.svg';
 import chatteringMouth from '../../../assets/storyteller_aids/chattering_mouth.svg';
+import circles from '../../../assets/storyteller_aids/circles.svg';
 
 // The standard pictures, one SVG file each in assets/storyteller_aids. The
 // files are bundled into the app as text, so a card never waits on one.
@@ -42,6 +43,7 @@ export const STORYTELLER_AID_PICTURES = {
   spiral: pictureFromSvg(spiral),
   handprint: pictureFromSvg(handprint),
   chatteringMouth: pictureFromSvg(chatteringMouth),
+  circles: pictureFromSvg(circles),
 } as const satisfies Record<string, StorytellerAidPicture>;
 
 // Reads a picture file's paths into the shapes a card draws
