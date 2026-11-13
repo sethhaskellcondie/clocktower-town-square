@@ -2,6 +2,8 @@
 // plain dark one. touch-action: none hands every touch to the page instead
 // of the browser, so a swipe drags the cards rather than scrolling or
 // zooming, and holding a finger down doesn't select or offer to copy.
+// (The overview, which can scroll, says so again for itself below, since a
+// scrolling box doesn't take its touch-action from the page.)
 :host {
   position: fixed;
   inset: 0;
@@ -44,8 +46,97 @@
   justify-content: center;
 }
 
-app-storyteller-aid-card {
+.slot app-storyteller-aid-card {
   width: min(100cqw - 32px, (100cqh - 32px) * 3 / 5);
+}
+
+.message {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.6);
+  font-family: Georgia, 'Times New Roman', serif;
+  line-height: 1.4;
+  text-align: center;
+}
+
+// In place of the cards when none are loaded
+.empty {
+  position: absolute;
+  inset: 0;
+  padding: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+
+// Every aid in the library, laid out small, sliding up over the cards when
+// it opens and back down when it closes. It's hidden while it's closed, so
+// taps go through to the cards. When there are too many aids to fit, it
+// scrolls: the page scrolls it by dragging, so it hands the browser none of
+// the touches it would take to scroll itself, and a mouse wheel works too.
+.overview {
+  position: absolute;
+  inset: 0;
+  overflow-y: auto;
+  touch-action: none;
+  display: flex;
+  flex-direction: column;
+  background: #0b0a10;
+  transform: translateY(100%);
+  visibility: hidden;
+  transition: transform 250ms ease-in, visibility 0s 250ms;
+
+  .overview-open & {
+    transform: none;
+    visibility: visible;
+    transition: transform 250ms ease-out;
+  }
+}
+
+// Centered when they all fit, starting from the top when they scroll. Three
+// to a row on a phone, and more where there's room.
+.choices {
+  margin-block: auto;
+  padding: 16px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+}
+
+.hint {
+  flex-basis: 100%;
+  font-size: 14px;
+}
+
+.choice {
+  display: block;
+  width: min(160px, (100cqw - 56px) / 3);
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  background: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: opacity 150ms, filter 150ms;
+
+  &.unloaded {
+    opacity: 0.3;
+    filter: grayscale(1);
+  }
+
+  &:focus-visible {
+    outline: 2px solid #d8c08a;
+    outline-offset: 3px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .overview,
+  .overview-open .overview,
+  .choice {
+    transition: none;
+  }
 }
 
 .visually-hidden {

@@ -1,5 +1,6 @@
 <main
   class="aids"
+  [class.overview-open]="overviewOpen"
   (pointerdown)="onPointerDown($event)"
   (pointermove)="onPointerMove($event)"
   (pointerup)="onPointerUp($event)"
@@ -10,12 +11,32 @@
     class="track"
     [class.settling]="settling"
     [style.transform]="'translateX(' + offset + 'px)'"
+    [inert]="overviewOpen"
     (transitionend)="onTransitionEnd($event)"
   >
     @for (slot of slots; track slot.position) {
       <section class="slot" [style.left.%]="slot.position * 100" [attr.aria-hidden]="slot.position === 0 ? null : 'true'">
         <app-storyteller-aid-card [aid]="slot.aid" />
       </section>
+    } @empty {
+      <p class="message empty">No aids are loaded.<br />Swipe up to load some.</p>
     }
   </div>
+
+  <section #overview class="overview" [inert]="!overviewOpen" aria-label="Every storyteller aid">
+    <div class="choices">
+      <p class="message hint">Tap an aid to load or unload it, then swipe down.</p>
+      @for (aid of library; track aid.id) {
+        <button
+          type="button"
+          class="choice"
+          [class.unloaded]="!loadedAids.isLoaded(aid)"
+          [attr.aria-pressed]="loadedAids.isLoaded(aid)"
+          (click)="onChoose(aid, $event)"
+        >
+          <app-storyteller-aid-card [aid]="aid" />
+        </button>
+      }
+    </div>
+  </section>
 </main>

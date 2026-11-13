@@ -2,7 +2,7 @@
 
 A town square for running in-person games of Blood on the Clocktower. Players, travelers, and landmarks sit on the board as tokens you can drag, name, and mark as they die. Alongside them are a day and night cycle with a day timer, the character sheets for each script, and a shelf of player aids covering the rules and every character.
 
-A second page, at `/storyteller`, is made for the Storyteller's phone: storyteller aids, full-screen cards like "You are evil" to hold up to a player at night instead of speaking. Swipe left or right to move between them. Each card is drawn in code from a color, a picture, and a few lines of text; see `src/app/storyteller-aids/storyteller-aid.ts` for how to make one.
+A second page, at `/storyteller`, is made for the Storyteller's phone: storyteller aids, full-screen cards like "You are evil" to hold up to a player at night instead of speaking. Swipe left or right to move between them. Swipe up to see every aid and tap the ones to load or unload, then swipe down: only the loaded aids come round, and the phone remembers which they are. Each card is drawn in code from a color, a picture, and a few lines of text; see `src/app/storyteller-aids/storyteller-aid.ts` for how to make one.
 
 Built with [Angular](https://angular.dev) 22.
 
