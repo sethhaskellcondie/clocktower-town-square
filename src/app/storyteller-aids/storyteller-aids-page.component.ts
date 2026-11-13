@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, ElementRef, HostListener, inject, viewChild } from '@angular/core';
 import { StorytellerAidCardComponent } from './storyteller-aid-card.component';
-import { STORYTELLER_AIDS } from './storyteller-aid-library';
+import { STORYTELLER_AID_GROUPS, STORYTELLER_AIDS } from './storyteller-aid-library';
 import { StorytellerAid } from './storyteller-aid';
 import { LoadedAidsService } from './loaded-aids.service';
 
@@ -40,8 +40,8 @@ interface Drag {
 // right goes back, round and round, with the card following the finger as
 // it's dragged. Only the loaded aids come round.
 //
-// Swiping up opens the overview: every aid there is, laid out small, the
-// unloaded ones dimmed. Tapping an aid there loads or unloads it, and
+// Swiping up opens the overview: every aid there is, laid out small under
+// a heading for each category, the unloaded ones dimmed. Tapping an aid there loads or unloads it, and
 // swiping down goes back to the loaded aids one at a time. On a computer the
 // arrow keys do the same, with Escape closing the overview as well.
 //
@@ -56,6 +56,7 @@ interface Drag {
 })
 export class StorytellerAidsPageComponent {
   readonly library = STORYTELLER_AIDS;
+  readonly groups = STORYTELLER_AID_GROUPS;
   readonly loadedAids = inject(LoadedAidsService);
   index = 0;
   // How far the cards are pulled sideways, in pixels: following the finger

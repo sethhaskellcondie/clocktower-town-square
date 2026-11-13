@@ -1,12 +1,21 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { StorytellerAidsPageComponent } from './storyteller-aids-page.component';
-import { STORYTELLER_AIDS, YOU_ARE_EVIL, YOU_ARE_GOOD } from './storyteller-aid-library';
+import {
+  STORYTELLER_AIDS,
+  THE_LUNATIC_CHOSE_THESE_PLAYERS,
+  THESE_PLAYERS_ARE_NOT_LEGION,
+  YOU_ARE_EVIL,
+  YOU_ARE_GOOD,
+} from './storyteller-aid-library';
 import { StorytellerAid } from './storyteller-aid';
 
 describe('StorytellerAidsPageComponent', () => {
   let fixture: ComponentFixture<StorytellerAidsPageComponent>;
   let page: HTMLElement;
-  const sentence = (offset: number) => STORYTELLER_AIDS[(offset + STORYTELLER_AIDS.length) % STORYTELLER_AIDS.length].sentence;
+  // The aids loaded to begin with, the standard ones, which are the aids
+  // that come round until the storyteller loads or unloads some
+  const startingAids = STORYTELLER_AIDS.filter(aid => aid.category === 'standard');
+  const sentence = (offset: number) => startingAids[(offset + startingAids.length) % startingAids.length].sentence;
 
   beforeEach(async () => {
     localStorage.clear();
@@ -88,7 +97,7 @@ describe('StorytellerAidsPageComponent', () => {
   });
 
   it('swipes left to the next aid, and round again from the last to the first', () => {
-    for (let step = 1; step <= STORYTELLER_AIDS.length; step++) {
+    for (let step = 1; step <= startingAids.length; step++) {
       swipe(-150);
       expect(shown()).toBe(sentence(step));
     }
@@ -143,7 +152,7 @@ describe('StorytellerAidsPageComponent', () => {
     expect((page.querySelector('.track') as HTMLElement).style.transform).toBe('translateX(0px)');
   });
 
-  it('swipes up to lay out every aid, each loaded to begin with', () => {
+  it('swipes up to lay out every aid, the standard ones loaded to begin with and the character ones not', () => {
     expect(overviewOpen()).toBeFalse();
     expect((page.querySelector('.overview') as HTMLElement).inert).toBeTrue();
     swipe(0, -300);
@@ -151,7 +160,22 @@ describe('StorytellerAidsPageComponent', () => {
     expect((page.querySelector('.overview') as HTMLElement).inert).toBeFalse();
     expect((page.querySelector('.track') as HTMLElement).inert).toBeTrue();
     expect(choices().map(button => button.querySelector('.card')?.getAttribute('aria-label'))).toEqual(STORYTELLER_AIDS.map(aid => aid.sentence));
-    expect(choices().map(button => button.getAttribute('aria-pressed'))).toEqual(STORYTELLER_AIDS.map(() => 'true'));
+    expect(choices().map(button => button.getAttribute('aria-pressed'))).toEqual(
+      STORYTELLER_AIDS.map(aid => String(startingAids.includes(aid))),
+    );
+    expect(choice(THE_LUNATIC_CHOSE_THESE_PLAYERS).classList).toContain('unloaded');
+  });
+
+  it('lays out the standard aids, then the character aids, each under its own heading', () => {
+    swipe(0, -300);
+    const groups = Array.from(page.querySelectorAll('.group'));
+    expect(groups.map(group => group.querySelector('h2')?.textContent?.trim())).toEqual(['Standard', 'Character']);
+    const sentences = groups.map(group =>
+      Array.from(group.querySelectorAll('.choice .card')).map(card => card.getAttribute('aria-label')),
+    );
+    const characterAids = [THE_LUNATIC_CHOSE_THESE_PLAYERS, THESE_PLAYERS_ARE_NOT_LEGION];
+    expect(sentences[1]).toEqual(characterAids.map(aid => aid.sentence));
+    expect(sentences[0]).toEqual(STORYTELLER_AIDS.filter(aid => !characterAids.includes(aid)).map(aid => aid.sentence));
   });
 
   it('taps an aid to unload it, and again to load it back', () => {
@@ -165,9 +189,20 @@ describe('StorytellerAidsPageComponent', () => {
     expect(choice(YOU_ARE_EVIL).classList).not.toContain('unloaded');
   });
 
+  it('taps a character aid to load it, and it comes round after the standard aids', () => {
+    swipe(0, -300);
+    tap(THESE_PLAYERS_ARE_NOT_LEGION);
+    expect(choice(THESE_PLAYERS_ARE_NOT_LEGION).getAttribute('aria-pressed')).toBe('true');
+    swipe(0, 300);
+    swipe(150);
+    expect(shown()).toBe(THESE_PLAYERS_ARE_NOT_LEGION.sentence);
+    swipe(-150);
+    expect(shown()).toBe(sentence(0));
+  });
+
   it('swipes down to go round the loaded aids alone', () => {
     swipe(0, -300);
-    STORYTELLER_AIDS.filter(aid => aid !== YOU_ARE_GOOD && aid !== YOU_ARE_EVIL).forEach(tap);
+    startingAids.filter(aid => aid !== YOU_ARE_GOOD && aid !== YOU_ARE_EVIL).forEach(tap);
     swipe(0, 300);
     expect(overviewOpen()).toBeFalse();
     expect(shown()).toBe(YOU_ARE_GOOD.sentence);
@@ -179,7 +214,7 @@ describe('StorytellerAidsPageComponent', () => {
 
   it('stays put with a single aid loaded', () => {
     swipe(0, -300);
-    STORYTELLER_AIDS.filter(aid => aid !== YOU_ARE_GOOD).forEach(tap);
+    startingAids.filter(aid => aid !== YOU_ARE_GOOD).forEach(tap);
     swipe(0, 300);
     expect(page.querySelectorAll('.slot').length).toBe(1);
     swipe(-150);
@@ -194,14 +229,14 @@ describe('StorytellerAidsPageComponent', () => {
     expect(shown()).toBe(sentence(1));
 
     swipe(0, -300);
-    tap(STORYTELLER_AIDS[1]);
+    tap(startingAids[1]);
     swipe(0, 300);
     expect(shown()).toBe(sentence(2));
   });
 
   it('says so when no aids are loaded, and still swipes up to load some', () => {
     swipe(0, -300);
-    STORYTELLER_AIDS.forEach(tap);
+    startingAids.forEach(tap);
     swipe(0, 300);
     expect(page.querySelector('.slot')).toBeNull();
     expect(page.querySelector('.empty')).not.toBeNull();

@@ -39,6 +39,7 @@ describe('StorytellerAidCardComponent', () => {
     const card = render(
       new StorytellerAid({
         id: 'custom',
+        category: 'standard',
         color: '#123456',
         picture: {
           shapes: [

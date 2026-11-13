@@ -26,16 +26,21 @@
   <section #overview class="overview" [inert]="!overviewOpen" aria-label="Every storyteller aid">
     <div class="choices">
       <p class="message hint">Tap an aid to load or unload it, then swipe down.</p>
-      @for (aid of library; track aid.id) {
-        <button
-          type="button"
-          class="choice"
-          [class.unloaded]="!loadedAids.isLoaded(aid)"
-          [attr.aria-pressed]="loadedAids.isLoaded(aid)"
-          (click)="onChoose(aid, $event)"
-        >
-          <app-storyteller-aid-card [aid]="aid" />
-        </button>
+      @for (group of groups; track group.category) {
+        <section class="group">
+          <h2 class="group-heading">{{ group.title }}</h2>
+          @for (aid of group.aids; track aid.id) {
+            <button
+              type="button"
+              class="choice"
+              [class.unloaded]="!loadedAids.isLoaded(aid)"
+              [attr.aria-pressed]="loadedAids.isLoaded(aid)"
+              (click)="onChoose(aid, $event)"
+            >
+              <app-storyteller-aid-card [aid]="aid" />
+            </button>
+          }
+        </section>
       }
     </div>
   </section>

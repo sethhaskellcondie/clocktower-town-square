@@ -6,6 +6,7 @@ describe('StorytellerAid', () => {
   it('takes its lines in order, marking the emphasized one', () => {
     const aid = new StorytellerAid({
       id: 'you-are-evil',
+      category: 'standard',
       color: STORYTELLER_AID_COLORS.red,
       picture: STORYTELLER_AID_PICTURES.evilMask,
       text: ['You', 'are', { emphasis: 'evil' }],
@@ -20,14 +21,14 @@ describe('StorytellerAid', () => {
 
   it('can be made with a color and a picture of its own', () => {
     const star: StorytellerAidPicture = { shapes: [{ paint: 'light', d: 'M50 5L61 39H97L68 61L79 95L50 74L21 95L32 61L3 39H39Z' }] };
-    const aid = new StorytellerAid({ id: 'star', color: 'rebeccapurple', picture: star, text: [{ emphasis: 'Star' }] });
+    const aid = new StorytellerAid({ id: 'star', category: 'standard', color: 'rebeccapurple', picture: star, text: [{ emphasis: 'Star' }] });
     expect(aid.color).toBe('rebeccapurple');
     expect(aid.picture).toBe(star);
   });
 
   it('layers several pictures into one, each drawn over the last', () => {
     const { spiral, handprint } = STORYTELLER_AID_PICTURES;
-    const aid = new StorytellerAid({ id: 'layered', color: 'teal', picture: [spiral, handprint], text: ['Layered'] });
+    const aid = new StorytellerAid({ id: 'layered', category: 'standard', color: 'teal', picture: [spiral, handprint], text: ['Layered'] });
     expect(aid.picture.shapes).toEqual([...spiral.shapes, ...handprint.shapes]);
   });
 

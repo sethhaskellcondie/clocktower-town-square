@@ -14,7 +14,7 @@
   user-select: none;
   -webkit-user-select: none;
   -webkit-touch-callout: none;
-  background: #0b0a10;
+  background: #060510;
 }
 
 .aids,
@@ -53,7 +53,6 @@
 .message {
   margin: 0;
   color: rgba(255, 255, 255, 0.6);
-  font-family: Georgia, 'Times New Roman', serif;
   line-height: 1.4;
   text-align: center;
 }
@@ -81,7 +80,7 @@
   touch-action: none;
   display: flex;
   flex-direction: column;
-  background: #0b0a10;
+  background: #060510;
   transform: translateY(100%);
   visibility: hidden;
   transition: transform 250ms ease-in, visibility 0s 250ms;
@@ -93,20 +92,37 @@
   }
 }
 
-// Centered when they all fit, starting from the top when they scroll. Three
-// to a row on a phone, and more where there's room.
+// Centered when they all fit, starting from the top when they scroll. Each
+// category under its own heading, three aids to a row on a phone, and more
+// where there's room.
 .choices {
   margin-block: auto;
   padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.hint {
+  font-size: 14px;
+}
+
+.group {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   gap: 12px;
 }
 
-.hint {
+.group-heading {
   flex-basis: 100%;
-  font-size: 14px;
+  margin: 0;
+  color: #d1b56a;
+  font-size: 12px;
+  font-weight: normal;
+  letter-spacing: 0.15em;
+  text-align: center;
+  text-transform: uppercase;
 }
 
 .choice {
@@ -126,7 +142,7 @@
   }
 
   &:focus-visible {
-    outline: 2px solid #d8c08a;
+    outline: 2px solid #d1b56a;
     outline-offset: 3px;
   }
 }

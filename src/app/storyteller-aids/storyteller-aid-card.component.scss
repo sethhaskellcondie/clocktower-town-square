@@ -26,7 +26,6 @@
     radial-gradient(ellipse 80% 65% at 50% 45%, transparent 45%, rgba(0, 0, 0, 0.35) 100%),
     var(--aid-color);
   color: #fff;
-  font-family: Georgia, 'Times New Roman', serif;
   font-style: normal;
   user-select: none;
   -webkit-user-select: none;
@@ -117,7 +116,7 @@
 
 // The line the card is about
 .emphasis {
-  color: #d8c08a;
+  color: #d1b56a;
   font-size: 1.3em;
   line-height: 1.05;
   letter-spacing: 0.04em;

@@ -11,6 +11,7 @@
 //
 //   new StorytellerAid({
 //     id: 'you-are-evil',
+//     category: 'standard',
 //     color: STORYTELLER_AID_COLORS.red,     // or any CSS color, like '#2b5f3a'
 //     picture: STORYTELLER_AID_PICTURES.evilMask, // or a picture of your own
 //     text: ['You', 'are', { emphasis: 'evil' }],
@@ -22,6 +23,22 @@
 //
 // The text is shown in capitals however it's written, so write it the way
 // it reads aloud.
+//
+// The category says where the aid is listed when the storyteller chooses
+// which aids to load, from STORYTELLER_AID_CATEGORIES below.
+
+// The kinds of aid, in the order they're listed: the standard aids, which
+// suit any game, then the ones for a particular character. Each has the
+// heading it's listed under, and whether its aids start out loaded, before
+// the storyteller loads or unloads any. The character aids start out
+// unloaded, since most games have no use for them. A new category only
+// needs a line here.
+export const STORYTELLER_AID_CATEGORIES = {
+  standard: { title: 'Standard', startsLoaded: true },
+  character: { title: 'Character', startsLoaded: false },
+} as const;
+
+export type StorytellerAidCategory = keyof typeof STORYTELLER_AID_CATEGORIES;
 
 // The colors of the official cards. Any other CSS color works as well, and
 // the picture and frame are tinted from whichever color the card is.
@@ -62,17 +79,20 @@ export type StorytellerAidLine = string | { readonly emphasis: string };
 
 export class StorytellerAid {
   readonly id: string;
+  readonly category: StorytellerAidCategory;
   readonly color: string;
   readonly picture: StorytellerAidPicture;
   readonly lines: readonly { readonly text: string; readonly emphasis: boolean }[];
 
   constructor(config: {
     id: string;
+    category: StorytellerAidCategory;
     color: string;
     picture: StorytellerAidPicture | readonly StorytellerAidPicture[];
     text: readonly StorytellerAidLine[];
   }) {
     this.id = config.id;
+    this.category = config.category;
     this.color = config.color;
     this.picture = 'shapes' in config.picture
       ? config.picture
