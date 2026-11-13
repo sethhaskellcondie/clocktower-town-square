@@ -167,11 +167,21 @@ describe('StorytellerAidsPageComponent', () => {
 
   it('swipes down to go round the loaded aids alone', () => {
     swipe(0, -300);
-    tap(YOU_ARE_EVIL);
+    STORYTELLER_AIDS.filter(aid => aid !== YOU_ARE_GOOD && aid !== YOU_ARE_EVIL).forEach(tap);
     swipe(0, 300);
     expect(overviewOpen()).toBeFalse();
-    expect(page.querySelectorAll('.slot').length).toBe(1);
     expect(shown()).toBe(YOU_ARE_GOOD.sentence);
+    swipe(-150);
+    expect(shown()).toBe(YOU_ARE_EVIL.sentence);
+    swipe(-150);
+    expect(shown()).toBe(YOU_ARE_GOOD.sentence);
+  });
+
+  it('stays put with a single aid loaded', () => {
+    swipe(0, -300);
+    STORYTELLER_AIDS.filter(aid => aid !== YOU_ARE_GOOD).forEach(tap);
+    swipe(0, 300);
+    expect(page.querySelectorAll('.slot').length).toBe(1);
     swipe(-150);
     expect(shown()).toBe(YOU_ARE_GOOD.sentence);
   });
