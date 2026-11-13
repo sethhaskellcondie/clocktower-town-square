@@ -106,7 +106,8 @@ Each part of the style has a counterpart on the card:
 | Rough edges | Drawn into the path itself, since the card has no filters |
 
 - **Solid silhouettes, never outline drawings.** A figure traced in `line`s reads as a diagram and fades into the card. Keep `line` for things that really are thin, like a string, a chain, or steam, and even then prefer a filled, tapered shape.
-- **Fill the canvas.** The figure spans 85 to 95 units on its longer side. It sits above the card's words, so keep its weight in the middle.
+- **Fill the canvas.** The figure spans 85 to 95 units on its longer side, with its weight in the middle.
+- **The words come first.** The card is held up for a player to read across the room, so its words sit at the top, as large as they fit, and the picture goes below them at about 60% of the card's width. It backs up the words rather than competing with them, so keep it bold and simple: fine detail is lost at that size.
 - **One idea per picture.** An aid can layer several pictures together (its `picture` can be a list), so a picture meant for layering keeps its extras away from the edges.
 - **Write the irregularity into the coordinates.** Break long curves into a few segments that change direction slightly, and end cuts in points. When a shape is mirrored, nudge one side by 1 to 3 units and tilt the whole figure.
 - **Keep the `<style>` block** exactly as the template has it, so the file looks right when opened on its own.

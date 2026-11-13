@@ -18,8 +18,17 @@
   position: relative;
   container-type: inline-size;
   aspect-ratio: 3 / 5;
+  box-sizing: border-box;
   overflow: hidden;
   isolation: isolate;
+  // The words, then the picture under them, clear of the frame's corner
+  // ornaments. The padding is in percent, a share of the card's width, since
+  // the card can't use cqw on itself. There's none at the sides, which would
+  // shrink every cqw on the card.
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16% 0 13%;
   border-radius: 6px;
   // Darkened toward the edges, like the official cards
   background:
@@ -31,11 +40,13 @@
   -webkit-user-select: none;
 }
 
+// The picture fills the room the words leave, up to 62 across, and sits in
+// the middle of it
 .picture {
-  position: absolute;
-  top: 8%;
-  left: 9%;
-  width: 82%;
+  flex: 1 1 0;
+  min-height: 0;
+  width: 62cqw;
+  margin-top: 4cqw;
   overflow: visible;
 
   path {
@@ -97,11 +108,13 @@
   }
 }
 
+// The words, above the texture and frame. Their size is set on each card
+// to suit its words (see the component).
 .text {
-  position: absolute;
-  left: 5%;
-  right: 5%;
-  bottom: 9%;
+  position: relative;
+  z-index: 1;
+  flex: none;
+  max-width: 88cqw;
   margin: 0;
   display: flex;
   flex-direction: column;
@@ -109,12 +122,12 @@
   text-align: center;
   text-transform: uppercase;
   text-wrap: balance;
-  font-size: 11.5cqw;
-  line-height: 1.12;
+  line-height: 1.1;
   text-shadow: 0 0.6cqw 1.4cqw rgba(0, 0, 0, 0.6), 0 0 0.4cqw rgba(0, 0, 0, 0.35);
 }
 
-// The line the card is about
+// The line the card is about. The component measures the words to fit
+// them, so it keeps a copy of this size and spacing.
 .emphasis {
   color: #d1b56a;
   font-size: 1.3em;

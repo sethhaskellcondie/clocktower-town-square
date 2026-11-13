@@ -3,8 +3,11 @@
 // out the same way, so making one only takes three things:
 //
 // - a color the whole card is washed in,
-// - a picture across the top of the card, or several layered together,
-// - a few lines of text along the bottom, any of them emphasized.
+// - a few lines of text across the top, any of them emphasized,
+// - a picture below them, or several layered together.
+//
+// The words are what the player reads, so they're set as large as they'll
+// fit, and the picture is smaller, backing them up.
 //
 // For each there are standard options below, matching the official cards,
 // and anything else can be made to order:

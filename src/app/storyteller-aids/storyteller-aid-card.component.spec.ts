@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { StorytellerAidCardComponent } from './storyteller-aid-card.component';
 import { StorytellerAid } from './storyteller-aid';
-import { YOU_ARE_EVIL } from './storyteller-aid-library';
+import { STORYTELLER_AIDS, THE_LUNATIC_CHOSE_THESE_PLAYERS, YOU_ARE_EVIL, YOU_ARE_GOOD } from './storyteller-aid-library';
 
 describe('StorytellerAidCardComponent', () => {
   beforeEach(async () => {
@@ -10,11 +10,17 @@ describe('StorytellerAidCardComponent', () => {
     }).compileComponents();
   });
 
-  function render(aid: StorytellerAid): HTMLElement {
+  function render(aid: StorytellerAid, width = 300): HTMLElement {
     const fixture = TestBed.createComponent(StorytellerAidCardComponent);
     fixture.componentInstance.aid = aid;
+    const host = fixture.nativeElement as HTMLElement;
+    host.style.width = `${width}px`;
     fixture.detectChanges();
-    return fixture.nativeElement as HTMLElement;
+    return host;
+  }
+
+  function fontSize(element: Element): number {
+    return parseFloat(getComputedStyle(element).fontSize);
   }
 
   it('shows each line of text, setting the emphasized one apart', () => {
@@ -22,6 +28,31 @@ describe('StorytellerAidCardComponent', () => {
     const lines = Array.from(card.querySelectorAll('.text .line'));
     expect(lines.map(line => line.textContent)).toEqual(['You', 'are', 'evil']);
     expect(lines.map(line => line.classList.contains('emphasis'))).toEqual([false, false, true]);
+  });
+
+  it('puts the words above the picture', () => {
+    const card = render(YOU_ARE_EVIL);
+    const text = card.querySelector('.text')!.getBoundingClientRect();
+    const picture = card.querySelector('.picture')!.getBoundingClientRect();
+    expect(text.bottom).toBeLessThanOrEqual(picture.top);
+  });
+
+  it('sets short words larger than long ones', () => {
+    const short = fontSize(render(YOU_ARE_GOOD).querySelector('.text')!);
+    const long = fontSize(render(THE_LUNATIC_CHOSE_THESE_PLAYERS).querySelector('.text')!);
+    expect(short).toBeGreaterThan(long);
+  });
+
+  it('fits every line of every aid across the card, each on one line', () => {
+    for (const aid of STORYTELLER_AIDS) {
+      const card = render(aid);
+      const width = card.querySelector('.card')!.getBoundingClientRect().width;
+      for (const line of Array.from(card.querySelectorAll('.text .line'))) {
+        const box = line.getBoundingClientRect();
+        expect(box.width).withContext(`${aid.id}: ${line.textContent}`).toBeLessThanOrEqual(width * 0.88);
+        expect(box.height).withContext(`${aid.id}: ${line.textContent}`).toBeLessThan(fontSize(line) * 1.5);
+      }
+    }
   });
 
   it('reads as one sentence to screen readers', () => {

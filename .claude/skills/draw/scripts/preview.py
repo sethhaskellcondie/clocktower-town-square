@@ -46,13 +46,16 @@ REFERENCE_ICONS = [
 ]
 
 # The card, as storyteller-aid-card.component.scss and .html draw it. Keep
-# this in step with them if they change.
+# this in step with them if they change. The app sizes each card's words to
+# fit them; the preview's words are set at 14cqw, about the middle of the
+# sizes the aids come out at.
 CARD_CSS = """
 .card {
   --aid-light: color-mix(in oklab, var(--aid-color) 55%, white);
   --aid-glow: color-mix(in oklab, var(--aid-color) 35%, white);
-  position: relative; container-type: inline-size; aspect-ratio: 3 / 5;
+  position: relative; container-type: inline-size; aspect-ratio: 3 / 5; box-sizing: border-box;
   overflow: hidden; isolation: isolate; border-radius: 6px; color: #fff;
+  display: flex; flex-direction: column; align-items: center; padding: 16% 0 13%;
   background:
     radial-gradient(ellipse 80% 65% at 50% 45%, transparent 45%, rgba(0, 0, 0, 0.35) 100%),
     var(--aid-color);
@@ -63,7 +66,7 @@ CARD_CSS = """
     --aid-glow: oklch(from var(--aid-color) calc(l + (1 - l) * 0.6) calc(c * 0.8) h);
   }
 }
-.picture { position: absolute; top: 8%; left: 9%; width: 82%; overflow: visible; }
+.picture { flex: 1 1 0; min-height: 0; width: 62cqw; margin-top: 4cqw; overflow: visible; }
 .picture path {
   fill: var(--aid-light); stroke: var(--aid-glow); stroke-width: 0.6;
   stroke-linecap: round; stroke-linejoin: round;
@@ -80,9 +83,10 @@ CARD_CSS = """
 .frame .fine { stroke-width: 1.1; }
 .frame .leaf { fill: var(--aid-light); stroke: none; }
 .text {
-  position: absolute; left: 5%; right: 5%; bottom: 9%; margin: 0;
+  position: relative; z-index: 1; flex: none; max-width: 88cqw; margin: 0;
   display: flex; flex-direction: column; align-items: center; text-align: center;
-  text-transform: uppercase; font: 11.5cqw/1.12 Georgia, 'Times New Roman', serif;
+  text-transform: uppercase; text-wrap: balance;
+  font: 14cqw/1.1 Georgia, 'Times New Roman', serif;
   text-shadow: 0 0.6cqw 1.4cqw rgba(0, 0, 0, 0.6), 0 0 0.4cqw rgba(0, 0, 0, 0.35);
 }
 .emphasis { color: #d1b56a; font-size: 1.3em; line-height: 1.05; letter-spacing: 0.04em; }
@@ -164,9 +168,10 @@ def picture_paths(path):
 
 def card(color, shapes, width):
     frame = CARD_FRAME.format(corners=''.join(CARD_CORNER.format(t=t) for t in CORNERS))
-    return (f'<div class="card" style="--aid-color:{color};width:{width}px">'
-            f'<svg class="picture" viewBox="0 0 100 100">{shapes}</svg><div class="texture"></div>{frame}'
-            f'<p class="text"><span>The card\'s</span><span class="emphasis">words</span></p></div>')
+    # Wrapped like the app's card component, whose host sets the card's width
+    return (f'<div class="aid" style="width:{width}px"><div class="card" style="--aid-color:{color}">'
+            f'<p class="text"><span>The card\'s</span><span class="emphasis">words</span></p>'
+            f'<svg class="picture" viewBox="0 0 100 100">{shapes}</svg><div class="texture"></div>{frame}</div></div>')
 
 
 def preview_cards(files, out):
@@ -185,7 +190,7 @@ def preview_cards(files, out):
         f'<html><head><style>{CARD_CSS}'
         'body{margin:0;padding:12px;background:#111;font-family:sans-serif}'
         'h2{color:#ccc;font-size:14px;margin:6px 0}'
-        '.row{display:flex;align-items:flex-start;gap:12px;margin-bottom:12px}.card{flex:none}'
+        '.row{display:flex;align-items:flex-start;gap:12px;margin-bottom:12px}.aid{flex:none}'
         f'</style></head><body>{"".join(rows)}</body></html>')
     screenshot(page.as_uri(), out, width, height)
 

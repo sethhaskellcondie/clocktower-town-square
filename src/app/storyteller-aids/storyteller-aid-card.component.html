@@ -1,4 +1,10 @@
 <div class="card" [style.--aid-color]="aid.color" role="img" [attr.aria-label]="aid.sentence">
+  <p class="text" [style.font-size]="textSize + 'cqw'" aria-hidden="true">
+    @for (line of aid.lines; track $index) {
+      <span class="line" [class.emphasis]="line.emphasis">{{ line.text }}</span>
+    }
+  </p>
+
   <svg class="picture" viewBox="0 0 100 100" aria-hidden="true">
     @for (shape of aid.picture.shapes; track $index) {
       <path [attr.d]="shape.d" [class.dark]="shape.paint === 'dark'" [class.line]="shape.line" [style.stroke-width]="shape.width" />
@@ -20,10 +26,4 @@
       </g>
     }
   </svg>
-
-  <p class="text" aria-hidden="true">
-    @for (line of aid.lines; track $index) {
-      <span class="line" [class.emphasis]="line.emphasis">{{ line.text }}</span>
-    }
-  </p>
 </div>
