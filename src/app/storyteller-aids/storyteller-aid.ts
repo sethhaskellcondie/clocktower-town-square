@@ -3,7 +3,7 @@
 // out the same way, so making one only takes three things:
 //
 // - a color the whole card is washed in,
-// - a picture, drawn in code, across the top of the card,
+// - a picture across the top of the card, or several layered together,
 // - a few lines of text along the bottom, any of them emphasized.
 //
 // For each there are standard options below, matching the official cards,
@@ -15,6 +15,10 @@
 //     picture: STORYTELLER_AID_PICTURES.evilMask, // or a picture of your own
 //     text: ['You', 'are', { emphasis: 'evil' }],
 //   });
+//
+// Pictures share one canvas, so a list of them is drawn as one picture, each
+// on top of the last: picture: [STORYTELLER_AID_PICTURES.spiral,
+// STORYTELLER_AID_PICTURES.handprint].
 //
 // The text is shown in capitals however it's written, so write it the way
 // it reads aloud.
@@ -39,7 +43,8 @@ export const STORYTELLER_AID_COLORS = {
 // colors of their own: each shape is painted light, a pale tint of the
 // card's color, or dark, the card's own color, which carves details like
 // eyes and mouths back out of a light shape. That way any picture suits any
-// card. The standard pictures are in storyteller-aid-pictures.ts.
+// card. The standard pictures are SVG files in assets/storyteller_aids, read
+// in by storyteller-aid-pictures.ts, which describes how to draw one.
 export interface StorytellerAidPicture {
   readonly shapes: readonly StorytellerAidShape[];
 }
@@ -61,10 +66,17 @@ export class StorytellerAid {
   readonly picture: StorytellerAidPicture;
   readonly lines: readonly { readonly text: string; readonly emphasis: boolean }[];
 
-  constructor(config: { id: string; color: string; picture: StorytellerAidPicture; text: readonly StorytellerAidLine[] }) {
+  constructor(config: {
+    id: string;
+    color: string;
+    picture: StorytellerAidPicture | readonly StorytellerAidPicture[];
+    text: readonly StorytellerAidLine[];
+  }) {
     this.id = config.id;
     this.color = config.color;
-    this.picture = config.picture;
+    this.picture = 'shapes' in config.picture
+      ? config.picture
+      : { shapes: config.picture.flatMap(picture => picture.shapes) };
     this.lines = config.text.map(line =>
       typeof line === 'string' ? { text: line, emphasis: false } : { text: line.emphasis, emphasis: true },
     );

@@ -25,6 +25,9 @@
             ],
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
+            "loader": {
+              ".svg": "text"
+            },
             "assets": [
               {
                 "glob": "**/*",
@@ -42,7 +45,7 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kB",
+                  "maximumWarning": "750kB",
                   "maximumError": "1MB"
                 },
                 {
@@ -85,6 +88,9 @@
             ],
             "tsConfig": "tsconfig.spec.json",
             "inlineStyleLanguage": "scss",
+            "loader": {
+              ".svg": "text"
+            },
             "assets": [
               {
                 "glob": "**/*",

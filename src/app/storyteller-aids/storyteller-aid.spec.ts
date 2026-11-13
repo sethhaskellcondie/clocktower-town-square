@@ -25,6 +25,12 @@ describe('StorytellerAid', () => {
     expect(aid.picture).toBe(star);
   });
 
+  it('layers several pictures into one, each drawn over the last', () => {
+    const { spiral, handprint } = STORYTELLER_AID_PICTURES;
+    const aid = new StorytellerAid({ id: 'layered', color: 'teal', picture: [spiral, handprint], text: ['Layered'] });
+    expect(aid.picture.shapes).toEqual([...spiral.shapes, ...handprint.shapes]);
+  });
+
   it('gives every aid in the library its own id', () => {
     const ids = STORYTELLER_AIDS.map(aid => aid.id);
     expect(new Set(ids).size).toBe(ids.length);

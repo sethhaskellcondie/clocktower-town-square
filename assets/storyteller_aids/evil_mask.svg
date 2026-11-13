@@ -1,0 +1,33 @@
+<!-- A horned mask with a sly, fanged grin, for the evil team -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <style>
+    /* How the picture looks on a card, for viewing this file on its own.
+       On a card, each shape is painted from the card's own color instead. */
+    svg { background: #29616f; }
+    path { fill: #9ec3cd; stroke: #cbe0e6; stroke-linecap: round; stroke-linejoin: round; }
+    path:not([stroke-width]) { stroke-width: 0.6; }
+    .dark { fill: #29616f; stroke: none; }
+    .line { fill: none; stroke: #9ec3cd; }
+    .line:not([stroke-width]) { stroke-width: 1.5; }
+    .dark.line { stroke: #29616f; }
+  </style>
+
+  <!-- The horns, curling up from the brow -->
+  <path class="light" d="M22 23C10 22 3 13 7 4C8 1 12 0 14 2C11 8 15 15 34 19Z"/>
+  <path class="light" d="M78 23C90 22 97 13 93 4C92 1 88 0 86 2C89 8 85 15 66 19Z"/>
+  <!-- The face, tapering to a point, and the ring hanging from its chin -->
+  <path class="light" d="M16 20C32 16 42 23 50 21C58 23 68 16 84 20C92 40 88 60 70 78C62 85 56 88 50 90C44 88 38 85 30 78C12 60 8 40 16 20Z"/>
+  <path class="light line" stroke-width="1.8" d="M46.5 94.5A3.5 3.5 0 1 0 53.5 94.5A3.5 3.5 0 1 0 46.5 94.5Z"/>
+  <!-- Brows drawn down into a scowl over closed, smug eyes -->
+  <path class="dark line" stroke-width="1.4" d="M22 31L42 37"/>
+  <path class="dark line" stroke-width="1.4" d="M78 31L58 37"/>
+  <path class="dark" d="M24 41C28 36 38 37 44 44C38 41 30 40 24 41Z"/>
+  <path class="dark" d="M76 41C72 36 62 37 56 44C62 41 70 40 76 41Z"/>
+  <!-- The nose -->
+  <path class="dark line" d="M46 52Q50 55 54 52"/>
+  <!-- A grin from ear to ear, its top teeth showing and two of them fangs -->
+  <path class="dark" d="M24 56C36 64 64 64 76 56C72 72 62 81 50 81C38 81 28 72 24 56Z"/>
+  <path class="light" d="M29 59.5C40 65 60 65 71 59.5C69 63.5 62 67 50 67.5C38 67 31 63.5 29 59.5Z"/>
+  <path class="light" d="M35.5 65.5L39 73L42.5 66.8Z"/>
+  <path class="light" d="M64.5 65.5L61 73L57.5 66.8Z"/>
+</svg>
