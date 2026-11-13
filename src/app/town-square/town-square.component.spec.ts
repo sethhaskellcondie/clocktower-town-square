@@ -1,29 +1,29 @@
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { AppComponent } from './app.component';
-import { AttractModeService } from './attract-mode/attract-mode.service';
-import { DayTimerService } from './day-timer/day-timer.service';
-import { NextSessionService } from './next-session/next-session.service';
-import { HOW_TO_PLAY_VIDEO, NO_DEATHS } from './player-aids/player-aid-library';
-import { BAD_MOON_RISING } from './scripts/script-library';
-import { travelerRows } from './character-icon/character-options';
-import { WASHERWOMAN } from './character-sheets/character-library';
+import { TownSquareComponent } from './town-square.component';
+import { AttractModeService } from '../attract-mode/attract-mode.service';
+import { DayTimerService } from '../day-timer/day-timer.service';
+import { NextSessionService } from '../next-session/next-session.service';
+import { HOW_TO_PLAY_VIDEO, NO_DEATHS } from '../player-aids/player-aid-library';
+import { BAD_MOON_RISING } from '../scripts/script-library';
+import { travelerRows } from '../character-icon/character-options';
+import { WASHERWOMAN } from '../character-sheets/character-library';
 
-describe('AppComponent', () => {
+describe('TownSquareComponent', () => {
   beforeEach(async () => {
     localStorage.clear();
     await TestBed.configureTestingModule({
-      imports: [AppComponent],
+      imports: [TownSquareComponent],
     }).compileComponents();
   });
 
   it('should create the app', () => {
-    const fixture = TestBed.createComponent(AppComponent);
+    const fixture = TestBed.createComponent(TownSquareComponent);
     const app = fixture.componentInstance;
     expect(app).toBeTruthy();
   });
 
   it('should render the banner and the players table', () => {
-    const fixture = TestBed.createComponent(AppComponent);
+    const fixture = TestBed.createComponent(TownSquareComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
     expect(compiled.querySelector('.project-banner')?.textContent).toContain('Attract Mode');
@@ -32,7 +32,7 @@ describe('AppComponent', () => {
   });
 
   it('enters small attract mode when the project banner is clicked', () => {
-    const fixture = TestBed.createComponent(AppComponent);
+    const fixture = TestBed.createComponent(TownSquareComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
     (compiled.querySelector('.project-banner') as HTMLElement).click();
@@ -44,7 +44,7 @@ describe('AppComponent', () => {
   });
 
   it('shows the next session footer when the project footer is clicked', () => {
-    const fixture = TestBed.createComponent(AppComponent);
+    const fixture = TestBed.createComponent(TownSquareComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
     (compiled.querySelector('.project-footer') as HTMLElement).click();
@@ -56,7 +56,7 @@ describe('AppComponent', () => {
   });
 
   it("offers travelers from the script picked on the character sheet", () => {
-    const fixture = TestBed.createComponent(AppComponent);
+    const fixture = TestBed.createComponent(TownSquareComponent);
     const app = fixture.componentInstance;
     const compiled = fixture.nativeElement as HTMLElement;
     fixture.detectChanges();
@@ -72,7 +72,7 @@ describe('AppComponent', () => {
   });
 
   it("opens a character's aid from the character sheet, then returns to the sheet once it closes", () => {
-    const fixture = TestBed.createComponent(AppComponent);
+    const fixture = TestBed.createComponent(TownSquareComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
     const shelf = fixture.componentInstance.playerAids!.shelf;
@@ -102,7 +102,7 @@ describe('AppComponent', () => {
   });
 
   it("leaves the character sheet shut when an aid opened elsewhere closes", () => {
-    const fixture = TestBed.createComponent(AppComponent);
+    const fixture = TestBed.createComponent(TownSquareComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
     const shelf = fixture.componentInstance.playerAids!.shelf;
@@ -115,7 +115,7 @@ describe('AppComponent', () => {
   });
 
   it('steps the attract mode on A, but not while a player aid is open', () => {
-    const fixture = TestBed.createComponent(AppComponent);
+    const fixture = TestBed.createComponent(TownSquareComponent);
     fixture.detectChanges();
     const attract = TestBed.inject(AttractModeService);
     const pressA = () => document.dispatchEvent(new KeyboardEvent('keydown', { code: 'KeyA', key: 'a' }));
@@ -134,7 +134,7 @@ describe('AppComponent', () => {
   });
 
   it('only takes day timer hotkeys during the day, and clears the timer at night', () => {
-    const fixture = TestBed.createComponent(AppComponent);
+    const fixture = TestBed.createComponent(TownSquareComponent);
     fixture.detectChanges();
     const app = fixture.componentInstance;
     const timer = TestBed.inject(DayTimerService);
@@ -159,7 +159,7 @@ describe('AppComponent', () => {
   });
 
   it('shows the no-deaths aid when the reveal finds no one died in the night', fakeAsync(() => {
-    const fixture = TestBed.createComponent(AppComponent);
+    const fixture = TestBed.createComponent(TownSquareComponent);
     fixture.detectChanges();
     const app = fixture.componentInstance;
     const shelf = app.playerAids!.shelf;
@@ -176,7 +176,7 @@ describe('AppComponent', () => {
   }));
 
   it('marks the night\'s deaths dead instead of showing the no-deaths aid', fakeAsync(() => {
-    const fixture = TestBed.createComponent(AppComponent);
+    const fixture = TestBed.createComponent(TownSquareComponent);
     fixture.detectChanges();
     const app = fixture.componentInstance;
     app.playerComponents.first.state = 'killed during the night';
@@ -192,7 +192,7 @@ describe('AppComponent', () => {
   }));
 
   it('keeps the no-deaths aid off the player aids shelf', () => {
-    const fixture = TestBed.createComponent(AppComponent);
+    const fixture = TestBed.createComponent(TownSquareComponent);
     fixture.detectChanges();
     const shelf = fixture.componentInstance.playerAids!.shelf;
     const listed = shelf.sections.flatMap(s => s.withDescendants()).flatMap(s => s.aids);

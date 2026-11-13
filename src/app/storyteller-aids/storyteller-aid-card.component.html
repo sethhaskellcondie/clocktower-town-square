@@ -1,0 +1,29 @@
+<div class="card" [style.--aid-color]="aid.color" role="img" [attr.aria-label]="aid.sentence">
+  <svg class="picture" viewBox="0 0 100 100" aria-hidden="true">
+    @for (shape of aid.picture.shapes; track $index) {
+      <path [attr.d]="shape.d" [class.dark]="shape.paint === 'dark'" [class.line]="shape.line" [style.stroke-width]="shape.width" />
+    }
+  </svg>
+
+  <div class="texture"></div>
+
+  <svg class="frame" viewBox="0 0 300 500" aria-hidden="true">
+    <path d="M50 9H250M50 491H250M9 50V450M291 50V450" />
+    @for (corner of corners; track $index) {
+      <g [attr.transform]="corner">
+        <path d="M9 9H50V50H9Z" />
+        <path class="fine" d="M45 14C33 13 25 17 26 26C17 25 13 33 14 45M45 14C47 15 47 18 44 18M14 45C15 47 18 47 18 44" />
+        <path class="leaf" d="M14 14C22 15 27 20 28 28C20 27 15 22 14 14Z" />
+        <path class="leaf" d="M30 30C37 32 41 36 44 44C36 41 32 37 30 30Z" />
+        <circle class="leaf" cx="40" cy="22" r="1.6" />
+        <circle class="leaf" cx="22" cy="40" r="1.6" />
+      </g>
+    }
+  </svg>
+
+  <p class="text" aria-hidden="true">
+    @for (line of aid.lines; track $index) {
+      <span class="line" [class.emphasis]="line.emphasis">{{ line.text }}</span>
+    }
+  </p>
+</div>

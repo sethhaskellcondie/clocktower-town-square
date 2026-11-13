@@ -1,0 +1,32 @@
+import { STORYTELLER_AID_COLORS, StorytellerAid, StorytellerAidPicture } from './storyteller-aid';
+import { STORYTELLER_AID_PICTURES } from './storyteller-aid-pictures';
+import { STORYTELLER_AIDS } from './storyteller-aid-library';
+
+describe('StorytellerAid', () => {
+  it('takes its lines in order, marking the emphasized one', () => {
+    const aid = new StorytellerAid({
+      id: 'you-are-evil',
+      color: STORYTELLER_AID_COLORS.red,
+      picture: STORYTELLER_AID_PICTURES.evilMask,
+      text: ['You', 'are', { emphasis: 'evil' }],
+    });
+    expect(aid.lines).toEqual([
+      { text: 'You', emphasis: false },
+      { text: 'are', emphasis: false },
+      { text: 'evil', emphasis: true },
+    ]);
+    expect(aid.sentence).toBe('You are evil');
+  });
+
+  it('can be made with a color and a picture of its own', () => {
+    const star: StorytellerAidPicture = { shapes: [{ paint: 'light', d: 'M50 5L61 39H97L68 61L79 95L50 74L21 95L32 61L3 39H39Z' }] };
+    const aid = new StorytellerAid({ id: 'star', color: 'rebeccapurple', picture: star, text: [{ emphasis: 'Star' }] });
+    expect(aid.color).toBe('rebeccapurple');
+    expect(aid.picture).toBe(star);
+  });
+
+  it('gives every aid in the library its own id', () => {
+    const ids = STORYTELLER_AIDS.map(aid => aid.id);
+    expect(new Set(ids).size).toBe(ids.length);
+  });
+});

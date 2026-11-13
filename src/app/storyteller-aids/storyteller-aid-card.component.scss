@@ -1,0 +1,124 @@
+:host {
+  display: block;
+}
+
+// Everything on the card is tinted from --aid-color, the aid's own color,
+// and sized in cqw, hundredths of the card's width, so the card looks the
+// same at any size. The tints lighten the color while keeping it as vivid,
+// like the official cards; browsers that can't do that mix in white instead.
+.card {
+  --aid-light: color-mix(in oklab, var(--aid-color) 55%, white);
+  --aid-glow: color-mix(in oklab, var(--aid-color) 35%, white);
+
+  @supports (color: oklch(from red l c h)) {
+    --aid-light: oklch(from var(--aid-color) calc(l + (1 - l) * 0.42) c h);
+    --aid-glow: oklch(from var(--aid-color) calc(l + (1 - l) * 0.6) calc(c * 0.8) h);
+  }
+
+  position: relative;
+  container-type: inline-size;
+  aspect-ratio: 3 / 5;
+  overflow: hidden;
+  isolation: isolate;
+  border-radius: 6px;
+  // Darkened toward the edges, like the official cards
+  background:
+    radial-gradient(ellipse 80% 65% at 50% 45%, transparent 45%, rgba(0, 0, 0, 0.35) 100%),
+    var(--aid-color);
+  color: #fff;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-style: normal;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.picture {
+  position: absolute;
+  top: 8%;
+  left: 9%;
+  width: 82%;
+  overflow: visible;
+
+  path {
+    fill: var(--aid-light);
+    stroke: var(--aid-glow);
+    stroke-width: 0.6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  path.dark {
+    fill: var(--aid-color);
+    stroke: none;
+  }
+
+  path.line {
+    fill: none;
+    stroke: var(--aid-light);
+    stroke-width: 1.5;
+  }
+
+  path.dark.line {
+    stroke: var(--aid-color);
+  }
+}
+
+// Mottled like worn paper, over the picture as well as the background:
+// fractal noise in shades of grey, laid over the card so it lightens and
+// darkens it in patches
+.texture {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.16;
+  mix-blend-mode: overlay;
+  background: center / 100% 100% no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 500' preserveAspectRatio='none'%3E%3Cfilter id='n' x='0' y='0' width='1' height='1'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.03' numOctaves='5' seed='4'/%3E%3CfeColorMatrix values='2 0 0 0 -0.5 2 0 0 0 -0.5 2 0 0 0 -0.5 0 0 0 0 1'/%3E%3C/filter%3E%3Crect width='300' height='500' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.frame {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.75;
+
+  path {
+    fill: none;
+    stroke: var(--aid-light);
+    stroke-width: 1.6;
+  }
+
+  .fine {
+    stroke-width: 1.1;
+  }
+
+  .leaf {
+    fill: var(--aid-light);
+    stroke: none;
+  }
+}
+
+.text {
+  position: absolute;
+  left: 5%;
+  right: 5%;
+  bottom: 9%;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  text-transform: uppercase;
+  text-wrap: balance;
+  font-size: 11.5cqw;
+  line-height: 1.12;
+  text-shadow: 0 0.6cqw 1.4cqw rgba(0, 0, 0, 0.6), 0 0 0.4cqw rgba(0, 0, 0, 0.35);
+}
+
+// The line the card is about
+.emphasis {
+  color: #d8c08a;
+  font-size: 1.3em;
+  line-height: 1.05;
+  letter-spacing: 0.04em;
+}

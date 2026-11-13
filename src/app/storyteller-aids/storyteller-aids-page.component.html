@@ -1,0 +1,21 @@
+<main
+  class="aids"
+  (pointerdown)="onPointerDown($event)"
+  (pointermove)="onPointerMove($event)"
+  (pointerup)="onPointerUp($event)"
+  (pointercancel)="onPointerCancel($event)"
+>
+  <h1 class="visually-hidden">Storyteller Aids</h1>
+  <div
+    class="track"
+    [class.settling]="settling"
+    [style.transform]="'translateX(' + offset + 'px)'"
+    (transitionend)="onTransitionEnd($event)"
+  >
+    @for (slot of slots; track slot.position) {
+      <section class="slot" [style.left.%]="slot.position * 100" [attr.aria-hidden]="slot.position === 0 ? null : 'true'">
+        <app-storyteller-aid-card [aid]="slot.aid" />
+      </section>
+    }
+  </div>
+</main>
