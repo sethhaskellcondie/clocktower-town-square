@@ -1,0 +1,23 @@
+<!-- A large question mark, tipped a little, for asking whether a player will use their ability -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <style>
+    /* How the picture looks on a card, for viewing this file on its own.
+       On a card, each shape is painted from the card's own color instead. */
+    svg { background: #29616f; }
+    path { fill: #9ec3cd; stroke: #cbe0e6; stroke-linecap: round; stroke-linejoin: round; }
+    path:not([stroke-width]) { stroke-width: 0.6; }
+    .dark { fill: #29616f; stroke: none; }
+    .line { fill: none; stroke: #9ec3cd; }
+    .line:not([stroke-width]) { stroke-width: 1.5; }
+    .dark.line { stroke: #29616f; }
+  </style>
+
+  <!-- A question mark, its hook swelling round the top and its tail run out to a point -->
+  <path class="light" stroke-width="2" d="M28.3 34.3C28.7 32.2 28.5 25.3 30.8 21.3C33.1 17.3 37.6 12.6 41.9 10.3C46.2 8 51.7 6.9 56.6 7.4C61.5 8 67.7 10.3 71.4 13.4C75.2 16.6 78.1 21.7 78.9 26.4C79.7 31.1 78.3 37.4 76.2 41.6C74.1 45.8 69.2 48.8 66.3 51.6C63.4 54.4 60.6 55.2 58.9 58.6C57.3 61.9 56.9 69.4 56.5 71.6C55.2 71.7 51.2 72.8 48.6 72.5C46.1 72.3 42.4 70.4 41.2 70C41.4 68 41.1 61.7 42.4 57.9C43.7 54.2 46.1 50.8 49 47.6C52 44.4 57.6 41.8 59.9 38.8C62.3 35.7 63.2 31.7 63.1 29.2C63 26.6 61.1 24.4 59.3 23.2C57.6 22 55.5 21.4 52.8 21.9C50.2 22.3 47.7 23.9 43.6 26C39.5 28.1 30.9 33 28.3 34.3Z"/>
+  <!-- Its dot, a little uneven -->
+  <path class="light" stroke-width="2" d="M49.2 77.5C51.8 77.7 55.4 78.7 56.6 80.5C57.9 82.3 57.9 85.9 56.9 88.2C56 90.5 53.2 93.6 50.8 94.2C48.3 94.9 44.2 93.7 42.1 92.2C40.1 90.7 38.6 87.4 38.5 85.2C38.3 83 39.5 80.1 41.3 78.8C43.1 77.6 46.7 77.2 49.2 77.5Z"/>
+  <!-- A groove cut round the hook, following its curve and running out to a point at each end -->
+  <path class="dark" d="M39.8 19.6C41.4 18.6 45.9 14.5 49.3 13.5C52.7 12.6 57 12.9 60.3 13.8C63.7 14.8 67.3 16.8 69.3 19.2C71.3 21.6 72.2 25.2 72.3 28.3C72.4 31.5 70.3 36.6 69.9 38.3C69.9 36.7 70.1 31.7 69.6 28.9C69 26.2 68.3 23.5 66.6 21.6C64.9 19.6 62.2 17.9 59.3 17C56.4 16.2 52.5 16 49.2 16.4C46 16.8 41.4 19.1 39.8 19.6Z"/>
+  <!-- And a short one down the stem -->
+  <path class="dark" d="M53.5 51.6C52.7 52.5 49.8 55 48.9 57.3C48 59.6 48 63.8 47.9 65.2C48.3 63.9 49.5 60.2 50.4 57.9C51.3 55.6 53 52.6 53.5 51.6Z"/>
+</svg>

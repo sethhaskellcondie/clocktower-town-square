@@ -47,24 +47,32 @@ export const THESE_CHARACTERS_ARE_IN_PLAY = new StorytellerAid({
   id: 'these-characters-are-in-play',
   category: 'standard',
   color: STORYTELLER_AID_COLORS.teal,
-  picture: STORYTELLER_AID_PICTURES.circles,
+  picture: STORYTELLER_AID_PICTURES.twoCircles,
   text: ['These', 'characters', 'are', { emphasis: 'in play' }],
 });
 
-export const WHICH_ROLE_ARE_YOU_BLUFFING_AS = new StorytellerAid({
-  id: 'which-role-are-you-bluffing-as',
+export const WHICH_CHARACTER_ARE_YOU_BLUFFING_AS = new StorytellerAid({
+  id: 'which-character-are-you-bluffing-as',
   category: 'standard',
   color: STORYTELLER_AID_COLORS.rust,
   picture: STORYTELLER_AID_PICTURES.bluffingMask,
-  text: ['Which role', 'are you', { emphasis: 'bluffing' }, 'as?'],
+  text: ['Which', 'character', 'are you', { emphasis: 'bluffing' }, 'as?'],
+});
+
+export const POINT_AT_YOUR_CHARACTER = new StorytellerAid({
+  id: 'point-at-your-character',
+  category: 'standard',
+  color: STORYTELLER_AID_COLORS.azure,
+  picture: STORYTELLER_AID_PICTURES.downArrow,
+  text: [{ emphasis: 'Point' }, 'at your', 'character', 'on the', 'sheet'],
 });
 
 export const USE_YOUR_ABILITY = new StorytellerAid({
   id: 'use-your-ability',
   category: 'standard',
   color: STORYTELLER_AID_COLORS.purple,
-  picture: STORYTELLER_AID_PICTURES.raven,
-  text: ['Use your', { emphasis: 'ability?' }, 'You may', 'decline'],
+  picture: STORYTELLER_AID_PICTURES.questionMark,
+  text: [[{ emphasis: 'Use' }, 'your'], 'once per', 'game', 'ability?'],
 });
 
 export const PLEASE_CHOOSE_AGAIN = new StorytellerAid({
@@ -118,15 +126,16 @@ export const THESE_PLAYERS_ARE_NOT_LEGION = new StorytellerAid({
 // Every aid, which the groups below sort by category, keeping to this order
 // within each one
 const AIDS: readonly StorytellerAid[] = [
-  YOU_ARE_GOOD,
-  YOU_ARE_EVIL,
+  POINT_AT_YOUR_CHARACTER,
   THIS_IS_THE_DEMON,
   THESE_ARE_YOUR_MINIONS,
   THESE_CHARACTERS_ARE_NOT_IN_PLAY,
-  THESE_CHARACTERS_ARE_IN_PLAY,
-  WHICH_ROLE_ARE_YOU_BLUFFING_AS,
-  USE_YOUR_ABILITY,
+  WHICH_CHARACTER_ARE_YOU_BLUFFING_AS,
   PLEASE_CHOOSE_AGAIN,
+  THESE_CHARACTERS_ARE_IN_PLAY,
+  USE_YOUR_ABILITY,
+  YOU_ARE_GOOD,
+  YOU_ARE_EVIL,
   THIS_CHARACTER_SELECTED_YOU,
   DID_YOU_VOTE_TODAY,
   DID_YOU_NOMINATE_TODAY,

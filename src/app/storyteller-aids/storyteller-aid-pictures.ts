@@ -2,12 +2,14 @@ import { StorytellerAidPicture, StorytellerAidShape } from './storyteller-aid';
 import goodMask from '../../../assets/storyteller_aids/good_mask.svg';
 import evilMask from '../../../assets/storyteller_aids/evil_mask.svg';
 import bluffingMask from '../../../assets/storyteller_aids/bluffing_mask.svg';
-import raven from '../../../assets/storyteller_aids/raven.svg';
+import questionMark from '../../../assets/storyteller_aids/question_mark.svg';
+import downArrow from '../../../assets/storyteller_aids/down_arrow.svg';
 import xMark from '../../../assets/storyteller_aids/x_mark.svg';
 import spiral from '../../../assets/storyteller_aids/spiral.svg';
 import handprint from '../../../assets/storyteller_aids/handprint.svg';
 import chatteringMouth from '../../../assets/storyteller_aids/chattering_mouth.svg';
 import circles from '../../../assets/storyteller_aids/circles.svg';
+import twoCircles from '../../../assets/storyteller_aids/two_circles.svg';
 import threeCircles from '../../../assets/storyteller_aids/three_circles.svg';
 import raisedHand from '../../../assets/storyteller_aids/raised_hand.svg';
 import staringEye from '../../../assets/storyteller_aids/staring_eye.svg';
@@ -40,12 +42,14 @@ export const STORYTELLER_AID_PICTURES = {
   goodMask: pictureFromSvg(goodMask),
   evilMask: pictureFromSvg(evilMask),
   bluffingMask: pictureFromSvg(bluffingMask),
-  raven: pictureFromSvg(raven),
+  questionMark: pictureFromSvg(questionMark),
+  downArrow: pictureFromSvg(downArrow),
   xMark: pictureFromSvg(xMark),
   spiral: pictureFromSvg(spiral),
   handprint: pictureFromSvg(handprint),
   chatteringMouth: pictureFromSvg(chatteringMouth),
   circles: pictureFromSvg(circles),
+  twoCircles: pictureFromSvg(twoCircles),
   threeCircles: pictureFromSvg(threeCircles),
   raisedHand: pictureFromSvg(raisedHand),
   staringEye: pictureFromSvg(staringEye),

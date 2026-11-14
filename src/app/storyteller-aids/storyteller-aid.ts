@@ -52,6 +52,7 @@ export type StorytellerAidCategory = keyof typeof STORYTELLER_AID_CATEGORIES;
 export const STORYTELLER_AID_COLORS = {
   blue: '#3a3bae',
   navy: '#264572',
+  azure: '#1f68bc',
   violet: '#5b3d87',
   red: '#682a2a',
   crimson: '#84253d',

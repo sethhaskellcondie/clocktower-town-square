@@ -1,0 +1,27 @@
+<!-- Two ringed medallions, one above the other, for showing a player characters that are in play -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <style>
+    /* How the picture looks on a card, for viewing this file on its own.
+       On a card, each shape is painted from the card's own color instead. */
+    svg { background: #29616f; }
+    path { fill: #9ec3cd; stroke: #cbe0e6; stroke-linecap: round; stroke-linejoin: round; }
+    path:not([stroke-width]) { stroke-width: 0.6; }
+    .dark { fill: #29616f; stroke: none; }
+    .line { fill: none; stroke: #9ec3cd; }
+    .line:not([stroke-width]) { stroke-width: 1.5; }
+    .dark.line { stroke: #29616f; }
+  </style>
+
+  <!-- Each medallion is a broad outer ring, a middling ring and a thin ring round the open centre -->
+  <!-- Each ring is cut as a band, its inside traced the other way round to leave a hole -->
+
+  <!-- The upper medallion -->
+  <path class="light" stroke-width="2" d="M3 29A27 27 0 1 0 57 29A27 27 0 1 0 3 29ZM8.4 29A21.6 21.6 0 1 1 51.6 29A21.6 21.6 0 1 1 8.4 29Z"/>
+  <path class="light" stroke-width="2" d="M16 29A14 14 0 1 0 44 29A14 14 0 1 0 16 29ZM19.2 29A10.8 10.8 0 1 1 40.8 29A10.8 10.8 0 1 1 19.2 29Z"/>
+  <path class="light" stroke-width="2" d="M24.1 29A5.9 5.9 0 1 0 35.9 29A5.9 5.9 0 1 0 24.1 29ZM25.7 29A4.3 4.3 0 1 1 34.3 29A4.3 4.3 0 1 1 25.7 29Z"/>
+
+  <!-- The lower medallion, a little smaller -->
+  <path class="light" stroke-width="2" d="M45 72A26 26 0 1 0 97 72A26 26 0 1 0 45 72ZM50.2 72A20.8 20.8 0 1 1 91.8 72A20.8 20.8 0 1 1 50.2 72Z"/>
+  <path class="light" stroke-width="2" d="M57.5 72A13.5 13.5 0 1 0 84.5 72A13.5 13.5 0 1 0 57.5 72ZM60.6 72A10.4 10.4 0 1 1 81.4 72A10.4 10.4 0 1 1 60.6 72Z"/>
+  <path class="light" stroke-width="2" d="M65.3 72A5.7 5.7 0 1 0 76.7 72A5.7 5.7 0 1 0 65.3 72ZM66.8 72A4.2 4.2 0 1 1 75.2 72A4.2 4.2 0 1 1 66.8 72Z"/>
+</svg>
