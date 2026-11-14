@@ -126,8 +126,19 @@
   text-shadow: 0 0.6cqw 1.4cqw rgba(0, 0, 0, 0.6), 0 0 0.4cqw rgba(0, 0, 0, 0.35);
 }
 
-// The line the card is about. The component measures the words to fit
-// them, so it keeps a copy of this size and spacing.
+// A line's words, side by side on a shared baseline, a space apart when
+// only some of them are emphasized. The component measures the words to fit
+// them, so it keeps a copy of this gap.
+.line {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: baseline;
+  column-gap: 0.25em;
+}
+
+// The words the card is about. The component keeps a copy of this size and
+// spacing too.
 .emphasis {
   color: #d1b56a;
   font-size: 1.3em;

@@ -1,0 +1,24 @@
+<!-- Rings of uneven width and spacing, like the medallion on the home page, a placeholder for an aid until it has a picture of its own -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <style>
+    /* How the picture looks on a card, for viewing this file on its own.
+       On a card, each shape is painted from the card's own color instead. */
+    svg { background: #29616f; }
+    path { fill: #9ec3cd; stroke: #cbe0e6; stroke-linecap: round; stroke-linejoin: round; }
+    path:not([stroke-width]) { stroke-width: 0.6; }
+    .dark { fill: #29616f; stroke: none; }
+    .line { fill: none; stroke: #9ec3cd; }
+    .line:not([stroke-width]) { stroke-width: 1.5; }
+    .dark.line { stroke: #29616f; }
+  </style>
+
+  <!-- Each ring is cut as a band, its inside traced the other way round to leave a hole -->
+  <!-- A broad outer ring -->
+  <path class="light" stroke-width="2" d="M5 50A45 45 0 1 0 95 50A45 45 0 1 0 5 50ZM13 50A37 37 0 1 1 87 50A37 37 0 1 1 13 50Z"/>
+  <!-- A thin ring a little way inside it -->
+  <path class="light" stroke-width="2" d="M19 50A31 31 0 1 0 81 50A31 31 0 1 0 19 50ZM20.5 50A29.5 29.5 0 1 1 79.5 50A29.5 29.5 0 1 1 20.5 50Z"/>
+  <!-- A wide gap, then a middling ring -->
+  <path class="light" stroke-width="2" d="M31 50A19 19 0 1 0 69 50A19 19 0 1 0 31 50ZM35 50A15 15 0 1 1 65 50A15 15 0 1 1 35 50Z"/>
+  <!-- A thin ring round the open centre -->
+  <path class="light" stroke-width="2" d="M40 50A10 10 0 1 0 60 50A10 10 0 1 0 40 50ZM41.5 50A8.5 8.5 0 1 1 58.5 50A8.5 8.5 0 1 1 41.5 50Z"/>
+</svg>

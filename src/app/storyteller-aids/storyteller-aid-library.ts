@@ -22,32 +22,32 @@ export const YOU_ARE_EVIL = new StorytellerAid({
 export const THIS_IS_THE_DEMON = new StorytellerAid({
   id: 'this-is-the-demon',
   category: 'standard',
-  color: STORYTELLER_AID_COLORS.red,
-  picture: STORYTELLER_AID_PICTURES.evilMask,
+  color: STORYTELLER_AID_COLORS.crimson,
+  picture: STORYTELLER_AID_PICTURES.staringEye,
   text: ['This', 'is the', { emphasis: 'demon' }],
 });
 
 export const THESE_ARE_YOUR_MINIONS = new StorytellerAid({
   id: 'these-are-your-minions',
   category: 'standard',
-  color: STORYTELLER_AID_COLORS.red,
-  picture: STORYTELLER_AID_PICTURES.evilMask,
+  color: STORYTELLER_AID_COLORS.plum,
+  picture: STORYTELLER_AID_PICTURES.staringEyes,
   text: ['These', 'are your', { emphasis: 'minions' }],
 });
 
 export const THESE_CHARACTERS_ARE_NOT_IN_PLAY = new StorytellerAid({
   id: 'these-characters-are-not-in-play',
   category: 'standard',
-  color: STORYTELLER_AID_COLORS.blue,
-  picture: STORYTELLER_AID_PICTURES.goodMask,
-  text: ['These', 'characters', 'are', { emphasis: 'not in play' }],
+  color: STORYTELLER_AID_COLORS.navy,
+  picture: STORYTELLER_AID_PICTURES.threeCircles,
+  text: ['These', 'characters', ['are', { emphasis: 'not' }], { emphasis: 'in play' }],
 });
 
 export const THESE_CHARACTERS_ARE_IN_PLAY = new StorytellerAid({
   id: 'these-characters-are-in-play',
   category: 'standard',
   color: STORYTELLER_AID_COLORS.teal,
-  picture: STORYTELLER_AID_PICTURES.crookedHouse,
+  picture: STORYTELLER_AID_PICTURES.circles,
   text: ['These', 'characters', 'are', { emphasis: 'in play' }],
 });
 
@@ -71,30 +71,38 @@ export const PLEASE_CHOOSE_AGAIN = new StorytellerAid({
   id: 'please-choose-again',
   category: 'standard',
   color: STORYTELLER_AID_COLORS.green,
-  picture: STORYTELLER_AID_PICTURES.pointingHand,
+  picture: STORYTELLER_AID_PICTURES.xMark,
   text: ['Please', { emphasis: 'choose' }, 'again'],
 });
 
 export const THIS_CHARACTER_SELECTED_YOU = new StorytellerAid({
   id: 'this-character-selected-you',
   category: 'standard',
-  color: STORYTELLER_AID_COLORS.green,
+  color: STORYTELLER_AID_COLORS.pine,
   picture: STORYTELLER_AID_PICTURES.circles,
   text: ['This', 'character', { emphasis: 'selected' }, 'you'],
 });
 
-export const WE_SHOULD_CHAT_TOMORROW = new StorytellerAid({
-  id: 'we-should-chat-tomorrow',
+export const DID_YOU_VOTE_TODAY = new StorytellerAid({
+  id: 'did-you-vote-today',
   category: 'standard',
-  color: STORYTELLER_AID_COLORS.mauve,
+  color: STORYTELLER_AID_COLORS.grey,
+  picture: STORYTELLER_AID_PICTURES.raisedHand,
+  text: ['Did you', { emphasis: 'vote' }, 'today?'],
+});
+
+export const DID_YOU_NOMINATE_TODAY = new StorytellerAid({
+  id: 'did-you-nominate-today',
+  category: 'standard',
+  color: STORYTELLER_AID_COLORS.olive,
   picture: STORYTELLER_AID_PICTURES.chatteringMouth,
-  text: ['We should', { emphasis: 'chat' }, 'tomorrow'],
+  text: ['Did you', { emphasis: 'nominate' }, 'today?'],
 });
 
 export const THE_LUNATIC_CHOSE_THESE_PLAYERS = new StorytellerAid({
   id: 'the-lunatic-chose-these-players',
   category: 'character',
-  color: STORYTELLER_AID_COLORS.slate,
+  color: STORYTELLER_AID_COLORS.violet,
   picture: STORYTELLER_AID_PICTURES.spiral,
   text: ['The Lunatic', { emphasis: 'chose' }, 'these', 'players'],
 });
@@ -120,7 +128,8 @@ const AIDS: readonly StorytellerAid[] = [
   USE_YOUR_ABILITY,
   PLEASE_CHOOSE_AGAIN,
   THIS_CHARACTER_SELECTED_YOU,
-  WE_SHOULD_CHAT_TOMORROW,
+  DID_YOU_VOTE_TODAY,
+  DID_YOU_NOMINATE_TODAY,
   THE_LUNATIC_CHOSE_THESE_PLAYERS,
   THESE_PLAYERS_ARE_NOT_LEGION,
 ];

@@ -3,7 +3,8 @@
 // out the same way, so making one only takes three things:
 //
 // - a color the whole card is washed in,
-// - a few lines of text across the top, any of them emphasized,
+// - a few lines of text across the top, any of them emphasized, in whole or
+//   in part,
 // - a picture below them, or several layered together.
 //
 // The words are what the player reads, so they're set as large as they'll
@@ -43,12 +44,21 @@ export const STORYTELLER_AID_CATEGORIES = {
 
 export type StorytellerAidCategory = keyof typeof STORYTELLER_AID_CATEGORIES;
 
-// The colors of the official cards. Any other CSS color works as well, and
-// the picture and frame are tinted from whichever color the card is.
+// Colors that suit the cards: the official cards' colors, and more in the
+// same dark, muted range, so the white words and gold emphasis read on any
+// of them. Yellows and ochres are left out, since the gold would sink into
+// them. Any other CSS color works as well, and the picture and frame are
+// tinted from whichever color the card is.
 export const STORYTELLER_AID_COLORS = {
   blue: '#3a3bae',
+  navy: '#264572',
+  violet: '#5b3d87',
   red: '#682a2a',
+  crimson: '#84253d',
+  plum: '#602a44',
   green: '#40704d',
+  pine: '#195949',
+  olive: '#576031',
   purple: '#8c4a7a',
   sage: '#6e806c',
   teal: '#2e7883',
@@ -56,6 +66,7 @@ export const STORYTELLER_AID_COLORS = {
   rust: '#83422f',
   brown: '#6e4327',
   mauve: '#7f6c80',
+  grey: '#5f5f63',
 } as const;
 
 // A picture is drawn on a 100 x 100 canvas as a list of SVG paths, painted
@@ -76,16 +87,21 @@ export interface StorytellerAidShape {
   readonly width?: number; // a line's thickness, 1.5 when left out
 }
 
-// One line of the card's text. The emphasized line is the one the card is
-// about, set larger and in gold, like "evil" in "You are evil".
-export type StorytellerAidLine = string | { readonly emphasis: string };
+// Some of the card's words. Emphasized words are the ones the card is about,
+// set larger and in gold, like "evil" in "You are evil".
+export type StorytellerAidWords = string | { readonly emphasis: string };
+
+// One line of the card's text: its words, or a list of them when only some
+// of the line is emphasized, like ['are', { emphasis: 'not' }]
+export type StorytellerAidLine = StorytellerAidWords | readonly StorytellerAidWords[];
 
 export class StorytellerAid {
   readonly id: string;
   readonly category: StorytellerAidCategory;
   readonly color: string;
   readonly picture: StorytellerAidPicture;
-  readonly lines: readonly { readonly text: string; readonly emphasis: boolean }[];
+  // Each line as its words, in order, emphasized or not
+  readonly lines: readonly (readonly { readonly text: string; readonly emphasis: boolean }[])[];
 
   constructor(config: {
     id: string;
@@ -101,12 +117,14 @@ export class StorytellerAid {
       ? config.picture
       : { shapes: config.picture.flatMap(picture => picture.shapes) };
     this.lines = config.text.map(line =>
-      typeof line === 'string' ? { text: line, emphasis: false } : { text: line.emphasis, emphasis: true },
+      (typeof line === 'string' || 'emphasis' in line ? [line] : line).map(words =>
+        typeof words === 'string' ? { text: words, emphasis: false } : { text: words.emphasis, emphasis: true },
+      ),
     );
   }
 
   // The card's words as one sentence, e.g. "You are evil"
   get sentence(): string {
-    return this.lines.map(line => line.text).join(' ');
+    return this.lines.flat().map(words => words.text).join(' ');
   }
 }

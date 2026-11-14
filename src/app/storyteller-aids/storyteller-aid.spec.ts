@@ -12,11 +12,28 @@ describe('StorytellerAid', () => {
       text: ['You', 'are', { emphasis: 'evil' }],
     });
     expect(aid.lines).toEqual([
-      { text: 'You', emphasis: false },
-      { text: 'are', emphasis: false },
-      { text: 'evil', emphasis: true },
+      [{ text: 'You', emphasis: false }],
+      [{ text: 'are', emphasis: false }],
+      [{ text: 'evil', emphasis: true }],
     ]);
     expect(aid.sentence).toBe('You are evil');
+  });
+
+  it('can emphasize only some of a line', () => {
+    const aid = new StorytellerAid({
+      id: 'not-in-play',
+      category: 'standard',
+      color: STORYTELLER_AID_COLORS.teal,
+      picture: STORYTELLER_AID_PICTURES.circles,
+      text: ['These', 'characters', ['are', { emphasis: 'not' }], { emphasis: 'in play' }],
+    });
+    expect(aid.lines).toEqual([
+      [{ text: 'These', emphasis: false }],
+      [{ text: 'characters', emphasis: false }],
+      [{ text: 'are', emphasis: false }, { text: 'not', emphasis: true }],
+      [{ text: 'in play', emphasis: true }],
+    ]);
+    expect(aid.sentence).toBe('These characters are not in play');
   });
 
   it('can be made with a color and a picture of its own', () => {
@@ -35,5 +52,10 @@ describe('StorytellerAid', () => {
   it('gives every aid in the library its own id', () => {
     const ids = STORYTELLER_AIDS.map(aid => aid.id);
     expect(new Set(ids).size).toBe(ids.length);
+  });
+
+  it('gives every aid in the library its own color', () => {
+    const colors = STORYTELLER_AIDS.map(aid => aid.color);
+    expect(new Set(colors).size).toBe(colors.length);
   });
 });

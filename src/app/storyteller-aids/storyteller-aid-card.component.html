@@ -1,7 +1,11 @@
 <div class="card" [style.--aid-color]="aid.color" role="img" [attr.aria-label]="aid.sentence">
   <p class="text" [style.font-size]="textSize + 'cqw'" aria-hidden="true">
     @for (line of aid.lines; track $index) {
-      <span class="line" [class.emphasis]="line.emphasis">{{ line.text }}</span>
+      <span class="line">
+        @for (words of line; track $index) {
+          <span class="words" [class.emphasis]="words.emphasis">{{ words.text }}</span>
+        }
+      </span>
     }
   </p>
 

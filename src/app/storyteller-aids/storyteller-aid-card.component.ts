@@ -36,10 +36,12 @@ const TEXT_WIDTH = 86;
 const LARGEST_TEXT = 18;
 const SMALLEST_TEXT = 9;
 
-// How much larger the emphasized line is set, and how far its letters are
-// spaced, in ems, as .emphasis has them in the stylesheet
+// How much larger emphasized words are set, and how far their letters are
+// spaced, and the gap between the plain and emphasized words of a line, in
+// ems, as .emphasis and .line have them in the stylesheet
 const EMPHASIS_SIZE = 1.3;
 const EMPHASIS_SPACING = 0.04;
+const WORD_GAP = 0.25;
 
 const textSizes = new WeakMap<StorytellerAid, number>();
 
@@ -52,12 +54,13 @@ function textSizeFor(aid: StorytellerAid): number {
     const context = document.createElement('canvas').getContext('2d');
     if (!context) return SMALLEST_TEXT;
     context.font = `100px ${getComputedStyle(document.body).fontFamily}`;
+    const widthOf = (words: { text: string; emphasis: boolean }): number => {
+      const text = words.text.toUpperCase();
+      const width = context.measureText(text).width / 100;
+      return words.emphasis ? (width + EMPHASIS_SPACING * text.length) * EMPHASIS_SIZE : width;
+    };
     const widest = Math.max(
-      ...aid.lines.map(line => {
-        const text = line.text.toUpperCase();
-        const width = context.measureText(text).width / 100;
-        return line.emphasis ? (width + EMPHASIS_SPACING * text.length) * EMPHASIS_SIZE : width;
-      }),
+      ...aid.lines.map(line => line.reduce((width, words) => width + widthOf(words), WORD_GAP * (line.length - 1))),
     );
     size = Math.min(LARGEST_TEXT, Math.max(SMALLEST_TEXT, TEXT_WIDTH / widest));
     textSizes.set(aid, size);

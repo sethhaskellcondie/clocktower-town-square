@@ -1,14 +1,17 @@
 import { StorytellerAidPicture, StorytellerAidShape } from './storyteller-aid';
 import goodMask from '../../../assets/storyteller_aids/good_mask.svg';
 import evilMask from '../../../assets/storyteller_aids/evil_mask.svg';
-import crookedHouse from '../../../assets/storyteller_aids/crooked_house.svg';
 import bluffingMask from '../../../assets/storyteller_aids/bluffing_mask.svg';
 import raven from '../../../assets/storyteller_aids/raven.svg';
-import pointingHand from '../../../assets/storyteller_aids/pointing_hand.svg';
+import xMark from '../../../assets/storyteller_aids/x_mark.svg';
 import spiral from '../../../assets/storyteller_aids/spiral.svg';
 import handprint from '../../../assets/storyteller_aids/handprint.svg';
 import chatteringMouth from '../../../assets/storyteller_aids/chattering_mouth.svg';
 import circles from '../../../assets/storyteller_aids/circles.svg';
+import threeCircles from '../../../assets/storyteller_aids/three_circles.svg';
+import raisedHand from '../../../assets/storyteller_aids/raised_hand.svg';
+import staringEye from '../../../assets/storyteller_aids/staring_eye.svg';
+import staringEyes from '../../../assets/storyteller_aids/staring_eyes.svg';
 
 // The standard pictures, one SVG file each in assets/storyteller_aids. The
 // files are bundled into the app as text, so a card never waits on one.
@@ -36,14 +39,17 @@ import circles from '../../../assets/storyteller_aids/circles.svg';
 export const STORYTELLER_AID_PICTURES = {
   goodMask: pictureFromSvg(goodMask),
   evilMask: pictureFromSvg(evilMask),
-  crookedHouse: pictureFromSvg(crookedHouse),
   bluffingMask: pictureFromSvg(bluffingMask),
   raven: pictureFromSvg(raven),
-  pointingHand: pictureFromSvg(pointingHand),
+  xMark: pictureFromSvg(xMark),
   spiral: pictureFromSvg(spiral),
   handprint: pictureFromSvg(handprint),
   chatteringMouth: pictureFromSvg(chatteringMouth),
   circles: pictureFromSvg(circles),
+  threeCircles: pictureFromSvg(threeCircles),
+  raisedHand: pictureFromSvg(raisedHand),
+  staringEye: pictureFromSvg(staringEye),
+  staringEyes: pictureFromSvg(staringEyes),
 } as const satisfies Record<string, StorytellerAidPicture>;
 
 // Reads a picture file's paths into the shapes a card draws

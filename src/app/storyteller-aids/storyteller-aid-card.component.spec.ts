@@ -1,7 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 import { StorytellerAidCardComponent } from './storyteller-aid-card.component';
 import { StorytellerAid } from './storyteller-aid';
-import { STORYTELLER_AIDS, THE_LUNATIC_CHOSE_THESE_PLAYERS, YOU_ARE_EVIL, YOU_ARE_GOOD } from './storyteller-aid-library';
+import {
+  STORYTELLER_AIDS,
+  THE_LUNATIC_CHOSE_THESE_PLAYERS,
+  THESE_CHARACTERS_ARE_NOT_IN_PLAY,
+  YOU_ARE_EVIL,
+  YOU_ARE_GOOD,
+} from './storyteller-aid-library';
 
 describe('StorytellerAidCardComponent', () => {
   beforeEach(async () => {
@@ -27,7 +33,18 @@ describe('StorytellerAidCardComponent', () => {
     const card = render(YOU_ARE_EVIL);
     const lines = Array.from(card.querySelectorAll('.text .line'));
     expect(lines.map(line => line.textContent)).toEqual(['You', 'are', 'evil']);
-    expect(lines.map(line => line.classList.contains('emphasis'))).toEqual([false, false, true]);
+    expect(lines.map(line => line.querySelector('.words')!.classList.contains('emphasis'))).toEqual([false, false, true]);
+  });
+
+  it('can set apart only some of a line, keeping it on one line', () => {
+    const card = render(THESE_CHARACTERS_ARE_NOT_IN_PLAY);
+    const line = card.querySelectorAll('.text .line')[2];
+    const words = Array.from(line.querySelectorAll('.words'));
+    expect(words.map(word => word.textContent)).toEqual(['are', 'not']);
+    expect(words.map(word => word.classList.contains('emphasis'))).toEqual([false, true]);
+    const [plain, emphasized] = words.map(word => word.getBoundingClientRect());
+    expect(emphasized.left).toBeGreaterThan(plain.right);
+    expect(emphasized.top).toBeLessThan(plain.bottom);
   });
 
   it('puts the words above the picture', () => {
