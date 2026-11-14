@@ -33,6 +33,7 @@
             <button
               type="button"
               class="choice"
+              [attr.data-aid]="aid.id"
               [class.unloaded]="!loadedAids.isLoaded(aid)"
               [attr.aria-pressed]="loadedAids.isLoaded(aid)"
               (click)="onChoose(aid, $event)"

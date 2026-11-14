@@ -69,11 +69,20 @@ describe('StorytellerAidsPageComponent', () => {
     return page.querySelector('main')!.classList.contains('overview-open');
   }
 
+  // The middle of an aid in the overview, once the overview has slid up into
+  // place, however far it has still to go
+  function restingCenter(aid: StorytellerAid): { x: number; y: number } {
+    const rise = page.querySelector('.overview')!.getBoundingClientRect().top - page.getBoundingClientRect().top;
+    const box = choice(aid).getBoundingClientRect();
+    return { x: box.left + box.width / 2, y: box.top - rise + box.height / 2 };
+  }
+
   // A finger touches down and lifts on an aid in the overview without
   // moving, and the browser clicks it
   function tap(aid: StorytellerAid): void {
-    pointer('pointerdown', 200, 300);
-    pointer('pointerup', 200, 300);
+    const { x, y } = restingCenter(aid);
+    pointer('pointerdown', x, y);
+    pointer('pointerup', x, y);
     choice(aid).dispatchEvent(new MouseEvent('click', { bubbles: true, detail: 1 }));
     fixture.detectChanges();
   }
@@ -249,11 +258,39 @@ describe('StorytellerAidsPageComponent', () => {
     expect(shown()).toBe(YOU_ARE_EVIL.sentence);
   });
 
+  it('loads or unloads the aid coming to rest under a tap while the overview is still sliding up, though the browser clicks nothing', () => {
+    swipe(0, -300);
+    // Held partway up its slide, with a different aid, or none, under the
+    // finger for now
+    const overview = page.querySelector('.overview') as HTMLElement;
+    overview.style.transition = 'none';
+    overview.style.transform = 'translateY(200px)';
+    const { x, y } = restingCenter(YOU_ARE_EVIL);
+    pointer('pointerdown', x, y);
+    pointer('pointerup', x, y);
+    expect(choices().map(button => button.getAttribute('aria-pressed'))).toEqual(
+      STORYTELLER_AIDS.map(aid => String(startingAids.includes(aid) && aid !== YOU_ARE_EVIL)),
+    );
+  });
+
+  it('loads or unloads nothing with a tap between the aids', () => {
+    swipe(0, -300);
+    const heading = page.querySelector('.group-heading')!.getBoundingClientRect();
+    const rise = page.querySelector('.overview')!.getBoundingClientRect().top - page.getBoundingClientRect().top;
+    pointer('pointerdown', heading.left + heading.width / 2, heading.top - rise + heading.height / 2);
+    pointer('pointerup', heading.left + heading.width / 2, heading.top - rise + heading.height / 2);
+    expect(choices().map(button => button.getAttribute('aria-pressed'))).toEqual(
+      STORYTELLER_AIDS.map(aid => String(startingAids.includes(aid))),
+    );
+    expect(overviewOpen()).toBeTrue();
+  });
+
   it("doesn't take a drag over an aid for a tap, though the keyboard can still choose it", () => {
     swipe(0, -300);
-    pointer('pointerdown', 200, 300);
-    pointer('pointermove', 200, 250);
-    pointer('pointerup', 200, 250);
+    const { x, y } = restingCenter(YOU_ARE_EVIL);
+    pointer('pointerdown', x, y);
+    pointer('pointermove', x, y - 50);
+    pointer('pointerup', x, y - 50);
     choice(YOU_ARE_EVIL).dispatchEvent(new MouseEvent('click', { bubbles: true, detail: 1 }));
     fixture.detectChanges();
     expect(choice(YOU_ARE_EVIL).getAttribute('aria-pressed')).toBe('true');

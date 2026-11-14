@@ -45,6 +45,13 @@ interface Drag {
 // swiping down goes back to the loaded aids one at a time. On a computer the
 // arrow keys do the same, with Escape closing the overview as well.
 //
+// A tap loads or unloads an aid as soon as the finger lifts, without waiting
+// for the browser's click, and it goes by where the aids sit once the
+// overview has slid into place. So a quick tap just after a swipe up, while
+// the overview is still sliding, gets the aid coming to rest under the
+// finger. The browser would click nothing at all, since the finger lifts
+// over a different spot on the overview than the one it touched down on.
+//
 // Swipes are read from pointer events, which cover fingers, mice, and pens
 // alike: where the pointer goes down, where it moves, and where it comes up.
 @Component({
@@ -67,9 +74,10 @@ export class StorytellerAidsPageComponent {
   overviewOpen = false;
 
   private drag: Drag | null = null;
-  // Whether the last drag went anywhere, so the click a mouse sends after
-  // one isn't taken for a tap on an aid in the overview
-  private dragged = false;
+  // Whether the last pointer has been dealt with already: it dragged, or it
+  // tapped an aid in the overview, which loaded or unloaded it. The click
+  // the browser sends after it is ignored, so it isn't taken for another tap.
+  private pointerHandled = false;
   // Which way the aids move once the cards finish sliding: 1 for the next
   // aid, -1 for the previous one, 0 to stay put
   private pendingStep = 0;
@@ -96,11 +104,9 @@ export class StorytellerAidsPageComponent {
     // A new drag cuts short the cards still sliding from the last one
     if (this.settling) this.finishSettling();
     const target = event.currentTarget as HTMLElement;
-    // Keep hearing about this pointer even once it leaves the page. Not in
-    // the overview, though, where the pointer is left with the aid it went
-    // down on, so a tap clicks that aid.
-    if (!this.overviewOpen) target.setPointerCapture(event.pointerId);
-    this.dragged = false;
+    // Keep hearing about this pointer even once it leaves the page
+    target.setPointerCapture(event.pointerId);
+    this.pointerHandled = false;
     this.drag = {
       pointerId: event.pointerId,
       startX: event.clientX,
@@ -131,22 +137,28 @@ export class StorytellerAidsPageComponent {
 
   // Lifting the finger decides it. With the aids one at a time, a swipe
   // sideways changes aids and a swipe up opens the overview; anything else,
-  // like a tap, springs back to the current aid. In the overview, a swipe
-  // down closes it, as long as it began at the top: further down, dragging
-  // down scrolls back up the overview instead.
+  // like a tap, springs back to the current aid. In the overview, a tap on
+  // an aid loads or unloads it, and a swipe down closes the overview, as
+  // long as it began at the top: further down, dragging down scrolls back up
+  // the overview instead.
   onPointerUp(event: PointerEvent): void {
     const drag = this.drag;
     if (event.pointerId !== drag?.pointerId) return;
     this.drag = null;
+    this.pointerHandled = true;
     const dx = event.clientX - drag.startX;
     const dy = event.clientY - drag.startY;
     const duration = event.timeStamp - drag.startTime;
     const axis = drag.axis ?? axisOf(dx, dy);
-    this.dragged = axis !== null;
     const across = axis === 'x' ? swipeDirection(dx, drag.width, duration) : 0;
     const upDown = axis === 'y' ? swipeDirection(dy, drag.height, duration) : 0;
     if (this.overviewOpen) {
-      if (upDown > 0 && drag.scrollTop <= 0) this.closeOverview();
+      const aid = axis === null ? this.choiceAt(event.clientX, event.clientY) : undefined;
+      if (aid) {
+        this.loadedAids.toggle(aid);
+      } else if (upDown > 0 && drag.scrollTop <= 0) {
+        this.closeOverview();
+      }
     } else if (upDown < 0) {
       this.openOverview();
     } else if (across && this.aids.length > 1) {
@@ -164,11 +176,11 @@ export class StorytellerAidsPageComponent {
     this.slideTo(0);
   }
 
-  // A mouse clicks whatever it was pressed and let go over, even after
-  // dragging, so a click straight after a drag is ignored. A click from the
-  // keyboard, with no click count, never comes from a drag.
+  // A pointer's taps and drags are dealt with as it lifts, so the click the
+  // browser sends after it is ignored. A click from the keyboard, with no
+  // click count, never comes from a pointer.
   onChoose(aid: StorytellerAid, event: MouseEvent): void {
-    if (this.dragged && event.detail > 0) return;
+    if (this.pointerHandled && event.detail > 0) return;
     this.loadedAids.toggle(aid);
   }
 
@@ -242,6 +254,19 @@ export class StorytellerAidsPageComponent {
     this.pendingStep = 0;
     this.offset = 0;
     this.settling = false;
+  }
+
+  // The aid in the overview at this point on the screen, if there is one,
+  // where the aids sit once the overview has slid into place: each aid as
+  // it is now, raised by however far the overview has still to slide up
+  private choiceAt(x: number, y: number): StorytellerAid | undefined {
+    const overview = this.overview().nativeElement;
+    const rise = overview.getBoundingClientRect().top - this.host.getBoundingClientRect().top;
+    const choice = Array.from(overview.querySelectorAll<HTMLElement>('.choice')).find(button => {
+      const box = button.getBoundingClientRect();
+      return x >= box.left && x < box.right && y >= box.top - rise && y < box.bottom - rise;
+    });
+    return this.library.find(aid => aid.id === choice?.dataset['aid']);
   }
 
   private aidAt(index: number): StorytellerAid {

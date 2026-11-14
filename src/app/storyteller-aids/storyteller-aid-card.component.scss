@@ -75,14 +75,28 @@
 
 // Mottled like worn paper, over the picture as well as the background:
 // fractal noise in shades of grey, laid over the card so it lightens and
-// darkens it in patches
+// darkens it in patches.
+//
+// The noise is a picture rather than an SVG filter drawing it live. Safari,
+// which every iPhone browser runs on, drew the filter again for every card
+// each time they came into view, which held up the overview, and taps on
+// it, for a moment every time it opened. The picture is this, rendered at
+// 600 x 1000 and saved as WebP:
+//
+//   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 500" preserveAspectRatio="none">
+//     <filter id="n" x="0" y="0" width="1" height="1">
+//       <feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="5" seed="4"/>
+//       <feColorMatrix values="2 0 0 0 -0.5 2 0 0 0 -0.5 2 0 0 0 -0.5 0 0 0 0 1"/>
+//     </filter>
+//     <rect width="300" height="500" filter="url(#n)"/>
+//   </svg>
 .texture {
   position: absolute;
   inset: 0;
   pointer-events: none;
   opacity: 0.16;
   mix-blend-mode: overlay;
-  background: center / 100% 100% no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 500' preserveAspectRatio='none'%3E%3Cfilter id='n' x='0' y='0' width='1' height='1'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.03' numOctaves='5' seed='4'/%3E%3CfeColorMatrix values='2 0 0 0 -0.5 2 0 0 0 -0.5 2 0 0 0 -0.5 0 0 0 0 1'/%3E%3C/filter%3E%3Crect width='300' height='500' filter='url(%23n)'/%3E%3C/svg%3E");
+  background: center / 100% 100% no-repeat url("/assets/storyteller_aids/card_texture.webp");
 }
 
 .frame {
