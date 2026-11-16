@@ -83,6 +83,26 @@ describe('StorytellerAidCardComponent', () => {
     expect(style.getPropertyValue('--aid-color')).toBe(YOU_ARE_EVIL.color);
   });
 
+  it("tints the picture from the card's color when it has no color of its own", () => {
+    const card = render(YOU_ARE_EVIL);
+    expect(getComputedStyle(card.querySelector('.picture path')!).fill).toBe(getComputedStyle(card.querySelector('.frame .leaf')!).fill);
+  });
+
+  it("tints the Lunatic's spiral from the blue of You are good, leaving the frame in the card's own tints", () => {
+    // Read before rendering another card, which takes this one off the page.
+    // The spiral is drawn as a line, so it takes the light tint as its stroke.
+    const lunatic = render(THE_LUNATIC_CHOSE_THESE_PLAYERS);
+    const spiral = getComputedStyle(lunatic.querySelector('.picture path')!).stroke;
+    const carving = getComputedStyle(lunatic.querySelector('.picture path.dark')!).stroke;
+    const frame = getComputedStyle(lunatic.querySelector('.frame .leaf')!).fill;
+    const background = getComputedStyle(lunatic.querySelector('.card')!).backgroundColor;
+
+    const good = render(YOU_ARE_GOOD);
+    expect(spiral).toBe(getComputedStyle(good.querySelector('.picture path')!).fill);
+    expect(frame).not.toBe(spiral);
+    expect(carving).toBe(background);
+  });
+
   it('draws a custom picture shape by shape, light or dark, filled or as a line', () => {
     const card = render(
       new StorytellerAid({

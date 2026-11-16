@@ -2,18 +2,25 @@
   display: block;
 }
 
-// Everything on the card is tinted from --aid-color, the aid's own color,
-// and sized in cqw, hundredths of the card's width, so the card looks the
-// same at any size. The tints lighten the color while keeping it as vivid,
-// like the official cards; browsers that can't do that mix in white instead.
-.card {
-  --aid-light: color-mix(in oklab, var(--aid-color) 55%, white);
-  --aid-glow: color-mix(in oklab, var(--aid-color) 35%, white);
+// The two pale tints of a color that a card paints with, as --<name>-light
+// and --<name>-glow: light for shapes, and glow, paler still, for their
+// rims. They lighten the color while keeping it as vivid, like the official
+// cards; browsers that can't do that mix in white instead.
+@mixin tints($name, $color) {
+  --#{$name}-light: color-mix(in oklab, #{$color} 55%, white);
+  --#{$name}-glow: color-mix(in oklab, #{$color} 35%, white);
 
   @supports (color: oklch(from red l c h)) {
-    --aid-light: oklch(from var(--aid-color) calc(l + (1 - l) * 0.42) c h);
-    --aid-glow: oklch(from var(--aid-color) calc(l + (1 - l) * 0.6) calc(c * 0.8) h);
+    --#{$name}-light: oklch(from #{$color} calc(l + (1 - l) * 0.42) c h);
+    --#{$name}-glow: oklch(from #{$color} calc(l + (1 - l) * 0.6) calc(c * 0.8) h);
   }
+}
+
+// Everything on the card is tinted from --aid-color, the aid's own color,
+// and sized in cqw, hundredths of the card's width, so the card looks the
+// same at any size.
+.card {
+  @include tints(aid, var(--aid-color));
 
   position: relative;
   container-type: inline-size;
@@ -41,8 +48,13 @@
 }
 
 // The picture fills the room the words leave, up to 62 across, and sits in
-// the middle of it
+// the middle of it. It's tinted from the card's color, like the frame,
+// unless the aid gives it a color of its own, --aid-picture-color, to tint
+// it from instead. Its dark details are the card's color either way, carved
+// out of the picture.
 .picture {
+  @include tints(picture, var(--aid-picture-color, var(--aid-color)));
+
   flex: 1 1 0;
   min-height: 0;
   width: 62cqw;
@@ -50,8 +62,8 @@
   overflow: visible;
 
   path {
-    fill: var(--aid-light);
-    stroke: var(--aid-glow);
+    fill: var(--picture-light);
+    stroke: var(--picture-glow);
     stroke-width: 0.6;
     stroke-linecap: round;
     stroke-linejoin: round;
@@ -64,7 +76,7 @@
 
   path.line {
     fill: none;
-    stroke: var(--aid-light);
+    stroke: var(--picture-light);
     stroke-width: 1.5;
   }
 

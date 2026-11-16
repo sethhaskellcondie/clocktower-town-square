@@ -5,7 +5,8 @@
 // - a color the whole card is washed in,
 // - a few lines of text across the top, any of them emphasized, in whole or
 //   in part,
-// - a picture below them, or several layered together.
+// - a picture below them, or several layered together, tinted from the
+//   card's color unless it's given a color of its own.
 //
 // The words are what the player reads, so they're set as large as they'll
 // fit, and the picture is smaller, backing them up.
@@ -18,6 +19,7 @@
 //     category: 'standard',
 //     color: STORYTELLER_AID_COLORS.red,     // or any CSS color, like '#2b5f3a'
 //     picture: STORYTELLER_AID_PICTURES.evilMask, // or a picture of your own
+//     pictureColor: STORYTELLER_AID_COLORS.blue, // optional, or any CSS color
 //     text: ['You', 'are', { emphasis: 'evil' }],
 //   });
 //
@@ -75,8 +77,14 @@ export const STORYTELLER_AID_COLORS = {
 // colors of their own: each shape is painted light, a pale tint of the
 // card's color, or dark, the card's own color, which carves details like
 // eyes and mouths back out of a light shape. That way any picture suits any
-// card. The standard pictures are SVG files in assets/storyteller_aids, read
-// in by storyteller-aid-pictures.ts, which describes how to draw one.
+// card. An aid with a picture color tints its light shapes and their rims
+// from that color instead, so they look as they would on a card of that
+// color: the Lunatic's spiral is tinted from the blue of "You are good",
+// since the Lunatic is a good player, and Legion's handprint from the red of
+// "This is the demon". The dark details are still the card's
+// color, so they're still carved out of the picture. The standard
+// pictures are SVG files in assets/storyteller_aids, read in by
+// storyteller-aid-pictures.ts, which describes how to draw one.
 export interface StorytellerAidPicture {
   readonly shapes: readonly StorytellerAidShape[];
 }
@@ -101,6 +109,8 @@ export class StorytellerAid {
   readonly category: StorytellerAidCategory;
   readonly color: string;
   readonly picture: StorytellerAidPicture;
+  // The color the picture is tinted from, when it isn't the card's
+  readonly pictureColor?: string;
   // Each line as its words, in order, emphasized or not
   readonly lines: readonly (readonly { readonly text: string; readonly emphasis: boolean }[])[];
 
@@ -109,6 +119,7 @@ export class StorytellerAid {
     category: StorytellerAidCategory;
     color: string;
     picture: StorytellerAidPicture | readonly StorytellerAidPicture[];
+    pictureColor?: string;
     text: readonly StorytellerAidLine[];
   }) {
     this.id = config.id;
@@ -117,6 +128,7 @@ export class StorytellerAid {
     this.picture = 'shapes' in config.picture
       ? config.picture
       : { shapes: config.picture.flatMap(picture => picture.shapes) };
+    this.pictureColor = config.pictureColor;
     this.lines = config.text.map(line =>
       (typeof line === 'string' || 'emphasis' in line ? [line] : line).map(words =>
         typeof words === 'string' ? { text: words, emphasis: false } : { text: words.emphasis, emphasis: true },

@@ -43,6 +43,21 @@ describe('StorytellerAid', () => {
     expect(aid.picture).toBe(star);
   });
 
+  it("takes its picture's color from the card unless given one of its own", () => {
+    const { spiral } = STORYTELLER_AID_PICTURES;
+    const tinted = new StorytellerAid({ id: 'tinted', category: 'standard', color: 'teal', picture: spiral, text: ['Tinted'] });
+    const colored = new StorytellerAid({
+      id: 'colored',
+      category: 'standard',
+      color: 'teal',
+      picture: spiral,
+      pictureColor: STORYTELLER_AID_COLORS.blue,
+      text: ['Colored'],
+    });
+    expect(tinted.pictureColor).toBeUndefined();
+    expect(colored.pictureColor).toBe(STORYTELLER_AID_COLORS.blue);
+  });
+
   it('layers several pictures into one, each drawn over the last', () => {
     const { spiral, handprint } = STORYTELLER_AID_PICTURES;
     const aid = new StorytellerAid({ id: 'layered', category: 'standard', color: 'teal', picture: [spiral, handprint], text: ['Layered'] });
@@ -54,8 +69,11 @@ describe('StorytellerAid', () => {
     expect(new Set(ids).size).toBe(ids.length);
   });
 
-  it('gives every aid in the library its own color', () => {
-    const colors = STORYTELLER_AIDS.map(aid => aid.color);
+  // Two aids can share a card's color as long as their pictures are tinted
+  // differently, like the Lunatic's blue spiral and Legion's red handprint,
+  // both on grey
+  it('gives every aid in the library its own colors', () => {
+    const colors = STORYTELLER_AIDS.map(aid => `${aid.color} ${aid.pictureColor ?? aid.color}`);
     expect(new Set(colors).size).toBe(colors.length);
   });
 });

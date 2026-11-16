@@ -94,7 +94,7 @@ export const THIS_CHARACTER_SELECTED_YOU = new StorytellerAid({
 export const DID_YOU_VOTE_TODAY = new StorytellerAid({
   id: 'did-you-vote-today',
   category: 'standard',
-  color: STORYTELLER_AID_COLORS.grey,
+  color: STORYTELLER_AID_COLORS.violet,
   picture: STORYTELLER_AID_PICTURES.raisedHand,
   text: ['Did you', { emphasis: 'vote' }, 'today?'],
 });
@@ -102,7 +102,7 @@ export const DID_YOU_VOTE_TODAY = new StorytellerAid({
 export const DID_YOU_NOMINATE_TODAY = new StorytellerAid({
   id: 'did-you-nominate-today',
   category: 'standard',
-  color: STORYTELLER_AID_COLORS.olive,
+  color: STORYTELLER_AID_COLORS.brown,
   picture: STORYTELLER_AID_PICTURES.chatteringMouth,
   text: ['Did you', { emphasis: 'nominate' }, 'today?'],
 });
@@ -110,16 +110,18 @@ export const DID_YOU_NOMINATE_TODAY = new StorytellerAid({
 export const THE_LUNATIC_CHOSE_THESE_PLAYERS = new StorytellerAid({
   id: 'the-lunatic-chose-these-players',
   category: 'character',
-  color: STORYTELLER_AID_COLORS.violet,
+  color: STORYTELLER_AID_COLORS.grey,
   picture: STORYTELLER_AID_PICTURES.spiral,
+  pictureColor: STORYTELLER_AID_COLORS.blue,
   text: ['The Lunatic', { emphasis: 'chose' }, 'these', 'players'],
 });
 
 export const THESE_PLAYERS_ARE_NOT_LEGION = new StorytellerAid({
   id: 'these-players-are-not-legion',
   category: 'character',
-  color: STORYTELLER_AID_COLORS.brown,
+  color: STORYTELLER_AID_COLORS.grey,
   picture: STORYTELLER_AID_PICTURES.handprint,
+  pictureColor: STORYTELLER_AID_COLORS.crimson,
   text: ['These', 'players', { emphasis: 'are not' }, 'Legion'],
 });
 
