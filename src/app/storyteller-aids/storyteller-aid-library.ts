@@ -1,6 +1,6 @@
 import { STORYTELLER_AID_CATEGORIES, STORYTELLER_AID_COLORS, StorytellerAid, StorytellerAidCategory } from './storyteller-aid';
 import { STORYTELLER_AID_PICTURES } from './storyteller-aid-pictures';
-import { BARBER, BARISTA, CERENOVUS, EVIL_TWIN, GOOD_TWIN_ICON, LEGION, LUNATIC } from '../character-sheets/character-library';
+import { ALCHEMIST, BARBER, BARISTA, BOFFIN, CERENOVUS, DAMSEL, EVIL_TWIN, GOOD_TWIN_ICON, HARPY, HATTER, KING, LEGION, LUNATIC } from '../character-sheets/character-library';
 
 // Every storyteller aid, each created once
 
@@ -165,6 +165,54 @@ export const YOU_ACT_TWICE_TODAY = new StorytellerAid({
   text: ['You act', { emphasis: 'twice' }, 'today'],
 });
 
+export const YOU_HAVE_THE_ABILITY_OF = new StorytellerAid({
+  id: 'you-have-the-ability-of',
+  category: 'character',
+  color: STORYTELLER_AID_COLORS.grey,
+  icon: ALCHEMIST.icon,
+  text: ['You have', 'the', { emphasis: 'ability' }, 'of...'],
+});
+
+export const THIS_PLAYER_IS_THE_KING = new StorytellerAid({
+  id: 'this-player-is-the-king',
+  category: 'character',
+  color: STORYTELLER_AID_COLORS.grey,
+  icon: KING.icon,
+  text: ['This', 'player', 'is the', { emphasis: 'King' }],
+});
+
+export const THE_DAMSEL_IS_IN_PLAY = new StorytellerAid({
+  id: 'the-damsel-is-in-play',
+  category: 'character',
+  color: STORYTELLER_AID_COLORS.grey,
+  icon: DAMSEL.icon,
+  text: ['The', { emphasis: 'Damsel' }, 'is in', 'play'],
+});
+
+export const THE_HATTER_HAS_DIED_CHANGE_CHARACTER = new StorytellerAid({
+  id: 'the-hatter-has-died-change-character',
+  category: 'character',
+  color: STORYTELLER_AID_COLORS.grey,
+  icon: HATTER.icon,
+  text: ['The', { emphasis: 'Hatter' }, 'has died,', 'change', 'character?'],
+});
+
+export const THE_DEMON_IS_GRANTED_THIS_ABILITY = new StorytellerAid({
+  id: 'the-demon-is-granted-this-ability',
+  category: 'character',
+  color: STORYTELLER_AID_COLORS.grey,
+  icon: BOFFIN.icon,
+  text: ['The demon', 'is granted', 'this', { emphasis: 'ability' }],
+});
+
+export const YOU_ARE_MAD_THAT_THIS_PLAYER_IS_EVIL = new StorytellerAid({
+  id: 'you-are-mad-that-this-player-is-evil',
+  category: 'character',
+  color: STORYTELLER_AID_COLORS.grey,
+  icon: HARPY.icon,
+  text: ['You are', { emphasis: 'mad' }, 'that this', 'player', 'is evil'],
+});
+
 export const THESE_PLAYERS_ARE_NOT_LEGION = new StorytellerAid({
   id: 'these-players-are-not-legion',
   category: 'character',
@@ -196,6 +244,12 @@ const AIDS: readonly StorytellerAid[] = [
   THE_GOOD_TWIN_IS,
   YOU_ARE_SOBER_AND_HEALTHY,
   YOU_ACT_TWICE_TODAY,
+  YOU_HAVE_THE_ABILITY_OF,
+  THIS_PLAYER_IS_THE_KING,
+  THE_DAMSEL_IS_IN_PLAY,
+  THE_HATTER_HAS_DIED_CHANGE_CHARACTER,
+  THE_DEMON_IS_GRANTED_THIS_ABILITY,
+  YOU_ARE_MAD_THAT_THIS_PLAYER_IS_EVIL,
   THESE_PLAYERS_ARE_NOT_LEGION,
 ];
 

@@ -3,15 +3,21 @@ import { StorytellerAidsPageComponent } from './storyteller-aids-page.component'
 import {
   STORYTELLER_AIDS,
   THE_BARBER_DIED_SWAP_TWO_CHARACTERS,
+  THE_DAMSEL_IS_IN_PLAY,
+  THE_DEMON_IS_GRANTED_THIS_ABILITY,
   THE_GOOD_TWIN_IS,
+  THE_HATTER_HAS_DIED_CHANGE_CHARACTER,
   THE_LUNATIC_CHOSE_THESE_PLAYERS,
   THESE_PLAYERS_ARE_NOT_LEGION,
+  THIS_PLAYER_IS_THE_KING,
   YOU_ACT_TWICE_TODAY,
   YOU_ARE_EVIL,
   YOU_ARE_GOOD,
+  YOU_ARE_MAD_THAT_THIS_PLAYER_IS_EVIL,
   YOU_ARE_MAD_THAT_YOU_ARE,
   YOU_ARE_SOBER_AND_HEALTHY,
   YOU_ARE_THE_GOOD_TWIN,
+  YOU_HAVE_THE_ABILITY_OF,
 } from './storyteller-aid-library';
 import { StorytellerAid } from './storyteller-aid';
 
@@ -196,6 +202,12 @@ describe('StorytellerAidsPageComponent', () => {
       THE_GOOD_TWIN_IS,
       YOU_ARE_SOBER_AND_HEALTHY,
       YOU_ACT_TWICE_TODAY,
+      YOU_HAVE_THE_ABILITY_OF,
+      THIS_PLAYER_IS_THE_KING,
+      THE_DAMSEL_IS_IN_PLAY,
+      THE_HATTER_HAS_DIED_CHANGE_CHARACTER,
+      THE_DEMON_IS_GRANTED_THIS_ABILITY,
+      YOU_ARE_MAD_THAT_THIS_PLAYER_IS_EVIL,
       THESE_PLAYERS_ARE_NOT_LEGION,
     ];
     expect(sentences[1]).toEqual(characterAids.map(aid => aid.sentence));
