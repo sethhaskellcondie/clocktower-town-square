@@ -1,19 +1,34 @@
+<!-- Some of the card's lines, the same above the picture or below it -->
+<ng-template #linesOf let-lines>
+  @for (line of lines; track $index) {
+    <span class="line">
+      @for (words of line; track $index) {
+        <span class="words" [class.emphasis]="words.emphasis">{{ words.text }}</span>
+      }
+    </span>
+  }
+</ng-template>
+
 <div class="card" [style.--aid-color]="aid.color" role="img" [attr.aria-label]="aid.sentence">
   <p class="text" [style.font-size]="textSize + 'cqw'" aria-hidden="true">
-    @for (line of aid.lines; track $index) {
-      <span class="line">
-        @for (words of line; track $index) {
-          <span class="words" [class.emphasis]="words.emphasis">{{ words.text }}</span>
-        }
-      </span>
-    }
+    <ng-container *ngTemplateOutlet="linesOf; context: { $implicit: aid.lines }" />
   </p>
 
-  <svg class="picture" [style.--aid-picture-color]="aid.pictureColor" viewBox="0 0 100 100" aria-hidden="true">
-    @for (shape of aid.picture.shapes; track $index) {
-      <path [attr.d]="shape.d" [class.dark]="shape.paint === 'dark'" [class.line]="shape.line" [style.stroke-width]="shape.width" />
-    }
-  </svg>
+  @if (aid.icon) {
+    <img class="picture icon" [src]="aid.icon" alt="" draggable="false" />
+  } @else if (aid.picture) {
+    <svg class="picture" [style.--aid-picture-color]="aid.pictureColor" viewBox="0 0 100 100" aria-hidden="true">
+      @for (shape of aid.picture.shapes; track $index) {
+        <path [attr.d]="shape.d" [class.dark]="shape.paint === 'dark'" [class.line]="shape.line" [style.stroke-width]="shape.width" />
+      }
+    </svg>
+  }
+
+  @if (aid.linesBelow.length) {
+    <p class="text below" [style.font-size]="textSize + 'cqw'" aria-hidden="true">
+      <ng-container *ngTemplateOutlet="linesOf; context: { $implicit: aid.linesBelow }" />
+    </p>
+  }
 
   <div class="texture"></div>
 

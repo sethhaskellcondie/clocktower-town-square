@@ -6,7 +6,12 @@
 // - a few lines of text across the top, any of them emphasized, in whole or
 //   in part,
 // - a picture below them, or several layered together, tinted from the
-//   card's color unless it's given a color of its own.
+//   card's color unless it's given a color of its own, or for an aid about
+//   a character, that character's icon.
+//
+// A card can also carry a few more lines below its picture, like "The evil
+// twin is..." under "You are the good twin": textBelow, written the same
+// way as text.
 //
 // The words are what the player reads, so they're set as large as they'll
 // fit, and the picture is smaller, backing them up.
@@ -26,6 +31,11 @@
 // Pictures share one canvas, so a list of them is drawn as one picture, each
 // on top of the last: picture: [STORYTELLER_AID_PICTURES.spiral,
 // STORYTELLER_AID_PICTURES.handprint].
+//
+// An aid about a character shows the character's own icon in place of a
+// picture, so the player sees the same icon as on the character sheet:
+// icon: LUNATIC.icon, from the character library. The icons are already
+// painted in their team's colors, so they're shown as they are, not tinted.
 //
 // The text is shown in capitals however it's written, so write it the way
 // it reads aloud.
@@ -79,12 +89,11 @@ export const STORYTELLER_AID_COLORS = {
 // eyes and mouths back out of a light shape. That way any picture suits any
 // card. An aid with a picture color tints its light shapes and their rims
 // from that color instead, so they look as they would on a card of that
-// color: the Lunatic's spiral is tinted from the blue of "You are good",
-// since the Lunatic is a good player, and Legion's handprint from the red of
-// "This is the demon". The dark details are still the card's
-// color, so they're still carved out of the picture. The standard
-// pictures are SVG files in assets/storyteller_aids, read in by
-// storyteller-aid-pictures.ts, which describes how to draw one.
+// color, like a picture in the blue of "You are good" on a grey card. The
+// dark details are still the card's color, so they're still carved out of
+// the picture. The standard pictures are SVG files in
+// assets/storyteller_aids, read in by storyteller-aid-pictures.ts, which
+// describes how to draw one.
 export interface StorytellerAidPicture {
   readonly shapes: readonly StorytellerAidShape[];
 }
@@ -104,40 +113,64 @@ export type StorytellerAidWords = string | { readonly emphasis: string };
 // of the line is emphasized, like ['are', { emphasis: 'not' }]
 export type StorytellerAidLine = StorytellerAidWords | readonly StorytellerAidWords[];
 
+// A line as the card shows it: its words, in order, emphasized or not
+export type StorytellerAidLineWords = readonly { readonly text: string; readonly emphasis: boolean }[];
+
+function toLines(text: readonly StorytellerAidLine[]): readonly StorytellerAidLineWords[] {
+  return text.map(line =>
+    (typeof line === 'string' || 'emphasis' in line ? [line] : line).map(words =>
+      typeof words === 'string' ? { text: words, emphasis: false } : { text: words.emphasis, emphasis: true },
+    ),
+  );
+}
+
 export class StorytellerAid {
   readonly id: string;
   readonly category: StorytellerAidCategory;
   readonly color: string;
-  readonly picture: StorytellerAidPicture;
+  // The picture below the words, or for an aid about a character, the path
+  // to the character's icon, shown in its place
+  readonly picture?: StorytellerAidPicture;
   // The color the picture is tinted from, when it isn't the card's
   readonly pictureColor?: string;
-  // Each line as its words, in order, emphasized or not
-  readonly lines: readonly (readonly { readonly text: string; readonly emphasis: boolean }[])[];
+  readonly icon?: string;
+  // The lines above the picture, and any below it
+  readonly lines: readonly StorytellerAidLineWords[];
+  readonly linesBelow: readonly StorytellerAidLineWords[];
 
-  constructor(config: {
-    id: string;
-    category: StorytellerAidCategory;
-    color: string;
-    picture: StorytellerAidPicture | readonly StorytellerAidPicture[];
-    pictureColor?: string;
-    text: readonly StorytellerAidLine[];
-  }) {
+  constructor(
+    config: {
+      id: string;
+      category: StorytellerAidCategory;
+      color: string;
+      text: readonly StorytellerAidLine[];
+      textBelow?: readonly StorytellerAidLine[];
+    } & (
+      | { picture: StorytellerAidPicture | readonly StorytellerAidPicture[]; pictureColor?: string }
+      | { icon: string }
+    ),
+  ) {
     this.id = config.id;
     this.category = config.category;
     this.color = config.color;
-    this.picture = 'shapes' in config.picture
-      ? config.picture
-      : { shapes: config.picture.flatMap(picture => picture.shapes) };
-    this.pictureColor = config.pictureColor;
-    this.lines = config.text.map(line =>
-      (typeof line === 'string' || 'emphasis' in line ? [line] : line).map(words =>
-        typeof words === 'string' ? { text: words, emphasis: false } : { text: words.emphasis, emphasis: true },
-      ),
-    );
+    if ('icon' in config) {
+      this.icon = config.icon;
+    } else {
+      this.picture = 'shapes' in config.picture
+        ? config.picture
+        : { shapes: config.picture.flatMap(picture => picture.shapes) };
+      this.pictureColor = config.pictureColor;
+    }
+    this.lines = toLines(config.text);
+    this.linesBelow = toLines(config.textBelow ?? []);
   }
 
-  // The card's words as one sentence, e.g. "You are evil"
+  // The card's words as they're read, e.g. "You are evil". The words below
+  // the picture follow as a sentence of their own, unless the words above
+  // already end in punctuation: "You are the good twin. The evil twin is..."
   get sentence(): string {
-    return this.lines.flat().map(words => words.text).join(' ');
+    const [above, below] = [this.lines, this.linesBelow].map(lines => lines.flat().map(words => words.text).join(' '));
+    if (!below) return above;
+    return /[.,!?]$/.test(above) ? `${above} ${below}` : `${above}. ${below}`;
   }
 }

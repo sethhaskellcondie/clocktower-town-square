@@ -765,6 +765,10 @@ export const EVIL_TWIN = new Character({
   link: 'https://wiki.bloodontheclocktower.com/Evil_Twin',
 });
 
+// The Evil Twin's good twin isn't a character of its own, but it has an
+// icon: the Evil Twin's, repainted in the good team's blue
+export const GOOD_TWIN_ICON = 'assets/player_aids/icons/sects_and_violets/good_twin.png';
+
 export const WITCH = new Character({
   id: 'witch',
   name: 'Witch',

@@ -2,10 +2,16 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { StorytellerAidsPageComponent } from './storyteller-aids-page.component';
 import {
   STORYTELLER_AIDS,
+  THE_BARBER_DIED_SWAP_TWO_CHARACTERS,
+  THE_GOOD_TWIN_IS,
   THE_LUNATIC_CHOSE_THESE_PLAYERS,
   THESE_PLAYERS_ARE_NOT_LEGION,
+  YOU_ACT_TWICE_TODAY,
   YOU_ARE_EVIL,
   YOU_ARE_GOOD,
+  YOU_ARE_MAD_THAT_YOU_ARE,
+  YOU_ARE_SOBER_AND_HEALTHY,
+  YOU_ARE_THE_GOOD_TWIN,
 } from './storyteller-aid-library';
 import { StorytellerAid } from './storyteller-aid';
 
@@ -182,7 +188,16 @@ describe('StorytellerAidsPageComponent', () => {
     const sentences = groups.map(group =>
       Array.from(group.querySelectorAll('.choice .card')).map(card => card.getAttribute('aria-label')),
     );
-    const characterAids = [THE_LUNATIC_CHOSE_THESE_PLAYERS, THESE_PLAYERS_ARE_NOT_LEGION];
+    const characterAids = [
+      THE_LUNATIC_CHOSE_THESE_PLAYERS,
+      THE_BARBER_DIED_SWAP_TWO_CHARACTERS,
+      YOU_ARE_MAD_THAT_YOU_ARE,
+      YOU_ARE_THE_GOOD_TWIN,
+      THE_GOOD_TWIN_IS,
+      YOU_ARE_SOBER_AND_HEALTHY,
+      YOU_ACT_TWICE_TODAY,
+      THESE_PLAYERS_ARE_NOT_LEGION,
+    ];
     expect(sentences[1]).toEqual(characterAids.map(aid => aid.sentence));
     expect(sentences[0]).toEqual(STORYTELLER_AIDS.filter(aid => !characterAids.includes(aid)).map(aid => aid.sentence));
   });

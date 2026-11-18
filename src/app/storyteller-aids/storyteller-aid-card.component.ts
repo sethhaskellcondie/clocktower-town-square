@@ -1,16 +1,19 @@
+import { NgTemplateOutlet } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { StorytellerAid } from './storyteller-aid';
 
 // One storyteller aid drawn as a card: its color behind everything, its
-// words across the top, its picture below them, inside a thin frame with an
-// ornament in each corner. The card is 3 wide by 5 tall and fills the width
-// it's given, scaling everything on it to match.
+// words across the top, its picture below them and any more words below
+// that, inside a thin frame with an ornament in each corner. The card is 3
+// wide by 5 tall and fills the width it's given, scaling everything on it
+// to match.
 //
 // The card is held up for a player to read across the room, so the words
 // come first: they're set as large as they'll go while the widest line
 // still fits across the card, and the picture takes the room that's left.
 @Component({
   selector: 'app-storyteller-aid-card',
+  imports: [NgTemplateOutlet],
   templateUrl: './storyteller-aid-card.component.html',
   changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './storyteller-aid-card.component.scss'
@@ -46,8 +49,9 @@ const WORD_GAP = 0.25;
 const textSizes = new WeakMap<StorytellerAid, number>();
 
 // Measures the aid's lines in the page's font, in capitals as the card
-// shows them, and sets the widest of them across the card. The size depends
-// only on the words, so it's worked out once for each aid.
+// shows them, and sets the widest of them across the card. The lines above
+// and below the picture share the one size. The size depends only on the
+// words, so it's worked out once for each aid.
 function textSizeFor(aid: StorytellerAid): number {
   let size = textSizes.get(aid);
   if (size === undefined) {
@@ -60,7 +64,7 @@ function textSizeFor(aid: StorytellerAid): number {
       return words.emphasis ? (width + EMPHASIS_SPACING * text.length) * EMPHASIS_SIZE : width;
     };
     const widest = Math.max(
-      ...aid.lines.map(line => line.reduce((width, words) => width + widthOf(words), WORD_GAP * (line.length - 1))),
+      ...[...aid.lines, ...aid.linesBelow].map(line => line.reduce((width, words) => width + widthOf(words), WORD_GAP * (line.length - 1))),
     );
     size = Math.min(LARGEST_TEXT, Math.max(SMALLEST_TEXT, TEXT_WIDTH / widest));
     textSizes.set(aid, size);

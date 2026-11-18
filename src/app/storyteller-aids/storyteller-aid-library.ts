@@ -1,5 +1,6 @@
 import { STORYTELLER_AID_CATEGORIES, STORYTELLER_AID_COLORS, StorytellerAid, StorytellerAidCategory } from './storyteller-aid';
 import { STORYTELLER_AID_PICTURES } from './storyteller-aid-pictures';
+import { BARBER, BARISTA, CERENOVUS, EVIL_TWIN, GOOD_TWIN_ICON, LEGION, LUNATIC } from '../character-sheets/character-library';
 
 // Every storyteller aid, each created once
 
@@ -111,17 +112,64 @@ export const THE_LUNATIC_CHOSE_THESE_PLAYERS = new StorytellerAid({
   id: 'the-lunatic-chose-these-players',
   category: 'character',
   color: STORYTELLER_AID_COLORS.grey,
-  picture: STORYTELLER_AID_PICTURES.spiral,
-  pictureColor: STORYTELLER_AID_COLORS.blue,
+  icon: LUNATIC.icon,
   text: ['The Lunatic', { emphasis: 'chose' }, 'these', 'players'],
+});
+
+export const THE_BARBER_DIED_SWAP_TWO_CHARACTERS = new StorytellerAid({
+  id: 'the-barber-died-swap-two-characters',
+  category: 'character',
+  color: STORYTELLER_AID_COLORS.grey,
+  icon: BARBER.icon,
+  text: ['The Barber', 'died,', [{ emphasis: 'swap' }, 'two'], 'characters?'],
+});
+
+export const YOU_ARE_MAD_THAT_YOU_ARE = new StorytellerAid({
+  id: 'you-are-mad-that-you-are',
+  category: 'character',
+  color: STORYTELLER_AID_COLORS.grey,
+  icon: CERENOVUS.icon,
+  text: ['You are', { emphasis: 'mad' }, 'that', 'you are'],
+});
+
+export const YOU_ARE_THE_GOOD_TWIN = new StorytellerAid({
+  id: 'you-are-the-good-twin',
+  category: 'character',
+  color: STORYTELLER_AID_COLORS.grey,
+  icon: GOOD_TWIN_ICON,
+  text: ['You are the', { emphasis: 'good twin' }],
+  textBelow: ['The', { emphasis: 'evil twin' }, 'is...'],
+});
+
+export const THE_GOOD_TWIN_IS = new StorytellerAid({
+  id: 'the-good-twin-is',
+  category: 'character',
+  color: STORYTELLER_AID_COLORS.grey,
+  icon: EVIL_TWIN.icon,
+  text: ['The', { emphasis: 'good' }, { emphasis: 'twin' }, 'is...'],
+});
+
+export const YOU_ARE_SOBER_AND_HEALTHY = new StorytellerAid({
+  id: 'you-are-sober-and-healthy',
+  category: 'character',
+  color: STORYTELLER_AID_COLORS.grey,
+  icon: BARISTA.icon,
+  text: ['You are', { emphasis: 'sober' }, 'and', { emphasis: 'healthy' }],
+});
+
+export const YOU_ACT_TWICE_TODAY = new StorytellerAid({
+  id: 'you-act-twice-today',
+  category: 'character',
+  color: STORYTELLER_AID_COLORS.grey,
+  icon: BARISTA.icon,
+  text: ['You act', { emphasis: 'twice' }, 'today'],
 });
 
 export const THESE_PLAYERS_ARE_NOT_LEGION = new StorytellerAid({
   id: 'these-players-are-not-legion',
   category: 'character',
   color: STORYTELLER_AID_COLORS.grey,
-  picture: STORYTELLER_AID_PICTURES.handprint,
-  pictureColor: STORYTELLER_AID_COLORS.crimson,
+  icon: LEGION.icon,
   text: ['These', 'players', { emphasis: 'are not' }, 'Legion'],
 });
 
@@ -142,6 +190,12 @@ const AIDS: readonly StorytellerAid[] = [
   DID_YOU_VOTE_TODAY,
   DID_YOU_NOMINATE_TODAY,
   THE_LUNATIC_CHOSE_THESE_PLAYERS,
+  THE_BARBER_DIED_SWAP_TWO_CHARACTERS,
+  YOU_ARE_MAD_THAT_YOU_ARE,
+  YOU_ARE_THE_GOOD_TWIN,
+  THE_GOOD_TWIN_IS,
+  YOU_ARE_SOBER_AND_HEALTHY,
+  YOU_ACT_TWICE_TODAY,
   THESE_PLAYERS_ARE_NOT_LEGION,
 ];
 

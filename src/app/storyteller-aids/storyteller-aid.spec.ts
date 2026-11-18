@@ -1,6 +1,7 @@
 import { STORYTELLER_AID_COLORS, StorytellerAid, StorytellerAidPicture } from './storyteller-aid';
 import { STORYTELLER_AID_PICTURES } from './storyteller-aid-pictures';
 import { STORYTELLER_AIDS } from './storyteller-aid-library';
+import { LUNATIC } from '../character-sheets/character-library';
 
 describe('StorytellerAid', () => {
   it('takes its lines in order, marking the emphasized one', () => {
@@ -58,10 +59,45 @@ describe('StorytellerAid', () => {
     expect(colored.pictureColor).toBe(STORYTELLER_AID_COLORS.blue);
   });
 
+  it("can show a character's icon in place of a picture", () => {
+    const aid = new StorytellerAid({ id: 'lunatic', category: 'character', color: 'grey', icon: LUNATIC.icon, text: ['Lunatic'] });
+    expect(aid.icon).toBe(LUNATIC.icon);
+    expect(aid.picture).toBeUndefined();
+  });
+
+  it('has no lines below its picture unless it is given some', () => {
+    const aid = new StorytellerAid({ id: 'lunatic', category: 'character', color: 'grey', icon: LUNATIC.icon, text: ['Lunatic'] });
+    expect(aid.linesBelow).toEqual([]);
+    expect(aid.sentence).toBe('Lunatic');
+  });
+
+  it('can have more lines below its picture, read as a sentence after the ones above', () => {
+    const aid = new StorytellerAid({
+      id: 'good-twin',
+      category: 'character',
+      color: 'grey',
+      icon: LUNATIC.icon,
+      text: ['You are the', { emphasis: 'good twin' }],
+      textBelow: ['The', { emphasis: 'evil twin' }, 'is...'],
+    });
+    expect(aid.lines).toEqual([[{ text: 'You are the', emphasis: false }], [{ text: 'good twin', emphasis: true }]]);
+    expect(aid.linesBelow).toEqual([
+      [{ text: 'The', emphasis: false }],
+      [{ text: 'evil twin', emphasis: true }],
+      [{ text: 'is...', emphasis: false }],
+    ]);
+    expect(aid.sentence).toBe('You are the good twin. The evil twin is...');
+  });
+
+  it('starts no new sentence below the picture when the words above end in punctuation', () => {
+    const aid = new StorytellerAid({ id: 'asked', category: 'standard', color: 'teal', icon: LUNATIC.icon, text: ['Ready?'], textBelow: ['Go'] });
+    expect(aid.sentence).toBe('Ready? Go');
+  });
+
   it('layers several pictures into one, each drawn over the last', () => {
     const { spiral, handprint } = STORYTELLER_AID_PICTURES;
     const aid = new StorytellerAid({ id: 'layered', category: 'standard', color: 'teal', picture: [spiral, handprint], text: ['Layered'] });
-    expect(aid.picture.shapes).toEqual([...spiral.shapes, ...handprint.shapes]);
+    expect(aid.picture?.shapes).toEqual([...spiral.shapes, ...handprint.shapes]);
   });
 
   it('gives every aid in the library its own id', () => {
@@ -70,10 +106,13 @@ describe('StorytellerAid', () => {
   });
 
   // Two aids can share a card's color as long as their pictures are tinted
-  // differently, like the Lunatic's blue spiral and Legion's red handprint,
-  // both on grey
-  it('gives every aid in the library its own colors', () => {
-    const colors = STORYTELLER_AIDS.map(aid => `${aid.color} ${aid.pictureColor ?? aid.color}`);
-    expect(new Set(colors).size).toBe(colors.length);
+  // differently or they show different characters' icons, like the Lunatic
+  // and Legion, both on grey. Aids about the same character, like the
+  // Barista's two, share its icon, so their words tell them apart.
+  it('tells every aid in the library apart by its colors or its icon, or its words for the same character', () => {
+    const looks = STORYTELLER_AIDS.map(aid =>
+      aid.icon ? `${aid.color} ${aid.icon} ${aid.sentence}` : `${aid.color} ${aid.pictureColor ?? aid.color}`,
+    );
+    expect(new Set(looks).size).toBe(looks.length);
   });
 });

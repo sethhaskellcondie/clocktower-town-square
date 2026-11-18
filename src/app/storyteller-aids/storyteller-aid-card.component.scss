@@ -85,6 +85,15 @@
   }
 }
 
+// A character's icon, in place of a picture, kept square in the same room.
+// The icons leave a wide clear margin round the figure, which fills only
+// about 60% of them, so they're enlarged to fill as much of the room as a
+// drawn picture does. The margin spills past the room unseen.
+.icon {
+  object-fit: contain;
+  transform: scale(1.5);
+}
+
 // Mottled like worn paper, over the picture as well as the background:
 // fractal noise in shades of grey, laid over the card so it lightens and
 // darkens it in patches.
@@ -150,6 +159,13 @@
   text-wrap: balance;
   line-height: 1.1;
   text-shadow: 0 0.6cqw 1.4cqw rgba(0, 0, 0, 0.6), 0 0 0.4cqw rgba(0, 0, 0, 0.35);
+}
+
+// Words below the picture, as far from it as the words above, and as far
+// from the bottom of the card as those are from the top, clear of the
+// corner ornaments
+.text.below {
+  margin: 4cqw 0 3cqw;
 }
 
 // A line's words, side by side on a shared baseline, a space apart when

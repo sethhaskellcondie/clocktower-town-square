@@ -1,12 +1,16 @@
 import { TestBed } from '@angular/core/testing';
 import { StorytellerAidCardComponent } from './storyteller-aid-card.component';
-import { StorytellerAid } from './storyteller-aid';
+import { STORYTELLER_AID_COLORS, StorytellerAid } from './storyteller-aid';
+import { STORYTELLER_AID_PICTURES } from './storyteller-aid-pictures';
+import { LUNATIC } from '../character-sheets/character-library';
 import {
   STORYTELLER_AIDS,
   THE_LUNATIC_CHOSE_THESE_PLAYERS,
   THESE_CHARACTERS_ARE_NOT_IN_PLAY,
+  THESE_PLAYERS_ARE_NOT_LEGION,
   YOU_ARE_EVIL,
   YOU_ARE_GOOD,
+  YOU_ARE_THE_GOOD_TWIN,
 } from './storyteller-aid-library';
 
 describe('StorytellerAidCardComponent', () => {
@@ -88,19 +92,69 @@ describe('StorytellerAidCardComponent', () => {
     expect(getComputedStyle(card.querySelector('.picture path')!).fill).toBe(getComputedStyle(card.querySelector('.frame .leaf')!).fill);
   });
 
-  it("tints the Lunatic's spiral from the blue of You are good, leaving the frame in the card's own tints", () => {
-    // Read before rendering another card, which takes this one off the page.
-    // The spiral is drawn as a line, so it takes the light tint as its stroke.
-    const lunatic = render(THE_LUNATIC_CHOSE_THESE_PLAYERS);
-    const spiral = getComputedStyle(lunatic.querySelector('.picture path')!).stroke;
-    const carving = getComputedStyle(lunatic.querySelector('.picture path.dark')!).stroke;
-    const frame = getComputedStyle(lunatic.querySelector('.frame .leaf')!).fill;
-    const background = getComputedStyle(lunatic.querySelector('.card')!).backgroundColor;
+  it("tints the picture from its own color when it has one, leaving the frame in the card's own tints", () => {
+    // Read before rendering another card, which takes this one off the page
+    const card = render(
+      new StorytellerAid({
+        id: 'blue-on-grey',
+        category: 'standard',
+        color: STORYTELLER_AID_COLORS.grey,
+        picture: STORYTELLER_AID_PICTURES.goodMask,
+        pictureColor: STORYTELLER_AID_COLORS.blue,
+        text: ['Blue on grey'],
+      }),
+    );
+    const mask = getComputedStyle(card.querySelector('.picture path')!).fill;
+    const carving = getComputedStyle(card.querySelector('.picture path.dark')!).fill;
+    const frame = getComputedStyle(card.querySelector('.frame .leaf')!).fill;
+    const background = getComputedStyle(card.querySelector('.card')!).backgroundColor;
 
     const good = render(YOU_ARE_GOOD);
-    expect(spiral).toBe(getComputedStyle(good.querySelector('.picture path')!).fill);
-    expect(frame).not.toBe(spiral);
+    expect(mask).toBe(getComputedStyle(good.querySelector('.picture path')!).fill);
+    expect(frame).not.toBe(mask);
     expect(carving).toBe(background);
+  });
+
+  it("shows the character's icon in place of a picture on an aid about a character", () => {
+    const card = render(THE_LUNATIC_CHOSE_THESE_PLAYERS);
+    const icon = card.querySelector('img.picture') as HTMLImageElement;
+    expect(icon.getAttribute('src')).toBe(LUNATIC.icon);
+    expect(icon.alt).toBe('');
+    expect(card.querySelector('svg.picture')).toBeNull();
+  });
+
+  // The icon is enlarged past its room to make up for its clear margin, so
+  // it's the room, before the enlargement, that has to sit below the words
+  it('puts the words above an icon too', () => {
+    const card = render(THESE_PLAYERS_ARE_NOT_LEGION);
+    const text = card.querySelector('.text') as HTMLElement;
+    const icon = card.querySelector('.picture') as HTMLElement;
+    expect(icon.offsetHeight).toBeGreaterThan(0);
+    expect(text.offsetTop + text.offsetHeight).toBeLessThanOrEqual(icon.offsetTop);
+  });
+
+  it('puts any more words below the picture, the same size as the words above', () => {
+    const card = render(YOU_ARE_THE_GOOD_TWIN);
+    const [above, below] = Array.from(card.querySelectorAll('.text')) as HTMLElement[];
+    const icon = card.querySelector('.picture') as HTMLElement;
+    expect(Array.from(below.querySelectorAll('.line')).map(line => line.textContent)).toEqual(['The', 'evil twin', 'is...']);
+    expect(icon.offsetHeight).toBeGreaterThan(0);
+    expect(icon.offsetTop + icon.offsetHeight).toBeLessThanOrEqual(below.offsetTop);
+    expect(fontSize(below)).toBe(fontSize(above));
+  });
+
+  // The corner ornaments are a sixth of the card's width tall, and the
+  // words above the picture start below them
+  it('keeps the words below the picture clear of the corner ornaments, as the words above are', () => {
+    const card = render(YOU_ARE_THE_GOOD_TWIN);
+    const box = card.querySelector('.card')!.getBoundingClientRect();
+    const [above, below] = Array.from(card.querySelectorAll('.text')).map(text => text.getBoundingClientRect());
+    expect(box.bottom - below.bottom).toBeCloseTo(above.top - box.top, 0);
+  });
+
+  it('shows nothing below the picture on an aid without more words', () => {
+    const card = render(YOU_ARE_EVIL);
+    expect(card.querySelectorAll('.text').length).toBe(1);
   });
 
   it('draws a custom picture shape by shape, light or dark, filled or as a line', () => {

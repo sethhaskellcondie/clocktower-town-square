@@ -94,7 +94,9 @@ The card draws these pictures itself, so they follow the card's format (see `src
 
 A path's `stroke-width` sets the thickness of its rim or line. There are no filters and no colors, only paths, because every picture has to work on every card color. Start from `templates/card-picture.svg`, a goblet drawn this way.
 
-An aid can still tint its picture from another color than its card's. The Lunatic's spiral is tinted from the blue of "You are good", for example. The aid sets `pictureColor`, not the file. Its light shapes and their rims are then tinted from that color, just as a card of that color would tint them. The dark details stay the card's color.
+An aid can still tint its picture from another color than its card's, such as the blue of "You are good" on a grey card. The aid sets `pictureColor`, not the file. Its light shapes and their rims are then tinted from that color, just as a card of that color would tint them. The dark details stay the card's color.
+
+An aid about a character, like "The Lunatic chose these players", doesn't get a new drawing. It shows the character's official icon with `icon: LUNATIC.icon`, in place of a picture.
 
 Each part of the style has a counterpart on the card:
 
