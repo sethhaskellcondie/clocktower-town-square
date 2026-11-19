@@ -1,6 +1,7 @@
 <main
   class="aids"
   [class.overview-open]="overviewOpen"
+  [inert]="!!editing"
   (pointerdown)="onPointerDown($event)"
   (pointermove)="onPointerMove($event)"
   (pointerup)="onPointerUp($event)"
@@ -9,14 +10,25 @@
   <h1 class="visually-hidden">Storyteller Aids</h1>
   <div
     class="track"
-    [class.settling]="settling"
-    [style.transform]="'translateX(' + offset + 'px)'"
+    [class.settling]="settling && !overviewOpen"
+    [style.transform]="'translateX(' + (overviewOpen ? 0 : offset) + 'px)'"
     [inert]="overviewOpen"
     (transitionend)="onTransitionEnd($event)"
   >
     @for (slot of slots; track slot.position) {
-      <section class="slot" [style.left.%]="slot.position * 100" [attr.aria-hidden]="slot.position === 0 ? null : 'true'">
-        <app-storyteller-aid-card [aid]="slot.aid" />
+      <section
+        class="slot"
+        [class.current]="slot.position === 0"
+        [style.left.%]="slot.position * 100"
+        [attr.aria-hidden]="slot.position === 0 ? null : 'true'"
+      >
+        <app-storyteller-aid-card [aid]="aidText.written(slot.aid)" />
+        @if (slot.aid.editableText !== undefined) {
+          <button type="button" class="edit" [attr.tabindex]="slot.position === 0 ? null : -1" (click)="onEdit(slot.aid, $event)">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16zM13 7l4 4" /></svg>
+            Edit
+          </button>
+        }
       </section>
     } @empty {
       <p class="message empty">No aids are loaded.<br />Swipe up to load some.</p>
@@ -24,25 +36,72 @@
   </div>
 
   <section #overview class="overview" [inert]="!overviewOpen" aria-label="Every storyteller aid">
-    <div class="choices">
-      <p class="message hint">Tap an aid to load or unload it, then swipe down.</p>
-      @for (group of groups; track group.category) {
-        <section class="group">
-          <h2 class="group-heading">{{ group.title }}</h2>
-          @for (aid of group.aids; track aid.id) {
-            <button
-              type="button"
-              class="choice"
-              [attr.data-aid]="aid.id"
-              [class.unloaded]="!loadedAids.isLoaded(aid)"
-              [attr.aria-pressed]="loadedAids.isLoaded(aid)"
-              (click)="onChoose(aid, $event)"
-            >
-              <app-storyteller-aid-card [aid]="aid" />
-            </button>
-          }
-        </section>
-      }
+    <p class="message hint">Tap an aid to load or unload it, swipe sideways for more, then swipe down.</p>
+    <div class="pages">
+      <div
+        class="page-track"
+        [class.settling]="settling && overviewOpen"
+        [style.transform]="'translateX(' + (overviewOpen ? offset : 0) + 'px)'"
+        (transitionend)="onTransitionEnd($event)"
+      >
+        @for (slot of pageSlots; track slot.position) {
+          <section class="page" [class.current]="slot.position === 0" [style.left.%]="slot.position * 100" [inert]="slot.position !== 0">
+            <h2 class="page-heading">{{ slot.page.title }}</h2>
+            <div class="grid">
+              @for (aid of slot.page.aids; track aid.id) {
+                <button
+                  type="button"
+                  class="choice"
+                  [attr.data-aid]="aid.id"
+                  [class.unloaded]="!loadedAids.isLoaded(aid)"
+                  [attr.aria-pressed]="loadedAids.isLoaded(aid)"
+                  (click)="onChoose(aid, $event)"
+                >
+                  <app-storyteller-aid-card [aid]="aidText.written(aid)" />
+                </button>
+              }
+            </div>
+          </section>
+        }
+      </div>
     </div>
+    @if (pages.length > 1) {
+      <div class="dots" aria-hidden="true">
+        @for (each of pages; track $index) {
+          <span class="dot" [class.current]="$index === page"></span>
+        }
+      </div>
+      <p class="visually-hidden">Page {{ page + 1 }} of {{ pages.length }}</p>
+    }
   </section>
 </main>
+
+@if (preview; as preview) {
+  <div class="editor" role="dialog" aria-modal="true" aria-labelledby="editor-title" (keydown.escape)="closeEditor()" (mousedown)="keepFocus($event)">
+    <form class="editor-form" (submit)="saveEdit($event)">
+      <div class="editor-bar">
+        <button type="button" class="bar-button" (click)="closeEditor()">Cancel</button>
+        <h2 id="editor-title" class="editor-title">Edit aid</h2>
+        <button type="submit" class="bar-button done">Done</button>
+      </div>
+      <div class="field">
+        <input
+          #editorInput
+          class="field-input"
+          type="text"
+          aria-labelledby="editor-title"
+          [value]="draft"
+          [attr.maxlength]="editableTextLength"
+          [attr.placeholder]="editing?.editableText"
+          autocomplete="off"
+          autocapitalize="none"
+          spellcheck="false"
+          enterkeyhint="done"
+          (input)="onDraftInput($event)"
+        />
+        <button type="button" class="reset" [disabled]="draftIsDefault" (click)="resetDraft()">Reset</button>
+      </div>
+    </form>
+    <app-storyteller-aid-card class="preview" [aid]="preview" />
+  </div>
+}

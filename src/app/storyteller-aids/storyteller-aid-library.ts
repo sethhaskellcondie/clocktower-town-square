@@ -1,6 +1,6 @@
 import { STORYTELLER_AID_CATEGORIES, STORYTELLER_AID_COLORS, StorytellerAid, StorytellerAidCategory } from './storyteller-aid';
 import { STORYTELLER_AID_PICTURES } from './storyteller-aid-pictures';
-import { ALCHEMIST, BARBER, BARISTA, BOFFIN, CERENOVUS, DAMSEL, EVIL_TWIN, GOOD_TWIN_ICON, HARPY, HATTER, KING, LEGION, LUNATIC } from '../character-sheets/character-library';
+import { ALCHEMIST, BARBER, BARISTA, BOFFIN, CERENOVUS, DAMSEL, EVIL_TWIN, GOOD_TWIN_ICON, HARPY, HATTER, KING, LEGION, LUNATIC, MEZEPHELES, YAGGABABBLE, ZENOMANCER } from '../character-sheets/character-library';
 
 // Every storyteller aid, each created once
 
@@ -221,6 +221,48 @@ export const THESE_PLAYERS_ARE_NOT_LEGION = new StorytellerAid({
   text: ['These', 'players', { emphasis: 'are not' }, 'Legion'],
 });
 
+// The storyteller can change the secret word
+export const YOUR_SECRET_WORD_IS = new StorytellerAid({
+  id: 'your-secret-word-is',
+  category: 'custom',
+  color: STORYTELLER_AID_COLORS.grey,
+  icon: MEZEPHELES.icon,
+  text: ['Your secret', 'word is', { editable: 'haberdashery', emphasis: true }],
+});
+
+// The storyteller can change the secret phrase. The icon is kept to the
+// size of the Harpy's on its aid, which its five lines of words leave less
+// room for.
+export const YOUR_SECRET_PHRASE_IS = new StorytellerAid({
+  id: 'your-secret-phrase-is',
+  category: 'custom',
+  color: STORYTELLER_AID_COLORS.grey,
+  icon: YAGGABABBLE.icon,
+  pictureSize: 41,
+  text: ['Your secret', 'phrase is', { editable: "I'm not going to vote", emphasis: true }],
+});
+
+// The storyteller can change the task, the player's goal. The card is a
+// deep forest green, darker than the icon's darkest greens, so the whole of
+// it stands out, and its lime tips most of all. The icon is kept to the size
+// of the Harpy's on its aid, like the secret phrase's.
+export const YOUR_TASK_IS = new StorytellerAid({
+  id: 'your-task-is',
+  category: 'custom',
+  color: STORYTELLER_AID_COLORS.forest,
+  icon: ZENOMANCER.icon,
+  pictureSize: 41,
+  text: ['Your task is', { editable: "wear everyone's hat at the same time", emphasis: true }],
+});
+
+// A card for the storyteller to write whatever they need on, all words
+export const CUSTOM_AID_1 = new StorytellerAid({
+  id: 'custom-aid-1',
+  category: 'custom',
+  color: STORYTELLER_AID_COLORS.amethyst,
+  text: [{ editable: 'Custom Aid 1' }],
+});
+
 // Every aid, which the groups below sort by category, keeping to this order
 // within each one
 const AIDS: readonly StorytellerAid[] = [
@@ -251,6 +293,10 @@ const AIDS: readonly StorytellerAid[] = [
   THE_DEMON_IS_GRANTED_THIS_ABILITY,
   YOU_ARE_MAD_THAT_THIS_PLAYER_IS_EVIL,
   THESE_PLAYERS_ARE_NOT_LEGION,
+  YOUR_SECRET_WORD_IS,
+  YOUR_SECRET_PHRASE_IS,
+  YOUR_TASK_IS,
+  CUSTOM_AID_1,
 ];
 
 // One category's aids, under its heading

@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { StorytellerAidsPageComponent } from './storyteller-aids-page.component';
 import {
+  CUSTOM_AID_1,
   STORYTELLER_AIDS,
   THE_BARBER_DIED_SWAP_TWO_CHARACTERS,
   THE_DAMSEL_IS_IN_PLAY,
@@ -18,8 +19,11 @@ import {
   YOU_ARE_SOBER_AND_HEALTHY,
   YOU_ARE_THE_GOOD_TWIN,
   YOU_HAVE_THE_ABILITY_OF,
+  YOUR_SECRET_PHRASE_IS,
+  YOUR_SECRET_WORD_IS,
+  YOUR_TASK_IS,
 } from './storyteller-aid-library';
-import { StorytellerAid } from './storyteller-aid';
+import { STORYTELLER_AID_CATEGORIES, StorytellerAid } from './storyteller-aid';
 
 describe('StorytellerAidsPageComponent', () => {
   let fixture: ComponentFixture<StorytellerAidsPageComponent>;
@@ -55,9 +59,12 @@ describe('StorytellerAidsPageComponent', () => {
     fixture.detectChanges();
   }
 
-  // The cards finish sliding, as the browser says once the slide is over
+  // The cards, or the overview's pages, finish sliding, as the browser says
+  // once the slide is over
   function settle(): void {
-    page.querySelector('.track')!.dispatchEvent(new TransitionEvent('transitionend', { propertyName: 'transform', bubbles: true }));
+    page.querySelector('.track.settling, .page-track.settling')?.dispatchEvent(
+      new TransitionEvent('transitionend', { propertyName: 'transform', bubbles: true }),
+    );
     fixture.detectChanges();
   }
 
@@ -68,14 +75,37 @@ describe('StorytellerAidsPageComponent', () => {
     settle();
   }
 
-  // The aids in the overview, in library order
+  // The aids on the overview's page in view, which is the only one not inert
   function choices(): HTMLButtonElement[] {
-    return Array.from(page.querySelectorAll('.choice'));
+    return Array.from(page.querySelectorAll('.page.current .choice'));
   }
 
-  function choice(aid: StorytellerAid): HTMLButtonElement {
-    return choices()[STORYTELLER_AIDS.indexOf(aid)];
+  function sentencesOf(buttons: HTMLButtonElement[]): (string | null | undefined)[] {
+    return buttons.map(button => button.querySelector('.card')?.getAttribute('aria-label'));
   }
+
+  // An aid on the overview's page in view, turning to its page first if
+  // it's on another
+  function choice(aid: StorytellerAid): HTMLButtonElement {
+    const selector = `.page.current .choice[data-aid="${aid.id}"]`;
+    for (let turns = 0; !page.querySelector(selector) && turns < pageCount; turns++) swipe(-150);
+    return page.querySelector(selector) as HTMLButtonElement;
+  }
+
+  function heading(): string | undefined {
+    return page.querySelector('.page.current .page-heading')?.textContent?.trim();
+  }
+
+  function currentDot(): number {
+    return Array.from(page.querySelectorAll('.dot')).findIndex(dot => dot.classList.contains('current'));
+  }
+
+  // The aids the storyteller has loaded, from the whole library
+  function loaded(): StorytellerAid[] {
+    return STORYTELLER_AIDS.filter(aid => fixture.componentInstance.loadedAids.isLoaded(aid));
+  }
+
+  const pageCount = Math.ceil(STORYTELLER_AIDS.length / 9);
 
   function overviewOpen(): boolean {
     return page.querySelector('main')!.classList.contains('overview-open');
@@ -173,27 +203,44 @@ describe('StorytellerAidsPageComponent', () => {
     expect((page.querySelector('.track') as HTMLElement).style.transform).toBe('translateX(0px)');
   });
 
-  it('swipes up to lay out every aid, the standard ones loaded to begin with and the character ones not', () => {
+  it('swipes up to lay out the first nine aids, the standard ones loaded to begin with and the character ones not', () => {
     expect(overviewOpen()).toBeFalse();
     expect((page.querySelector('.overview') as HTMLElement).inert).toBeTrue();
     swipe(0, -300);
     expect(overviewOpen()).toBeTrue();
     expect((page.querySelector('.overview') as HTMLElement).inert).toBeFalse();
     expect((page.querySelector('.track') as HTMLElement).inert).toBeTrue();
-    expect(choices().map(button => button.querySelector('.card')?.getAttribute('aria-label'))).toEqual(STORYTELLER_AIDS.map(aid => aid.sentence));
+    expect(sentencesOf(choices())).toEqual(STORYTELLER_AIDS.slice(0, 9).map(aid => aid.sentence));
     expect(choices().map(button => button.getAttribute('aria-pressed'))).toEqual(
-      STORYTELLER_AIDS.map(aid => String(startingAids.includes(aid))),
+      STORYTELLER_AIDS.slice(0, 9).map(aid => String(startingAids.includes(aid))),
     );
     expect(choice(THE_LUNATIC_CHOSE_THESE_PLAYERS).classList).toContain('unloaded');
   });
 
-  it('lays out the standard aids, then the character aids, each under its own heading', () => {
+  it('lays out the aids nine to a page, each page headed by the categories of its aids, with a dot for each page', () => {
     swipe(0, -300);
-    const groups = Array.from(page.querySelectorAll('.group'));
-    expect(groups.map(group => group.querySelector('h2')?.textContent?.trim())).toEqual(['Standard', 'Character']);
-    const sentences = groups.map(group =>
-      Array.from(group.querySelectorAll('.choice .card')).map(card => card.getAttribute('aria-label')),
-    );
+    expect(page.querySelectorAll('.dot').length).toBe(pageCount);
+    const pages: StorytellerAid[][] = [];
+    for (let turn = 0; turn < pageCount; turn++) {
+      const aids = choices().map(button => STORYTELLER_AIDS.find(aid => aid.id === button.dataset['aid'])!);
+      pages.push(aids);
+      expect(currentDot()).toBe(turn);
+      expect(heading()).toBe([...new Set(aids.map(aid => STORYTELLER_AID_CATEGORIES[aid.category].title))].join(' · '));
+      swipe(-150);
+    }
+    expect(pages.slice(0, -1).every(aids => aids.length === 9)).toBeTrue();
+    expect(pages[pages.length - 1].length).toBeGreaterThan(0);
+    expect(pages.flat()).toEqual([...STORYTELLER_AIDS]);
+    expect(pages[0].every(aid => aid.category === 'standard')).toBeTrue();
+  });
+
+  it('lays out the standard aids, then the character aids, then the custom aids', () => {
+    swipe(0, -300);
+    const sentences = Array.from({ length: pageCount }, () => {
+      const onPage = sentencesOf(choices());
+      swipe(-150);
+      return onPage;
+    }).flat();
     const characterAids = [
       THE_LUNATIC_CHOSE_THESE_PLAYERS,
       THE_BARBER_DIED_SWAP_TWO_CHARACTERS,
@@ -210,8 +257,69 @@ describe('StorytellerAidsPageComponent', () => {
       YOU_ARE_MAD_THAT_THIS_PLAYER_IS_EVIL,
       THESE_PLAYERS_ARE_NOT_LEGION,
     ];
-    expect(sentences[1]).toEqual(characterAids.map(aid => aid.sentence));
-    expect(sentences[0]).toEqual(STORYTELLER_AIDS.filter(aid => !characterAids.includes(aid)).map(aid => aid.sentence));
+    const customAids = [YOUR_SECRET_WORD_IS, YOUR_SECRET_PHRASE_IS, YOUR_TASK_IS, CUSTOM_AID_1];
+    const standardAids = STORYTELLER_AIDS.filter(aid => !characterAids.includes(aid) && !customAids.includes(aid));
+    expect(sentences).toEqual([...standardAids, ...characterAids, ...customAids].map(aid => aid.sentence));
+  });
+
+  it('turns the pages with a swipe left or right, round and round, the page following the finger', () => {
+    swipe(0, -300);
+    const first = sentencesOf(choices());
+    pointer('pointerdown', 200, 300);
+    pointer('pointermove', 140, 300);
+    expect((page.querySelector('.page-track') as HTMLElement).style.transform).toBe('translateX(-60px)');
+    expect((page.querySelector('.track') as HTMLElement).style.transform).toBe('translateX(0px)');
+    pointer('pointerup', 50, 300);
+    expect(page.querySelector('.page-track')!.classList).toContain('settling');
+    settle();
+    expect(page.querySelector('.page-track')!.classList).not.toContain('settling');
+    expect(currentDot()).toBe(1);
+    expect(sentencesOf(choices())).toEqual(STORYTELLER_AIDS.slice(9, 18).map(aid => aid.sentence));
+
+    swipe(150);
+    expect(currentDot()).toBe(0);
+    expect(sentencesOf(choices())).toEqual(first);
+    swipe(150);
+    expect(currentDot()).toBe(pageCount - 1);
+    swipe(-150);
+    expect(currentDot()).toBe(0);
+  });
+
+  it('springs back from a drag across the overview too short and slow to turn the page', () => {
+    swipe(0, -300);
+    pointer('pointerdown', 200, 300);
+    pointer('pointermove', 190, 300);
+    pointer('pointerup', 190, 300);
+    expect((page.querySelector('.page-track') as HTMLElement).style.transform).toBe('translateX(0px)');
+    expect(currentDot()).toBe(0);
+  });
+
+  it('keeps the pages either side out of reach of the keyboard and screen readers', () => {
+    swipe(0, -300);
+    const pages = Array.from(page.querySelectorAll('.page')) as HTMLElement[];
+    expect(pages.map(each => each.style.left)).toEqual(['-100%', '0%', '100%']);
+    expect(pages.map(each => each.inert)).toEqual([true, false, true]);
+  });
+
+  it('turns the pages with the arrow keys', () => {
+    key('ArrowUp');
+    key('ArrowRight');
+    settle();
+    expect(currentDot()).toBe(1);
+    key('ArrowLeft');
+    settle();
+    expect(currentDot()).toBe(0);
+  });
+
+  it('swipes down from any page, and opens again on the page it was left on', () => {
+    swipe(0, -300);
+    swipe(-150);
+    swipe(-150);
+    swipe(0, 300);
+    expect(overviewOpen()).toBeFalse();
+    expect(shown()).toBe(sentence(0));
+    swipe(0, -300);
+    expect(currentDot()).toBe(2);
   });
 
   it('taps an aid to unload it, and again to load it back', () => {
@@ -295,20 +403,16 @@ describe('StorytellerAidsPageComponent', () => {
     const { x, y } = restingCenter(YOU_ARE_EVIL);
     pointer('pointerdown', x, y);
     pointer('pointerup', x, y);
-    expect(choices().map(button => button.getAttribute('aria-pressed'))).toEqual(
-      STORYTELLER_AIDS.map(aid => String(startingAids.includes(aid) && aid !== YOU_ARE_EVIL)),
-    );
+    expect(loaded()).toEqual(startingAids.filter(aid => aid !== YOU_ARE_EVIL));
   });
 
   it('loads or unloads nothing with a tap between the aids', () => {
     swipe(0, -300);
-    const heading = page.querySelector('.group-heading')!.getBoundingClientRect();
+    const heading = page.querySelector('.page.current .page-heading')!.getBoundingClientRect();
     const rise = page.querySelector('.overview')!.getBoundingClientRect().top - page.getBoundingClientRect().top;
     pointer('pointerdown', heading.left + heading.width / 2, heading.top - rise + heading.height / 2);
     pointer('pointerup', heading.left + heading.width / 2, heading.top - rise + heading.height / 2);
-    expect(choices().map(button => button.getAttribute('aria-pressed'))).toEqual(
-      STORYTELLER_AIDS.map(aid => String(startingAids.includes(aid))),
-    );
+    expect(loaded()).toEqual(startingAids);
     expect(overviewOpen()).toBeTrue();
   });
 
@@ -336,5 +440,194 @@ describe('StorytellerAidsPageComponent', () => {
     key('ArrowUp');
     key('Escape');
     expect(overviewOpen()).toBeFalse();
+  });
+
+  describe('a custom aid', () => {
+    // The secret word aid, loaded and in view: it comes round last, so it's
+    // the one before the first aid
+    beforeEach(() => {
+      swipe(0, -300);
+      tap(YOUR_SECRET_WORD_IS);
+      swipe(0, 300);
+      swipe(150);
+      expect(shown()).toBe('Your secret word is haberdashery');
+    });
+
+    function editor(): HTMLElement | null {
+      return page.querySelector('.editor');
+    }
+
+    function input(): HTMLInputElement {
+      return page.querySelector('.editor input') as HTMLInputElement;
+    }
+
+    function preview(): string | null | undefined {
+      return page.querySelector('.editor .preview .card')?.getAttribute('aria-label');
+    }
+
+    function center(selector: string): { x: number; y: number } {
+      const box = page.querySelector(selector)!.getBoundingClientRect();
+      return { x: box.left + box.width / 2, y: box.top + box.height / 2 };
+    }
+
+    // A finger taps the Edit button by the aid in view
+    function tapEdit(): void {
+      const { x, y } = center('.slot.current .edit');
+      pointer('pointerdown', x, y);
+      pointer('pointerup', x, y);
+    }
+
+    function type(text: string): void {
+      input().value = text;
+      input().dispatchEvent(new Event('input'));
+      fixture.detectChanges();
+    }
+
+    function press(selector: string): void {
+      (page.querySelector(selector) as HTMLButtonElement).click();
+      fixture.detectChanges();
+    }
+
+    it('has an Edit button, which the other aids do not', () => {
+      expect(page.querySelector('.slot.current .edit')).not.toBeNull();
+      swipe(-150);
+      expect(page.querySelector('.slot.current .edit')).toBeNull();
+    });
+
+    it('opens the editor from the Edit button, with its words picked out to type over', () => {
+      expect(editor()).toBeNull();
+      tapEdit();
+      expect(editor()).not.toBeNull();
+      expect(page.querySelector('main')!.inert).toBeTrue();
+      expect(document.activeElement).toBe(input());
+      expect(input().value).toBe('haberdashery');
+      expect([input().selectionStart, input().selectionEnd]).toEqual([0, 'haberdashery'.length]);
+      expect(preview()).toBe('Your secret word is haberdashery');
+    });
+
+    it('opens the editor from the Edit button clicked from the keyboard', () => {
+      const button = page.querySelector('.slot.current .edit')!;
+      button.dispatchEvent(new MouseEvent('click', { bubbles: true, detail: 0 }));
+      fixture.detectChanges();
+      expect(editor()).not.toBeNull();
+    });
+
+    it('leaves a tap on the card itself alone, so a thumb on it while it is held up opens nothing', () => {
+      const { x, y } = center('.slot.current .card');
+      pointer('pointerdown', x, y);
+      pointer('pointerup', x, y);
+      expect(editor()).toBeNull();
+    });
+
+    it('shows the words on the card as they are typed, and keeps them with Done', () => {
+      tapEdit();
+      type('pickle');
+      expect(preview()).toBe('Your secret word is pickle');
+      expect(shown()).toBe('Your secret word is haberdashery');
+      press('.editor .done');
+      expect(editor()).toBeNull();
+      expect(page.querySelector('main')!.inert).toBeFalse();
+      expect(shown()).toBe('Your secret word is pickle');
+    });
+
+    it("keeps the words with the keyboard's own Done key", () => {
+      tapEdit();
+      type('pickle');
+      page.querySelector('.editor form')!.dispatchEvent(new Event('submit', { cancelable: true }));
+      fixture.detectChanges();
+      expect(editor()).toBeNull();
+      expect(shown()).toBe('Your secret word is pickle');
+    });
+
+    it('shows the storyteller\'s words in the overview too, and remembers them after a refresh', () => {
+      tapEdit();
+      type('pickle');
+      press('.editor .done');
+      swipe(0, -300);
+      expect(choice(YOUR_SECRET_WORD_IS).querySelector('.card')?.getAttribute('aria-label')).toBe('Your secret word is pickle');
+
+      const refreshed = TestBed.createComponent(StorytellerAidsPageComponent);
+      refreshed.detectChanges();
+      const card = (refreshed.nativeElement as HTMLElement).querySelector(`.choice[data-aid="${YOUR_SECRET_WORD_IS.id}"] .card`);
+      expect(card?.getAttribute('aria-label')).toBe('Your secret word is pickle');
+    });
+
+    it('leaves the words as they were with Cancel, or Escape', () => {
+      tapEdit();
+      type('pickle');
+      press('.editor .bar-button:not(.done)');
+      expect(editor()).toBeNull();
+      expect(shown()).toBe('Your secret word is haberdashery');
+
+      tapEdit();
+      type('pickle');
+      input().dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+      fixture.detectChanges();
+      expect(editor()).toBeNull();
+      expect(shown()).toBe('Your secret word is haberdashery');
+    });
+
+    it('opens again with the words last kept', () => {
+      tapEdit();
+      type('pickle');
+      press('.editor .done');
+      tapEdit();
+      expect(input().value).toBe('pickle');
+    });
+
+    it('resets to the words the aid comes with, which there is no resetting from', () => {
+      tapEdit();
+      expect((page.querySelector('.editor .reset') as HTMLButtonElement).disabled).toBeTrue();
+      type('pickle');
+      expect((page.querySelector('.editor .reset') as HTMLButtonElement).disabled).toBeFalse();
+      press('.editor .reset');
+      expect(input().value).toBe('haberdashery');
+      expect(preview()).toBe('Your secret word is haberdashery');
+      expect((page.querySelector('.editor .reset') as HTMLButtonElement).disabled).toBeTrue();
+    });
+
+    it('shows the words the aid comes with while there are none typed, and keeps those with Done', () => {
+      tapEdit();
+      type('pickle');
+      press('.editor .done');
+      tapEdit();
+      type('   ');
+      expect(preview()).toBe('Your secret word is haberdashery');
+      press('.editor .done');
+      expect(shown()).toBe('Your secret word is haberdashery');
+    });
+
+    it("doesn't step through the aids with the arrow keys while editing", () => {
+      tapEdit();
+      key('ArrowRight');
+      key('ArrowUp');
+      settle();
+      expect(overviewOpen()).toBeFalse();
+      press('.editor .bar-button:not(.done)');
+      expect(shown()).toBe('Your secret word is haberdashery');
+    });
+  });
+
+  it("writes a whole card of the storyteller's own words on a custom aid that's all words", () => {
+    swipe(0, -300);
+    tap(CUSTOM_AID_1);
+    swipe(0, 300);
+    swipe(150);
+    expect(shown()).toBe('Custom Aid 1');
+
+    const edit = page.querySelector('.slot.current .edit')!.getBoundingClientRect();
+    pointer('pointerdown', edit.left + edit.width / 2, edit.top + edit.height / 2);
+    pointer('pointerup', edit.left + edit.width / 2, edit.top + edit.height / 2);
+    const input = page.querySelector('.editor input') as HTMLInputElement;
+    expect(input.value).toBe('Custom Aid 1');
+    expect(input.maxLength).toBe(60);
+
+    input.value = 'Choose a player to protect tonight';
+    input.dispatchEvent(new Event('input'));
+    fixture.detectChanges();
+    expect(page.querySelector('.editor .preview .card')?.getAttribute('aria-label')).toBe('Choose a player to protect tonight');
+    (page.querySelector('.editor .done') as HTMLButtonElement).click();
+    fixture.detectChanges();
+    expect(shown()).toBe('Choose a player to protect tonight');
   });
 });

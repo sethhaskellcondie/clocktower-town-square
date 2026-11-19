@@ -47,11 +47,13 @@
   -webkit-user-select: none;
 }
 
-// The picture fills the room the words leave, up to 62 across, and sits in
-// the middle of it. It's tinted from the card's color, like the frame,
-// unless the aid gives it a color of its own, --aid-picture-color, to tint
-// it from instead. Its dark details are the card's color either way, carved
-// out of the picture.
+// The picture fills the room the words leave, up to 62 across, or less if
+// the aid keeps it smaller, and sits in the middle of it. Only its width is
+// kept smaller, so it still sits in the middle of the room, down as well as
+// across, and still shrinks if the words leave less room than that. It's
+// tinted from the card's color, like the frame, unless the aid gives it a
+// color of its own, --aid-picture-color, to tint it from instead. Its dark
+// details are the card's color either way, carved out of the picture.
 .picture {
   @include tints(picture, var(--aid-picture-color, var(--aid-color)));
 
@@ -159,6 +161,16 @@
   text-wrap: balance;
   line-height: 1.1;
   text-shadow: 0 0.6cqw 1.4cqw rgba(0, 0, 0, 0.6), 0 0 0.4cqw rgba(0, 0, 0, 0.35);
+}
+
+// With no picture, the words sit down the middle of the card, as far from
+// the bottom as from the top
+.card.text-only {
+  padding-bottom: 16%;
+}
+
+.text-only .text {
+  margin-block: auto;
 }
 
 // Words below the picture, as far from it as the words above, and as far

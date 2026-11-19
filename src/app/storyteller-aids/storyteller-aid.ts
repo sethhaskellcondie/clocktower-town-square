@@ -14,7 +14,9 @@
 // way as text.
 //
 // The words are what the player reads, so they're set as large as they'll
-// fit, and the picture is smaller, backing them up.
+// fit, and the picture is smaller, backing them up. An aid can also go
+// without a picture, all words, like a custom aid for the storyteller to
+// write themselves. Then the words have the whole card to themselves.
 //
 // For each there are standard options below, matching the official cards,
 // and anything else can be made to order:
@@ -37,21 +39,35 @@
 // icon: LUNATIC.icon, from the character library. The icons are already
 // painted in their team's colors, so they're shown as they are, not tinted.
 //
+// A picture, or an icon, is as large as the room the words leave, up to 62
+// across, in hundredths of the card's width. An aid with few words can keep
+// it smaller, pictureSize: 41, to match the picture on a card with more.
+//
 // The text is shown in capitals however it's written, so write it the way
 // it reads aloud.
 //
 // The category says where the aid is listed when the storyteller chooses
 // which aids to load, from STORYTELLER_AID_CATEGORIES below.
+//
+// A custom aid has words the storyteller can change, written as the words
+// the card shows until the storyteller writes their own: a single word, like
+// the secret word on "Your secret word is haberdashery",
+// { editable: 'haberdashery', emphasis: true }, or as much as the whole of
+// the card, text: [{ editable: 'Custom Aid 1' }]. However much the storyteller
+// writes, it wraps onto as many lines as it needs. A card has one such place
+// at most, so there's one thing to fill in.
 
 // The kinds of aid, in the order they're listed: the standard aids, which
-// suit any game, then the ones for a particular character. Each has the
-// heading it's listed under, and whether its aids start out loaded, before
-// the storyteller loads or unloads any. The character aids start out
+// suit any game, then the ones for a particular character, then the custom
+// ones, with words the storyteller can change. Each has the heading it's
+// listed under, and whether its aids start out loaded, before the
+// storyteller loads or unloads any. The character and custom aids start out
 // unloaded, since most games have no use for them. A new category only
 // needs a line here.
 export const STORYTELLER_AID_CATEGORIES = {
   standard: { title: 'Standard', startsLoaded: true },
   character: { title: 'Character', startsLoaded: false },
+  custom: { title: 'Custom', startsLoaded: false },
 } as const;
 
 export type StorytellerAidCategory = keyof typeof STORYTELLER_AID_CATEGORIES;
@@ -71,8 +87,10 @@ export const STORYTELLER_AID_COLORS = {
   plum: '#602a44',
   green: '#40704d',
   pine: '#195949',
+  forest: '#1d4030',
   olive: '#576031',
   purple: '#8c4a7a',
+  amethyst: '#6c2f8a',
   sage: '#6e806c',
   teal: '#2e7883',
   slate: '#29616f',
@@ -106,63 +124,123 @@ export interface StorytellerAidShape {
 }
 
 // Some of the card's words. Emphasized words are the ones the card is about,
-// set larger and in gold, like "evil" in "You are evil".
-export type StorytellerAidWords = string | { readonly emphasis: string };
+// set larger and in gold, like "evil" in "You are evil". On a custom aid,
+// they can be the words the storyteller changes, editable, emphasized or not.
+export type StorytellerAidWords =
+  | string
+  | { readonly emphasis: string }
+  | { readonly editable: string; readonly emphasis?: boolean };
 
 // One line of the card's text: its words, or a list of them when only some
 // of the line is emphasized, like ['are', { emphasis: 'not' }]
 export type StorytellerAidLine = StorytellerAidWords | readonly StorytellerAidWords[];
 
-// A line as the card shows it: its words, in order, emphasized or not
-export type StorytellerAidLineWords = readonly { readonly text: string; readonly emphasis: boolean }[];
+// A line as the card shows it: its words, in order, emphasized or not, and
+// marked if they're the words the storyteller can change
+export type StorytellerAidLineWords = readonly { readonly text: string; readonly emphasis: boolean; readonly editable?: true }[];
+
+// The words of a line, one by one
+function wordsOf(line: StorytellerAidLine): readonly StorytellerAidWords[] {
+  return typeof line === 'string' || !Array.isArray(line) ? [line as StorytellerAidWords] : line;
+}
 
 function toLines(text: readonly StorytellerAidLine[]): readonly StorytellerAidLineWords[] {
   return text.map(line =>
-    (typeof line === 'string' || 'emphasis' in line ? [line] : line).map(words =>
-      typeof words === 'string' ? { text: words, emphasis: false } : { text: words.emphasis, emphasis: true },
-    ),
+    wordsOf(line).map(words => {
+      if (typeof words === 'string') return { text: words, emphasis: false };
+      if ('editable' in words) return { text: words.editable, emphasis: !!words.emphasis, editable: true };
+      return { text: words.emphasis, emphasis: true };
+    }),
   );
 }
+
+// The same lines, with the editable words changed to these
+function withEditableText(text: readonly StorytellerAidLine[], editableText: string): StorytellerAidLine[] {
+  return text.map(line =>
+    wordsOf(line).map(words => (typeof words !== 'string' && 'editable' in words ? { ...words, editable: editableText } : words)),
+  );
+}
+
+type StorytellerAidConfig = {
+  id: string;
+  category: StorytellerAidCategory;
+  color: string;
+  text: readonly StorytellerAidLine[];
+  textBelow?: readonly StorytellerAidLine[];
+  pictureSize?: number;
+} & (
+  | { picture: StorytellerAidPicture | readonly StorytellerAidPicture[]; pictureColor?: string; icon?: never }
+  | { icon: string; picture?: never; pictureColor?: never }
+  | { picture?: never; pictureColor?: never; icon?: never }
+);
 
 export class StorytellerAid {
   readonly id: string;
   readonly category: StorytellerAidCategory;
   readonly color: string;
   // The picture below the words, or for an aid about a character, the path
-  // to the character's icon, shown in its place
+  // to the character's icon, shown in its place. An aid all words has
+  // neither.
   readonly picture?: StorytellerAidPicture;
   // The color the picture is tinted from, when it isn't the card's
   readonly pictureColor?: string;
+  // The most the picture, or icon, can run across, in hundredths of the
+  // card's width, when it's kept smaller than usual
+  readonly pictureSize?: number;
   readonly icon?: string;
   // The lines above the picture, and any below it
   readonly lines: readonly StorytellerAidLineWords[];
   readonly linesBelow: readonly StorytellerAidLineWords[];
+  // On a custom aid, the words the storyteller can change, as this card has
+  // them. On an aid from the library, they're the words it comes with.
+  readonly editableText?: string;
 
-  constructor(
-    config: {
-      id: string;
-      category: StorytellerAidCategory;
-      color: string;
-      text: readonly StorytellerAidLine[];
-      textBelow?: readonly StorytellerAidLine[];
-    } & (
-      | { picture: StorytellerAidPicture | readonly StorytellerAidPicture[]; pictureColor?: string }
-      | { icon: string }
-    ),
-  ) {
+  private readonly config: StorytellerAidConfig;
+  // The copies made with other editable words, by those words, so the same
+  // words always give the same copy
+  private readonly copies = new Map<string, StorytellerAid>();
+
+  constructor(config: StorytellerAidConfig) {
+    this.config = config;
     this.id = config.id;
     this.category = config.category;
     this.color = config.color;
-    if ('icon' in config) {
+    if (config.icon) {
       this.icon = config.icon;
-    } else {
+    } else if (config.picture) {
       this.picture = 'shapes' in config.picture
         ? config.picture
         : { shapes: config.picture.flatMap(picture => picture.shapes) };
       this.pictureColor = config.pictureColor;
     }
+    this.pictureSize = config.pictureSize;
     this.lines = toLines(config.text);
     this.linesBelow = toLines(config.textBelow ?? []);
+    const editable = [...this.lines, ...this.linesBelow].flat().filter(words => words.editable);
+    if (editable.length > 1) throw new Error(`The ${config.id} aid has more than one place to change its words`);
+    this.editableText = editable[0]?.text;
+  }
+
+  // The aid with its editable words changed to these: the same card, with
+  // the storyteller's own words written in. An aid without editable words
+  // has nothing to change, so it stays as it is.
+  withEditableText(text: string): StorytellerAid {
+    if (this.editableText === undefined || text === this.editableText) return this;
+    let copy = this.copies.get(text);
+    if (!copy) {
+      copy = new StorytellerAid({
+        ...this.config,
+        text: withEditableText(this.config.text, text),
+        textBelow: withEditableText(this.config.textBelow ?? [], text),
+      });
+      this.copies.set(text, copy);
+    }
+    return copy;
+  }
+
+  // Whether the aid is all words, with no picture or icon
+  get textOnly(): boolean {
+    return !this.picture && !this.icon;
   }
 
   // The card's words as they're read, e.g. "You are evil". The words below

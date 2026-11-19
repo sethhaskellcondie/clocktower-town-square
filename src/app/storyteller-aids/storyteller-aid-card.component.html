@@ -9,15 +9,21 @@
   }
 </ng-template>
 
-<div class="card" [style.--aid-color]="aid.color" role="img" [attr.aria-label]="aid.sentence">
+<div class="card" [class.text-only]="aid.textOnly" [style.--aid-color]="aid.color" role="img" [attr.aria-label]="aid.sentence">
   <p class="text" [style.font-size]="textSize + 'cqw'" aria-hidden="true">
     <ng-container *ngTemplateOutlet="linesOf; context: { $implicit: aid.lines }" />
   </p>
 
   @if (aid.icon) {
-    <img class="picture icon" [src]="aid.icon" alt="" draggable="false" />
+    <img class="picture icon" [style.width.cqw]="aid.pictureSize" [src]="aid.icon" alt="" draggable="false" />
   } @else if (aid.picture) {
-    <svg class="picture" [style.--aid-picture-color]="aid.pictureColor" viewBox="0 0 100 100" aria-hidden="true">
+    <svg
+      class="picture"
+      [style.--aid-picture-color]="aid.pictureColor"
+      [style.width.cqw]="aid.pictureSize"
+      viewBox="0 0 100 100"
+      aria-hidden="true"
+    >
       @for (shape of aid.picture.shapes; track $index) {
         <path [attr.d]="shape.d" [class.dark]="shape.paint === 'dark'" [class.line]="shape.line" [style.stroke-width]="shape.width" />
       }
