@@ -50,12 +50,12 @@
 }
 
 // On a custom aid, the button that opens the editor for its words, tucked
-// into the bottom corner of the screen: below the card on a phone held
+// into the top corner of the screen: above the card on a phone held
 // upright, and beside it on a screen turned sideways
 .edit {
   position: absolute;
+  top: 16px;
   right: 16px;
-  bottom: 16px;
   display: flex;
   align-items: center;
   gap: 6px;
