@@ -84,6 +84,39 @@ describe('StorytellerAidsPageComponent', () => {
     return buttons.map(button => button.querySelector('.card')?.getAttribute('aria-label'));
   }
 
+  // The aid, or the overview's page, at this spot across the screen: 0 in
+  // view, and -1 and 1 waiting just off the left and right edges
+  function slotAt(position: number): HTMLElement | undefined {
+    return placed('.slot', position);
+  }
+
+  function pageAt(position: number): HTMLElement | undefined {
+    return placed('.page', position);
+  }
+
+  function placed(selector: string, position: number): HTMLElement | undefined {
+    return (Array.from(page.querySelectorAll(selector)) as HTMLElement[]).find(each => each.style.left === `${position * 100}%`);
+  }
+
+  function sentenceAt(position: number): string | null | undefined {
+    return slotAt(position)?.querySelector('.card')?.getAttribute('aria-label');
+  }
+
+  // The aids on the overview's page at this spot
+  function aidsAt(position: number): (string | null | undefined)[] {
+    return sentencesOf(Array.from(pageAt(position)?.querySelectorAll<HTMLButtonElement>('.choice') ?? []));
+  }
+
+  // The aids on this page of the overview, counting round from the first
+  function pageOf(turned: number): string[] {
+    const start = wrapped(turned, pageCount) * 9;
+    return STORYTELLER_AIDS.slice(start, start + 9).map(aid => aid.sentence);
+  }
+
+  function wrapped(index: number, count: number): number {
+    return ((index % count) + count) % count;
+  }
+
   // An aid on the overview's page in view, turning to its page first if
   // it's on another
   function choice(aid: StorytellerAid): HTMLButtonElement {
@@ -137,8 +170,8 @@ describe('StorytellerAidsPageComponent', () => {
   it('starts on the first aid, with its neighbors waiting off either side', () => {
     expect(shown()).toBe(sentence(0));
     const slots = Array.from(page.querySelectorAll('.slot')) as HTMLElement[];
-    expect(slots.map(slot => slot.style.left)).toEqual(['-100%', '0%', '100%']);
-    expect(slots.map(slot => slot.querySelector('.card')?.getAttribute('aria-label'))).toEqual([sentence(-1), sentence(0), sentence(1)]);
+    expect(slots.map(slot => slot.style.left).sort()).toEqual(['-100%', '0%', '100%']);
+    expect([-1, 0, 1].map(position => sentenceAt(position))).toEqual([sentence(-1), sentence(0), sentence(1)]);
   });
 
   it('moves the cards with the finger while it drags', () => {
@@ -158,6 +191,125 @@ describe('StorytellerAidsPageComponent', () => {
   it('swipes right to the previous aid, which from the first is the last', () => {
     swipe(150);
     expect(shown()).toBe(sentence(-1));
+  });
+
+  it('keeps the aids either side of the one in view as it swipes round, both ways, out of reach of screen readers', () => {
+    const check = (swiped: number) => {
+      expect([-1, 0, 1].map(position => sentenceAt(position))).toEqual([sentence(swiped - 1), sentence(swiped), sentence(swiped + 1)]);
+      expect(page.querySelectorAll('.slot').length).toBe(3);
+      expect(page.querySelectorAll('.slot:not([aria-hidden])').length).toBe(1);
+      expect(slotAt(0)!.hasAttribute('aria-hidden')).toBeFalse();
+      expect(slotAt(0)!.classList).toContain('current');
+    };
+    check(0);
+    for (let swiped = 1; swiped <= startingAids.length + 1; swiped++) {
+      swipe(-150);
+      check(swiped);
+    }
+    for (let swiped = startingAids.length; swiped >= -2; swiped--) {
+      swipe(150);
+      check(swiped);
+    }
+  });
+
+  it('keeps the card that slides into view, and the one that slides out, rather than drawing them again, either way', () => {
+    const cardAt = (position: number) => slotAt(position)!.querySelector('.card');
+    const [inView, right] = [cardAt(0), cardAt(1)];
+    swipe(-150);
+    expect(cardAt(0)).toBe(right);
+    expect(cardAt(-1)).toBe(inView);
+    swipe(150);
+    expect(cardAt(0)).toBe(inView);
+    expect(cardAt(1)).toBe(right);
+    const left = cardAt(-1);
+    swipe(150);
+    expect(cardAt(0)).toBe(left);
+    expect(cardAt(1)).toBe(inView);
+  });
+
+  it('leaves the cards alone while a finger drags them', () => {
+    pointer('pointerdown', 200, 300);
+    const read = spyOnProperty(StorytellerAid.prototype, 'sentence', 'get').and.callThrough();
+    pointer('pointermove', 160, 300);
+    pointer('pointermove', 120, 300);
+    expect(read).not.toHaveBeenCalled();
+  });
+
+  it('cuts a slide short with the next swipe, moving on from where it was going', () => {
+    pointer('pointerdown', 200, 300);
+    pointer('pointerup', 50, 300);
+    pointer('pointerdown', 200, 300);
+    pointer('pointerup', 50, 300);
+    settle();
+    expect(shown()).toBe(sentence(2));
+    expect([-1, 1].map(position => sentenceAt(position))).toEqual([sentence(1), sentence(3)]);
+  });
+
+  it('changes aids, and pages, straight away with motion reduced', () => {
+    spyOn(window, 'matchMedia').and.returnValue({ matches: true } as MediaQueryList);
+    pointer('pointerdown', 200, 300);
+    pointer('pointerup', 50, 300);
+    expect(page.querySelector('.track')!.classList).not.toContain('settling');
+    expect(shown()).toBe(sentence(1));
+    key('ArrowUp');
+    key('ArrowRight');
+    expect(page.querySelector('.page-track')!.classList).not.toContain('settling');
+    expect(currentDot()).toBe(1);
+    expect(aidsAt(0)).toEqual(pageOf(1));
+  });
+
+  it('pulls the other aid in from whichever side it is dragged from with only two loaded', () => {
+    swipe(0, -300);
+    startingAids.filter(aid => aid !== YOU_ARE_GOOD && aid !== YOU_ARE_EVIL).forEach(tap);
+    swipe(0, 300);
+    expect(shown()).toBe(YOU_ARE_GOOD.sentence);
+
+    // Dragged left, it comes in from the right, and stays there while the
+    // card springs back
+    pointer('pointerdown', 200, 300);
+    pointer('pointermove', 180, 300);
+    expect(sentenceAt(1)).toBe(YOU_ARE_EVIL.sentence);
+    pointer('pointerup', 180, 300);
+    expect(page.querySelector('.track')!.classList).toContain('settling');
+    expect(sentenceAt(1)).toBe(YOU_ARE_EVIL.sentence);
+    settle();
+    expect(shown()).toBe(YOU_ARE_GOOD.sentence);
+
+    // Dragged right, it comes in from the left, and stays there as it slides
+    // into view
+    pointer('pointerdown', 200, 300);
+    pointer('pointermove', 230, 300);
+    expect(sentenceAt(-1)).toBe(YOU_ARE_EVIL.sentence);
+    pointer('pointerup', 350, 300);
+    expect(sentenceAt(-1)).toBe(YOU_ARE_EVIL.sentence);
+    settle();
+    expect(shown()).toBe(YOU_ARE_EVIL.sentence);
+
+    // And the first one is on either side of it now
+    pointer('pointerdown', 200, 300);
+    pointer('pointermove', 170, 300);
+    expect(sentenceAt(1)).toBe(YOU_ARE_GOOD.sentence);
+    pointer('pointermove', 230, 300);
+    expect(sentenceAt(-1)).toBe(YOU_ARE_GOOD.sentence);
+    pointer('pointerup', 230, 300);
+    settle();
+
+    // The arrow keys bring it in from the side they go to
+    key('ArrowRight');
+    expect(sentenceAt(1)).toBe(YOU_ARE_GOOD.sentence);
+    settle();
+    expect(shown()).toBe(YOU_ARE_GOOD.sentence);
+    key('ArrowLeft');
+    expect(sentenceAt(-1)).toBe(YOU_ARE_EVIL.sentence);
+    settle();
+    expect(shown()).toBe(YOU_ARE_EVIL.sentence);
+  });
+
+  it('brings a newly loaded aid round beside the others as soon as the overview closes', () => {
+    swipe(0, -300);
+    tap(THESE_PLAYERS_ARE_NOT_LEGION);
+    swipe(0, 300);
+    expect([-1, 0, 1].map(position => sentenceAt(position))).toEqual([THESE_PLAYERS_ARE_NOT_LEGION.sentence, sentence(0), sentence(1)]);
   });
 
   it('springs back from a drag too short and slow to be a swipe', () => {
@@ -294,11 +446,82 @@ describe('StorytellerAidsPageComponent', () => {
     expect(currentDot()).toBe(0);
   });
 
-  it('keeps the pages either side out of reach of the keyboard and screen readers', () => {
+  it('keeps the pages either side of the one in view as they turn round, both ways, out of reach of the keyboard and screen readers', () => {
     swipe(0, -300);
-    const pages = Array.from(page.querySelectorAll('.page')) as HTMLElement[];
-    expect(pages.map(each => each.style.left)).toEqual(['-100%', '0%', '100%']);
-    expect(pages.map(each => each.inert)).toEqual([true, false, true]);
+    const check = (turned: number) => {
+      expect([-1, 0, 1].map(position => aidsAt(position))).toEqual([turned - 1, turned, turned + 1].map(pageOf));
+      expect(currentDot()).toBe(wrapped(turned, pageCount));
+      const pages = Array.from(page.querySelectorAll('.page')) as HTMLElement[];
+      expect(pages.filter(each => !each.inert).length).toBe(1);
+      expect(pageAt(0)!.inert).toBeFalse();
+      expect(pageAt(0)!.classList).toContain('current');
+    };
+    check(0);
+    for (let turned = 1; turned <= pageCount + 1; turned++) {
+      swipe(-150);
+      check(turned);
+    }
+    for (let turned = pageCount; turned >= -2; turned--) {
+      swipe(150);
+      check(turned);
+    }
+  });
+
+  it('draws every page of the overview once, so turning the pages draws no aids again', () => {
+    swipe(0, -300);
+    const cards = Array.from(page.querySelectorAll('.choice .card'));
+    expect(cards.length).toBe(STORYTELLER_AIDS.length);
+    const next = pageAt(1);
+    swipe(-150);
+    expect(pageAt(0)).toBe(next);
+    swipe(150);
+    swipe(150);
+    const after = Array.from(page.querySelectorAll('.choice .card'));
+    expect(after.length).toBe(cards.length);
+    expect(after.every((card, index) => card === cards[index])).toBeTrue();
+  });
+
+  it('leaves the aids in the overview alone while a finger turns the pages, or loads and unloads them', () => {
+    swipe(0, -300);
+    const read = spyOnProperty(StorytellerAid.prototype, 'sentence', 'get').and.callThrough();
+    pointer('pointerdown', 200, 300);
+    pointer('pointermove', 160, 300);
+    pointer('pointermove', 120, 300);
+    pointer('pointerup', 120, 300);
+    settle();
+    expect(currentDot()).toBe(1);
+    // You are evil is on the second page
+    const { x, y } = restingCenter(YOU_ARE_EVIL);
+    pointer('pointerdown', x, y);
+    pointer('pointerup', x, y);
+    expect(fixture.componentInstance.loadedAids.isLoaded(YOU_ARE_EVIL)).toBeFalse();
+    expect(read).not.toHaveBeenCalled();
+  });
+
+  it('cuts a page turn short with the next swipe, turning on from where it was going', () => {
+    swipe(0, -300);
+    pointer('pointerdown', 200, 300);
+    pointer('pointerup', 50, 300);
+    pointer('pointerdown', 200, 300);
+    pointer('pointerup', 50, 300);
+    settle();
+    expect(currentDot()).toBe(2);
+    expect([-1, 0, 1].map(position => aidsAt(position))).toEqual([1, 2, 3].map(pageOf));
+  });
+
+  it('remembers what was loaded and unloaded as the pages turn round, on the pages either side too', () => {
+    swipe(0, -300);
+    tap(YOU_ARE_EVIL);
+    tap(THESE_PLAYERS_ARE_NOT_LEGION);
+    const evil = () => pageAt(-1)!.querySelector(`.choice[data-aid="${YOU_ARE_EVIL.id}"]`)!;
+    expect(evil().classList).toContain('unloaded');
+    expect(evil().getAttribute('aria-pressed')).toBe('false');
+    for (let turn = 0; turn < pageCount; turn++) swipe(-150);
+    expect(evil().classList).toContain('unloaded');
+    expect(choice(THESE_PLAYERS_ARE_NOT_LEGION).getAttribute('aria-pressed')).toBe('true');
+    expect(choice(THESE_PLAYERS_ARE_NOT_LEGION).classList).not.toContain('unloaded');
+    expect(choice(YOU_ARE_EVIL).getAttribute('aria-pressed')).toBe('false');
+    expect(choice(YOU_ARE_GOOD).getAttribute('aria-pressed')).toBe('true');
   });
 
   it('turns the pages with the arrow keys', () => {
@@ -492,6 +715,37 @@ describe('StorytellerAidsPageComponent', () => {
       expect(page.querySelector('.slot.current .edit')).not.toBeNull();
       swipe(-150);
       expect(page.querySelector('.slot.current .edit')).toBeNull();
+    });
+
+    it('keeps its Edit button out of reach of the keyboard while it waits off to one side', () => {
+      const edit = (position: number) => slotAt(position)!.querySelector('.edit')!;
+      expect(edit(0).hasAttribute('tabindex')).toBeFalse();
+      swipe(-150);
+      expect(edit(-1).getAttribute('tabindex')).toBe('-1');
+      swipe(150);
+      expect(edit(0).hasAttribute('tabindex')).toBeFalse();
+      swipe(150);
+      expect(edit(1).getAttribute('tabindex')).toBe('-1');
+      expect(page.querySelectorAll('.edit').length).toBe(1);
+    });
+
+    it('follows each word as it is typed on the card below', () => {
+      tapEdit();
+      for (const word of ['p', 'pi', 'pickle', 'pickles']) {
+        type(word);
+        expect(preview()).toBe(`Your secret word is ${word}`);
+      }
+    });
+
+    it('keeps the words on the card as it slides away and back again', () => {
+      tapEdit();
+      type('pickle');
+      press('.editor .done');
+      swipe(-150);
+      expect(sentenceAt(-1)).toBe('Your secret word is pickle');
+      swipe(150);
+      expect(shown()).toBe('Your secret word is pickle');
+      expect(sentenceAt(1)).toBe(sentence(0));
     });
 
     it('opens the editor from the Edit button, with its words picked out to type over', () => {

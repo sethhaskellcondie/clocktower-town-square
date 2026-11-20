@@ -1,7 +1,7 @@
 <main
   class="aids"
-  [class.overview-open]="overviewOpen"
-  [inert]="!!editing"
+  [class.overview-open]="overviewOpen()"
+  [inert]="!!editing()"
   (pointerdown)="onPointerDown($event)"
   (pointermove)="onPointerMove($event)"
   (pointerup)="onPointerUp($event)"
@@ -10,12 +10,13 @@
   <h1 class="visually-hidden">Storyteller Aids</h1>
   <div
     class="track"
-    [class.settling]="settling && !overviewOpen"
-    [style.transform]="'translateX(' + (overviewOpen ? 0 : offset) + 'px)'"
-    [inert]="overviewOpen"
+    [class.settling]="settling() && !overviewOpen()"
+    [style.transform]="'translateX(' + (overviewOpen() ? 0 : offset()) + 'px)'"
+    [inert]="overviewOpen()"
     (transitionend)="onTransitionEnd($event)"
   >
-    @for (slot of slots; track slot.position) {
+    <!-- Each aid keeps its card as it moves from one spot to the next -->
+    @for (slot of slots(); track slot.aid.id) {
       <section
         class="slot"
         [class.current]="slot.position === 0"
@@ -35,20 +36,23 @@
     }
   </div>
 
-  <section #overview class="overview" [inert]="!overviewOpen" aria-label="Every storyteller aid">
+  <section #overview class="overview" [inert]="!overviewOpen()" aria-label="Every storyteller aid">
     <p class="message hint">Tap an aid to load or unload it, swipe sideways for more, then swipe down.</p>
     <div class="pages">
       <div
         class="page-track"
-        [class.settling]="settling && overviewOpen"
-        [style.transform]="'translateX(' + (overviewOpen ? offset : 0) + 'px)'"
+        [class.settling]="settling() && overviewOpen()"
+        [style.transform]="'translateX(' + (overviewOpen() ? offset() : 0) + 'px)'"
         (transitionend)="onTransitionEnd($event)"
       >
-        @for (slot of pageSlots; track slot.position) {
-          <section class="page" [class.current]="slot.position === 0" [style.left.%]="slot.position * 100" [inert]="slot.position !== 0">
-            <h2 class="page-heading">{{ slot.page.title }}</h2>
+        <!-- Every page is drawn once and kept, the ones not in view or beside
+             it two screens off to the right, out of sight -->
+        @for (each of pages; track $index) {
+          @let position = pagePositions()[$index];
+          <section class="page" [class.current]="position === 0" [style.left.%]="(position ?? 2) * 100" [inert]="position !== 0">
+            <h2 class="page-heading">{{ each.title }}</h2>
             <div class="grid">
-              @for (aid of slot.page.aids; track aid.id) {
+              @for (aid of each.aids; track aid.id) {
                 <button
                   type="button"
                   class="choice"
@@ -68,15 +72,15 @@
     @if (pages.length > 1) {
       <div class="dots" aria-hidden="true">
         @for (each of pages; track $index) {
-          <span class="dot" [class.current]="$index === page"></span>
+          <span class="dot" [class.current]="$index === page()"></span>
         }
       </div>
-      <p class="visually-hidden">Page {{ page + 1 }} of {{ pages.length }}</p>
+      <p class="visually-hidden">Page {{ page() + 1 }} of {{ pages.length }}</p>
     }
   </section>
 </main>
 
-@if (preview; as preview) {
+@if (preview(); as preview) {
   <div class="editor" role="dialog" aria-modal="true" aria-labelledby="editor-title" (keydown.escape)="closeEditor()" (mousedown)="keepFocus($event)">
     <form class="editor-form" (submit)="saveEdit($event)">
       <div class="editor-bar">
@@ -90,16 +94,16 @@
           class="field-input"
           type="text"
           aria-labelledby="editor-title"
-          [value]="draft"
+          [value]="draft()"
           [attr.maxlength]="editableTextLength"
-          [attr.placeholder]="editing?.editableText"
+          [attr.placeholder]="editing()?.editableText"
           autocomplete="off"
           autocapitalize="none"
           spellcheck="false"
           enterkeyhint="done"
           (input)="onDraftInput($event)"
         />
-        <button type="button" class="reset" [disabled]="draftIsDefault" (click)="resetDraft()">Reset</button>
+        <button type="button" class="reset" [disabled]="draftIsDefault()" (click)="resetDraft()">Reset</button>
       </div>
     </form>
     <app-storyteller-aid-card class="preview" [aid]="preview" />

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, HostListener, inject, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, HostListener, computed, inject, signal, viewChild } from '@angular/core';
 import { StorytellerAidCardComponent } from './storyteller-aid-card.component';
 import { STORYTELLER_AIDS } from './storyteller-aid-library';
 import { STORYTELLER_AID_CATEGORIES, StorytellerAid } from './storyteller-aid';
@@ -35,6 +35,13 @@ type Axis = 'x' | 'y';
 interface AidPage {
   title: string;
   aids: readonly StorytellerAid[];
+}
+
+// An aid where it sits across the screen: 0 in view, and -1 and 1 waiting
+// just off the left and right edges
+interface AidSlot {
+  aid: StorytellerAid;
+  position: number;
 }
 
 // A finger on the screen, from where it first touched down
@@ -81,11 +88,20 @@ interface Drag {
 //
 // Swipes are read from pointer events, which cover fingers, mice, and pens
 // alike: where the pointer goes down, where it moves, and where it comes up.
+//
+// So that a swipe lands without a stutter, nothing is drawn again as the
+// cards slide into place. Each card is kept as it moves from one spot to the
+// next, so the card that comes to rest in view is the very one that was
+// waiting off the edge, and only the card coming up behind it is new. The
+// overview draws every page once and keeps them all, out of sight a little
+// further off when they aren't in view or beside it, so turning the page
+// draws nothing at all. And a drag moves the cards without going over any of
+// them, since a card is only drawn again when its aid changes.
 @Component({
   selector: 'app-storyteller-aids-page',
   imports: [StorytellerAidCardComponent],
   templateUrl: './storyteller-aids-page.component.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './storyteller-aids-page.component.scss'
 })
 export class StorytellerAidsPageComponent {
@@ -94,20 +110,60 @@ export class StorytellerAidsPageComponent {
   readonly loadedAids = inject(LoadedAidsService);
   readonly aidText = inject(AidTextService);
   readonly editableTextLength = EDITABLE_TEXT_LENGTH;
-  index = 0;
+  // The aids that come round, in the order they come
+  readonly aids = this.loadedAids.aids;
+  // The aid in view
+  readonly index = signal(0);
   // The overview's page in view
-  page = 0;
+  readonly page = signal(0);
   // How far the cards, or with the overview open its pages, are pulled
   // sideways, in pixels: following the finger during a drag, then sliding a
   // whole screen over to change aids or pages
-  offset = 0;
+  readonly offset = signal(0);
   // Whether the cards, or the pages, are sliding into place after a drag
-  settling = false;
-  overviewOpen = false;
+  readonly settling = signal(false);
+  readonly overviewOpen = signal(false);
   // The custom aid whose words are being changed, as it is in the library,
   // and the words typed so far
-  editing: StorytellerAid | null = null;
-  draft = '';
+  readonly editing = signal<StorytellerAid | null>(null);
+  readonly draft = signal('');
+
+  // With only two aids, or two pages, to go round, the other one is both the
+  // next and the previous, so it waits on the side it's being pulled in
+  // from: the right (1) while the cards are pulled left, and the left (-1)
+  // while they're pulled right. It stays there as they spring back or slide
+  // the rest of the way.
+  private readonly side = signal(1);
+
+  // The current aid, in view, with the aids either side of it waiting just
+  // off each edge of the screen, ready to be dragged in. They're in the
+  // order they come round, not the order they sit in, so as they move along
+  // none of them has to be moved among the others to keep its card.
+  readonly slots = computed<AidSlot[]>(() => {
+    const aids = this.aids();
+    const positions = positionsFor(aids.length, this.index(), aids.length === 2 ? this.side() : 1);
+    return aids.flatMap((aid, index) => {
+      const position = positions[index];
+      return position === null ? [] : [{ aid, position }];
+    });
+  });
+
+  // Where each of the overview's pages sits, the same way, the rest of them
+  // out of sight further off
+  readonly pagePositions = computed(() =>
+    positionsFor(this.pages.length, this.page(), this.pages.length === 2 ? this.side() : 1),
+  );
+
+  // The aid being edited as it'll look with the words typed so far, or as it
+  // comes while there are none
+  readonly preview = computed(() => {
+    const editing = this.editing();
+    return editing?.withEditableText(tidy(this.draft()) || editing.editableText!);
+  });
+
+  // Whether the words typed so far are the ones the aid comes with, so
+  // there's nothing to reset
+  readonly draftIsDefault = computed(() => tidy(this.draft()) === this.editing()?.editableText);
 
   private drag: Drag | null = null;
   // Whether the last pointer has been dealt with already: it dragged, or it
@@ -124,40 +180,11 @@ export class StorytellerAidsPageComponent {
   private readonly editorInput = viewChild<ElementRef<HTMLInputElement>>('editorInput');
   private readonly changeDetector = inject(ChangeDetectorRef);
 
-  // The aids that come round, in the order they come
-  get aids(): readonly StorytellerAid[] {
-    return this.loadedAids.aids();
-  }
-
-  // The current aid, in view, with the aids either side of it waiting just
-  // off each edge of the screen, ready to be dragged in
-  get slots(): { position: number; aid: StorytellerAid }[] {
-    return positionsFor(this.aids.length).map(position => ({ position, aid: this.aids[wrap(this.index + position, this.aids.length)] }));
-  }
-
-  // The overview's page in view, with the pages either side of it waiting
-  // off each edge, the same way
-  get pageSlots(): { position: number; page: AidPage }[] {
-    return positionsFor(this.pages.length).map(position => ({ position, page: this.pages[wrap(this.page + position, this.pages.length)] }));
-  }
-
-  // The aid being edited as it'll look with the words typed so far, or as it
-  // comes while there are none
-  get preview(): StorytellerAid | undefined {
-    return this.editing?.withEditableText(tidy(this.draft) || this.editing.editableText!);
-  }
-
-  // Whether the words typed so far are the ones the aid comes with, so
-  // there's nothing to reset
-  get draftIsDefault(): boolean {
-    return tidy(this.draft) === this.editing?.editableText;
-  }
-
   onPointerDown(event: PointerEvent): void {
     if (!event.isPrimary) return;
     if (event.pointerType === 'mouse' && event.button !== 0) return;
     // A new drag cuts short the cards still sliding from the last one
-    if (this.settling) this.finishSettling();
+    if (this.settling()) this.finishSettling();
     const target = event.currentTarget as HTMLElement;
     // Keep hearing about this pointer even once it leaves the page
     target.setPointerCapture(event.pointerId);
@@ -180,7 +207,7 @@ export class StorytellerAidsPageComponent {
     const dx = event.clientX - drag.startX;
     const dy = event.clientY - drag.startY;
     drag.axis ??= axisOf(dx, dy);
-    if (drag.axis === 'x' && this.count > 1) this.offset = dx;
+    if (drag.axis === 'x' && this.count > 1) this.pull(dx);
   }
 
   // Lifting the finger decides it. With the aids one at a time, a swipe
@@ -199,7 +226,7 @@ export class StorytellerAidsPageComponent {
     const axis = drag.axis ?? axisOf(dx, dy);
     const across = axis === 'x' ? swipeDirection(dx, drag.width, duration) : 0;
     const upDown = axis === 'y' ? swipeDirection(dy, drag.height, duration) : 0;
-    if (this.overviewOpen) {
+    if (this.overviewOpen()) {
       const aid = axis === null ? this.choiceAt(event.clientX, event.clientY) : undefined;
       if (aid) {
         this.loadedAids.toggle(aid);
@@ -212,7 +239,7 @@ export class StorytellerAidsPageComponent {
       this.openOverview();
     } else {
       this.swipeAcross(across, drag.width);
-      if (axis === null && this.editButtonAt(event.clientX, event.clientY)) this.openEditor(this.aids[this.index]);
+      if (axis === null && this.editButtonAt(event.clientX, event.clientY)) this.openEditor(this.aids()[this.index()]);
     }
   }
 
@@ -239,15 +266,15 @@ export class StorytellerAidsPageComponent {
   }
 
   onDraftInput(event: Event): void {
-    this.draft = (event.target as HTMLInputElement).value;
+    this.draft.set((event.target as HTMLInputElement).value);
   }
 
   // Back to the words the aid comes with, ready to type over
   resetDraft(): void {
     const input = this.editorInput()?.nativeElement;
-    this.draft = this.editing?.editableText ?? '';
+    this.draft.set(this.editing()?.editableText ?? '');
     if (input) {
-      input.value = this.draft;
+      input.value = this.draft();
       input.focus();
       input.select();
     }
@@ -256,13 +283,14 @@ export class StorytellerAidsPageComponent {
   // Done, or the keyboard's own Done key, keeps the words
   saveEdit(event: Event): void {
     event.preventDefault();
-    if (this.editing) this.aidText.write(this.editing, this.draft);
+    const editing = this.editing();
+    if (editing) this.aidText.write(editing, this.draft());
     this.closeEditor();
   }
 
   closeEditor(): void {
-    this.editing = null;
-    this.draft = '';
+    this.editing.set(null);
+    this.draft.set('');
   }
 
   // Pressing anywhere in the editor but the words leaves the focus on them,
@@ -276,15 +304,15 @@ export class StorytellerAidsPageComponent {
 
   @HostListener('document:keydown', ['$event'])
   onKeydown(event: KeyboardEvent): void {
-    if (this.drag || this.editing) return;
-    const toggling = this.overviewOpen ? event.key === 'ArrowDown' || event.key === 'Escape' : event.key === 'ArrowUp';
+    if (this.drag || this.editing()) return;
+    const toggling = this.overviewOpen() ? event.key === 'ArrowDown' || event.key === 'Escape' : event.key === 'ArrowUp';
     const direction = this.count > 1 ? KEY_STEPS[event.key] : undefined;
     if (!toggling && !direction) return;
     event.preventDefault();
-    if (this.settling) this.finishSettling();
+    if (this.settling()) this.finishSettling();
     if (direction) {
       this.step(direction, this.host.clientWidth);
-    } else if (this.overviewOpen) {
+    } else if (this.overviewOpen()) {
       this.closeOverview();
     } else {
       this.openOverview();
@@ -292,28 +320,28 @@ export class StorytellerAidsPageComponent {
   }
 
   onTransitionEnd(event: TransitionEvent): void {
-    if (event.target !== event.currentTarget || event.propertyName !== 'transform' || !this.settling) return;
+    if (event.target !== event.currentTarget || event.propertyName !== 'transform' || !this.settling()) return;
     this.finishSettling();
   }
 
   // The aids one at a time, or with the overview open, its pages: however
   // many there are of whichever is in front, to swipe through sideways
   private get count(): number {
-    return this.overviewOpen ? this.pages.length : this.aids.length;
+    return this.overviewOpen() ? this.pages.length : this.aids().length;
   }
 
   private openOverview(): void {
-    this.returnTo = this.aids[this.index];
-    this.overviewOpen = true;
+    this.returnTo = this.aids()[this.index()];
+    this.overviewOpen.set(true);
   }
 
   // Back to the aid that was in view, or if it's been unloaded, the next
   // loaded aid after it
   private closeOverview(): void {
-    this.overviewOpen = false;
+    this.overviewOpen.set(false);
     const start = this.returnTo ? this.library.indexOf(this.returnTo) : 0;
     const next = [...this.library.slice(start), ...this.library.slice(0, start)].find(aid => this.loadedAids.isLoaded(aid));
-    this.index = next ? this.aids.indexOf(next) : 0;
+    this.index.set(next ? this.aids().indexOf(next) : 0);
   }
 
   // Swiping left pulls in the aid, or page, from the right, which is the
@@ -337,26 +365,36 @@ export class StorytellerAidsPageComponent {
   // the aids or pages move along. With nowhere to slide, or with motion reduced, there's no
   // slide to wait for, so they move along straight away.
   private slideTo(offset: number): void {
-    if (offset === this.offset || matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    if (offset === this.offset() || matchMedia('(prefers-reduced-motion: reduce)').matches) {
       this.finishSettling();
       return;
     }
-    this.settling = true;
-    this.offset = offset;
+    this.settling.set(true);
+    this.pull(offset);
+  }
+
+  // Pulls the cards, or pages, this far sideways, which with only two to go
+  // round decides which side the other one waits on
+  private pull(offset: number): void {
+    this.offset.set(offset);
+    if (offset) this.side.set(offset < 0 ? 1 : -1);
   }
 
   // The aid, or page, that slid into view becomes the current one, and the
   // cards or pages go back to the middle without animating, which looks like
-  // nothing at all since the same one is in view either way
+  // nothing at all since the same one is in view either way: the one that
+  // slid in stays put on the screen, moved from the edge to the middle as the
+  // cards or pages move back the other way
   private finishSettling(): void {
-    if (this.overviewOpen) {
-      this.page = wrap(this.page + this.pendingStep, this.pages.length);
-    } else if (this.pendingStep) {
-      this.index = wrap(this.index + this.pendingStep, this.aids.length);
+    const step = this.pendingStep;
+    if (this.overviewOpen()) {
+      this.page.update(page => wrap(page + step, this.pages.length));
+    } else if (step) {
+      this.index.update(index => wrap(index + step, this.aids().length));
     }
     this.pendingStep = 0;
-    this.offset = 0;
-    this.settling = false;
+    this.offset.set(0);
+    this.settling.set(false);
   }
 
   // The editor opens with the aid's words as the storyteller last wrote
@@ -366,8 +404,8 @@ export class StorytellerAidsPageComponent {
   // its keyboard for them.
   private openEditor(aid: StorytellerAid): void {
     if (aid.editableText === undefined) return;
-    this.editing = aid;
-    this.draft = this.aidText.written(aid).editableText!;
+    this.editing.set(aid);
+    this.draft.set(this.aidText.written(aid).editableText!);
     this.changeDetector.detectChanges();
     const input = this.editorInput()?.nativeElement;
     input?.focus();
@@ -410,11 +448,20 @@ function pagesOf(aids: readonly StorytellerAid[]): AidPage[] {
   return pages;
 }
 
-// Where the aids, or pages, sit: the current one in view, at 0, and with
-// more than one, its neighbors just off either edge, at -1 and 1
-function positionsFor(count: number): number[] {
-  if (count === 0) return [];
-  return count === 1 ? [0] : [-1, 0, 1];
+// Where each of this many aids, or pages, sits with this one in view: 0 for
+// the one in view, 1 for the next, just off the right edge, -1 for the
+// previous, just off the left, and null for the rest, further off and out
+// of sight. Going round, the last is just before the first. With only two,
+// the other one is both the next and the previous, so it sits on this side.
+function positionsFor(count: number, current: number, side: number): (number | null)[] {
+  return Array.from({ length: count }, (_, index) => {
+    const ahead = wrap(index - current, count);
+    if (ahead === 0) return 0;
+    if (count === 2) return side;
+    if (ahead === 1) return 1;
+    if (ahead === count - 1) return -1;
+    return null;
+  });
 }
 
 // Wraps round from the last aid, or page, to the first, and back

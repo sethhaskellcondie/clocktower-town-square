@@ -13,11 +13,18 @@ import { StorytellerAid } from './storyteller-aid';
 // still fits across the card, and the picture takes the room that's left.
 // An aid with no picture has its words down the middle of the card instead,
 // as large as they'll go while they still fit it, across and down.
+//
+// A card is only drawn again when it's given a different aid, so the
+// storyteller page can drag its cards about, and load and unload them,
+// without going over any of them again. An aid with the storyteller's own
+// words written in is always the same aid for the same words (see
+// withEditableText), so a card is given a different aid only when its words
+// change.
 @Component({
   selector: 'app-storyteller-aid-card',
   imports: [NgTemplateOutlet],
   templateUrl: './storyteller-aid-card.component.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './storyteller-aid-card.component.scss'
 })
 export class StorytellerAidCardComponent {
