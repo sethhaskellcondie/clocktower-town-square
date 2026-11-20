@@ -41,7 +41,11 @@ export class AttractModeService implements OnDestroy {
     return hours > 0 ? `${hours}:${String(minutes).padStart(2, '0')}:${seconds}` : `${minutes}:${seconds}`;
   });
 
-  readonly countdownText = computed(() => this.remainingMs() === 0 ? "It's not too late, join mid game!" : `NEXT GAME IN ${this.clockText()}`);
+  // Once the game has started, a full game can't take anyone mid game
+  readonly countdownText = computed(() => {
+    if (this.remainingMs() > 0) return `NEXT GAME IN ${this.clockText()}`;
+    return this.slotsLeft() === 0 ? 'Sign up for the next session!' : "It's not too late, join mid game!";
+  });
 
   readonly slotsText = computed(() => {
     const slots = this.slotsLeft();
